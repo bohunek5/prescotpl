@@ -1044,6 +1044,23 @@ $(document).ready(function(){
       padding-bottom:40px;
     }
 
+        .owg-table{
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .owg-table th, .owg-table td{
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(33,42,53,0.1);
+      font-size: 15px;
+    }
+    .owg-table th{
+      background: rgba(223,63,25,0.08);
+      color: #212a35;
+      font-weight: 700;
+    }
     /* MOBILE */
     @media (max-width: 700px){
       .full-glass-wrapper{ padding: 18px; }
@@ -1059,58 +1076,70 @@ $(document).ready(function(){
 </head>
 <body>
 
-  <div class="full-glass-wrapper">
+    <div class="full-glass-wrapper">
 
     <br></br>
 
     <h1 class="orange-txt">OGÓLNE WARUNKI GWARANCJI – SYSTEMY LED</h1>
-
-  
+    <div class="subtitle">Wersja 1.21 z dnia 12 Lipca 2026 r.</div>
 
     <div class="toc-container">
       <h3 style="margin-top:0; color:#212a35; text-align: center;">SPIS TREŚCI</h3>
-      <a href="#sec1">1. Postanowienia ogólne i definicje</a>
-      <a href="#sec2">2. Systemy liniowe LED (taśmy: DELUX 7Y / PREMIUM 5Y/ PREMIUM 3Y)</a>
-      <a href="#sec3">3. Oprawy oświetleniowe LED (hermetyczne i użytkowe)</a>
-      <a href="#sec4">4. Zasilacze LED marki SCHARFER 7Y</a>
-      <a href="#sec5">5. Zasilacze LED marki PRESCOT</a>
-      <a href="#sec6">6. Akcesoria (12V/24V)</a>
-      <a href="#sec7">7. Procedura reklamacyjna i RMA (wspólna)</a>
-      <a href="#sec8">8. Wyłączenia i ograniczenia odpowiedzialności</a>
-      <a href="#sec9">9. Definicja „żywotności” i dopuszczalne zmiany parametrów LED</a>
-      <a href="#sec10">10. Klauzula integralności dokumentu i wyłączenie rękojmi</a>
-      <a href="#sec11">11. Załącznik nr 1 – Protokół RMA</a>
+      <a href="#sec0">0. Najważniejsze informacje</a>
+      <a href="#sec1">1. Zakres dokumentu i definicje</a>
+      <a href="#sec2">2. Produkty objęte gwarancją i okres ochrony</a>
+      <a href="#sec3">3. Uprawnienia z gwarancji</a>
+      <a href="#sec4">4. Ogólne warunki montażu i eksploatacji</a>
+      <a href="#sec5">5. Warunki dla poszczególnych grup produktów</a>
+      <a href="#sec6">6. Wyłączenia gwarancji i zasada związku przyczynowego</a>
+      <a href="#sec7">7. Zgłoszenie reklamacyjne i realizacja gwarancji</a>
+      <a href="#sec8">8. Odpowiedzialność w obrocie B2B i rękojmia</a>
+      <a href="#sec9">9. Dane osobowe</a>
+      <a href="#sec10">10. Postanowienia końcowe</a>
+      <a href="#sec-rma">Załącznik nr 1 – Formularz zgłoszenia RMA</a>
+    </div>
+
+    <!-- ===================== SEC 0 ===================== -->
+    <div id="sec0" class="section">
+      <div class="content-box">
+        <h2>0. NAJWAŻNIEJSZE INFORMACJE</h2>
+
+        <h3>Dane gwaranta</h3>
+        <p><strong>PRESCOT sp. z o.o.</strong><br>
+        ul. Wileńska 1, 11-500 Giżycko<br>
+        NIP 8451939947 | REGON 280351610 | KRS 0000319434<br>
+        Reklamacje: <a href="mailto:reklamacje@prescot.pl" style="color:#df3f19;">reklamacje@prescot.pl</a> | +48 87 428 21 18 wew. 25</p>
+
+        <h3>Ustawowe środki ochrony</h3>
+        <p>W przypadku braku zgodności rzeczy sprzedanej z umową Kupującemu z mocy prawa przysługują środki ochrony prawnej ze strony i na koszt Sprzedawcy. Gwarancja nie ma wpływu na te środki ochrony prawnej.</p>
+
+        <hr>
+
+        <p>Gwarancja obejmuje wady wynikające z przyczyn tkwiących w Produkcie.</p>
+        <p>Okres gwarancji wynika z oznaczenia danego modelu, dokumentu sprzedaży lub karty produktu obowiązującej w dniu zawarcia umowy.</p>
+        <p>Oznaczenia 7Y, 5Y, 3Y, 2Y i 1Y oznaczają odpowiednio 84, 60, 36, 24 i 12 miesięcy.</p>
+        <p>Zgłoszenie wysyła się na <a href="mailto:reklamacje@prescot.pl" style="color:#df3f19;">reklamacje@prescot.pl</a>. Formularz RMA ułatwia obsługę, ale jego brak nie unieważnia zgłoszenia.</p>
+        <p>Wymagania techniczne zależne od modelu znajdują się w jego karcie produktu lub instrukcji. Nie stosuje się jednego uniwersalnego limitu do wszystkich taśm, opraw i zasilaczy.</p>
+      </div>
     </div>
 
     <!-- ===================== SEC 1 ===================== -->
     <div id="sec1" class="section">
       <div class="content-box">
-        <h2>1. POSTANOWIENIA OGÓLNE I DEFINICJE</h2>
-        <p>Niniejszy dokument („OWG”) określa warunki, zakres oraz zasady realizacji gwarancji udzielanej przez Gwaranta w związku ze sprzedażą produktów LED w obrocie profesjonalnym pomiędzy przedsiębiorcami (B2B).</p>
-        <p>Dokument reguluje w szczególności: wymagania montażowe i eksploatacyjne, sytuacje wyłączające odpowiedzialność gwarancyjną, sposób zgłaszania reklamacji oraz zasady ograniczenia odpowiedzialności Gwaranta do świadczeń przewidzianych w OWG.</p>
-        <p>OWG ma zastosowanie do następujących kategorii produktów sprzedawanych przez Gwaranta:</p>
-        <ul>
-          <li>systemy liniowe LED (taśmy LED),</li>
-          <li>oprawy oświetleniowe LED (hermetyczne i użytkowe),</li>
-          <li>zasilacze LED marki SCHARFER 7Y,</li>
-          <li>zasilacze LED marki PRESCOT,</li>
-          <li>akcesoria i sterowanie dla instalacji 12V/24V (w tym sterowniki, ściemniacze, wzmacniacze, złączki, przewody, profile).</li>
-        </ul>
-        <p>Celem OWG jest wprowadzenie jasnych i weryfikowalnych warunków technicznych, które ograniczają typowe ryzyka eksploatacyjne w systemach LED oraz pozwalają jednoznacznie rozstrzygnąć, czy zgłoszona usterka stanowi wadę materiałową lub produkcyjną, czy też jest skutkiem błędu projektowego, błędu montażowego, przeciążenia, przegrzania, nieprawidłowego zasilania lub oddziaływania środowiska pracy.</p>
-        <ul>
-          <li>Dla taśm LED dokument ma na celu ochronę systemu przed przegrzaniem i spadkami napięcia, w tym poprzez obowiązek zapewnienia skutecznego odprowadzania ciepła oraz wymuszenie stosowania podłoży o odpowiedniej przewodności cieplnej (w praktyce: profili aluminiowych).</li>
-          <li>Dla opraw LED dokument ma na celu ochronę przed zalaniem wynikającym z błędów w doborze i montażu dławic oraz ochronę przed środowiskami chemicznie agresywnymi, które powodują korozję lub degradację elementów oprawy.</li>
-          <li>Dla zasilaczy SCHARFER dokument ma na celu ochronę urządzeń klasy premium przed przeciążeniem, błędami termicznymi i skutkami przepięć, które nie stanowią wady produktu.</li>
-          <li>Dla zasilaczy PRESCOT (w tym inteligentnej serii modułowej PR-MAD z autodetekcją 12V/24V) dokument ma na celu ustanowienie standardowych warunków eksploatacyjnych, reguł podłączania obciążeń przed załączeniem zasilania oraz wyeliminowanie przeciążeń termicznych i błędów instalatorskich.</li>
-          <li>Dla akcesoriów i sterowania dokument ma na celu ochronę urządzeń elektronicznych przed zwarciem, błędnym podłączeniem i przeciążeniem prądowym oraz uregulowanie kwestii kompatybilności systemowej.</li>
-        </ul>
-        <p>Użyte w OWG pojęcia oznaczają:</p>
-        <ul>
-          <li>„Gwarant” – podmiot udzielający gwarancji,</li>
-          <li>„Kupujący” – przedsiębiorca nabywający towar w związku z prowadzoną działalnością gospodarczą,</li>
-          <li>„Instalator” – osoba lub podmiot wykonujący montaż (działający w imieniu Kupującego lub na jego zlecenie),</li>
-          <li>„Produkt” – towar objęty OWG,</li>
-          <li>„Reżim termiczny” – warunki montażu i pracy zapewniające temperatury pracy w granicach określonych w OWG.</li>
+        <h2>1. ZAKRES DOKUMENTU I DEFINICJE</h2>
+        <p><strong>1.1.</strong> Niniejsze Ogólne Warunki Gwarancji, dalej „OWG”, określają warunki dobrowolnej gwarancji jakości udzielanej przez PRESCOT sp. z o.o. na Produkty wskazane w punkcie 2.</p>
+        <p><strong>1.2.</strong> OWG są przeznaczone dla umów zawieranych w obrocie profesjonalnym. Postanowienia ograniczające prawa Kupującego stosuje się wyłącznie w zakresie dozwolonym przez bezwzględnie obowiązujące przepisy.</p>
+        <p><strong>1.3.</strong> Jeżeli Kupującym jest osoba fizyczna zawierająca umowę bezpośrednio związaną z jej działalnością gospodarczą, ale niemającą dla niej charakteru zawodowego, zachowuje ona ochronę wynikającą w szczególności z art. 7aa ustawy o prawach konsumenta. Postanowienia OWG nie wyłączają ani nie ograniczają tej ochrony.</p>
+        <p><strong>1.4.</strong> OWG wiążą strony, jeżeli zostały doręczone Kupującemu przed zawarciem umowy w sposób umożliwiający ich przechowywanie i odtworzenie. Zmiana OWG nie działa wstecz.</p>
+        <p><strong>1.5.</strong> Ochrona gwarancyjna obowiązuje na terytorium Rzeczypospolitej Polskiej. Dla sprzedaży eksportowej jej zasięg określa umowa, potwierdzenie zamówienia albo karta produktu.</p>
+        <p><strong>1.6.</strong> Użyte pojęcia oznaczają:</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li><strong>Gwarant</strong> – PRESCOT sp. z o.o., udzielający gwarancji na zasadach określonych w OWG.</li>
+          <li><strong>Sprzedawca</strong> – podmiot wskazany na dokumencie zakupu; może nim być Gwarant albo inny sprzedawca.</li>
+          <li><strong>Kupujący</strong> – przedsiębiorca uprawniony do korzystania z gwarancji.</li>
+          <li><strong>Produkt</strong> – rzecz oznaczona modelem, indeksem, EAN, numerem seryjnym lub numerem partii i objęta gwarancją Gwaranta.</li>
+          <li><strong>Karta produktu</strong> – karta katalogowa, instrukcja, specyfikacja lub inny dokument techniczny udostępniony przed zawarciem umowy dla danego modelu.</li>
+          <li><strong>RMA</strong> – numer i procedura identyfikujące zgłoszenie reklamacyjne.</li>
         </ul>
       </div>
     </div>
@@ -1118,247 +1147,216 @@ $(document).ready(function(){
     <!-- ===================== SEC 2 ===================== -->
     <div id="sec2" class="section">
       <div class="content-box">
-        <h2>2. SYSTEMY LINIOWE LED (TAŚMY) – DELUX 7Y / PREMIUM 5Y/ PREMIUM 3Y</h2>
+        <h2>2. PRODUKTY OBJĘTE GWARANCJĄ I OKRES OCHRONY</h2>
+        <p><strong>2.1.</strong> Gwarancją mogą być objęte taśmy i moduły LED, oprawy LED, zasilacze LED marek PRESCOT i SCHARFER oraz sterowniki, ściemniacze, wzmacniacze, złączki, przewody, profile i inne akcesoria, jeżeli gwarancja została wskazana dla konkretnego Produktu.</p>
+        <p><strong>2.2.</strong> Okres gwarancji rozpoczyna się w dniu wydania Produktu Kupującemu. Zakres i okres ustala się na podstawie dokumentów obowiązujących w chwili zawarcia umowy, według następującej kolejności:</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li>1) indywidualna pisemna umowa lub uzgodnione potwierdzenie zamówienia;</li>
+          <li>2) okres gwarancji wskazany na dokumencie sprzedaży lub w zaakceptowanej ofercie;</li>
+          <li>3) karta produktu dla dokładnego modelu;</li>
+          <li>4) oznaczenie gwarancyjne modelu: 7Y, 5Y, 3Y, 2Y albo 1Y.</li>
+        </ul>
+        <p><strong>2.3.</strong> Sama nazwa serii, bez identyfikacji modelu i oznaczenia gwarancyjnego, nie rozstrzyga o długości ochrony. Dotyczy to w szczególności taśm LED występujących w różnych wersjach gwarancyjnych.</p>
 
-        <h3>2.1. Przedmiot i okres gwarancji</h3>
-        <p>Gwarant udziela gwarancji jakości na prawidłowe działanie taśm LED, rozumiane jako ich praca zgodna z przeznaczeniem oraz parametrami użytkowymi, pod warunkiem spełnienia wymagań montażowych i eksploatacyjnych wskazanych w niniejszym OWG.</p>
-        <p>Okres gwarancji uzależniony jest od serii produktowej:</p>
-        <ul>
-          <li>Seria DELUX: 84 miesiące (7 lat), z zastrzeżeniem bezwzględnego zachowania reżimu termicznego i zasad zasilania.</li>
-          <li>Seria PREMIUM 5Y: 60 miesięcy (5 lat), przy zachowaniu limitów pracy i warunków montażowych.</li>
-          <li>Seria PREMIUM 3Y: 36 miesięcy (3 lata), przy szczególnym znaczeniu prawidłowego zasilania, spadków napięcia i termiki.</li>
-        </ul>
-        <p>Dla utrzymania parametrów w granicach projektowych oraz ograniczenia przyspieszonej degradacji wynikającej z pracy ciągłej obowiązują limity dobowego czasu pracy:</p>
-        <ul>
-          <li>DELUX: dopuszcza się pracę do 24h/dobę, o ile spełnione są warunki termiczne i zasilania.</li>
-          <li>PREMIUM: dopuszcza się pracę do 12h/dobę, co stanowi warunek stabilnej eksploatacji bez przeciążenia termicznego i elektrycznego.</li>
-          <li>PREMIUM 3Y : dopuszcza się pracę do 8h/dobę, gdyż dłuższa praca zwiększa tempo naturalnej degradacji, która nie stanowi wady fabrycznej.</li>
-        </ul>
-        <p>Gwarancja obejmuje wyłącznie wady materiałowe i produkcyjne ujawnione w okresie gwarancyjnym, w szczególności:</p>
-        <ul>
-          <li>wady lutowania fabrycznego (np. nieciągłości połączeń, wadliwe pola lutownicze),</li>
-          <li>uszkodzenia struktury chipa LED o charakterze produkcyjnym,</li>
-          <li>wady laminatu PCB wynikające z procesu produkcji.</li>
-        </ul>
+        <table class="owg-table">
+          <thead>
+            <tr>
+              <th>Oznaczenie konkretnego modelu</th>
+              <th>Okres</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>7Y</strong></td>
+              <td>84 miesiące</td>
+            </tr>
+            <tr>
+              <td><strong>5Y</strong></td>
+              <td>60 miesięcy</td>
+            </tr>
+            <tr>
+              <td><strong>3Y</strong></td>
+              <td>36 miesięcy</td>
+            </tr>
+            <tr>
+              <td><strong>2Y</strong></td>
+              <td>24 miesiące</td>
+            </tr>
+            <tr>
+              <td><strong>1Y</strong></td>
+              <td>12 miesięcy</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <h3>2.2. Rygorystyczne warunki instalacji – warunek ważności gwarancji</h3>
-        <p>Warunkiem utrzymania gwarancji jest spełnienie łącznie wszystkich poniższych wymogów. Każde odstępstwo, które skutkuje przegrzaniem, przeciążeniem prądowym, przekroczeniem dopuszczalnych spadków napięcia albo zastosowaniem nieodpowiedniego podłoża, skutkuje utratą gwarancji, ponieważ uniemożliwia obiektywne rozróżnienie wady fabrycznej od skutków błędu instalacyjnego.</p>
-
-        <p><strong>A) Zarządzanie termiczne (kluczowe)</strong></p>
-        <p>Taśmy LED o mocy znamionowej powyżej 4.8 W/mb muszą zostać trwale zamontowane na podłożu zapewniającym skuteczne odprowadzanie ciepła, tj.:</p>
-        <ul>
-          <li>na profilu aluminiowym, stanowiącym standard branżowy dla prawidłowej pracy taśm LED, lub</li>
-          <li>na innym podłożu o przewodności cieplnej co najmniej 150 W/(m·K), zapewniającym porównywalny efekt odprowadzania energii cieplnej.</li>
-        </ul>
-        <p>Zabrania się montażu taśm LED bezpośrednio na materiałach, które nie zapewniają odprowadzania ciepła na wymaganym poziomie, w szczególności na płycie meblowej, drewnie, szkle i tworzywach sztucznych, ponieważ takie podłoża sprzyjają kumulacji ciepła, lokalnym przegrzaniom i degradacji PCB oraz diod LED.</p>
-        <p>Instalator zobowiązany jest zapewnić, aby temperatura pracy nie przekraczała progów krytycznych:</p>
-        <ul>
-          <li>temperatura w punkcie Tc na obudowie diody nie może przekroczyć 65°C przy pracy ciągłej,</li>
-          <li>temperatura w punkcie Tc na podłożu PCB taśmy nie może przekroczyć 60°C dla serii DELUX oraz 55°C dla pozostałych serii w żadnym momencie eksploatacji.</li>
-        </ul>
-
-        <p><strong>B) Zasilanie i spadki napięcia</strong></p>
-        <p>Maksymalna długość odcinka zasilanego jednostronnie wynosi:</p>
-        <ul>
-          <li>5 m dla systemów 12V,</li>
-          <li>10 m dla systemów 24V. Odcinki dłuższe wymagają zasilania obustronnego lub równoległego (pętli zasilania), aby ograniczyć spadek napięcia oraz przeciążenie ścieżek PCB.</li>
-        </ul>
-        <p>Uszkodzenia laminatu PCB, w tym przepalenia ścieżek, zwęglenia lub deformacje wynikające z przepływu zbyt dużego prądu w instalacji pozbawionej pętli zasilania, nie stanowią wady produktu i nie podlegają gwarancji, gdyż są skutkiem błędnego zaprojektowania lub wykonania instalacji.</p>
-        <p>Wymagane jest stosowanie zasilaczy stabilizowanych DC o tętnieniach napięcia mniejszych niż 3%, ponieważ podwyższone tętnienia i niestabilność napięcia prowadzą do nieprawidłowej pracy systemu, przyspieszonej degradacji i ryzyka uszkodzeń wtórnych.</p>
-        <p>Zapas mocy zasilacza musi wynosić co najmniej 15–20% względem obciążenia znamionowego, aby ograniczyć pracę zasilacza na granicy możliwości oraz zapewnić stabilność parametrów w dłuższym okresie.</p>
-        <p>Instalacja musi być zaprojektowana w sposób zapewniający, że spadek napięcia na końcu obwodu nie przekroczy 5% napięcia znamionowego, ponieważ przekroczenie tej wartości zwiększa prądy robocze, generuje dodatkowe straty cieplne na ścieżkach i zwiększa ryzyko przegrzania.</p>
-
-        <p><strong>C) Chemia budowlana</strong></p>
-        <p>W przypadku taśm w osłonach silikonowych/żelowych zabrania się stosowania silikonów octowych (kwaśnych), gdyż wydzielane związki chemiczne powodują korozję luminoforu i degradację optyki, co skutkuje spadkiem jakości światła oraz zmianami parametrów niezależnymi od wady produkcyjnej.</p>
-        <p>Dopuszcza się wyłącznie kleje neutralne, przeznaczone do zastosowań z elektroniką i systemami LED, a dobór chemii montażowej pozostaje po stronie Instalatora.</p>
-
-        <h3>2.3. Wyłączenia techniczne i tolerancje</h3>
-        <p>Gwarancja nie obejmuje naturalnego spadku strumienia świetlnego wynikającego z fizycznych procesów starzenia LED, o ile spadek nie przekracza:</p>
-        <ul>
-          <li>0.4%/1000h dla serii DELUX,</li>
-          <li>0.6%/1000h dla serii PREMIUM, zgodnie z założeniami testów długookresowych i odniesieniem do standardów takich jak LM-80.</li>
-        </ul>
-        <p>Gwarancja nie obejmuje degradacji strumienia świetlnego mieszczącej się w branżowych definicjach trwałości, w tym w ramach L70B50, a dla DELUX także L80B10, o ile produkt pracował w warunkach zgodnych z OWG.</p>
-        <p>Gwarancja nie obejmuje zmian temperatury barwowej (CCT) w ramach tolerancji binningu, w tym zmian mieszczących się w elipsie MacAdama właściwej dla danego produktu (do ±150K) oraz w ramach dopuszczalnych kroków: Step 3 dla DELUX i Step 5 dla pozostałych serii.</p>
-        <p>Gwarancja nie obejmuje uszkodzeń mechanicznych, w szczególności zerwania warstwy klejącej 3M, pęknięcia laminatu PCB wskutek zaginania pod kątem ostrym, zgnieceń, przerwań i innych uszkodzeń powstałych w wyniku nieprawidłowego montażu.</p>
-        <p>Gwarancja nie obejmuje uszkodzeń powstałych w wyniku wyładowań elektrostatycznych (ESD) podczas montażu, jeżeli montaż odbywał się bez zachowania zasad ochrony elementów elektronicznych.</p>
-        <p>Gwarancja nie obejmuje uszkodzeń chemicznych spowodowanych oparami siarki, chloru, kwasów, zasad lub klejów niekompatybilnych z PCB i osłoną.</p>
+        <p><strong>2.4.</strong> Jeżeli nie wskazano innego okresu, stosuje się termin wynikający z art. 577 § 4 Kodeksu cywilnego.</p>
+        <p><strong>2.5.</strong> Gwarancja obejmuje Produkt sprzedany przez Gwaranta lub wprowadzony przez niego do obrotu z wyraźnym oznaczeniem gwarancji PRESCOT. Kupujący powinien przedstawić dokument zakupu albo inny wiarygodny dowód daty i źródła nabycia.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 3 ===================== -->
     <div id="sec3" class="section">
       <div class="content-box">
-        <h2>3. OPRAWY OŚWIETLENIOWE LED (HERMETYCZNE I UŻYTKOWE) – IP66 / IP44</h2>
-
-        <h3>3.1. Klasyfikacja gwarancyjna i okresy</h3>
-        <p>Oprawy hermetyczne (IP66) objęte są gwarancją na okres 60 miesięcy (5 lat), z przeznaczeniem do pracy w halach, magazynach oraz zadaszonych obszarach zewnętrznych, pod warunkiem prawidłowego montażu i zachowania wymogów szczelności.</p>
-        <p>Oprawy użytkowe (IP44) objęte są gwarancją na okres 24 miesięcy (2 lata), z przeznaczeniem do pomieszczeń wewnętrznych, korytarzy i biur, w warunkach typowych dla eksploatacji ogólnej.</p>
-
-        <h3>3.2. Warunki szczelności (IP) i eksploatacji</h3>
-        <p><strong>A) Szczelność dławic i wprowadzenie przewodu</strong></p>
-        <p>Gwarancja na zachowanie szczelności deklarowanej dla opraw IP66 obowiązuje wyłącznie wówczas, gdy przewód zasilający został wprowadzony przez dławicę w sposób prawidłowy, tj. z zachowaniem wymogów średnicy i kształtu przewodu, a sama dławica została dokręcona w sposób zapewniający szczelne przyleganie uszczelnień.</p>
-        <p>Przewód musi mieć przekrój okrągły oraz średnicę zgodną z zakresem pracy dławicy.</p>
-        <p>Zastosowanie przewodu płaskiego, przewodu o nieprawidłowej średnicy lub brak właściwego dokręcenia dławicy skutkuje ryzykiem zassania wilgoci zjawiskiem kapilarnym, co stanowi przyczynę zewnętrzną i skutkuje odrzuceniem reklamacji.</p>
-        <p>Dla opraw IP66 warunkiem utrzymania gwarancji jest również zastosowanie dławic kablowych dokręconych momentem zgodnym z kartą katalogową produktu, gdyż tylko wówczas możliwe jest uzyskanie szczelności odpowiadającej klasie IP.</p>
-
-        <p><strong>B) Otoczenie chemiczne</strong></p>
-        <p>Oprawy nie mogą być eksploatowane w środowisku o wysokim stężeniu chloru, amoniaku, oparów siarki, zasad i kwasów, chyba że karta katalogowa produktu wyraźnie dopuszcza takie środowisko (np. wersje AGRO/POOL).</p>
-        <p>Oddziaływanie czynników chemicznych powodujących korozję radiatora lub matowienie klosza nie stanowi wady produktu, lecz skutek warunków środowiskowych.</p>
-        <p>Montaż w atmosferze agresywnej (np. obory, baseny chlorowane, galwanizernie) jest wykluczony, chyba że produkt posiada dedykowany certyfikat odporności chemicznej, potwierdzający możliwość pracy w takim środowisku.</p>
-
-        <p><strong>C) Mycie i konserwacja</strong></p>
-        <p>Zabrania się kierowania strumienia myjki ciśnieniowej bezpośrednio na uszczelki oprawy z odległości mniejszej niż 50 cm, gdyż taka praktyka może powodować wtłaczanie wody pod uszczelnienia, co jest przyczyną zewnętrzną i nie stanowi wady produkcyjnej.</p>
-        <p>Mycie opraw IP66 myjkami ciśnieniowymi może odbywać się wyłącznie przy zachowaniu dystansu co najmniej 30 cm oraz ciśnienia poniżej 50 bar, o ile instrukcja lub dokumentacja produktu nie stanowi inaczej.</p>
-
-        <p><strong>D) Kondensacja</strong></p>
-        <p>Zjawisko kondensacji pary wodnej wewnątrz klosza wynikające z różnicy temperatur i osiągnięcia punktu rosy nie jest wadą produktu, o ile nie powoduje korozji styków elektrycznych.</p>
-        <p>Kondensacja jako zjawisko fizyczne może wystąpić w określonych warunkach środowiskowych i nie stanowi podstawy do roszczeń gwarancyjnych.</p>
-
-        <h3>3.3. Wymogi reklamacyjne dla opraw</h3>
-        <p>Zgłoszenie reklamacyjne dotyczące opraw musi zawierać dokumentację fotograficzną miejsca instalacji oraz informacje potwierdzające poprawność montażu elektrycznego, w tym protokół pomiarowy instalacji, jeżeli jest wymagany dla danego obiektu lub rodzaju instalacji.</p>
+        <h2>3. UPRAWNIENIA Z GWARANCJI</h2>
+        <p><strong>3.1.</strong> Gwarancja obejmuje wady materiałowe, produkcyjne lub montażowe istniejące z przyczyn tkwiących w Produkcie, które ujawniły się w okresie gwarancji podczas prawidłowego używania.</p>
+        <p><strong>3.2.</strong> Po uznaniu reklamacji Gwarant, biorąc pod uwagę charakter wady i możliwość wykonania świadczenia, dokona jednego z następujących działań:</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li>nieodpłatnie naprawi Produkt;</li>
+          <li>wymieni Produkt na wolny od wad, a gdy identyczny model nie jest dostępny – na model równoważny o nie gorszych istotnych parametrach;</li>
+          <li>zwróci cenę zapłaconą za wadliwy Produkt, jeżeli naprawa lub wymiana są niemożliwe albo ekonomicznie nieuzasadnione.</li>
+        </ul>
+        <p><strong>3.3.</strong> Gwarant wykona obowiązki w terminie 14 dni kalendarzowych od dostarczenia Produktu do miejsca wskazanego w punkcie 7, chyba że charakter rzeczy wymaga usunięcia wady w miejscu jej instalacji albo indywidualne oświadczenie gwarancyjne określa inny termin.</p>
+        <p><strong>3.4.</strong> Gwarant ponosi uzasadnione koszty dostarczenia Produktu w sposób uzgodniony w ramach zgłoszenia RMA oraz ryzyko jego przypadkowej utraty lub uszkodzenia od chwili wydania przewoźnikowi wskazanemu przez Gwaranta do chwili zwrotu Kupującemu.</p>
+        <p><strong>3.5.</strong> W przypadku wymiany Produktu albo dokonania istotnej naprawy termin gwarancji biegnie na nowo dla wymienionego Produktu lub istotnie naprawionej części. W innych przypadkach okres gwarancji przedłuża się o czas, w którym Kupujący nie mógł korzystać z Produktu z powodu wady.</p>
+        <p><strong>3.6.</strong> Wymienione części i Produkty przechodzą na własność Gwaranta, jeżeli strony nie uzgodnią inaczej.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 4 ===================== -->
     <div id="sec4" class="section">
       <div class="content-box">
-        <h2>4. ZASILACZE LED MARKI SCHARFER 7Y</h2>
-
-        <h3>4.1. Zakres produktowy i okres gwarancji</h3>
-        <p>Gwarancja obejmuje zasilacze marki SCHARFER w wersjach: hermetyczne IP67 (Waterproof), modułowe (Mesh/Industrial) oraz desktop (wtyczkowe).</p>
-        <p>Zakres gwarancji dotyczy wyłącznie produktów oryginalnych i niezmodyfikowanych.</p>
-        <p>Okres gwarancji jest zgodny z informacją na fakturze zakupu i standardowo wynosi od 80miesięcy w zależności od modelu, przy czym w określonych liniach produktowych okres ten może wynikać z karty produktu.</p>
-        <p>Dodatkowo gwarancja obejmuje utrzymanie parametrów wyjściowych (napięcie/prąd) w tolerancji ±3% przez okres wskazany w dokumentacji produktu (7 lat), pod warunkiem zachowania wymogów elektrycznych i termicznych.</p>
-
-        <h3>4.2. Wymogi elektryczne i termiczne</h3>
-        <p>Dla zachowania żywotności kondensatorów elektrolitycznych oraz stabilności parametrów zaleca się, aby obciążenie ciągłe zasilacza nie przekraczało 80% jego mocy znamionowej, ponieważ praca na granicy możliwości istotnie przyspiesza starzenie elementów elektronicznych.</p>
-        <p>W przypadku pracy dłuższej niż 4 godziny gwarancja obowiązuje przy obciążeniu ciągłym nieprzekraczającym 90% mocy znamionowej.</p>
-        <p>Praca w przeciążeniu przekraczającym 100% mocy znamionowej, nawet krótkotrwała, skutkuje utratą gwarancji, gdyż jest traktowana jako eksploatacja niezgodna z przeznaczeniem i parametrami urządzenia.</p>
-        <p>Dla zasilaczy IP67 instalowanych w zabudowie Instalator zobowiązany jest zapewnić cyrkulację powietrza i warunki umożliwiające odprowadzanie ciepła.</p>
-        <p>Zabudowa zasilacza w izolacji termicznej (wełna, styropian) bez radiatora i bez konwekcji jest niedopuszczalna, ponieważ prowadzi do przegrzania obudowy i zadziałania zabezpieczeń termicznych.</p>
-        <p>Jeżeli temperatura obudowy zasilacza przekroczy wartość krytyczną (zwykle około 80°C), może zadziałać zabezpieczenie OTP, co stanowi prawidłową reakcję ochronną urządzenia i nie jest traktowane jako wada produktu.</p>
-        <p>Uszkodzenie warystorów (MOV) na wejściu zasilacza świadczy o przepięciu w sieci energetycznej (powyżej 265V AC) i jest kwalifikowane jako szkoda zewnętrzna (siła wyższa), która nie podlega naprawie gwarancyjnej.</p>
-        <p>Instalacja zasilaczy musi uwzględniać prąd rozruchowy (start-up current) i być zabezpieczona wyłącznikami nadprądowymi o charakterystyce C lub D, dobranymi do warunków obiektu.</p>
-        <p>Uszkodzenia wejściowe zasilacza wskutek przepięć w sieci (powyżej 1kV L–N) nie podlegają gwarancji.</p>
+        <h2>4. OGÓLNE WARUNKI MONTAŻU I EKSPLOATACJI</h2>
+        <p><strong>4.1.</strong> Produkt należy dobrać, zamontować i użytkować zgodnie z Kartą produktu, instrukcją, oznaczeniami na Produkcie, zasadami wiedzy technicznej oraz przepisami właściwymi dla danej instalacji.</p>
+        <p><strong>4.2.</strong> Prace przy obwodach zasilanych napięciem sieciowym powinny wykonywać osoby posiadające kwalifikacje wymagane dla danego rodzaju prac. Przed montażem i zmianą połączeń należy odłączyć zasilanie.</p>
+        <p><strong>4.3.</strong> Należy w szczególności:</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li>zachować napięcie znamionowe, polaryzację, dopuszczalny prąd, moc, sposób sterowania oraz przekroje przewodów;</li>
+          <li>zapewnić wymagane chłodzenie, wentylację i odprowadzanie ciepła;</li>
+          <li>stosować zabezpieczenia elektryczne dobrane do instalacji oraz warunków zasilania;</li>
+          <li>nie przekraczać parametrów środowiskowych, stopnia IP i sposobu montażu wskazanych dla modelu;</li>
+          <li>używać elementów wzajemnie kompatybilnych i uwzględniać spadki napięcia na całej długości obwodu;</li>
+          <li>przeprowadzić kontrolę działania przed trwałym zabudowaniem Produktu.</li>
+        </ul>
+        <p><strong>4.4.</strong> Limity temperatury, długości odcinków, liczby punktów zasilania, obciążenia, tętnień napięcia, odstępów wentylacyjnych i dopuszczalnego promienia gięcia obowiązują wyłącznie wtedy, gdy są określone dla danego modelu w Karcie produktu lub instrukcji.</p>
+        <p><strong>4.5.</strong> Zalecany zapas mocy zasilacza nie stanowi jednego uniwersalnego warunku gwarancji. Zasilacz dobiera się zgodnie z jego dokumentacją i charakterem obciążenia. Praca z obciążeniem do 100% jest dopuszczalna tylko dla modeli, których producent wyraźnie taką pracę przewidział.</p>
+        <p><strong>4.6.</strong> Naruszenie wymagań montażowych może stanowić podstawę odmowy gwarancji jedynie wtedy, gdy miało wpływ na powstanie lub zakres zgłoszonej wady.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 5 ===================== -->
     <div id="sec5" class="section">
       <div class="content-box">
-        <h2>5. ZASILACZE LED MARKI PRESCOT</h2>
+        <h2>5. WARUNKI DLA POSZCZEGÓLNYCH GRUP PRODUKTÓW</h2>
 
-        <h3>5.1. Okres gwarancji</h3>
-        <p>Gwarant udziela gwarancji na zasilacze marki PRESCOT na następujące okresy:</p>
-        <ul>
-          <li><strong>Zasilacze modułowe z autodetekcją serii PR-MAD (Smart Auto 12V/24V) – 3 lata (36 miesięcy)</strong>,</li>
-          <li>pozostałe zasilacze marki PRESCOT (w tym hermetyczne IP67, standardowe modułowe IP20 oraz desktop/gniazdkowe) – <strong>2 lata (24 miesiące)</strong>.</li>
-        </ul>
-        <p>Gwarancja obejmuje wyłącznie wady fabryczne tkwiące w urządzeniu, ujawnione w okresie gwarancyjnym, przy bezwzględnym zachowaniu warunków montażu i użytkowania określonych poniżej.</p>
+        <h3>5.1. Taśmy i moduły LED</h3>
+        <p>Taśmę należy ciąć wyłącznie w oznaczonych miejscach, lutować w warunkach ograniczających ryzyko przegrzania pól i chronić przed wyładowaniami elektrostatycznymi.</p>
+        <p>Profil aluminiowy lub inne rozwiązanie odprowadzające ciepło jest wymagane, jeżeli przewiduje je Karta produktu albo warunki instalacji powodują konieczność chłodzenia. Rodzaj i powierzchnia profilu muszą odpowiadać mocy oraz zabudowie.</p>
+        <p>Maksymalną długość odcinka zasilanego z jednego punktu i sposób doprowadzenia zasilania określa się dla danego modelu na podstawie poboru prądu, rezystancji ścieżek, przekroju przewodów i dopuszczalnego spadku napięcia.</p>
+        <p>Nie wolno zginać taśmy poniżej dopuszczalnego promienia, skręcać jej, zgniatać ani obciążać połączeń lutowanych.</p>
+        <p>W pobliżu elektroniki i osłon silikonowych należy używać materiałów chemicznie kompatybilnych. Silikony octowe i agresywne kleje są niedopuszczalne, jeżeli Karta produktu nie stanowi inaczej.</p>
+        <p>W taśmach o podwyższonym stopniu ochrony każde cięcie lub połączenie należy ponownie uszczelnić metodą wskazaną przez producenta.</p>
+        <p>Dopuszczalny spadek strumienia świetlnego i zmiana barwy wynikają wyłącznie z danych dla danego modelu lub partii. Dane LM-80 dotyczą źródeł LED i nie są samodzielnym potwierdzeniem trwałości kompletnej instalacji.</p>
 
-        <h3>5.2. Warunki techniczne i zasady eksploatacji serii modułowej PR-MAD z autodetekcją (Smart Auto-Identify 12V/24V)</h3>
-        <p>Zasilacze modułowe serii <strong>PRESCOT PR-MAD</strong> wyposażone są w zaawansowany procesor pomiarowy <em>Smart Auto-Identify</em>, który po włączeniu automatycznie bada parametry podłączonego obwodu i precyzyjnie stabilizuje właściwe napięcie wyjściowe (12V DC lub 24V DC), zabezpieczając taśmy LED przed spaleniem wskutek pomyłki montażowej.</p>
-        <p>Dla zachowania pełnych uprawnień gwarancyjnych w serii PR-MAD obowiązują poniższe wymogi techniczne:</p>
-        <ul>
-          <li><strong>Bezwzględny zakaz podłączania odbiorników pod napięciem (brak hot-pluggingu):</strong> Obwód taśm LED (obciążenie) musi być trwale połączony z zaciskami wyjściowymi zasilacza (SEC) PRZED podaniem napięcia sieciowego 230V AC (PRI). Wpinanie lub wypinanie taśm pod napięciem („na gorąco”) uniemożliwia prawidłowy wstępny pomiar impedancji i grozi uszkodzeniem stopnia mocy lub diod LED, co stanowi błąd montażowy wyłączający odpowiedzialność gwarancyjną.</li>
-          <li><strong>Zasada jednorodności obwodu:</strong> Zasilacz PR-MAD w danym momencie zasila obwód wyłącznie o jednym napięciu znamionowym (12V DC albo 24V DC). Kategorycznie zabrania się łączenia w jednym układzie odbiorników 12V oraz 24V.</li>
-          <li><strong>Minimalne obciążenie startowe:</strong> Do prawidłowego zainicjowania pomiaru impedancji wymagane jest obciążenie układu na poziomie minimum 10% mocy znamionowej zasilacza.</li>
-          <li><strong>Zabezpieczenia automatyczne Auto-Recovery (OLP, SCP, OVP, OTP):</strong> W przypadku wykrycia zwarcia (SCP), przeciążenia powyżej 110-130% (OLP) lub przegrzania (OTP), zasilacz przechodzi w bezpieczny tryb próbkowania (hiccup mode). Po ustąpieniu przyczyny usterki urządzenie samoczynnie wznawia normalną pracę. Cykliczne wyłączanie zasilacza pod nadmiernym obciążeniem jest prawidłową reakcją ochronną układu scalonego i nie stanowi podstawy do reklamacji.</li>
-          <li><strong>Chłodzenie konwekcyjne obudów Ultra-Slim 29mm (IP20):</strong> Perforowana obudowa aluminiowa zapewnia bezgłośną pracę dzięki swobodnemu przepływowi powietrza. Wymagane jest pozostawienie minimum 30mm wolnej przestrzeni wokół perforacji. Niedopuszczalny jest montaż w bezpośrednim kontakcie z materiałami termoizolacyjnymi (np. wełna mineralna, styropian) bez odprowadzenia ciepła.</li>
-        </ul>
+        <hr>
 
-        <h3>5.3. Ogólne warunki montażu i ograniczenia techniczne zasilaczy PRESCOT</h3>
-        <p>Zasilacze modułowe w klasie szczelności IP20 przeznaczone są wyłącznie do pracy w suchych i wentylowanych wnętrzach, szafach sterowniczych, rozdzielnicach lub dedykowanych wnękach meblowo-budowlanych.</p>
-        <p>Gwarancja nie obejmuje awarii powstałych wskutek:</p>
-        <ul>
-          <li>odwrotnego podłączenia biegunowości (+ / -) po stronie stałoprądowej,</li>
-          <li>kondensacji pary wodnej, zalania cieczą lub eksploatacji w warunkach zapylenia przekraczających normę IP20,</li>
-          <li>samodzielnych przeróbek konstrukcyjnych, naruszenia obudowy lub rozkręcania urządzenia,</li>
-          <li>eksploatacji ciągłej przy długotrwałym obciążeniu przekraczającym 80-85% mocy znamionowej.</li>
-        </ul>
-        <p>Skrócenie lub obcięcie fabrycznych przewodów zasilających w zasilaczach hermetycznych (IP67) naruszające szczelność dławic skutkuje utratą gwarancji.</p>
+        <h3>5.2. Oprawy LED</h3>
+        <p>Deklarowany stopień IP obowiązuje przy kompletnej, nieuszkodzonej i prawidłowo zamontowanej oprawie, z właściwymi uszczelkami, dławnicami, przewodami i zaślepkami.</p>
+        <p>Stopień IP nie oznacza automatycznie odporności na środki chemiczne, stałe zanurzenie, kondensację, parę pod ciśnieniem ani mycie myjką ciśnieniową. Takie zastosowanie musi być wyraźnie dopuszczone dla modelu.</p>
+        <p>Należy zachować orientację montażu, średnicę przewodu, moment dokręcenia i sposób prowadzenia kabla podane w instrukcji.</p>
+        <p>Zastosowanie w środowisku agresywnym chemicznie wymaga pisemnego potwierdzenia kompatybilności materiałowej dla danego modelu i środowiska.</p>
 
-        <h3>5.4. Procedura zwrotu i identyfikacja RMA</h3>
-        <p>Zasilacz zgłaszany do weryfikacji gwarancyjnej musi posiadać czytelną tabliczkę znamionową oraz nienaruszone oznaczenia partii fabrycznej. Mechaniczne ukręcenie lub zerwanie gwintów w zaciskach śrubowych wskutek użycia elektronarzędzi z nadmiernym momentem obrotowym nie podlega roszczeniom gwarancyjnym.</p>
+        <hr>
+
+        <h3>5.3. Zasilacze LED</h3>
+        <p>Napięcie wejściowe i wyjściowe, zakres obciążenia, dopuszczalna temperatura, sposób chłodzenia i pozycja montażu muszą odpowiadać Karcie produktu.</p>
+        <p>Zabezpieczenia OLP, SCP, OVP lub OTP chronią urządzenie w stanach awaryjnych, lecz nie uprawniają do długotrwałej pracy poza parametrami znamionowymi.</p>
+        <p>Dla zasilaczy SCHARFER oznaczonych 7Y dopuszczenie pracy pod pełnym obciążeniem dotyczy wyłącznie modeli, których Karta produktu to potwierdza, przy zachowaniu wszystkich warunków termicznych i środowiskowych.</p>
+        <p>Funkcje automatycznego rozpoznawania napięcia, minimalnego obciążenia lub szczególnej kolejności podłączania stosuje się wyłącznie do modeli, dla których zostały opisane w instrukcji.</p>
+        <p>Skrócenie przewodu poza obudową nie powoduje samo w sobie utraty gwarancji. Gwarancja może nie obejmować uszkodzenia wynikającego z naruszenia dławnicy, obudowy, zalewy, izolacji albo szczelności.</p>
+        <p>Uszkodzenie wskutek przepięcia może zostać wyłączone z gwarancji, jeżeli diagnoza wykaże zewnętrzne oddziaływanie przekraczające parametry odporności danego modelu.</p>
+
+        <hr>
+
+        <h3>5.4. Sterowanie i akcesoria</h3>
+        <p>Sterowniki, ściemniacze, wzmacniacze, złączki i przewody należy dobierać do napięcia, prądu na kanał, częstotliwości sterowania, rodzaju obciążenia i warunków środowiskowych.</p>
+        <p>Problemy wynikające wyłącznie z niezgodności urządzeń różnych producentów nie stanowią wady Produktu, chyba że kompatybilność została pisemnie potwierdzona przez Gwaranta.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 6 ===================== -->
     <div id="sec6" class="section">
       <div class="content-box">
-        <h2>6. AKCESORIA (12V/24V)</h2>
-
-        <h3>6.1. Zakres i okres gwarancji</h3>
-        <p>Złączki i przewody objęte są gwarancją na okres 12 miesięcy wyłącznie w zakresie wad materiałowych istniejących w chwili wydania towaru i ujawnionych przed montażem, ponieważ po montażu na funkcjonowanie połączeń wpływają czynniki środowiskowe i montażowe niezależne od Gwaranta.</p>
-
-        <h3>6.2. Ograniczenia techniczne i odpowiedzialność Instalatora</h3>
-        <p>Instalator jest zobowiązany do weryfikacji maksymalnego dopuszczalnego prądu na kanał wyjściowy sterownika.</p>
-        <p>Podłączenie obciążenia przekraczającego parametry urządzenia powoduje przeciążenie elementów mocy (MOSFET), ich przebicie i trwałe uszkodzenie, co jest kwalifikowane jako błąd projektowy lub montażowy i nie podlega gwarancji.</p>
-        <p>Gwarant nie odpowiada za nieprawidłowe działanie systemów sterowania (migotanie, brak zasięgu, opóźnienia reakcji) wynikające z zakłóceń radiowych w obiekcie, błędnej topologii instalacji lub niekompatybilności z osprzętem innych producentów.</p>
-        <p>Odpowiedzialność za dobór kompatybilnych elementów systemu spoczywa na Kupującym i Instalatorze.</p>
-        <p>Łączenie sterowników z zasilaczami i źródłami światła innych producentów odbywa się na ryzyko użytkownika, a ewentualne problemy kompatybilności nie stanowią podstawy roszczeń gwarancyjnych.</p>
-
-        <h3>6.3. Wyłączenia</h3>
-        <p>Złączki typu „click”, szybkozłączki i przewody nie są objęte gwarancją w zakresie utraty styku powstałej w wyniku utleniania powierzchni miedzi, oddziaływania wilgoci lub wielokrotnego rozpinania i ponownego montażu, gdyż są to zjawiska wynikające z warunków eksploatacji.</p>
+        <h2>6. WYŁĄCZENIA GWARANCJI I ZASADA ZWIĄZKU PRZYCZYNOWEGO</h2>
+        <p><strong>6.1.</strong> Gwarancja nie obejmuje wad lub uszkodzeń w zakresie, w jakim powstały wskutek:</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li>użycia niezgodnego z przeznaczeniem, Kartą produktu lub instrukcją;</li>
+          <li>błędnego napięcia, polaryzacji, przeciążenia, zwarcia, niewłaściwego sterowania albo wad instalacji zasilającej;</li>
+          <li>braku wymaganego chłodzenia lub wentylacji, pracy poza dopuszczalnym zakresem temperatury albo zabudowania uniemożliwiającego oddawanie ciepła;</li>
+          <li>uszkodzeń mechanicznych, niewłaściwego cięcia, lutowania, gięcia, transportu lub składowania po wydaniu Produktu;</li>
+          <li>zalania, kondensacji, korozji, działania UV, chemikaliów, pyłu lub innych czynników przekraczających odporność danego modelu;</li>
+          <li>przepięcia, wyładowania atmosferycznego, pożaru lub innego zewnętrznego zdarzenia przekraczającego deklarowane parametry odporności;</li>
+          <li>napraw, przeróbek lub ingerencji nieprzewidzianych w instrukcji, jeżeli ingerencja mogła spowodować zgłoszoną wadę lub uniemożliwia jej wiarygodną ocenę;</li>
+          <li>normalnego zużycia oraz zmian parametrów mieszczących się w tolerancjach podanych dla konkretnego modelu.</li>
+        </ul>
+        <p><strong>6.2.</strong> Żadne odstępstwo montażowe nie powoduje automatycznej utraty całej gwarancji. Odmowa wymaga wskazania, jakie wymaganie naruszono, oraz związku tego naruszenia ze zgłoszoną wadą.</p>
+        <p><strong>6.3.</strong> Brak oryginalnego opakowania, formularza RMA, pieczęci albo pojedynczego zdjęcia nie stanowi samodzielnej podstawy odmowy. Gwarant może żądać danych i materiałów racjonalnie potrzebnych do identyfikacji Produktu i ustalenia przyczyny usterki.</p>
+        <p><strong>6.4.</strong> Usunięcie etykiety lub numeru partii może uniemożliwić realizację gwarancji tylko wtedy, gdy Produktu i jego okresu gwarancji nie można wiarygodnie ustalić w inny sposób.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 7 ===================== -->
     <div id="sec7" class="section">
       <div class="content-box">
-        <h2>7. PROCEDURA REKLAMACYJNA I RMA (WSPÓLNA)</h2>
-        <p>Rozpatrzenie roszczenia gwarancyjnego jest możliwe wyłącznie po złożeniu kompletnego zgłoszenia reklamacyjnego zgodnego z OWG oraz Załącznikiem nr 1 – Protokół RMA.</p>
-        <p>Celem tej procedury jest umożliwienie identyfikacji produktu oraz oceny, czy warunki montażu i eksploatacji mieściły się w granicach dopuszczonych przez producenta i OWG.</p>
-        <p>Zgłoszenie musi zawierać co najmniej:</p>
-        <ul>
-          <li>dokładny model reklamowanego produktu i identyfikację serii,</li>
-          <li>model i parametry zasilacza zastosowanego w instalacji,</li>
-          <li>opis warunków montażu (rodzaj podłoża, informacja o profilu aluminiowym),</li>
-          <li>dokumentację fotograficzną instalacji wykonaną przed demontażem,</li>
-          <li>w przypadku taśm LED: długości odcinków, sposób zasilania i przebieg instalacji.</li>
-        </ul>
-        <p>Brak któregokolwiek z wymaganych elementów skutkuje uznaniem zgłoszenia za niekompletne i pozostawieniem reklamacji bez rozpoznania do czasu uzupełnienia danych, ponieważ bez tych informacji nie ma możliwości obiektywnego ustalenia przyczyny uszkodzenia.</p>
+        <h2>7. ZGŁOSZENIE REKLAMACYJNE I REALIZACJA GWARANCJI</h2>
+        <p><strong>7.1.</strong> Zgłoszenia należy kierować:</p>
+        <p><strong>PRESCOT – reklamacje</strong><br>
+        E-mail: <a href="mailto:reklamacje@prescot.pl" style="color:#df3f19;">reklamacje@prescot.pl</a><br>
+        Telefon: +48 87 428 21 18 wew. 25<br>
+        Adres dostarczenia po uzgodnieniu RMA: ul. Wileńska 1, 11-500 Giżycko</p>
+
+        <p><strong>7.2.</strong> Zgłoszenie powinno zawierać dane Kupującego i osoby kontaktowej, model i ilość Produktów, dowód nabycia, opis objawów oraz – jeśli ma to znaczenie dla usterki – informacje o instalacji i fotografie wykonane przed demontażem.</p>
+        <p><strong>7.3.</strong> Kupujący może skorzystać z formularza stanowiącego Załącznik nr 1 albo przekazać te informacje w innej czytelnej formie. Podpis i pieczęć nie są wymagane przy zgłoszeniu elektronicznym.</p>
+        <p><strong>7.4.</strong> Jeżeli zgłoszenie nie zawiera informacji koniecznych do jego oceny, Gwarant zwróci się o ich uzupełnienie i wskaże dokładnie brakujące dane. Reklamacja nie może zostać pozostawiona bez rozpoznania wyłącznie z powodu niezastosowania wzoru formularza.</p>
+        <p><strong>7.5.</strong> Produkt należy wysłać dopiero po uzgodnieniu sposobu dostawy i oznaczeniu numerem RMA. Gwarant może udostępnić etykietę przewozową albo wskazać inny sposób transportu. Koszt nieuzgodnionej usługi ekspresowej może zostać zwrócony tylko do wysokości racjonalnego kosztu standardowej dostawy.</p>
+        <p><strong>7.6.</strong> Kupujący powinien zabezpieczyć Produkt przed uszkodzeniem w transporcie i nie dołączać elementów niezwiązanych ze zgłoszeniem. Jeżeli wada musi zostać usunięta w miejscu instalacji, strony uzgodnią termin i dostęp do instalacji.</p>
+        <p><strong>7.7.</strong> Po weryfikacji Gwarant przekaże informację o uznaniu reklamacji i sposobie jej realizacji albo pisemne uzasadnienie odmowy, obejmujące wyniki diagnozy oraz podstawę techniczną.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 8 ===================== -->
     <div id="sec8" class="section">
       <div class="content-box">
-        <h2>8. WYŁĄCZENIA I OGRANICZENIA ODPOWIEDZIALNOŚCI</h2>
-        <p>W relacji B2B odpowiedzialność Gwaranta w ramach gwarancji ogranicza się wyłącznie do naprawy produktu, wymiany na produkt wolny od wad lub zwrotu wartości wadliwego towaru, jeżeli naprawa albo wymiana okaże się niemożliwa lub nieuzasadniona ekonomicznie, według decyzji Gwaranta.</p>
-        <p>Gwarancja nie obejmuje jakichkolwiek kosztów pośrednich ani następczych ponoszonych przez Kupującego, w szczególności kosztów demontażu i ponownego montażu, wynajmu podnośników i rusztowań, robocizny ekip zewnętrznych, przestojów produkcji, utraconych korzyści, kar umownych oraz roszczeń osób trzecich.</p>
-        <p>Kupujący przyjmuje do wiadomości, że systemy LED są wrażliwe na projekt instalacji, warunki termiczne i spadki napięcia, a znaczna część awarii wynika z błędów montażowych lub środowiskowych, co uzasadnia powyższe ograniczenie odpowiedzialności w obrocie profesjonalnym.</p>
+        <h2>8. ODPOWIEDZIALNOŚĆ W OBROCIE B2B I RĘKOJMIA</h2>
+        <p><strong>8.1.</strong> Świadczenia opisane w punkcie 3 określają zakres dobrowolnej gwarancji i co do zasady dotyczą samego Produktu. Gwarancja nie obejmuje kosztów projektu instalacji, jej przebudowy, przestojów, utraconych korzyści ani roszczeń osób trzecich, chyba że bezwzględnie obowiązujące przepisy, indywidualna umowa albo odrębne zobowiązanie Gwaranta stanowią inaczej.</p>
+        <p><strong>8.2.</strong> W granicach dopuszczonych prawem wyłącza się odpowiedzialność za szkody pośrednie i następcze w relacji z profesjonalnym Kupującym. Ograniczenie nie dotyczy szkody wyrządzonej umyślnie ani odpowiedzialności, której nie można wyłączyć na mocy prawa.</p>
+        <p><strong>8.3.</strong> Jeżeli PRESCOT sp. z o.o. jest jednocześnie Sprzedawcą, rękojmia wobec Kupującego będącego przedsiębiorcą zostaje wyłączona na podstawie art. 558 § 1 Kodeksu cywilnego, z wyjątkiem przypadków, w których wyłączenie jest niedopuszczalne, w szczególności podstępnego zatajenia wady.</p>
+        <p><strong>8.4.</strong> Wyłączenie rękojmi z punktu 8.3 nie dotyczy przedsiębiorcy będącego osobą fizyczną, któremu przysługuje ochrona na podstawie art. 7aa ustawy o prawach konsumenta. Jeżeli Sprzedawcą jest inny podmiot, niniejsze OWG nie zmieniają odpowiedzialności tego Sprzedawcy.</p>
+        <p><strong>8.5.</strong> Skorzystanie z gwarancji pozostaje niezależne od roszczeń wobec Sprzedawcy wynikających z bezwzględnie obowiązujących przepisów lub indywidualnej umowy.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 9 ===================== -->
     <div id="sec9" class="section">
       <div class="content-box">
-        <h2>9. DEFINICJA „ŻYWOTNOŚCI” I DOPUSZCZALNE ZMIANY PARAMETRÓW LED</h2>
-        <p>Produkty LED ulegają naturalnym procesom starzenia wynikającym z właściwości półprzewodników, luminoforu i materiałów konstrukcyjnych, co prowadzi do stopniowego spadku strumienia świetlnego oraz możliwych zmian parametrów barwy w czasie.</p>
-        <p>Spadek strumienia świetlnego, zmiana barwy (CCT), spadek efektywności świetlnej oraz inne zmiany parametrów, o ile mieszczą się w tolerancjach wskazanych w OWG i wynikają z normalnej eksploatacji, nie stanowią wady produktu i nie mogą stanowić podstawy do roszczeń gwarancyjnych.</p>
-        <p>Parametry takie jak L70B50 oraz L80B10 stanowią branżowe kryteria oceny trwałości LED i są podstawą oceny, czy produkt zachował parametry w okresie gwarancyjnym, przy czym ocena ta jest możliwa wyłącznie w warunkach zgodnych z wymaganiami termicznymi i zasilania.</p>
+        <h2>9. DANE OSOBOWE</h2>
+        <p><strong>9.1.</strong> Administratorem danych osobowych przekazanych w zgłoszeniu jest PRESCOT sp. z o.o., ul. Wileńska 1, 11-500 Giżycko, e-mail: <a href="mailto:sekretariat@prescot.pl" style="color:#df3f19;">sekretariat@prescot.pl</a>.</p>
+        <p><strong>9.2.</strong> Dane są przetwarzane w celu przyjęcia i realizacji zgłoszenia, prowadzenia korespondencji, obrony lub dochodzenia roszczeń oraz wykonania obowiązków rachunkowych. Podstawą przetwarzania jest wykonanie umowy lub działań związanych z gwarancją, obowiązek prawny oraz prawnie uzasadniony interes Administratora – zależnie od statusu osoby, której dane dotyczą.</p>
+        <p><strong>9.3.</strong> Odbiorcami danych mogą być podmioty świadczące usługi kurierskie, serwisowe, informatyczne, księgowe i prawne, wyłącznie w zakresie niezbędnym do realizacji tych usług.</p>
+        <p><strong>9.4.</strong> Dane będą przechowywane przez okres obsługi zgłoszenia, a następnie do upływu właściwych terminów przedawnienia oraz okresów wymaganych przepisami rachunkowymi. Osobie, której dane dotyczą, przysługują – na zasadach określonych w RODO – prawa dostępu, sprostowania, usunięcia, ograniczenia, sprzeciwu oraz wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych.</p>
+        <p><strong>9.5.</strong> Podanie danych identyfikacyjnych i kontaktowych jest dobrowolne, ale może być niezbędne do obsługi zgłoszenia. W sprawie reklamacji nie są podejmowane decyzje oparte wyłącznie na zautomatyzowanym przetwarzaniu. Pełna informacja: <a href="https://prescot.pl/polityka-prywatnosci/" target="_blank" style="color:#df3f19;">https://prescot.pl/polityka-prywatnosci/</a>.</p>
       </div>
     </div>
 
     <!-- ===================== SEC 10 ===================== -->
     <div id="sec10" class="section">
       <div class="content-box">
-        <h2>10. KLAUZULA INTEGRALNOŚCI DOKUMENTU I WYŁĄCZENIE RĘKOJMI</h2>
-        <p>Niniejszy dokument stanowi integralną część umowy sprzedaży w obrocie B2B i ma zastosowanie do wszystkich transakcji zawieranych pomiędzy przedsiębiorcami.</p>
-        <p>Strony zgodnie postanawiają, że w zakresie dopuszczalnym przez przepisy prawa wyłącza się rękojmię za wady fizyczne i prawne zgodnie z art. 558 §1 Kodeksu cywilnego, a odpowiedzialność Gwaranta ogranicza się do świadczeń gwarancyjnych określonych w niniejszym OWG.</p>
+        <h2>10. POSTANOWIENIA KOŃCOWE</h2>
+        <p><strong>10.1.</strong> Do OWG stosuje się prawo polskie.</p>
+        <p><strong>10.2.</strong> W razie sprzeczności dokumentów pierwszeństwo ma indywidualna pisemna umowa, następnie uzgodnione potwierdzenie zamówienia, a następnie Karta produktu i niniejsze OWG w wersjach udostępnionych przed zawarciem umowy.</p>
+        <p><strong>10.3.</strong> Nieważność lub bezskuteczność pojedynczego postanowienia nie narusza pozostałych postanowień. W jego miejsce stosuje się odpowiedni przepis prawa.</p>
+        <p><strong>10.4.</strong> Niniejsza wersja ma zastosowanie do umów zawartych od dnia jej udostępnienia Kupującemu. Dla wcześniejszych zakupów obowiązuje oświadczenie gwarancyjne przekazane przy zawarciu danej umowy.</p>
+        <p><strong>10.5.</strong> Podstawa prawna dokumentu obejmuje w szczególności art. 384, art. 473, art. 558 oraz art. 577–581 Kodeksu cywilnego, a w odpowiednich przypadkach art. 7aa i rozdział 5a ustawy o prawach konsumenta.</p>
       </div>
     </div>
 
-    <!-- ===================== SEC 11 ===================== -->
-    <div id="sec11" class="section">
+    <!-- ===================== ZAŁĄCZNIK RMA ===================== -->
+    <div id="sec-rma" class="section">
       <div class="content-box">
-        <h2>11. ZAŁĄCZNIK NR 1 – PROTOKÓŁ RMA</h2>
-        <p>Załącznik nr 1 stanowi obowiązkowy formularz zgłoszenia reklamacyjnego. Bez kompletnie wypełnionego Protokołu RMA oraz wymaganych załączników reklamacja nie będzie rozpatrywana.</p>
+        <h2>ZAŁĄCZNIK NR 1. FORMULARZ ZGŁOSZENIA RMA</h2>
+        <p>Formularz ułatwia obsługę zgłoszenia. Można przesłać te same informacje w wiadomości e-mail. Pola techniczne należy wypełnić tylko w zakresie dotyczącym zgłaszanej usterki.</p>
 
         <div class="rma-box">
-          <h3 style="margin-top:0;">A) Dane zgłaszającego (Kupującego)</h3>
+          <h3 style="margin-top:0;">A. Kupujący i kontakt</h3>
 
           <span class="rma-label">Nazwa firmy:</span>
           <span class="rma-line"></span>
@@ -1372,77 +1370,124 @@ $(document).ready(function(){
           <span class="rma-label">Osoba kontaktowa:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Telefon / e-mail:</span>
+          <span class="rma-label">Telefon i e-mail:</span>
           <span class="rma-line"></span>
 
-          <h3>B) Dane produktu reklamowanego</h3>
+          <h3>B. Zakup i produkt</h3>
 
-          <span class="rma-label">Kategoria produktu (taśma / oprawa / zasilacz / sterownik / akcesoria):</span>
+          <span class="rma-label">Sprzedawca:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Model / indeks:</span>
+          <span class="rma-label">Data i dokument zakupu:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Data zakupu / nr faktury:</span>
+          <span class="rma-label">Model / Indeks / EAN:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Numer seryjny / data produkcji (jeżeli dotyczy):</span>
+          <span class="rma-label">Nr seryjny / Partia:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Opis usterki (objawy, kiedy występuje, od kiedy):</span>
-          <span class="rma-line" style="height: 60px;"></span>
-
-          <h3>C) Dane instalacji (obowiązkowe)</h3>
-
-          <span class="rma-label">Miejsce instalacji i środowisko pracy (hala/biuro/zewnętrzne, wilgoć, chemia):</span>
+          <span class="rma-label">Ilość reklamowana:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Data montażu i uruchomienia:</span>
+          <span class="rma-label">Oznaczenie gwarancji:</span>
+          <p style="margin: 8px auto 16px auto;">[ ] 7Y &nbsp;&nbsp;&nbsp; [ ] 5Y &nbsp;&nbsp;&nbsp; [ ] 3Y &nbsp;&nbsp;&nbsp; [ ] 2Y &nbsp;&nbsp;&nbsp; [ ] 1Y &nbsp;&nbsp;&nbsp; [ ] inne: ____________</p>
+
+          <h3>C. Opis usterki</h3>
+
+          <span class="rma-label">Data ujawnienia:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Wykonawca montażu (firma / osoba):</span>
+          <span class="rma-label">Objawy i częstotliwość:</span>
+          <span class="rma-line" style="height: 40px;"></span>
+
+          <span class="rma-label">Okoliczności wystąpienia:</span>
+          <span class="rma-line" style="height: 40px;"></span>
+
+          <h3>D. Instalacja – wypełnić, jeśli może mieć znaczenie dla usterki</h3>
+
+          <span class="rma-label">Miejsce i środowisko pracy:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Czy montaż wykonywała osoba z uprawnieniami SEP (jeżeli dotyczy instalacji):</span>
+          <span class="rma-label">Data montażu:</span>
           <span class="rma-line"></span>
 
-          <h3>D) Wymagane informacje techniczne (obowiązkowe)</h3>
-
-          <span class="rma-label">Model zasilacza użytego w instalacji:</span>
+          <span class="rma-label">Wykonawca:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Napięcie instalacji (12V/24V):</span>
+          <span class="rma-label">Model zasilacza:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Łączna moc obciążenia (W):</span>
+          <span class="rma-label">Napięcie i łączna moc:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Długości odcinków taśmy i sposób zasilania (jedno-/dwu-/równoległe):</span>
+          <span class="rma-label">Sterowanie / zabezpieczenia:</span>
           <span class="rma-line"></span>
 
-          <span class="rma-label">Rodzaj podłoża (czy był profil aluminiowy? jaki?):</span>
+          <span class="rma-label">Długości i sposób zasilania:</span>
           <span class="rma-line"></span>
 
-          <h3>E) Dokumentacja fotograficzna (obowiązkowa)</h3>
-          <p>[ ] Zdjęcie instalacji przed demontażem (wymagane)</p>
-          <p>[ ] Zdjęcie sposobu montażu (profil/podłoże)</p>
-          <p>[ ] Zdjęcie miejsca wprowadzenia przewodu i dławicy (dla opraw IP)</p>
-          <p>[ ] Zdjęcie tabliczki znamionowej / oznaczeń produktu</p>
+          <span class="rma-label">Montaż / profil / podłoże:</span>
+          <span class="rma-line"></span>
 
-          <h3>F) Oświadczenia</h3>
-          <p>1. Oświadczam, że instalacja została wykonana zgodnie z zasadami sztuki instalatorskiej oraz z wymaganiami OWG, w szczególności w zakresie termiki, spadków napięcia i doboru mocy zasilania.</p>
-          <p>2. Przyjmuję do wiadomości, że brak wymaganych danych i dokumentacji może skutkować pozostawieniem reklamacji bez rozpoznania.</p>
+          <h3>E. Załączniki</h3>
+          <p style="margin: 8px auto 16px auto;">[ ] dowód zakupu &nbsp;&nbsp;&nbsp; [ ] zdjęcie oznaczeń Produktu &nbsp;&nbsp;&nbsp; [ ] zdjęcia instalacji przed demontażem &nbsp;&nbsp;&nbsp; [ ] inne: ____________</p>
 
-          <div style="margin-top:40px; border-top: 1px solid #777; width: 300px; margin-left: auto; margin-right: auto; padding-top: 10px;">
-            Podpis i pieczęć Kupującego<br>
+          <h3>F. Preferowany sposób kontaktu i odbioru</h3>
+
+          <span class="rma-label">Kontakt:</span>
+          <p style="margin: 8px auto 16px auto;">[ ] e-mail &nbsp;&nbsp;&nbsp; [ ] telefon</p>
+
+          <span class="rma-label">Odbiór / zwrot:</span>
+          <p style="margin: 8px auto 16px auto;">[ ] kurier &nbsp;&nbsp;&nbsp; [ ] odbiór osobisty &nbsp;&nbsp;&nbsp; [ ] do uzgodnienia</p>
+
+          <span class="rma-label">Uwagi:</span>
+          <span class="rma-line"></span>
+
+          <h3>G. Oświadczenie</h3>
+          <p>Potwierdzam, że podane informacje są zgodne z moją wiedzą. Zapoznałem(-am) się z informacją o przetwarzaniu danych w punkcie 9 OWG. Podpis nie jest wymagany dla zgłoszenia przesłanego pocztą elektroniczną.</p>
+
+          <div style="margin-top:30px; margin-bottom:20px; border-top: 1px solid #777; width: min(400px, 90%); margin-left: auto; margin-right: auto; padding-top: 10px;">
+            Podpis osoby zgłaszającej<br>
             Data: ______________________
           </div>
+
+          <hr style="margin: 35px auto; border-top: 2px dashed rgba(33,42,53,0.3); width: 85%;">
+
+          <h3 style="margin-top: 20px;">H. Wypełnia serwis PRESCOT</h3>
+
+          <span class="rma-label">Numer RMA:</span>
+          <span class="rma-line"></span>
+
+          <span class="rma-label">Data przyjęcia:</span>
+          <span class="rma-line"></span>
+
+          <span class="rma-label">Wynik diagnozy:</span>
+          <span class="rma-line"></span>
+
+          <span class="rma-label">Pomiary i wykonane testy:</span>
+          <span class="rma-line"></span>
+
+          <span class="rma-label">Sposób realizacji:</span>
+          <p style="margin: 8px auto 16px auto;">[ ] naprawa &nbsp;&nbsp;&nbsp; [ ] wymiana &nbsp;&nbsp;&nbsp; [ ] zwrot ceny &nbsp;&nbsp;&nbsp; [ ] odmowa</p>
+
+          <span class="rma-label">Uzasadnienie / wykonane czynności:</span>
+          <span class="rma-line" style="height: 50px;"></span>
+
+          <span class="rma-label">Wymienione części / produkt:</span>
+          <span class="rma-line"></span>
+
+          <div style="margin-top:30px; border-top: 1px solid #777; width: min(400px, 90%); margin-left: auto; margin-right: auto; padding-top: 10px;">
+            Podpis serwisu PRESCOT<br>
+            Data zakończenia: ______________________
+          </div>
+
         </div>
       </div>
     </div>
 
     <div class="doc-footer">
-      OWG Systemy LED (B2B) | Wersja 2026
+      OWG Systemy LED (B2B) | Wersja 1.21 z dnia 12 Lipca 2026 r.
     </div>
 
   </div>
