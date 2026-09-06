@@ -3,21 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <link rel="icon" href="/wp-content/uploads/2025/09/cropped-favicon-1-32x32.png" sizes="32x32">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Krona+One&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/prescot-global.css?v=20260901-kontakt-v4">
+  <link rel="stylesheet" href="/prescot-global.css?v=20260906-kontakt-v5">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <title>Kontakt & Dane Spółki — Prescot LED Giżycko</title>
+  <title>Kontakt, Dział Handlowy & Sekretariat — Prescot LED Giżycko</title>
+  <meta name="description"
+    content="Oficjalne dane kontaktowe PRESCOT Sp. z o.o. w Giżycku. Dział handlowy, bezpośrednie numery do handlowców, sekretariat, zarząd, księgowość i serwis reklamacji.">
   <style>
     :root {
       --p-primary: #e55933;
       --p-primary-hover: #c94622;
+      --p-primary-soft: rgba(229, 89, 51, 0.08);
+      --p-primary-glow: rgba(229, 89, 51, 0.25);
       --p-dark: #0f172a;
       --p-dark-soft: #1e293b;
       --p-text: #212a35;
@@ -25,14 +29,18 @@
       --p-bg: #f8fafc;
       --p-card: #ffffff;
       --p-border: #e2e8f0;
+      --p-border-hover: #cbd5e1;
       --p-radius: 20px;
       --p-radius-sm: 12px;
-      --p-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-      --p-shadow-md: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
-      --p-shadow-lg: 0 20px 45px -12px rgba(15, 23, 42, 0.12);
+      --p-radius-pill: 999px;
+      --p-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --p-shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.07), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      --p-shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12), 0 10px 15px -5px rgba(15, 23, 42, 0.05);
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -40,6 +48,8 @@
 
     html {
       scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -48,15 +58,23 @@
       background: var(--p-bg);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      padding-bottom: 90px;
+      padding-bottom: 120px;
+      overflow-x: hidden;
+      width: 100%;
     }
 
-    /* FULL-SCREEN 100VH HERO SLIDE */
+    /* TYPOGRAPHY */
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      color: var(--p-dark);
+      line-height: 1.25;
+    }
+
+    /* FULL-SCREEN HERO SLIDE */
     .p-full-hero {
       position: relative;
       width: 100%;
-      min-height: 100vh;
-      height: 100vh;
+      min-height: 82vh;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -65,7 +83,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 80px 24px 70px 24px;
+      padding: 90px 20px 60px 20px;
       color: #ffffff;
       overflow: hidden;
     }
@@ -74,14 +92,14 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.65) 0%, rgba(15, 23, 42, 0.88) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.92) 100%);
       z-index: 1;
     }
 
     .p-full-hero-content {
       position: relative;
       z-index: 2;
-      max-width: 920px;
+      max-width: 940px;
       margin: auto;
       display: flex;
       flex-direction: column;
@@ -92,122 +110,121 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(229, 89, 51, 0.2);
-      color: #ff8a65;
-      font-size: 12.5px;
+      background: rgba(229, 89, 51, 0.22);
+      color: #ff9d7d;
+      font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      padding: 7px 18px;
-      border-radius: 30px;
+      padding: 8px 20px;
+      border-radius: var(--p-radius-pill);
       margin-bottom: 22px;
-      border: 1px solid rgba(229, 89, 51, 0.4);
-      backdrop-filter: blur(6px);
+      border: 1px solid rgba(229, 89, 51, 0.45);
+      backdrop-filter: blur(8px);
+    }
+
+    .p-hero-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff5722;
+      box-shadow: 0 0 10px #ff5722;
+      animation: pPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
     }
 
     .p-full-hero h1 {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(34px, 4.5vw, 54px);
+      font-size: clamp(32px, 5vw, 56px);
       color: #ffffff;
-      margin-bottom: 20px;
-      line-height: 1.18;
+      margin-bottom: 18px;
       font-weight: 800;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
     }
 
     .p-full-hero p.lead {
-      font-size: clamp(16px, 1.9vw, 19px);
+      font-size: clamp(16px, 2vw, 19px);
       color: #e2e8f0;
       max-width: 820px;
       line-height: 1.65;
-      margin-bottom: 32px;
+      margin-bottom: 34px;
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
 
     .p-hero-actions {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
       justify-content: center;
+      width: 100%;
+      max-width: 760px;
     }
 
-    .p-hero-arrow-down {
-      position: absolute;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      cursor: pointer;
-      opacity: 0.85;
-      transition: all 0.25s ease;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .p-hero-arrow-down:hover {
-      opacity: 1;
-      color: #ff8a65;
-    }
-
-    .p-arrow-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(6px);
-      display: flex;
+    .p-hero-btn {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      animation: pBounce 2.2s infinite ease-in-out;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: var(--p-radius-pill);
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      min-height: 48px;
     }
 
-    @keyframes pBounce {
-
-      0%,
-      20%,
-      50%,
-      80%,
-      100% {
-        transform: translateY(0);
-      }
-
-      40% {
-        transform: translateY(-10px);
-      }
-
-      60% {
-        transform: translateY(-5px);
-      }
+    .p-hero-btn.primary {
+      background: var(--p-primary);
+      color: #ffffff;
+      box-shadow: 0 4px 20px var(--p-primary-glow);
+      border: 1px solid var(--p-primary);
     }
 
-    /* TREŚĆ PONIŻEJ HERO */
+    .p-hero-btn.primary:hover {
+      background: var(--p-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--p-primary-glow);
+    }
+
+    .p-hero-btn.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    .p-hero-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* MAIN CONTAINER */
     .prescot-main-container {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 60px 24px 80px 24px;
+      padding: 40px 20px 80px 20px;
     }
 
     .prescot-breadcrumbs {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--p-text-muted);
-      margin-bottom: 32px;
+      margin-bottom: 28px;
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
     .prescot-breadcrumbs a {
       color: var(--p-text-muted);
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     .prescot-breadcrumbs a:hover {
@@ -218,100 +235,506 @@
       opacity: 0.4;
     }
 
-    /* KONTAKT CARDS */
-    .p-contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-bottom: 50px;
+    /* SECTION HEADERS */
+    .p-section-header {
+      margin-bottom: 36px;
+      text-align: left;
     }
 
-    .p-card {
-      background: #ffffff;
+    .p-section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--p-primary);
+      background: var(--p-primary-soft);
+      padding: 5px 14px;
+      border-radius: var(--p-radius-pill);
+      margin-bottom: 10px;
+      border: 1px solid rgba(229, 89, 51, 0.18);
+    }
+
+    .p-section-title {
+      font-size: clamp(26px, 3.4vw, 38px);
+      font-weight: 800;
+      color: var(--p-dark);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .p-section-desc {
+      font-size: clamp(15px, 1.8vw, 16.5px);
+      color: var(--p-text-muted);
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    /* 1. CORPORATE REGISTRY BANNER */
+    .p-company-banner {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--p-border);
       border-radius: var(--p-radius);
-      padding: 36px 32px;
+      padding: 28px 30px;
       box-shadow: var(--p-shadow-sm);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: 50px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .p-card:hover {
+    .p-company-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--p-primary);
+    }
+
+    .p-company-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .p-company-heading h2 {
+      font-size: clamp(19px, 2.3vw, 24px);
+      font-weight: 800;
+      color: var(--p-dark);
+      margin-bottom: 4px;
+    }
+
+    .p-company-heading p {
+      font-size: 14.5px;
+      color: var(--p-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p-company-hours-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: var(--p-radius-pill);
+      white-space: nowrap;
+    }
+
+    .p-company-tags-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      border-top: 1px solid var(--p-border);
+      padding-top: 20px;
+    }
+
+    .p-company-tag {
+      background: #ffffff;
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .p-company-tag.court-tag {
+      grid-column: 1 / -1;
+    }
+
+    .p-tag-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--p-text-muted);
+      font-weight: 700;
+    }
+
+    .p-tag-val {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--p-dark);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* 2. HANDLOWCY GRID */
+    .p-team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+      width: 100%;
+    }
+
+    .p-team-card {
+      background: var(--p-card);
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius);
+      padding: 26px 24px;
+      box-shadow: var(--p-shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .p-team-card:hover {
       transform: translateY(-4px);
       box-shadow: var(--p-shadow-lg);
       border-color: var(--p-primary);
     }
 
-    .p-card-icon {
-      width: 52px;
-      height: 52px;
+    .p-team-top {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .p-team-avatar-wrap {
+      position: relative;
+      width: 82px;
+      height: 82px;
+      flex-shrink: 0;
+    }
+
+    .p-team-avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f1f5f9;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+    }
+
+    .p-team-avatar-initials {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e55933 0%, #1e293b 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+    }
+
+    .p-team-status-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #10b981;
+      border: 2px solid #ffffff;
+    }
+
+    .p-team-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .p-team-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--p-dark);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .p-team-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--p-primary);
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+
+    .p-team-dept-badge {
+      font-size: 11.5px;
+      color: var(--p-text-muted);
+      display: block;
+    }
+
+    .p-team-contacts {
+      background: #f8fafc;
+      border-radius: var(--p-radius-sm);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .p-contact-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--p-dark);
+      word-break: break-all;
+    }
+
+    .p-contact-line svg {
+      color: var(--p-primary);
+      flex-shrink: 0;
+    }
+
+    .p-contact-line a {
+      color: var(--p-dark);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .p-contact-line a:hover {
+      color: var(--p-primary);
+      text-decoration: underline;
+    }
+
+    .p-contact-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--p-text-muted);
+      margin-right: 4px;
+      font-weight: 700;
+    }
+
+    /* ACTION BUTTONS IN CARDS (>= 48px touch targets) */
+    .p-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .p-btn-card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: var(--p-radius-sm);
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      min-height: 48px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .p-btn-call {
+      background: var(--p-dark);
+      color: #ffffff;
+      border: 1px solid var(--p-dark);
+    }
+
+    .p-btn-call:hover {
+      background: var(--p-primary);
+      border-color: var(--p-primary);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .p-btn-mail {
+      background: #ffffff;
+      color: var(--p-dark);
+      border: 1px solid var(--p-border);
+    }
+
+    .p-btn-mail:hover {
+      background: var(--p-primary-soft);
+      border-color: var(--p-primary);
+      color: var(--p-primary);
+      transform: translateY(-2px);
+    }
+
+    /* 3. DZIAŁY CENTRALI & SEKRETARIAT GRID */
+    .p-dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+      width: 100%;
+    }
+
+    .p-dept-card {
+      background: var(--p-card);
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius);
+      padding: 28px 24px;
+      box-shadow: var(--p-shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .p-dept-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--p-shadow-lg);
+      border-color: var(--p-primary);
+    }
+
+    .p-dept-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .p-dept-icon {
+      width: 50px;
+      height: 50px;
       border-radius: 14px;
-      background: rgba(229, 89, 51, 0.1);
+      background: var(--p-primary-soft);
       color: var(--p-primary);
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .p-dept-title-wrap h3 {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--p-dark);
+      margin-bottom: 2px;
+    }
+
+    .p-dept-subtitle {
+      font-size: 13px;
+      color: var(--p-text-muted);
+      font-weight: 600;
+    }
+
+    .p-dept-desc {
+      font-size: 14px;
+      color: var(--p-text-muted);
+      line-height: 1.6;
       margin-bottom: 20px;
     }
 
-    .p-card h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 21px;
+    .p-dept-people-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: var(--p-radius-sm);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .p-dept-person {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    .p-dept-person:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .p-person-name-role {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .p-person-name {
+      font-size: 15px;
       font-weight: 700;
       color: var(--p-dark);
-      margin-bottom: 12px;
     }
 
-    .p-card p {
-      color: var(--p-text-muted);
-      font-size: 14px;
-      line-height: 1.65;
-      margin-bottom: 18px;
-    }
-
-    .p-card a.card-link {
+    .p-person-role {
+      font-size: 12.5px;
       color: var(--p-primary);
-      font-weight: 700;
+      font-weight: 600;
+    }
+
+    .p-person-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13.5px;
+    }
+
+    .p-person-links a {
+      color: var(--p-dark);
       text-decoration: none;
-      font-size: 14.5px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      margin-top: auto;
-      transition: gap 0.2s;
+      gap: 5px;
+      transition: color 0.2s;
     }
 
-    .p-card a.card-link:hover {
+    .p-person-links a:hover {
+      color: var(--p-primary);
       text-decoration: underline;
-      gap: 10px;
     }
 
+    /* 4. FORMULARZ KONTAKTOWY */
     .p-form-box {
       background: #ffffff;
       border: 1px solid var(--p-border);
       border-radius: var(--p-radius);
-      padding: 44px 38px;
+      padding: clamp(20px, 4vw, 44px);
       box-shadow: var(--p-shadow-md);
-      margin-bottom: 50px;
+      margin-bottom: 60px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .p-form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
-    }
-
-    @media (max-width: 650px) {
-      .p-form-grid {
-        grid-template-columns: 1fr;
-      }
+      width: 100%;
     }
 
     .p-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .p-group.full {
@@ -319,7 +742,7 @@
     }
 
     .p-group label {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--p-dark);
     }
@@ -327,15 +750,20 @@
     .p-group input,
     .p-group select,
     .p-group textarea {
-      padding: 13px 16px;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      padding: 14px 18px;
       border: 1px solid var(--p-border);
       border-radius: var(--p-radius-sm);
-      font-size: 14px;
+      font-size: 16px; /* 16px prevents mobile safari auto-zoom! */
       background: #f8fafc;
       color: var(--p-dark);
       outline: none;
       font-family: inherit;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      min-height: 48px;
     }
 
     .p-group input:focus,
@@ -343,51 +771,351 @@
     .p-group textarea:focus {
       border-color: var(--p-primary);
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(229, 89, 51, 0.12);
+      box-shadow: 0 0 0 3px rgba(229, 89, 51, 0.14);
     }
 
     .p-group textarea {
       resize: vertical;
-      min-height: 130px;
+      min-height: 140px;
+    }
+
+    .p-form-submit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--p-dark);
+      color: #ffffff;
+      border: none;
+      padding: 16px 36px;
+      border-radius: var(--p-radius-pill);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 52px;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: inherit;
+      width: fit-content;
+    }
+
+    .p-form-submit-btn:hover {
+      background: var(--p-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--p-primary-glow);
+    }
+
+    /* 5. MAPA & DOJAZD */
+    .p-map-section {
+      background: #ffffff;
+      border: 1px solid var(--p-border);
+      border-radius: var(--p-radius);
+      padding: clamp(24px, 4vw, 36px);
+      box-shadow: var(--p-shadow-sm);
+      margin-bottom: 60px;
+    }
+
+    .p-map-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .p-map-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .p-map-info-block h4 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--p-dark);
+      margin-bottom: 8px;
+    }
+
+    .p-map-info-block p {
+      font-size: 14.5px;
+      color: var(--p-text-muted);
+      line-height: 1.6;
+    }
+
+    .p-map-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--p-dark);
+      color: #ffffff;
+      border: 1px solid var(--p-dark);
+      padding: 14px 22px;
+      border-radius: var(--p-radius-sm);
+      font-size: 14.5px;
+      font-weight: 700;
+      text-decoration: none;
+      min-height: 48px;
+      transition: all 0.2s;
+    }
+
+    .p-map-btn:hover {
+      background: var(--p-primary);
+      border-color: var(--p-primary);
+      transform: translateY(-2px);
+    }
+
+    .p-map-frame-wrap {
+      border-radius: var(--p-radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--p-border);
+      min-height: 360px;
+      height: 100%;
+    }
+
+    .p-map-frame-wrap iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      border: 0;
+      display: block;
+    }
+
+    /* 6. CLEAN MODERN FOOTER */
+    .p-footer {
+      background-color: #ffffff;
+      border-top: 1px solid var(--p-border);
+      color: #212a35;
+      padding: 60px 20px 120px 20px;
+      width: 100%;
+    }
+
+    .p-footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .p-footer-brand-col img {
+      height: 42px;
+      width: auto;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .p-footer-tagline {
+      font-size: 13.5px;
+      color: var(--p-text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .p-footer-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--p-dark);
+      margin-bottom: 16px;
+    }
+
+    .p-footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .p-footer-links a {
+      color: var(--p-text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .p-footer-links a:hover {
+      color: var(--p-primary);
+    }
+
+    .p-footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid var(--p-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--p-text-muted);
+    }
+
+    .p-footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .p-footer-social-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--p-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid var(--p-border);
+    }
+
+    .p-footer-social-btn:hover {
+      background: var(--p-dark);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* RESPONSIVE BREAKPOINTS (MOBILE PERFECTION) */
+    @media (max-width: 992px) {
+      .p-map-grid {
+        grid-template-columns: 1fr;
+      }
+      .p-footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .p-full-hero {
+        min-height: 75vh;
+        padding: 80px 16px 50px 16px;
+      }
+
+      .p-hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .p-hero-btn {
+        width: 100%;
+      }
+
+      .prescot-main-container {
+        padding: 30px 16px 60px 16px;
+      }
+
+      .p-company-banner {
+        padding: 22px 18px;
+      }
+
+      .p-company-tags-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .p-team-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .p-dept-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .p-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .p-form-submit-btn {
+        width: 100%;
+      }
+
+      .p-footer-inner {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .p-footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .p-card-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .p-team-card {
+        padding: 20px 16px;
+      }
+
+      .p-dept-card {
+        padding: 22px 16px;
+      }
+
+      .p-team-top {
+        gap: 14px;
+      }
+
+      .p-team-avatar-wrap {
+        width: 72px;
+        height: 72px;
+      }
+
+      .p-team-name {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- SMART LOGO: TYLKO W SEKCJI HERO -->
+  <!-- SMART LOGO: W SEKCJI HERO -->
   <div class="prescot-smart-logo">
     <a href="/" title="Prescot LED Strona Główna">
       <img src="/wp-content/uploads/2025/12/biale-z-kolorem.svg" alt="Prescot LED">
     </a>
   </div>
 
-  <!-- FULL-SCREEN 100VH HERO SLIDE -->
+  <!-- FULL-SCREEN HERO SLIDE -->
   <section class="p-full-hero" style="background-image: url('/wp-content/uploads/2026/01/FirmaPRESCOTLED.webp');">
     <div class="p-full-hero-content">
       <div class="p-hero-eyebrow">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
-        </svg>
+        <span class="p-hero-dot"></span>
         Kontakt & Centrala Giżycko
       </div>
       <h1>Skontaktuj się z Zespołem Prescot LED</h1>
-      <p class="lead">Działamy na terenie całej Polski i Europy. Skontaktuj się z naszym biurem handlowym, inżynierami
-        oświetlenia lub odwiedź naszą centralę produkcyjno-magazynową w Giżycku.</p>
+      <p class="lead">
+        Polski producent profesjonalnych systemów oświetlenia LED. Skontaktuj się z dedykowanym opiekunem handlowym,
+        sekretariatem lub odwiedź naszą centralę produkcyjno-magazynową w Giżycku.
+      </p>
       <div class="p-hero-actions">
-        <a href="#formularz-kontaktowy" class="p-btn p-btn-primary">
-          Napisz do nas
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M12 5l7 7-7 7" />
+        <a href="#handlowcy" class="p-hero-btn primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
           </svg>
+          Dział Handlowy & Handlowcy ↓
         </a>
-        <a href="#mapa-dojazdu" class="p-btn p-btn-outline">
-          Mapa dojazdu ↓
+        <a href="#centrala" class="p-hero-btn secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M10 2v5M14 2v5" />
+          </svg>
+          Sekretariat & Centrala ↓
+        </a>
+        <a href="#formularz-kontaktowy" class="p-hero-btn secondary">
+          Napisz wiadomość ↓
         </a>
       </div>
     </div>
-
-    
   </section>
 
   <!-- TREŚĆ PONIŻEJ HERO -->
@@ -398,67 +1126,552 @@
       <span>Kontakt</span>
     </nav>
 
-    <!-- 3 KARTY KONTAKTOWE -->
-    <div class="p-contact-grid">
-      <div class="p-card">
-        <div class="p-card-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
+    <!-- 1. DANE REJESTROWE I OFICJALNE SPÓŁKI -->
+    <section class="p-company-banner" aria-label="Oficjalne Dane Rejestrowe Spółki">
+      <div class="p-company-top">
+        <div class="p-company-heading">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p-primary)" stroke-width="2.5">
+              <path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M10 2v5M14 2v5" />
+            </svg>
+            <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--p-primary);">Dane Rejestrowe</span>
+          </div>
+          <h2>PRESCOT SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ</h2>
+          <p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            ul. Wileńska 1, 11-500 Giżycko, Woj. Warmińsko-Mazurskie, Polska
+          </p>
         </div>
-        <h3>Centrala & Magazyn</h3>
-        <p>
-          <strong>PRESCOT sp. z o.o.</strong><br>
-          ul. Wileńska 1<br>
-          11-500 Giżycko, Polska<br>
-          NIP: 8451996500 | KRS: 0001004381
-        </p>
-        <a href="#mapa-dojazdu" class="card-link">Sprawdź dojazd na mapie &rarr;</a>
-      </div>
-
-      <div class="p-card">
-        <div class="p-card-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-          </svg>
-        </div>
-        <h3>Dział Sprzedaży B2B</h3>
-        <p>
-          Zamówienia hurtowe, zapytania ofertowe dla dystrybutorów, instalatorów i deweloperów.<br><br>
-          <strong>E-mail:</strong> <a href="mailto:komponenty@prescot.pl"
-            style="color:var(--p-primary); text-decoration:none;">komponenty@prescot.pl</a><br>
-          <strong>Telefon:</strong> +48 87 732 30 00
-        </p>
-        <a href="mailto:komponenty@prescot.pl" class="card-link">Napisz e-mail &rarr;</a>
-      </div>
-
-      <div class="p-card">
-        <div class="p-card-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="p-company-hours-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
+            <polyline points="12 6 12 12 16 14" />
           </svg>
+          Biuro i Magazyn: Pon – Pt: 8:00 – 16:00
         </div>
-        <h3>Wsparcie Techniczne</h3>
-        <p>
-          Konsultacje inżynieryjne, dobór zasilaczy, schematy instalacji wielostrefowych RF i protokołów DALI / Tuya
-          Zigbee.<br><br>
-          <strong>Dostępność:</strong> Pon – Pt: 8:00 – 16:00
-        </p>
-        <a href="/baza-wiedzy/" class="card-link">Przejdź do Bazy Wiedzy &rarr;</a>
       </div>
-    </div>
 
-    <!-- FORMULARZ KONTAKTOWY (BEZPIECZNY & ZWALIDOWANY) -->
-    <div class="p-form-box" id="formularz-kontaktowy">
+      <div class="p-company-tags-grid">
+        <div class="p-company-tag">
+          <span class="p-tag-label">NIP</span>
+          <span class="p-tag-val">8451939947</span>
+        </div>
+        <div class="p-company-tag">
+          <span class="p-tag-label">REGON</span>
+          <span class="p-tag-val">280351610</span>
+        </div>
+        <div class="p-company-tag">
+          <span class="p-tag-label">KRS</span>
+          <span class="p-tag-val">0000319434</span>
+        </div>
+        <div class="p-company-tag">
+          <span class="p-tag-label">Kapitał Zakładowy</span>
+          <span class="p-tag-val">200 000,00 PLN</span>
+        </div>
+        <div class="p-company-tag court-tag">
+          <span class="p-tag-label">Sąd Rejestrowy</span>
+          <span class="p-tag-val" style="font-family:'Manrope',sans-serif; font-size:14px; font-weight:600;">
+            Sąd Rejonowy w Olsztynie, VIII Wydział Gospodarczy Krajowego Rejestru Sądowego
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DZIAŁ HANDLOWY & DEDYKOWANI HANDLOWCY -->
+    <section id="handlowcy" style="margin-bottom:60px;">
+      <div class="p-section-header">
+        <div class="p-section-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          Dział Handlowy B2B & Dystrybucja
+        </div>
+        <h2 class="p-section-title">Twój Dedykowany Opiekun Handlowy</h2>
+        <p class="p-section-desc">
+          Skontaktuj się bezpośrednio ze specjalistą ds. sprzedaży w Twoim regionie. Zapewniamy natychmiastową wycenę hurtową,
+          wsparcie techniczne w doborze profili i taśm LED oraz koordynację realizacji dostaw.
+        </p>
+      </div>
+
+      <div class="p-team-grid">
+        <!-- 1. Adam Garbowski -->
+        <article class="p-team-card">
+          <div class="p-team-top">
+            <div class="p-team-avatar-wrap">
+              <img src="/wp-content/uploads/team/Adam-Garbowski.webp" alt="Adam Garbowski - Specjalista ds. Sprzedaży B2B Prescot LED" class="p-team-avatar-img" loading="lazy">
+              <span class="p-team-status-dot" title="Dostępny w godzinach pracy"></span>
+            </div>
+            <div class="p-team-meta">
+              <h3 class="p-team-name">Adam Garbowski</h3>
+              <span class="p-team-role">Specjalista ds. Sprzedaży B2B</span>
+              <span class="p-team-dept-badge">Dział Handlowy Prescot</span>
+            </div>
+          </div>
+
+          <div class="p-team-contacts">
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="p-contact-label">Kom:</span>
+                <a href="tel:+48609428570">+48 609 428 570</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              <div>
+                <span class="p-contact-label">Biuro:</span>
+                <a href="tel:+48874282118">+48 87 428 21 18 wew. 34</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <a href="mailto:adam.garbowski@prescot.pl">adam.garbowski@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card-actions">
+            <a href="tel:+48609428570" class="p-btn-card p-btn-call">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Zadzwoń
+            </a>
+            <a href="mailto:adam.garbowski@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz e-mail
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. Iwona Baczewska -->
+        <article class="p-team-card">
+          <div class="p-team-top">
+            <div class="p-team-avatar-wrap">
+              <img src="/wp-content/uploads/team/Iwona-Baczewska.webp" alt="Iwona Baczewska - Specjalista ds. Sprzedaży B2B Prescot LED" class="p-team-avatar-img" loading="lazy">
+              <span class="p-team-status-dot" title="Dostępna w godzinach pracy"></span>
+            </div>
+            <div class="p-team-meta">
+              <h3 class="p-team-name">Iwona Baczewska</h3>
+              <span class="p-team-role">Specjalista ds. Sprzedaży B2B</span>
+              <span class="p-team-dept-badge">Dział Handlowy Prescot</span>
+            </div>
+          </div>
+
+          <div class="p-team-contacts">
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="p-contact-label">Kom:</span>
+                <a href="tel:+48720858005">+48 720 858 005</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              <div>
+                <span class="p-contact-label">Biuro:</span>
+                <a href="tel:+48874282118">+48 87 428 21 18 wew. 22</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <a href="mailto:iwona.baczewska@prescot.pl">iwona.baczewska@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card-actions">
+            <a href="tel:+48720858005" class="p-btn-card p-btn-call">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Zadzwoń
+            </a>
+            <a href="mailto:iwona.baczewska@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz e-mail
+            </a>
+          </div>
+        </article>
+
+        <!-- 3. Dariusz Nita -->
+        <article class="p-team-card">
+          <div class="p-team-top">
+            <div class="p-team-avatar-wrap">
+              <img src="/wp-content/uploads/team/Dariusz-Nita.webp" alt="Dariusz Nita - Specjalista ds. Sprzedaży B2B Prescot LED" class="p-team-avatar-img" loading="lazy">
+              <span class="p-team-status-dot" title="Dostępny w godzinach pracy"></span>
+            </div>
+            <div class="p-team-meta">
+              <h3 class="p-team-name">Dariusz Nita</h3>
+              <span class="p-team-role">Specjalista ds. Sprzedaży B2B</span>
+              <span class="p-team-dept-badge">Dział Handlowy Prescot</span>
+            </div>
+          </div>
+
+          <div class="p-team-contacts">
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="p-contact-label">Kom:</span>
+                <a href="tel:+48570123681">+48 570 123 681</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              <div>
+                <span class="p-contact-label">Biuro:</span>
+                <a href="tel:+48874282118">+48 87 428 21 18 wew. 35</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <a href="mailto:dariusz.nita@prescot.pl">dariusz.nita@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card-actions">
+            <a href="tel:+48570123681" class="p-btn-card p-btn-call">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Zadzwoń
+            </a>
+            <a href="mailto:dariusz.nita@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz e-mail
+            </a>
+          </div>
+        </article>
+
+        <!-- 4. Anna Galor -->
+        <article class="p-team-card">
+          <div class="p-team-top">
+            <div class="p-team-avatar-wrap">
+              <img src="/wp-content/uploads/team/Anna-Galor.webp" alt="Anna Galor - Specjalista ds. Sprzedaży B2B Prescot LED" class="p-team-avatar-img" loading="lazy">
+              <span class="p-team-status-dot" title="Dostępna w godzinach pracy"></span>
+            </div>
+            <div class="p-team-meta">
+              <h3 class="p-team-name">Anna Galor</h3>
+              <span class="p-team-role">Specjalista ds. Sprzedaży B2B</span>
+              <span class="p-team-dept-badge">Dział Handlowy Prescot</span>
+            </div>
+          </div>
+
+          <div class="p-team-contacts">
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="p-contact-label">Kom:</span>
+                <a href="tel:+48730901909">+48 730 901 909</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              <div>
+                <span class="p-contact-label">Biuro:</span>
+                <a href="tel:+48874282118">+48 87 428 21 18 wew. 23</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <a href="mailto:anna.galor@prescot.pl">anna.galor@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card-actions">
+            <a href="tel:+48730901909" class="p-btn-card p-btn-call">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Zadzwoń
+            </a>
+            <a href="mailto:anna.galor@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz e-mail
+            </a>
+          </div>
+        </article>
+
+        <!-- 5. Anna Asztemborska -->
+        <article class="p-team-card">
+          <div class="p-team-top">
+            <div class="p-team-avatar-wrap">
+              <div class="p-team-avatar-initials">AA</div>
+              <span class="p-team-status-dot" title="Dostępna w godzinach pracy"></span>
+            </div>
+            <div class="p-team-meta">
+              <h3 class="p-team-name">Anna Asztemborska</h3>
+              <span class="p-team-role">Obsługa Klienta & Sprzedaż</span>
+              <span class="p-team-dept-badge">Dział Handlowy Prescot</span>
+            </div>
+          </div>
+
+          <div class="p-team-contacts">
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <div>
+                <span class="p-contact-label">Kom:</span>
+                <a href="tel:+48661436744">+48 661 436 744</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              <div>
+                <span class="p-contact-label">Biuro:</span>
+                <a href="tel:+48874282118">+48 87 428 21 18 wew. 37</a>
+              </div>
+            </div>
+            <div class="p-contact-line">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <div>
+                <a href="mailto:anna.asztemborska@prescot.pl">anna.asztemborska@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card-actions">
+            <a href="tel:+48661436744" class="p-btn-card p-btn-call">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Zadzwoń
+            </a>
+            <a href="mailto:anna.asztemborska@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz e-mail
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. DZIAŁY CENTRALI, SEKRETARIAT & ZARZĄD -->
+    <section id="centrala" style="margin-bottom:60px;">
+      <div class="p-section-header">
+        <div class="p-section-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M10 2v5M14 2v5" />
+          </svg>
+          Centrala & Administracja
+        </div>
+        <h2 class="p-section-title">Sekretariat, Zarząd i Działy Centrali</h2>
+        <p class="p-section-desc">
+          Wszystkie kwestie formalne, fakturowanie, obieg korespondencji oraz wsparcie posprzedażowe
+          koordynowane są bezpośrednio przez naszą siedzibę w Giżycku.
+        </p>
+      </div>
+
+      <div class="p-dept-grid">
+        <!-- 1. Sekretariat & Biuro Główne -->
+        <article class="p-dept-card">
+          <div class="p-dept-header">
+            <div class="p-dept-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+            </div>
+            <div class="p-dept-title-wrap">
+              <h3>Sekretariat</h3>
+              <span class="p-dept-subtitle">Biuro Główne & Korespondencja</span>
+            </div>
+          </div>
+          <p class="p-dept-desc">
+            Prowadzenie spraw ogólnych spółki, obieg dokumentów, korespondencja urzędowa oraz umawianie spotkań biznesowych.
+          </p>
+          <div class="p-dept-people-list">
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Sylwia Suska</span>
+                <span class="p-person-role">Kierownik Biura / Sekretariat</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+                  +48 87 428 21 18 wew. 25
+                </a>
+                <a href="mailto:sekretariat@prescot.pl">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  sekretariat@prescot.pl
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="p-card-actions">
+            <a href="tel:+48874282118" class="p-btn-card p-btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              Zadzwoń do Biura
+            </a>
+            <a href="mailto:sekretariat@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              E-mail sekretariat
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. Zarząd Spółki -->
+        <article class="p-dept-card">
+          <div class="p-dept-header">
+            <div class="p-dept-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+            <div class="p-dept-title-wrap">
+              <h3>Zarząd Firmy</h3>
+              <span class="p-dept-subtitle">Kierownictwo Strategiczne</span>
+            </div>
+          </div>
+          <p class="p-dept-desc">
+            Kluczowe umowy dystrybucyjne, inwestycje technologiczne w park maszynowy i partnerstwa międzynarodowe.
+          </p>
+          <div class="p-dept-people-list">
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Krzysztof Bara</span>
+                <span class="p-person-role">Prezes Zarządu</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">tel. wew. 61</a>
+                <a href="mailto:krzysztof.bara@prescot.pl">krzysztof.bara@prescot.pl</a>
+              </div>
+            </div>
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Radosław Narwojsz</span>
+                <span class="p-person-role">V-ce Prezes Zarządu</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">tel. wew. 62</a>
+                <a href="mailto:radoslaw.narwojsz@prescot.pl">radoslaw.narwojsz@prescot.pl</a>
+              </div>
+            </div>
+          </div>
+          <div class="p-card-actions">
+            <a href="tel:+48874282118" class="p-btn-card p-btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              Połącz z centralą
+            </a>
+            <a href="mailto:sekretariat@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Napisz do Zarządu
+            </a>
+          </div>
+        </article>
+
+        <!-- 3. Dział Księgowości -->
+        <article class="p-dept-card">
+          <div class="p-dept-header">
+            <div class="p-dept-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <line x1="2" y1="10" x2="22" y2="10" />
+              </svg>
+            </div>
+            <div class="p-dept-title-wrap">
+              <h3>Dział Księgowości</h3>
+              <span class="p-dept-subtitle">Finanse & Faktury B2B</span>
+            </div>
+          </div>
+          <p class="p-dept-desc">
+            Rozliczenia faktur VAT, potwierdzenia sald, limity kupieckie dla stałych partnerów i sprawy płatności.
+          </p>
+          <div class="p-dept-people-list">
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Karolina Laskowska</span>
+                <span class="p-person-role">Księgowość</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">tel. wew. 51</a>
+                <a href="mailto:ksiegowosc@prescot.pl">ksiegowosc@prescot.pl</a>
+              </div>
+            </div>
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Agnieszka Bara</span>
+                <span class="p-person-role">Księgowość / Finanse</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">tel. wew. 52</a>
+                <span>Fax: wew. 40</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-card-actions">
+            <a href="tel:+48874282118" class="p-btn-card p-btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              Zadzwoń do Finansów
+            </a>
+            <a href="mailto:ksiegowosc@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              ksiegowosc@prescot.pl
+            </a>
+          </div>
+        </article>
+
+        <!-- 4. Dział Reklamacji -->
+        <article class="p-dept-card">
+          <div class="p-dept-header">
+            <div class="p-dept-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+              </svg>
+            </div>
+            <div class="p-dept-title-wrap">
+              <h3>Serwis & Reklamacje</h3>
+              <span class="p-dept-subtitle">Wsparcie Posprzedażowe RMA</span>
+            </div>
+          </div>
+          <p class="p-dept-desc">
+            Szybka weryfikacja techniczna zgłoszeń reklamacyjnych (taśmy LED, zasilacze, sterowniki) w ciągu 24–48h.
+          </p>
+          <div class="p-dept-people-list">
+            <div class="p-dept-person">
+              <div class="p-person-name-role">
+                <span class="p-person-name">Dział Obsługi Zgłoszeń RMA</span>
+                <span class="p-person-role">Gwarancja & Zwroty</span>
+              </div>
+              <div class="p-person-links">
+                <a href="tel:+48874282118">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+                  +48 87 428 21 18 wew. 25
+                </a>
+                <a href="mailto:reklamacje@prescot.pl">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  reklamacje@prescot.pl
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="p-card-actions">
+            <a href="tel:+48874282118" class="p-btn-card p-btn-call">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3"/></svg>
+              Zadzwoń do Serwisu
+            </a>
+            <a href="mailto:reklamacje@prescot.pl" class="p-btn-card p-btn-mail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Zgłoś reklamację
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. FORMULARZ KONTAKTOWY (BEZPIECZNY & ZWALIDOWANY) -->
+    <section class="p-form-box" id="formularz-kontaktowy">
       <div style="margin-bottom: 28px;">
-        <h2 style="font-family:'Outfit',sans-serif; font-size: 28px; color: var(--p-dark); margin-bottom: 8px;">Napisz
-          bezpośrednio do nas</h2>
-        <p style="color: var(--p-text-muted); font-size: 15px;">Wypełnij krótki formularz, a właściwy dział odpowie na
-          Twoją wiadomość najszybciej jak to możliwe.</p>
+        <div class="p-section-eyebrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
+          Szybki Formularz Online
+        </div>
+        <h2 style="font-size: clamp(24px, 3vw, 32px); color: var(--p-dark); margin-bottom: 8px;">Napisz bezpośrednio do nas</h2>
+        <p style="color: var(--p-text-muted); font-size: 15px;">
+          Wybierz odpowiedni dział — Twoja wiadomość trafi bezpośrednio do dedykowanego opiekuna, który odpowie najszybciej jak to możliwe.
+        </p>
       </div>
 
       <form class="p-form-grid" id="contact-form" action="javascript:void(0);" novalidate>
@@ -467,7 +1680,7 @@
 
         <div class="p-group">
           <label for="c-name">Imię i nazwisko / Nazwa firmy *</label>
-          <input type="text" id="c-name" placeholder="np. Jan Kowalski" maxlength="100" autocomplete="name" required>
+          <input type="text" id="c-name" placeholder="np. Jan Kowalski / LED Projekt Sp. z o.o." maxlength="100" autocomplete="name" required>
         </div>
 
         <div class="p-group">
@@ -477,66 +1690,109 @@
 
         <div class="p-group">
           <label for="c-phone">Numer telefonu</label>
-          <input type="tel" id="c-phone" placeholder="+48 000 000 000" maxlength="20" autocomplete="tel">
+          <input type="tel" id="c-phone" placeholder="+48 000 000 000" maxlength="25" autocomplete="tel">
         </div>
 
         <div class="p-group">
           <label for="c-dept">Dział docelowy</label>
           <select id="c-dept">
-            <option value="sprzedaz">Dział Sprzedaży B2B &amp; Dystrybucja</option>
-            <option value="techniczny">Wsparcie Techniczne &amp; Doradztwo LED</option>
-            <option value="sekretariat">Sekretariat / Sprawy Ogólne</option>
-            <option value="reklamacje">Serwis &amp; Reklamacje</option>
+            <option value="sprzedaz">Dział Handlowy B2B &amp; Dystrybucja</option>
+            <option value="sekretariat">Sekretariat &amp; Sprawy Ogólne</option>
+            <option value="zarzad">Zarząd Spółki</option>
+            <option value="ksiegowosc">Dział Księgowości &amp; Faktury</option>
+            <option value="reklamacje">Serwis Posprzedażowy &amp; Reklamacje</option>
+            <option value="techniczny">Wsparcie Inżynieryjne &amp; Doradztwo LED</option>
           </select>
         </div>
 
         <div class="p-group full">
           <label for="c-msg">Treść wiadomości *</label>
           <textarea id="c-msg"
-            placeholder="W czym możemy pomóc? Opisz swoje zapytanie lub podaj specyfikację projektu..." maxlength="1500"
+            placeholder="W czym możemy pomóc? Opisz swoje zapytanie, wskaż interesujące Cię parametry taśmy LED lub załącz specyfikację..." maxlength="2000"
             required></textarea>
         </div>
 
         <div class="p-group full">
           <label
-            style="display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--p-text-muted); cursor:pointer;">
-            <input type="checkbox" id="c-agree" required style="margin-top:3px; accent-color: var(--p-primary);">
-            <span>Wyrażam zgodę na przetwarzanie moich danych osobowych przez PRESCOT sp. z o.o. w celu obsługi
-              zapytania kontaktowego zgodnie z Polityką Prywatności.</span>
+            style="display:flex; align-items:flex-start; gap:12px; font-size:13px; color:var(--p-text-muted); cursor:pointer;">
+            <input type="checkbox" id="c-agree" required style="margin-top:3px; width:18px; height:18px; accent-color: var(--p-primary);">
+            <span>Wyrażam zgodę na przetwarzanie moich danych osobowych przez PRESCOT sp. z o.o. (ul. Wileńska 1, 11-500 Giżycko) w celu odpowiedzi na przesłaną wiadomość zgodnie z Polityką Prywatności.</span>
           </label>
         </div>
 
         <div class="p-group full">
-          <button type="submit" class="submitBtn" style="justify-self:start;">
-            Wyślij wiadomość &rarr;
+          <button type="submit" class="p-form-submit-btn">
+            Wyślij wiadomość
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
 
         <div id="c-feedback" class="p-group full"
-          style="display:none; padding: 16px 20px; border-radius: 12px; font-size: 14.5px; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;">
-          <strong>Dziękujemy!</strong> Twoja wiadomość została pomyślnie wysłana. Skontaktujemy się z Tobą niezwłocznie.
+          style="display:none; padding: 18px 22px; border-radius: 12px; font-size: 15px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;">
+          <strong>Dziękujemy za kontakt!</strong> Twoja wiadomość została pomyślnie przekazana do właściwego działu. Skontaktujemy się z Tobą niezwłocznie.
         </div>
       </form>
-    </div>
+    </section>
 
-    <!-- MAPA GOOGLE -->
-    <div id="mapa-dojazdu"
-      style="border-radius: var(--p-radius); overflow: hidden; border: 1px solid var(--p-border); box-shadow: var(--p-shadow-sm); height: 420px; margin-bottom: 50px;">
-      <iframe title="Mapa Dojazdu Prescot LED Giżycko"
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2345.5034636923485!2d21.758416676991054!3d54.03859667249912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e166f272a7b67b%3A0xb35a3974c2d3c1eb!2sWile%C5%84ska%201%2C%2011-500%20Gi%C5%BCycko!5e0!3m2!1spl!2spl!4v1700000000000!5m2!1spl!2spl"
-        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-    </div>
+    <!-- 5. DOJAZD, MAGAZYN I MAPA -->
+    <section class="p-map-section" id="mapa-dojazdu">
+      <div class="p-map-grid">
+        <div class="p-map-info">
+          <div>
+            <div class="p-section-eyebrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Lokalizacja Centrali
+            </div>
+            <h3 style="font-size: 24px; font-weight: 800; color: var(--p-dark); margin-bottom: 14px;">
+              Magazyn & Centrala Giżycko
+            </h3>
+            <div class="p-map-info-block" style="margin-bottom: 18px;">
+              <h4>Adres siedziby:</h4>
+              <p>
+                <strong>PRESCOT sp. z o.o.</strong><br>
+                ul. Wileńska 1<br>
+                11-500 Giżycko, Polska
+              </p>
+            </div>
+            <div class="p-map-info-block" style="margin-bottom: 18px;">
+              <h4>Godziny przyjęć i wydań:</h4>
+              <p>
+                Poniedziałek – Piątek: <strong>8:00 – 16:00</strong><br>
+                Rampa załadunkowa dla spedycji i kurierów czynna od godz. 8:00.
+              </p>
+            </div>
+          </div>
+
+          <a href="https://www.google.com/maps/dir/?api=1&destination=54.03859667249912,21.758416676991054" target="_blank" rel="noopener" class="p-map-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3 11 22 2 13 21 11 13 3 11" />
+            </svg>
+            Wyznacz trasę w Google Maps ↗
+          </a>
+        </div>
+
+        <div class="p-map-frame-wrap">
+          <iframe title="Mapa Dojazdu do Centrali Prescot LED Giżycko"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2345.5034636923485!2d21.758416676991054!3d54.03859667249912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e166f272a7b67b%3A0xb35a3974c2d3c1eb!2sWile%C5%84ska%201%2C%2011-500%20Gi%C5%BCycko!5e0!3m2!1spl!2spl!4v1700000000000!5m2!1spl!2spl"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </section>
   </main>
 
+  <!-- FORM SCRIPT -->
   <script>
-    // Bezpieczna walidacja i obsługa formularza kontaktowego
     document.getElementById('contact-form').addEventListener('submit', function (e) {
       e.preventDefault();
 
       var hp = document.querySelector('input[name="contact_hp"]').value;
-      if (hp) return; // Spam bot detected
+      if (hp) return; // Spam trap
 
       var name = document.getElementById('c-name').value.trim();
       var email = document.getElementById('c-email').value.trim();
@@ -544,596 +1800,83 @@
       var agree = document.getElementById('c-agree').checked;
 
       if (!name || !email || !msg || !agree) {
-        alert('Prosimy o uzupełnienie wymaganych pól (imię, e-mail, treść) i zaznaczenie zgody.');
+        alert('Prosimy o wypełnienie wymaganych pól (imię/firma, e-mail, treść) i zaznaczenie zgody na przetwarzanie danych.');
         return;
       }
 
       var fb = document.getElementById('c-feedback');
       fb.style.display = 'block';
       this.reset();
+      fb.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   </script>
-  <footer data-elementor-type="footer" data-elementor-id="25535"
-    class="elementor elementor-25535 elementor-location-footer" data-elementor-post-type="elementor_library">
-    <div class="elementor-element elementor-element-5a4fefb6 e-con-full e-flex e-con e-parent" data-id="5a4fefb6"
-      data-element_type="container" data-e-type="container" id="stopka"
-      data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
-      <div
-        class="elementor-element elementor-element-dca2ef5 elementor-widget__width-inherit elementor-widget elementor-widget-html"
-        data-id="dca2ef5" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
-        <div class="elementor-widget-container">
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-          <style>
-            /* Import czcionki Krona One z Google Fonts */
-            @import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
-
-            /* === STYLE STOPKI - WERSJA BIAŁA + DARK TEXT (#212a35) === */
-            #stopka {
-              position: relative;
-              width: 100vw;
-              margin-left: calc(50% - 50vw);
-              margin-right: calc(50% - 50vw);
-              background-color: #ffffff;
-              color: #212a35;
-              /* Główny nowy kolor tekstu */
-              overflow: hidden;
-              /* Zastosowanie nowej czcionki globalnie */
-              font-family: inherit;
-            }
-
-            .footerSlide {
-              position: relative;
-              min-height: 100vh;
-              display: grid;
-              align-items: center;
-              padding: 60px 20px;
-              z-index: 2;
-            }
-
-            /* --- STRZAŁKA W GÓRĘ DO MIBOXER --- */
-            .stopkaArrowUp {
-              position: absolute;
-              top: 40px;
-              left: 0;
-              right: 0;
-              margin: auto;
-              z-index: 10;
-              cursor: pointer;
-              animation: arrowBounceUp 2s infinite ease-in-out;
-              width: 60px;
-              height: 60px;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-              background: #212a35;
-              color: #ffffff;
-            }
-
-            .stopkaArrowUp svg {
-              width: 28px;
-              height: 28px;
-              fill: currentColor;
-              display: block;
-            }
-
-            @keyframes arrowBounceUp {
-
-              0%,
-              100% {
-                transform: translateY(0);
-              }
-
-              50% {
-                transform: translateY(-10px);
-              }
-            }
-
-            .footerGrid {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              gap: clamp(40px, 5vw, 100px);
-              max-width: 1200px;
-              margin: 0 auto;
-              width: 100%;
-              align-items: flex-start;
-            }
-
-            /* --- LEWA KOLUMNA: FORMULARZ --- */
-            .footerTitle {
-              font-size: 48px;
-              /* Rozmiar z H1 z screenshota */
-              font-weight: 400;
-              /* Krona One standardowo ma wagę 400 */
-              line-height: 1.2;
-              margin-bottom: 15px;
-              letter-spacing: -0.02em;
-              color: #212a35;
-              /* Tytuł cały "czarny" (ciemny) */
-              white-space: nowrap;
-            }
-
-            @media (max-width: 1100px) {
-              .footerTitle {
-                white-space: normal;
-              }
-            }
-
-            /* Jeśli dodasz gdzieś .orangeAccent w nagłówku, teraz będzie ciemny tak jak prosiłeś */
-            .orangeAccent {
-              color: #212a35;
-            }
-
-            .footerSubtitle {
-              font-size: 17px;
-              /* Rozmiar tekstu z screenshota */
-              font-weight: 400;
-              opacity: 0.9;
-              margin-bottom: 40px;
-              max-width: 480px;
-              line-height: 1.6;
-              color: #212a35;
-            }
-
-            .contactForm {
-              display: grid;
-              gap: 20px;
-            }
-
-            /* Inputy */
-            .inpGroup input,
-            .inpGroup textarea {
-              width: 100%;
-              background: #F4F6F9;
-              border: 1px solid #D1D9E4;
-              border-radius: 12px;
-              padding: 18px 20px;
-              color: #212a35;
-              font-size: 15px;
-              outline: none;
-              transition: 0.3s;
-              font-family: inherit;
-            }
-
-            .inpGroup textarea {
-              resize: vertical;
-              min-height: 140px;
-            }
-
-            .inpGroup input:focus,
-            .inpGroup textarea:focus {
-              background: #ffffff;
-              border-color: #df3f19;
-              box-shadow: 0 4px 12px rgba(33, 42, 53, 0.1);
-            }
-
-            .inpGroup input::placeholder,
-            .inpGroup textarea::placeholder {
-              color: rgba(33, 42, 53, 0.5);
-            }
-
-            /* --- PRZYCISK --- */
-            .submitBtn {
-              justify-self: start;
-              display: inline-flex;
-              align-items: center;
-              gap: 12px;
-
-              background: #212a35;
-              color: #ffffff;
-              border: 1px solid #212a35;
-
-              padding: 16px 32px;
-              border-radius: 999px;
-              font-weight: 400;
-              font-size: 14px;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              text-transform: uppercase;
-              letter-spacing: 0.05em;
-              margin-top: 10px;
-              font-family: inherit;
-            }
-
-            .submitBtn svg {
-              fill: currentColor;
-              width: 14px;
-              height: 14px;
-            }
-
-            .submitBtn:hover {
-              transform: translateY(-2px);
-              background: #ffffff;
-              color: #212a35;
-              border-color: #212a35;
-            }
-
-            /* --- STRZAŁKA TYLKO NA MOBILE (formularz dół) --- */
-            .footerMobileScroll {
-              display: none;
-              margin: 10px auto 0 auto;
-              width: 50px;
-              height: 50px;
-              border-radius: 50%;
-              background: rgba(33, 42, 53, 0.1);
-              align-items: center;
-              justify-content: center;
-              color: #212a35;
-              cursor: pointer;
-              animation: arrowBounce 2s infinite ease-in-out;
-              transition: background 0.3s;
-            }
-
-            .footerMobileScroll:hover {
-              background: #212a35;
-              color: #fff;
-            }
-
-            .footerMobileScroll svg {
-              width: 24px;
-              height: 24px;
-              fill: currentColor;
-            }
-
-            @keyframes arrowBounce {
-
-              0%,
-              100% {
-                transform: translateY(0);
-              }
-
-              50% {
-                transform: translateY(10px);
-              }
-            }
-
-            /* --- PRAWA KOLUMNA: DANE + LOGO --- */
-            .footerInfoCol {
-              display: flex;
-              flex-direction: column;
-              height: 100%;
-              justify-content: space-between;
-              padding-top: 10px;
-            }
-
-            .infoBlock {
-              margin-bottom: 35px;
-            }
-
-            .infoLabel {
-              font-size: 13px;
-              text-transform: uppercase;
-              letter-spacing: 0.1em;
-              font-weight: 400;
-              color: #df3f19;
-              margin-bottom: 12px;
-            }
-
-            .infoContent {
-              font-size: 17px;
-              line-height: 1.6;
-              font-weight: 400;
-              color: #212a35;
-            }
-
-            .infoContent a {
-              color: #212a35;
-              text-decoration: none;
-              font-weight: 400;
-              transition: color 0.2s;
-              border-bottom: 1px solid rgba(33, 42, 53, 0.2);
-            }
-
-            .infoContent a:hover {
-              color: #df3f19;
-              border-color: #df3f19;
-            }
-
-            /* DOLNA SEKCJA (LOGO + LINKI) */
-            .bottomStack {
-              margin-top: 60px;
-              padding-top: 40px;
-              border-top: 1px solid rgba(33, 42, 53, 0.15);
-              display: flex;
-              flex-direction: column;
-              gap: 20px;
-            }
-
-            .footerLogo {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-start;
-            }
-
-            .footerLogo img {
-              height: 50px;
-              width: auto;
-              display: block;
-              margin-bottom: 8px;
-              margin-left: 0;
-            }
-
-            .footerTagline {
-              font-size: 12px;
-              font-weight: 400;
-              text-transform: uppercase;
-              letter-spacing: 0.05em;
-              margin: 0 0 15px 0;
-              opacity: 1;
-              color: #212a35;
-              margin-left: 3px;
-            }
-
-            .legalLinks {
-              display: flex;
-              gap: 20px;
-              flex-wrap: wrap;
-            }
-
-            .legalLink {
-              color: rgba(33, 42, 53, 0.6);
-              font-size: 13px;
-              text-decoration: none;
-              transition: 0.2s;
-            }
-
-            .legalLink:hover {
-              color: #df3f19;
-            }
-
-            .socialRow {
-              display: flex;
-              gap: 15px;
-              margin-top: 5px;
-            }
-
-            .socialIcon {
-              width: 44px;
-              height: 44px;
-              border-radius: 50%;
-              background: rgba(33, 42, 53, 0.05);
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              transition: 0.3s;
-              color: #212a35;
-              text-decoration: none;
-            }
-
-            .socialIcon:hover {
-              background: #212a35;
-              color: #ffffff;
-              transform: translateY(-3px);
-            }
-
-            .socialIcon svg {
-              width: 22px;
-              height: 22px;
-              fill: currentColor;
-            }
-
-            /* --- RESPONSYWNOŚĆ (MOBILE FIXES) --- */
-            @media (max-width: 900px) {
-              .footerSlide {
-                align-items: flex-start;
-                padding: 0px 20px 60px 20px;
-              }
-
-              /* Mobilna strzałka w górę */
-              .stopkaArrowUp {
-                top: 20px;
-                width: 45px;
-                height: 45px;
-              }
-
-              .stopkaArrowUp svg {
-                width: 20px;
-                height: 20px;
-              }
-
-              .footerGrid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-              }
-
-              .footerTitle {
-                font-size: 32px;
-                text-align: center;
-                white-space: normal;
-                margin-top: 80px;
-                /* Zrobienie miejsca na strzałkę */
-              }
-
-              .footerSubtitle {
-                text-align: center;
-                margin-left: auto;
-                margin-right: auto;
-              }
-
-              .submitBtn {
-                width: 100%;
-                justify-content: center;
-              }
-
-              .footerMobileScroll {
-                display: flex;
-              }
-
-              .footerInfoCol {
-                text-align: center;
-                align-items: center;
-                border-top: 1px solid rgba(33, 42, 53, 0.15);
-                padding-top: 30px;
-                margin-top: 10px;
-              }
-
-              .infoBlock {
-                margin-bottom: 25px;
-              }
-
-              .bottomStack {
-                align-items: center;
-                border-top: none;
-                padding-top: 10px;
-                margin-top: 10px;
-                gap: 15px;
-              }
-
-              .footerLogo {
-                align-items: center;
-              }
-
-              .footerTagline {
-                margin-left: 0;
-              }
-
-              .footerLogo img {
-                height: 30px;
-              }
-            }
-          </style>
-
-          <div id="stopka">
-
-            <div class="footerSlide">
-
-
-
-              <div class="footerGrid">
-
-                <div class="footerFormCol">
-                  <h2 class="footerTitle">Skontaktuj się z <span class="orangeAccent">nami</span></h2>
-                  <p class="footerSubtitle">Masz pytania dotyczące dystrybucji lub produktów? Wypełnij formularz, a nasz
-                    zespół skontaktuje się z Tobą najszybciej jak to możliwe.</p>
-
-                  <form class="contactForm" action="/wyslij-wiadomosc" method="POST">
-                    <div class="inpGroup"><input type="text" placeholder="Imię i nazwisko" required></div>
-                    <div class="inpGroup"><input type="email" placeholder="Adres e-mail" required></div>
-                    <div class="inpGroup"><input type="tel" placeholder="Numer telefonu"></div>
-                    <div class="inpGroup"><textarea placeholder="Twoja wiadomość..."></textarea></div>
-
-                    <button type="submit" class="submitBtn">
-                      Wyślij wiadomość
-                      <svg viewBox="0 0 24 24">
-                        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" />
-                      </svg>
-                    </button>
-                  </form>
-
-                  <div class="footerMobileScroll" id="scrollBtnMobile">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-                    </svg>
-                  </div>
-                </div>
-
-                <div class="footerInfoCol" id="daneFirmyTarget">
-
-                  <div class="infoBlock">
-                    <div class="infoLabel">Adres</div>
-                    <div class="infoContent">
-                      <strong>PRESCOT sp. z o.o.</strong><br>
-                      ul. Wileńska 1<br>
-                      11-500 Giżycko
-                    </div>
-                  </div>
-
-                  <div class="infoBlock">
-                    <div class="infoLabel">Biuro</div>
-                    <div class="infoContent">
-                      Tel.: <a href="tel:+48874282118">+48 87 428 21 18</a><br>
-                      e-mail: <a href="mailto:sekretariat@prescot.pl">sekretariat@prescot.pl</a>
-                    </div>
-                  </div>
-
-                  <div class="infoBlock">
-                    <div class="infoLabel">Dział Sprzedaży</div>
-                    <div class="infoContent">
-                      Tel.: <a href="tel:+48877776482">+48 87 777 64 82</a><br>
-                      e-mail: <a href="mailto:komponenty@prescot.pl">komponenty@prescot.pl</a>
-                    </div>
-                  </div>
-
-                  <div class="bottomStack">
-                    <div class="footerLogo">
-                      <img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg"
-                        alt="Prescot LED Logo"><noscript><img
-                          src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg"
-                          alt="Prescot LED Logo"></noscript>
-                      <p class="footerTagline">Polski producent oświetlenia <span style="color:#df3f19;">LED</span></p>
-                    </div>
-
-                    <div class="legalLinks">
-                      <a href="/polityka-prywatnosci" class="legalLink">Polityka prywatności</a>
-                      <a href="/regulamin" class="legalLink">Regulamin</a>
-                      <a href="/owg" class="legalLink">OWG Prescot LED</a>
-                    </div>
-
-                    <div class="socialRow">
-                      <a href="https://www.linkedin.com/company/prescot-led/" target="_blank" rel="noopener"
-                        class="socialIcon" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24">
-                          <path
-                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                        </svg>
-                      </a>
-                      <a href="https://www.facebook.com/prescot.gizycko" target="_blank" rel="noopener"
-                        class="socialIcon" aria-label="Facebook">
-                        <svg viewBox="0 0 24 24">
-                          <path
-                            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                        </svg>
-                      </a>
-                      <a href="https://www.youtube.com/@prescot_led_gizycko" target="_blank" rel="noopener"
-                        class="socialIcon" aria-label="YouTube">
-                        <svg viewBox="0 0 24 24">
-                          <path
-                            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <script>
-            (function () {
-              const mobileArrow = document.getElementById("scrollBtnMobile");
-              const targetSection = document.getElementById("daneFirmyTarget");
-
-              if (mobileArrow && targetSection) {
-                mobileArrow.addEventListener("click", () => {
-                  targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                });
-              }
-
-              // --- NOWY SKRYPT: Strzałka do Miboxera ---
-              const arrowToMiboxer = document.getElementById("arrowToMiboxer");
-              if (arrowToMiboxer) {
-                arrowToMiboxer.addEventListener("click", () => {
-                  const miboxerSection = document.querySelector(".is-miboxer");
-                  if (miboxerSection) {
-                    miboxerSection.scrollIntoView({ behavior: "smooth" });
-                  } else {
-                    // Fallback w razie gdyby sekcje były ładowane inaczej
-                    window.scrollBy({ top: -window.innerHeight, behavior: "smooth" });
-                  }
-                });
-              }
-            })();
-          </script>
-        </div>
+  <!-- CLEAN PROFESSIONAL FOOTER -->
+  <footer class="p-footer" role="contentinfo">
+    <div class="p-footer-inner">
+      <div class="p-footer-brand-col">
+        <a href="/" title="Prescot LED">
+          <img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="Prescot LED">
+        </a>
+        <p class="p-footer-tagline">
+          Polski producent zaawansowanych systemów oświetlenia LED, taśm COB i profesjonalnych profili architektonicznych.
+        </p>
+        <p style="font-size: 13px; color: var(--p-text-muted);">
+          <strong>PRESCOT Sp. z o.o.</strong><br>
+          ul. Wileńska 1, 11-500 Giżycko<br>
+          NIP: 8451939947 | KRS: 0000319434
+        </p>
+      </div>
+
+      <div>
+        <h4 class="p-footer-title">Bezpośredni Kontakt</h4>
+        <ul class="p-footer-links">
+          <li><strong>Sekretariat:</strong> <a href="tel:+48874282118">+48 87 428 21 18</a></li>
+          <li><strong>E-mail biura:</strong> <a href="mailto:sekretariat@prescot.pl">sekretariat@prescot.pl</a></li>
+          <li><strong>Dział Sprzedaży B2B:</strong> <a href="mailto:komponenty@prescot.pl">komponenty@prescot.pl</a></li>
+          <li><strong>Reklamacje RMA:</strong> <a href="mailto:reklamacje@prescot.pl">reklamacje@prescot.pl</a></li>
+          <li><strong>Księgowość:</strong> <a href="mailto:ksiegowosc@prescot.pl">ksiegowosc@prescot.pl</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="p-footer-title">Strefa Klienta & B2B</h4>
+        <ul class="p-footer-links">
+          <li><a href="/produkty/">Katalog Produktów LED</a></li>
+          <li><a href="/tasmy-led/">Taśmy LED Profesjonalne</a></li>
+          <li><a href="/wspolpraca-b2b/">Współpraca Hurtowa & B2B</a></li>
+          <li><a href="/baza-wiedzy/">Baza Wiedzy & Kalkulatory</a></li>
+          <li><a href="/polityka-prywatnosci">Polityka Prywatności</a></li>
+          <li><a href="/owg">Ogólne Warunki Gwarancji (OWG)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="p-footer-bottom">
+      <div>
+        &copy; 2026 PRESCOT Sp. z o.o. Wszelkie prawa zastrzeżone. Made in Poland.
+      </div>
+      <div class="p-footer-socials">
+        <a href="https://www.linkedin.com/company/prescot-led/" target="_blank" rel="noopener" class="p-footer-social-btn" aria-label="LinkedIn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/prescot.gizycko" target="_blank" rel="noopener" class="p-footer-social-btn" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+          </svg>
+        </a>
+        <a href="https://www.youtube.com/@prescot_led_gizycko" target="_blank" rel="noopener" class="p-footer-social-btn" aria-label="YouTube">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+          </svg>
+        </a>
       </div>
     </div>
   </footer>
 
-  <!-- GLOBAL MENU START -->
+  <!-- GLOBAL MENU START (NAV DOCK) -->
   <nav class="prescot-dock" aria-label="Nawigacja główna">
     <a href="/prescotled/" class="dock-item" data-tooltip="Prescot LED" aria-label="Prescot LED">
       <svg class="dock-logo-icon" viewBox="0 0 378 258" xmlns="http://www.w3.org/2000/svg">
@@ -1159,7 +1902,7 @@
           d="M475.115 163.781L336 252.309v-68.28c0-18.916-20.931-30.399-36.885-20.248L160 252.309V56c0-13.255-10.745-24-24-24H24C10.745 32 0 42.745 0 56v400c0 13.255 10.745 24 24 24h464c13.255 0 24-10.745 24-24V184.029c0-18.917-20.931-30.399-36.885-20.248z" />
       </svg>
     </a>
-    <a href="/wspolpraca-b2b/" class="dock-item" data-tooltip="Strefa B2B" aria-label="Strefa B2B">
+    <a href="/dystrybucja/" class="dock-item" data-tooltip="Dystrybucja & B2B" aria-label="Dystrybucja & Strefa B2B">
       <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg">
         <path fill="currentColor"
           d="M128 352H32c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32zm-24-80h192v48h48v-48h192v48h48v-57.59c0-21.17-17.23-38.41-38.41-38.41H344v-64h40c17.67 0 32-14.33 32-32V32c0-17.67-14.33-32-32-32H256c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h40v64H94.41C73.23 224 56 241.23 56 262.41V320h48v-48zm264 80h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32zm240 0h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32z" />
@@ -1178,7 +1921,7 @@
           d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z" />
       </svg>
     </a>
-    <a href="/kontakt/" class="dock-item" data-tooltip="Kontakt" aria-label="Kontakt">
+    <a href="/kontakt/" class="dock-item active" data-tooltip="Kontakt" aria-label="Kontakt">
       <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
         <path fill="currentColor"
           d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 14l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C4.1 366.5-1.8 378.1.8 389.4l24 104C27.3 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-21-18.6-23.4z" />
@@ -1194,7 +1937,7 @@
   </script>
   <script src="/wp-content/plugins/gtranslate/js/float.js?ver=3.1.1" data-no-optimize="1" data-no-minify="1"
     data-gt-widget-id="85632840" defer></script>
-  <script src="/local-navigation.js?v=20260901-kontakt-v4" defer></script>
+  <script src="/local-navigation.js?v=20260906-kontakt-v5" defer></script>
 </body>
 
 </html>
