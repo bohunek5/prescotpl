@@ -92,9 +92,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const disp = window.getComputedStyle(el).display;
       if (disp === "none") return;
 
+      // Jeśli element jest nadrzędnym kontenerem zawierającym w sobie slajdy .distSlide,
+      // to pomijamy sam nadrzędny kontener, a nawigujemy bezpośrednio po poszczególnych slajdach .distSlide
+      if (el.querySelector(".distSlide") && !el.classList.contains("distSlide")) {
+        return;
+      }
+
       let isNested = false;
       let p = el.parentElement;
       while (p && p !== document.body) {
+        // .distSlide nie traktujemy jako zagnieżdżonego odrzutka
+        if (el.classList.contains("distSlide")) {
+          break;
+        }
         if (cSet.has(p)) {
           isNested = true;
           break;
@@ -258,7 +268,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const docTotalH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
       const winH = window.innerHeight || 700;
       const maxPageScroll = Math.max(1, docTotalH - winH);
-      const pageProgress = currentScrollY / maxPageScroll;
+      const remainingScroll = docTotalH - (currentScrollY + winH);
+
+      // 0. STOPKA / DÓŁ STRONY: BEZWZGLĘDNY ZAKAZ STRZAŁKI W DÓŁ!
+      // Gdy użytkownik dociera do stopki lub do końca strony, nie ma nic niżej.
+      const footerEl = document.querySelector("#stopka, footer, .elementor-location-footer");
+      let footerInView = false;
+      if (footerEl) {
+        const fRect = footerEl.getBoundingClientRect();
+        if (fRect.top <= winH) {
+          footerInView = true;
+        }
+      }
+
+      if (remainingScroll <= 80 || footerInView) {
+        scrollDownBtn.classList.add("psd-hidden");
+        scrollDownBtn.style.top = "";
+        scrollDownBtn.style.bottom = "";
+        return;
+      }
 
       // 1. Startowo na Hero: widoczna w pozycji startowej
       if (currentScrollY <= 80) {
@@ -268,33 +296,33 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // 2. REGUŁA KAROLA - ZASADA 90%:
-      // W przedziale 0% - 89% strony i bloków: STRZAŁKI MA BEZWZGLĘDNIE NIE BYĆ!
-      // Pojawia się DOPIERO OD 90% W GÓRĘ (w tym na dole strony pod "Wyślij zapytanie")!
+      // W przedziale 0% - 89% bloku: STRZAŁKI MA BEZWZGLĘDNIE NIE BYĆ!
+      // Pojawia się DOPIERO OD 90% wysokości aktywnego bloku w górę, aby przejść do kolejnej sekcji.
       let shouldShow = false;
 
-      // Jeśli cały scroll strony osiągnął >= 90% (dół strony, sekcja formularza "Wyślij zapytanie"):
-      if (pageProgress >= 0.88) {
-        shouldShow = true;
-      } else {
-        // Sprawdź postęp w aktualnie widocznym bloku:
-        const topSections = getTopLevelSections();
-        const vCenter = winH * 0.5;
+      // Sprawdź postęp w aktualnie widocznym bloku:
+      const topSections = getTopLevelSections();
+      const vCenter = winH * 0.5;
 
-        let activeIndex = -1;
-        for (let i = 0; i < topSections.length; i++) {
-          const r = topSections[i].getBoundingClientRect();
-          if (r.top <= vCenter && r.bottom >= vCenter) {
-            activeIndex = i;
-            break;
-          }
+      let activeIndex = -1;
+      for (let i = 0; i < topSections.length; i++) {
+        const r = topSections[i].getBoundingClientRect();
+        if (r.top <= vCenter && r.bottom >= vCenter) {
+          activeIndex = i;
+          break;
         }
+      }
 
-        if (activeIndex !== -1) {
-          const activeSec = topSections[activeIndex];
-          const aRect = activeSec.getBoundingClientRect();
-          const aHeight = activeSec.offsetHeight;
+      if (activeIndex !== -1) {
+        const activeSec = topSections[activeIndex];
+        const aRect = activeSec.getBoundingClientRect();
+        const aHeight = activeSec.offsetHeight;
 
-          const isFullScreenSlide = Math.abs(aHeight - winH) < 140 || activeSec.classList.contains("distSlide");
+        // Jeśli aktywną sekcją jest formularz handlowy, slajd marki z własną dedykowaną strzałką .distArrow, lub ostatnia sekcja:
+        if (activeSec.matches("#zostan-dystrybutorem, .dist-form-section") || activeSec.classList.contains("distSlide") || activeSec.querySelector(".distArrow") || activeIndex >= topSections.length - 1) {
+          shouldShow = false;
+        } else {
+          const isFullScreenSlide = Math.abs(aHeight - winH) < 140;
           if (isFullScreenSlide) {
             if (Math.abs(aRect.top) <= winH * 0.25) {
               shouldShow = true;
@@ -317,33 +345,9 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollDownBtn.classList.remove("psd-hidden");
         updateArrowColor(scrollDownBtn, currentScrollY);
 
-        // WYJĄTKOWO DLA DYSTRYBUTORA: STRZAŁKA ZAWSZE CZYSTO POD NAPIS / PRZYCISK (BEZ NACHODZENIA)
-        const submitBtn = document.querySelector("#df-submit-btn, .dist-submit-btn");
-        const formSection = document.querySelector("#zostan-dystrybutorem, .dist-form-section");
-
-        let isOverForm = false;
-        if (formSection) {
-          const fsRect = formSection.getBoundingClientRect();
-          if (fsRect.top < winH && fsRect.bottom > 0) {
-            isOverForm = true;
-          }
-        }
-
-        if (isOverForm && submitBtn) {
-          const bRect = submitBtn.getBoundingClientRect();
-          if (bRect.top > 0 && bRect.bottom < winH - 24) {
-            // Precyzyjnie 16px pod dolną krawędzią przycisku
-            scrollDownBtn.style.top = `${Math.round(bRect.bottom + 16)}px`;
-            scrollDownBtn.style.bottom = "auto";
-          } else {
-            scrollDownBtn.style.top = "";
-            scrollDownBtn.style.bottom = "24px";
-          }
-        } else {
-          scrollDownBtn.style.top = "";
-          const hasDock = document.querySelector(".prescot-dock");
-          scrollDownBtn.style.bottom = hasDock ? "90px" : "28px";
-        }
+        scrollDownBtn.style.top = "";
+        const hasDock = document.querySelector(".prescot-dock");
+        scrollDownBtn.style.bottom = hasDock ? "90px" : "28px";
       } else {
         scrollDownBtn.classList.add("psd-hidden");
         scrollDownBtn.style.top = "";
@@ -423,18 +427,22 @@ document.addEventListener("DOMContentLoaded", () => {
         : "/wp-content/uploads/2026/03/prescot-shop-bg.webp";
 
       dialog.innerHTML = `
-        <div class="b2c-dialog-box" style="background-image: linear-gradient(180deg, rgba(8, 12, 22, 0.82) 0%, rgba(8, 12, 22, 0.96) 100%), url('${bgImgUrl}') !important;">
+        <div class="b2c-dialog-box">
           <button type="button" class="b2c-dialog-close" id="b2cCloseCross" aria-label="Zamknij">&times;</button>
           
-          <div class="b2c-dialog-badge">SKLEP INTERNETOWY B2C</div>
+          <div class="b2c-dialog-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            Sklep Internetowy B2C
+          </div>
           
-          <h3 class="b2c-dialog-title">Przechodzisz na sklep<br><span style="color:#ff6b3d; text-shadow:0 0 20px rgba(255,107,61,0.4);">prescot.com.pl</span></h3>
+          <h3 class="b2c-dialog-title">Przechodzisz do sklepu<br><span class="b2c-brand-domain">prescot.com.pl</span></h3>
           
           <p class="b2c-main-desc">Oficjalny sklep dla klientów detalicznych i szybkich zakupów online.</p>
 
           <div class="b2c-dialog-actions">
             <a href="https://prescot.com.pl/" id="b2cConfirmBtn" target="_blank" rel="noopener" class="b2c-btn-confirm">
-              Przejdź do sklepu prescot.com.pl &rarr;
+              <span>Przejdź do sklepu prescot.com.pl</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
             <button type="button" class="b2c-btn-cancel" id="b2cCancelBtn">
               Zostań na tej stronie

@@ -76,126 +76,7 @@
     </div>
   </section>
 
-  <!-- SEKCJA FORMULARZA ZOSTAŃ DYSTRYBUTOREM -->
-  <section class="dist-form-section" id="zostan-dystrybutorem">
-    <div class="dist-form-container">
-      <div class="dist-section-header" style="margin-bottom: 30px;">
-        <span class="dist-section-eyebrow">Program Partnerski</span>
-        <h2 class="dist-section-title">Zostań naszym Dystrybutorem</h2>
-        <p class="dist-section-desc">Wypełnij zgłoszenie handlowe. Twój dedykowany opiekun B2B aktywuje progi hurtowe, przypisze rabaty producenckie i ustali indywidualne warunki handlowe.</p>
-      </div>
 
-      <form id="distributor-form" onsubmit="event.preventDefault(); document.getElementById('dist-success-box').style.display='block'; this.reset();">
-                <div class="dist-form-grid">
-          <div class="dist-input-group">
-            <label for="df-name">Imię i Nazwisko *</label>
-            <input type="text" id="df-name" placeholder="np. Jan Kowalski" required>
-          </div>
-          <div class="dist-input-group">
-            <label for="df-company">Nazwa Firmy *</label>
-            <input type="text" id="df-company" placeholder="np. Elektro-Hurt Sp. z o.o." required>
-          </div>
-          <div class="dist-input-group">
-            <label for="df-nip">NIP Firmy *</label>
-            <input type="text" id="df-nip" placeholder="np. 8451996500" required>
-          </div>
-          <div class="dist-input-group">
-            <label for="df-phone">Numer Telefonu *</label>
-            <input type="tel" id="df-phone" placeholder="np. +48 500 600 700" required>
-          </div>
-          <div class="dist-input-group">
-            <label for="df-email">Adres E-mail *</label>
-            <input type="email" id="df-email" placeholder="np. biuro@twojafirma.pl" required>
-          </div>
-          <div class="dist-input-group">
-            <label for="df-type">Profil działalności</label>
-            <select id="df-type">
-              <option value="hurtownia">Hurtownia elektrotechniczna</option>
-              <option value="salon">Salon oświetlenia / Showroom</option>
-              <option value="instalator">Instalator / Wykonawca</option>
-              <option value="projektant">Architekt / Projektant wnętrz</option>
-              <option value="producent">Producent mebli / reklam</option>
-              <option value="inny">Inna działalność</option>
-            </select>
-          </div>
-          <div class="dist-input-group full-col">
-            <label class="dist-label-main">Wybierz asortyment dystrybucyjny *</label>
-            <div class="dist-brand-selector-grid">
-              <label class="dist-brand-card" title="Taśmy LED Prescot">
-                <input type="checkbox" name="interest" value="tasmy" checked>
-                <div class="dist-brand-card-inner">
-                  <div class="dist-brand-card-logo-wrap">
-                    <img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="Prescot LED" class="dist-brand-card-logo logo-prescot">
-                  </div>
-                  <div class="dist-brand-card-check">
-                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  </div>
-                </div>
-              </label>
-
-              <label class="dist-brand-card" title="Profile aluminiowe KLUŚ">
-                <input type="checkbox" name="interest" value="klus" checked>
-                <div class="dist-brand-card-inner">
-                  <div class="dist-brand-card-logo-wrap">
-                    <img src="/wp-content/uploads/2026/01/KLUS-distributor-big_web.webp" alt="Profile KLUŚ" class="dist-brand-card-logo logo-klus">
-                  </div>
-                  <div class="dist-brand-card-check">
-                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  </div>
-                </div>
-              </label>
-
-              <label class="dist-brand-card" title="Zasilacze Scharfer 7Y">
-                <input type="checkbox" name="interest" value="scharfer" checked>
-                <div class="dist-brand-card-inner">
-                  <div class="dist-brand-card-logo-wrap">
-                    <img src="/wp-content/uploads/2026/01/scharfer_pure_logo.png" alt="Zasilacze Scharfer" class="dist-brand-card-logo logo-scharfer">
-                  </div>
-                  <div class="dist-brand-card-check">
-                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  </div>
-                </div>
-              </label>
-
-              <label class="dist-brand-card" title="ELBA - Europejski producent opraw LED">
-                <input type="checkbox" name="interest" value="elba" checked>
-                <div class="dist-brand-card-inner">
-                  <div class="dist-brand-card-logo-wrap">
-                    <img src="/wp-content/uploads/2026/elba/elba_logo.webp" alt="ELBA - Europejski producent opraw LED" class="dist-brand-card-logo logo-elba">
-                  </div>
-                  <div class="dist-brand-card-check">
-                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  </div>
-                </div>
-              </label>
-
-              <label class="dist-brand-card" title="MiBoxer - Inteligentne sterowanie oświetleniem">
-                <input type="checkbox" name="interest" value="miboxer" checked>
-                <div class="dist-brand-card-inner">
-                  <div class="dist-brand-card-logo-wrap">
-                    <img src="/wp-content/uploads/2026/01/Miboxer_web.webp" alt="MiBoxer - Inteligentne sterowanie oświetleniem" class="dist-brand-card-logo logo-miboxer">
-                  </div>
-                  <div class="dist-brand-card-check">
-                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-          <div class="dist-input-group full-col">
-            <label for="df-msg">Uwagi / Oczekiwania handlowe</label>
-            <textarea id="df-msg" rows="3" placeholder="Napisz, jakich grup asortymentowych potrzebujesz, jaki jest szacowany wolumen zakupowy lub podaj NIP do szybkiej weryfikacji rabatowej..."></textarea>
-          </div>
-          <div class="full-col dist-btn-wrap">
-            <button type="submit" class="dist-submit-btn">Wyślij zgłoszenie dystrybutora →</button>
-          </div>
-        </div>
-        <div id="dist-success-box" class="dist-form-success">
-          ✓ Dziękujemy! Zgłoszenie zostało przyjęte. Twój dedykowany opiekun B2B skontaktuje się z Tobą w ciągu 30 minut.
-        </div>
-      </form>
-    </div>
-  </section>
 
   <div id="dystrybucja-marki"><style>
 :root{ --radius:26px; }
@@ -307,6 +188,12 @@
 .distSlide.is-scharfer .distBtn:hover { background: transparent; border-color: #9b2c2c; color: #9b2c2c; }
 .distSlide.is-scharfer .distBtn:hover span { background: #9b2c2c; color: #fff; }
 .distSlide.is-scharfer .distArrow, .distSlide.is-scharfer .distArrowUp { background: #9b2c2c; color: #ffffff; }
+
+.distSlide.is-elba .distBtn { background: #004b87; color: #fff; border-color: #004b87; }
+.distSlide.is-elba .distBtn span { background: #fff; color: #004b87; }
+.distSlide.is-elba .distBtn:hover { background: transparent; border-color: #004b87; color: #004b87; }
+.distSlide.is-elba .distBtn:hover span { background: #004b87; color: #fff; }
+.distSlide.is-elba .distArrow, .distSlide.is-elba .distArrowUp { background: #004b87; color: #ffffff; }
 
 .distSlide.is-miboxer .distBtn { 
   background: linear-gradient(90deg, #ff004c, #ff7a00, #ffe600, #3cff00, #00ffd5, #0084ff, #7a00ff, #ff00c8, #ff004c);
@@ -492,8 +379,7 @@
 }
 </style><div class="distWrap">
 
-<section class="distSlide distFloat is-prescot" data-bg="#ffffff" data-count="18" data-images='["/wp-content/uploads/2026/01/katalog-wspolne_14katalog-wspolne-2.webp","/wp-content/uploads/2026/01/katalog-wspolne_13katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp","/wp-content/uploads/2026/01/DELUX-5.webp","/wp-content/uploads/2026/01/DELUX-4.webp","/wp-content/uploads/2026/01/B070-BREAD-1.webp","/wp-content/uploads/2026/01/24e006-033-10-ww_1124e006-033-10-ww-tasmy-delux-4014-biala-ciepla-2.webp","/wp-content/uploads/2026/01/katalog-wspolne_2katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp"]'>
-  
+<section id="sl-prescot" class="distSlide distFloat is-prescot" data-bg="#ffffff" data-count="18" data-images='["/wp-content/uploads/2026/01/katalog-wspolne_14katalog-wspolne-2.webp","/wp-content/uploads/2026/01/katalog-wspolne_13katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp","/wp-content/uploads/2026/01/DELUX-5.webp","/wp-content/uploads/2026/01/DELUX-4.webp","/wp-content/uploads/2026/01/B070-BREAD-1.webp","/wp-content/uploads/2026/01/24e006-033-10-ww_1124e006-033-10-ww-tasmy-delux-4014-biala-ciepla-2.webp","/wp-content/uploads/2026/01/katalog-wspolne_2katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp"]'>
   <div class="floatLayer"></div>
   <div class="distGrid">
     <div class="distContentBox">
@@ -506,11 +392,11 @@
       <img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="Prescot LED - Polski Producent" loading="lazy" decoding="async"><noscript><img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="Prescot LED - Polski Producent" loading="lazy" decoding="async"></noscript>
     </div>
   </div>
-  
+  <div class="distArrow" aria-label="Następny slajd: KLUŚ"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></div>
 </section>
 
-<section class="distSlide distFloat is-klus" data-bg="#ffffff" data-count="24" data-images='["/wp-content/uploads/2026/01/k1.webp","/wp-content/uploads/2026/01/k3.webp","/wp-content/uploads/2026/01/k4.webp","/wp-content/uploads/2026/01/k5.webp","/wp-content/uploads/2026/01/k6.webp","/wp-content/uploads/2026/01/k7.webp","/wp-content/uploads/2026/01/k8.webp","/wp-content/uploads/2026/01/k9.webp","/wp-content/uploads/2026/01/k10.webp","/wp-content/uploads/2026/01/k11.webp","/wp-content/uploads/2026/01/k12.webp","/wp-content/uploads/2026/01/k13.webp","/wp-content/uploads/2026/01/k14.webp","/wp-content/uploads/2026/01/k15.webp","/wp-content/uploads/2026/01/k16.webp","/wp-content/uploads/2026/01/k17.webp","/wp-content/uploads/2026/01/k18.webp","/wp-content/uploads/2026/01/k19.webp","/wp-content/uploads/2026/01/k20.webp","/wp-content/uploads/2026/01/k21.webp","/wp-content/uploads/2026/01/k22.webp","/wp-content/uploads/2026/01/k23.webp","/wp-content/uploads/2026/01/k24.webp"]'>
-  
+<section id="sl-klus" class="distSlide distFloat is-klus" data-bg="#ffffff" data-count="24" data-images='["/wp-content/uploads/2026/01/k1.webp","/wp-content/uploads/2026/01/k3.webp","/wp-content/uploads/2026/01/k4.webp","/wp-content/uploads/2026/01/k5.webp","/wp-content/uploads/2026/01/k6.webp","/wp-content/uploads/2026/01/k7.webp","/wp-content/uploads/2026/01/k8.webp","/wp-content/uploads/2026/01/k9.webp","/wp-content/uploads/2026/01/k10.webp","/wp-content/uploads/2026/01/k11.webp","/wp-content/uploads/2026/01/k12.webp","/wp-content/uploads/2026/01/k13.webp","/wp-content/uploads/2026/01/k14.webp","/wp-content/uploads/2026/01/k15.webp","/wp-content/uploads/2026/01/k16.webp","/wp-content/uploads/2026/01/k17.webp","/wp-content/uploads/2026/01/k18.webp","/wp-content/uploads/2026/01/k19.webp","/wp-content/uploads/2026/01/k20.webp","/wp-content/uploads/2026/01/k21.webp","/wp-content/uploads/2026/01/k22.webp","/wp-content/uploads/2026/01/k23.webp","/wp-content/uploads/2026/01/k24.webp"]'>
+  <div class="distArrowUp" aria-label="Poprzedni slajd: Prescot LED"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></div>
   <div class="floatLayer"></div>
   <div class="distGrid">
     <div class="distContentBox">
@@ -523,11 +409,11 @@
       <img data-lazyloaded="1" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" decoding="async" data-src="/wp-content/uploads/2026/01/KLUS-distributor-big_web.webp" alt="Profile aluminiowe KLUŚ Design"><noscript><img decoding="async" src="/wp-content/uploads/2026/01/KLUS-distributor-big_web.webp" alt="Profile aluminiowe KLUŚ Design"></noscript>
     </div>
   </div>
-  
+  <div class="distArrow" aria-label="Następny slajd: Scharfer"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></div>
 </section>
 
-<section class="distSlide distFloat is-scharfer" data-bg="#ffffff" data-count="20" data-images='["/wp-content/uploads/2026/01/sch1_web.webp","/wp-content/uploads/2026/01/sch2_web.webp","/wp-content/uploads/2026/01/sch3_web.webp","/wp-content/uploads/2026/01/sch4_web.webp","/wp-content/uploads/2026/01/sch5_web.webp","/wp-content/uploads/2026/01/sch6_web.webp","/wp-content/uploads/2026/01/sch7_web.webp","/wp-content/uploads/2026/01/sch8_web.webp","/wp-content/uploads/2026/01/sch9_web.webp","/wp-content/uploads/2026/01/sch10_web.webp"]'>
-  
+<section id="sl-scharfer" class="distSlide distFloat is-scharfer" data-bg="#ffffff" data-count="20" data-images='["/wp-content/uploads/2026/01/sch1_web.webp","/wp-content/uploads/2026/01/sch2_web.webp","/wp-content/uploads/2026/01/sch3_web.webp","/wp-content/uploads/2026/01/sch4_web.webp","/wp-content/uploads/2026/01/sch5_web.webp","/wp-content/uploads/2026/01/sch6_web.webp","/wp-content/uploads/2026/01/sch7_web.webp","/wp-content/uploads/2026/01/sch8_web.webp","/wp-content/uploads/2026/01/sch9_web.webp","/wp-content/uploads/2026/01/sch10_web.webp"]'>
+  <div class="distArrowUp" aria-label="Poprzedni slajd: KLUŚ"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></div>
   <div class="floatLayer"></div>
   <div class="distGrid">
     <div class="distContentBox">
@@ -540,11 +426,11 @@
       <img data-lazyloaded="1" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" decoding="async" data-src="/wp-content/uploads/2026/01/scharfer_pure_logo.png" alt="Zasilacze do LED Scharfer"><noscript><img decoding="async" src="/wp-content/uploads/2026/01/scharfer_pure_logo.png" alt="Zasilacze do LED Scharfer"></noscript>
     </div>
   </div>
-  
+  <div class="distArrow" aria-label="Następny slajd: ELBA"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></div>
 </section>
 
-
 <section id="sl-elba" class="distSlide distFloat is-elba" data-bg="#ffffff" data-count="24" data-images='["/wp-content/uploads/2026/elba/elba_uliczna_clean.png","/wp-content/uploads/2026/elba/elba_oprawa_12_clean.png","/wp-content/uploads/2026/elba/elba_8_clean.png","/wp-content/uploads/2026/elba/elba_5_clean.png","/wp-content/uploads/2026/elba/elba_13_clean.png","/wp-content/uploads/2026/elba/elba_15_clean.png","/wp-content/uploads/2026/elba/elba_parkowa_01.webp","/wp-content/uploads/2026/elba/elba_drogowa_01.webp","/wp-content/uploads/2026/elba/elba_dl_4.png","/wp-content/uploads/2026/elba/elba_dl_5.png","/wp-content/uploads/2026/elba/elba_dl_7.png"]'>
+  <div class="distArrowUp" aria-label="Poprzedni slajd: Scharfer"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></div>
   <div class="floatLayer"></div>
   <div class="distGrid">
     <div class="distContentBox">
@@ -557,10 +443,11 @@
       <img src="/wp-content/uploads/2026/elba/elba_logo.webp" alt="ELBA - Europejski producent opraw LED" loading="lazy" decoding="async">
     </div>
   </div>
+  <div class="distArrow" aria-label="Następny slajd: MiBoxer"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></div>
 </section>
 
 <section id="sl-miboxer" class="distSlide distFloat is-miboxer" data-bg="#ffffff" data-count="24" data-images='["/wp-content/uploads/2026/01/2331s.webp","/wp-content/uploads/2026/01/c4.webp","/wp-content/uploads/2026/01/c3.webp","/wp-content/uploads/2026/01/b2.webp","/wp-content/uploads/2026/01/3331s.webp","/wp-content/uploads/2026/01/3s3.webp","/wp-content/uploads/2026/01/3s1.webp","/wp-content/uploads/2026/01/3s2.webp","/wp-content/uploads/2026/01/22134.webp","/wp-content/uploads/2026/01/122.webp","/wp-content/uploads/2026/01/11.webp","/wp-content/uploads/2026/01/STE2.webp","/wp-content/uploads/2026/01/ANT1.webp","/wp-content/uploads/2026/01/H5.webp","/wp-content/uploads/2026/01/g5.webp","/wp-content/uploads/2026/01/221.webp","/wp-content/uploads/2026/01/32112.webp","/wp-content/uploads/2026/01/321.webp","/wp-content/uploads/2026/01/312312.webp","/wp-content/uploads/2026/01/3112.webp","/wp-content/uploads/2026/01/331.webp","/wp-content/uploads/2026/01/r5.webp","/wp-content/uploads/2026/01/v4.webp","/wp-content/uploads/2026/01/y2.webp"]'>
-  
+  <div class="distArrowUp" aria-label="Poprzedni slajd: ELBA"><svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg></div>
   <div class="floatLayer"></div>
   <div class="distGrid">
         <div class="distContentBox">
@@ -573,7 +460,7 @@
       <img data-lazyloaded="1" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=" decoding="async" data-src="/wp-content/uploads/2026/01/Miboxer_web.webp" alt="Sterowanie oświetleniem MiBoxer MiLight"><noscript><img decoding="async" src="/wp-content/uploads/2026/01/Miboxer_web.webp" alt="Sterowanie oświetleniem MiBoxer MiLight"></noscript>
     </div>
   </div>
-  
+  <div class="distArrow" aria-label="Przejdź do formularza"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></div>
 </section>
 
 </div><script>
@@ -806,6 +693,128 @@ window.addEventListener("load", () => {
   }
 });
 </script></div>
+
+
+  <!-- SEKCJA FORMULARZA ZOSTAŃ DYSTRYBUTOREM -->
+  <section class="dist-form-section" id="zostan-dystrybutorem">
+    <div class="dist-form-container">
+      <div class="dist-section-header" style="margin-bottom: 30px;">
+        <span class="dist-section-eyebrow">Program Partnerski</span>
+        <h2 class="dist-section-title">Zostań naszym Dystrybutorem</h2>
+        <p class="dist-section-desc">Wypełnij zgłoszenie handlowe. Twój dedykowany opiekun B2B aktywuje progi hurtowe, przypisze rabaty producenckie i ustali indywidualne warunki handlowe.</p>
+      </div>
+
+      <form id="distributor-form" onsubmit="event.preventDefault(); document.getElementById('dist-success-box').style.display='block'; this.reset();">
+                <div class="dist-form-grid">
+          <div class="dist-input-group">
+            <label for="df-name">Imię i Nazwisko *</label>
+            <input type="text" id="df-name" placeholder="np. Jan Kowalski" required>
+          </div>
+          <div class="dist-input-group">
+            <label for="df-company">Nazwa Firmy *</label>
+            <input type="text" id="df-company" placeholder="np. Elektro-Hurt Sp. z o.o." required>
+          </div>
+          <div class="dist-input-group">
+            <label for="df-nip">NIP Firmy *</label>
+            <input type="text" id="df-nip" placeholder="np. 8451996500" required>
+          </div>
+          <div class="dist-input-group">
+            <label for="df-phone">Numer Telefonu *</label>
+            <input type="tel" id="df-phone" placeholder="np. +48 500 600 700" required>
+          </div>
+          <div class="dist-input-group">
+            <label for="df-email">Adres E-mail *</label>
+            <input type="email" id="df-email" placeholder="np. biuro@twojafirma.pl" required>
+          </div>
+          <div class="dist-input-group">
+            <label for="df-type">Profil działalności</label>
+            <select id="df-type">
+              <option value="hurtownia">Hurtownia elektrotechniczna</option>
+              <option value="salon">Salon oświetlenia / Showroom</option>
+              <option value="instalator">Instalator / Wykonawca</option>
+              <option value="projektant">Architekt / Projektant wnętrz</option>
+              <option value="producent">Producent mebli / reklam</option>
+              <option value="inny">Inna działalność</option>
+            </select>
+          </div>
+          <div class="dist-input-group full-col">
+            <label class="dist-label-main">Wybierz asortyment dystrybucyjny *</label>
+            <div class="dist-brand-selector-grid">
+              <label class="dist-brand-card" title="Taśmy LED Prescot">
+                <input type="checkbox" name="interest" value="tasmy" checked>
+                <div class="dist-brand-card-inner">
+                  <div class="dist-brand-card-logo-wrap">
+                    <img src="/wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="Prescot LED" class="dist-brand-card-logo logo-prescot">
+                  </div>
+                  <div class="dist-brand-card-check">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </div>
+                </div>
+              </label>
+
+              <label class="dist-brand-card" title="Profile aluminiowe KLUŚ">
+                <input type="checkbox" name="interest" value="klus" checked>
+                <div class="dist-brand-card-inner">
+                  <div class="dist-brand-card-logo-wrap">
+                    <img src="/wp-content/uploads/2026/01/KLUS-distributor-big_web.webp" alt="Profile KLUŚ" class="dist-brand-card-logo logo-klus">
+                  </div>
+                  <div class="dist-brand-card-check">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </div>
+                </div>
+              </label>
+
+              <label class="dist-brand-card" title="Zasilacze Scharfer 7Y">
+                <input type="checkbox" name="interest" value="scharfer" checked>
+                <div class="dist-brand-card-inner">
+                  <div class="dist-brand-card-logo-wrap">
+                    <img src="/wp-content/uploads/2026/01/scharfer_pure_logo.png" alt="Zasilacze Scharfer" class="dist-brand-card-logo logo-scharfer">
+                  </div>
+                  <div class="dist-brand-card-check">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </div>
+                </div>
+              </label>
+
+              <label class="dist-brand-card" title="ELBA - Europejski producent opraw LED">
+                <input type="checkbox" name="interest" value="elba" checked>
+                <div class="dist-brand-card-inner">
+                  <div class="dist-brand-card-logo-wrap">
+                    <img src="/wp-content/uploads/2026/elba/elba_logo.webp" alt="ELBA - Europejski producent opraw LED" class="dist-brand-card-logo logo-elba">
+                  </div>
+                  <div class="dist-brand-card-check">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </div>
+                </div>
+              </label>
+
+              <label class="dist-brand-card" title="MiBoxer - Inteligentne sterowanie oświetleniem">
+                <input type="checkbox" name="interest" value="miboxer" checked>
+                <div class="dist-brand-card-inner">
+                  <div class="dist-brand-card-logo-wrap">
+                    <img src="/wp-content/uploads/2026/01/Miboxer_web.webp" alt="MiBoxer - Inteligentne sterowanie oświetleniem" class="dist-brand-card-logo logo-miboxer">
+                  </div>
+                  <div class="dist-brand-card-check">
+                    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="dist-input-group full-col">
+            <label for="df-msg">Uwagi / Oczekiwania handlowe</label>
+            <textarea id="df-msg" rows="3" placeholder="Napisz, jakich grup asortymentowych potrzebujesz, jaki jest szacowany wolumen zakupowy lub podaj NIP do szybkiej weryfikacji rabatowej..."></textarea>
+          </div>
+          <div class="full-col dist-btn-wrap">
+            <button type="submit" class="dist-submit-btn">Wyślij zgłoszenie dystrybutora →</button>
+          </div>
+        </div>
+        <div id="dist-success-box" class="dist-form-success">
+          ✓ Dziękujemy! Zgłoszenie zostało przyjęte. Twój dedykowany opiekun B2B skontaktuje się z Tobą w ciągu 30 minut.
+        </div>
+      </form>
+    </div>
+  </section>
 </main><footer data-elementor-type="footer" data-elementor-id="25535" class="elementor elementor-25535 elementor-location-footer" data-elementor-post-type="elementor_library">
 			<div class="elementor-element elementor-element-5a4fefb6 e-con-full e-flex e-con e-parent" data-id="5a4fefb6" data-element_type="container" data-e-type="container" id="stopka" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 				<div class="elementor-element elementor-element-dca2ef5 elementor-widget__width-inherit elementor-widget elementor-widget-html" data-id="dca2ef5" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
@@ -1112,7 +1121,7 @@ window.addEventListener("load", () => {
   .footerSubtitle { text-align: center; margin-left: auto; margin-right: auto; }
   .submitBtn { width: 100%; justify-content: center; }
    
-  .footerMobileScroll { display: flex; }
+  .footerMobileScroll { display: none !important; }
 
   .footerInfoCol { 
     text-align: center; 
@@ -1142,8 +1151,9 @@ window.addEventListener("load", () => {
 <div id="stopka">
    
   <div class="footerSlide">
-    
-    
+    <div class="stopkaArrowUp" id="arrowToMiboxer" aria-label="Powrót do MiBoxer">
+      <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+    </div>
 
     <div class="footerGrid">
        
@@ -1162,10 +1172,6 @@ window.addEventListener("load", () => {
             <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
           </button>
         </form>
-
-        <div class="footerMobileScroll" id="scrollBtnMobile">
-          <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-        </div>
       </div>
 
       <div class="footerInfoCol" id="daneFirmyTarget">
@@ -1369,14 +1375,14 @@ window.addEventListener("load", () => {
 							<div class="elementor-icon-box-wrapper">
 
 						<div class="elementor-icon-box-icon">
-				<a href="http://prescot.pl/b2b" class="elementor-icon" tabindex="-1" aria-label="B2B">
+				<a href="/dystrybucja/#zostan-dystrybutorem" class="elementor-icon" tabindex="-1" aria-label="B2B">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-shopping-basket" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><path d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z"></path></svg>				</a>
 			</div>
 			
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
-						<a href="http://prescot.pl/b2b" >
+						<a href="/dystrybucja/#zostan-dystrybutorem" >
 							B2B						</a>
 					</h3>
 				
