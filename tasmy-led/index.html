@@ -287,7 +287,7 @@ var pp = {"ajax_url":"/wp-admin/admin-ajax.php"};
 <div class="site-content" id="content">
 <div class="ast-container">
 <div class="elementor elementor-13905" data-elementor-id="13905" data-elementor-post-type="page" data-elementor-type="wp-page">
-<section class="elementor-section elementor-top-section elementor-element elementor-element-76efc104 elementor-section-full_width elementor-section-height-full as-slider elementor-section-height-default elementor-section-items-middle" data-e-type="section" data-element_type="section" data-id="76efc104" data-settings='{"background_background": "slideshow", "background_slideshow_gallery": [{"id": 1, "url": "/wp-content/uploads/2026/02/AdobeStock_933680037.webp"}, {"id": 2, "url": "/wp-content/uploads/2026/02/AdobeStock_990465760.webp"}, {"id": 3, "url": "/wp-content/uploads/2026/02/stunning-kitchen-decor-in-the-form-of-plates-2023-11-27-04-52-32-utc.webp"}, {"id": 4, "url": "/wp-content/uploads/2026/03/12d018-010-10-wl_4-2.webp"}, {"id": 5, "url": "/wp-content/uploads/2026/01/D160scw.webp"}, {"id": 6, "url": "/wp-content/uploads/2026/01/ChatGPT-Image-24-paz-2025-14_20_53_web.webp"}, {"id": 7, "url": "/wp-content/uploads/2026/02/modern-minimalism-style-kitchen-in-new-luxury-home-2023-11-27-05-27-25-utc.webp"}, {"id": 8, "url": "/wp-content/uploads/2026/02/AdobeStock_612771882.webp"}, {"id": 9, "url": "/wp-content/uploads/2026/03/AdobeStock_1284425077-1.webp"}, {"id": 10, "url": "/wp-content/uploads/2026/03/AdobeStock_958838417.webp"}, {"id": 11, "url": "/wp-content/uploads/2026/02/AdobeStock_814607947.webp"}, {"id": 12, "url": "/wp-content/uploads/2026/02/EC320-025-8-WW-IP67N_4EC320-025-8-WW-IP67N.webp"}, {"id": 13, "url": "/wp-content/uploads/2026/02/24EC784-071-RGBWW-nw-IC_7.webp"}, {"id": 14, "url": "/wp-content/uploads/2026/01/dtrue.webp"}, {"id": 15, "url": "/wp-content/uploads/2026/02/lumigen-1-1-1768571866070.webp"}], "background_slideshow_slide_duration": 5000, "background_slideshow_slide_transition": "fade", "background_slideshow_transition_duration": 500}'>
+<section class="elementor-section elementor-top-section elementor-element elementor-element-76efc104 elementor-section-full_width elementor-section-height-full as-slider elementor-section-height-default elementor-section-items-middle" data-e-type="section" data-element_type="section" data-id="76efc104" data-settings='{"background_background": "slideshow", "background_slideshow_gallery": [{"id": 1, "url": "wp-content/uploads/2026/02/AdobeStock_933680037.webp"}, {"id": 2, "url": "wp-content/uploads/2026/02/AdobeStock_990465760.webp"}, {"id": 3, "url": "wp-content/uploads/2026/02/stunning-kitchen-decor-in-the-form-of-plates-2023-11-27-04-52-32-utc.webp"}, {"id": 4, "url": "wp-content/uploads/2026/03/12d018-010-10-wl_4-2.webp"}, {"id": 5, "url": "wp-content/uploads/2026/01/D160scw.webp"}, {"id": 6, "url": "wp-content/uploads/2026/01/ChatGPT-Image-24-paz-2025-14_20_53_web.webp"}, {"id": 7, "url": "wp-content/uploads/2026/02/modern-minimalism-style-kitchen-in-new-luxury-home-2023-11-27-05-27-25-utc.webp"}, {"id": 8, "url": "wp-content/uploads/2026/02/AdobeStock_612771882.webp"}, {"id": 9, "url": "wp-content/uploads/2026/03/AdobeStock_1284425077-1.webp"}, {"id": 10, "url": "wp-content/uploads/2026/03/AdobeStock_958838417.webp"}, {"id": 11, "url": "wp-content/uploads/2026/02/AdobeStock_814607947.webp"}, {"id": 12, "url": "wp-content/uploads/2026/02/EC320-025-8-WW-IP67N_4EC320-025-8-WW-IP67N.webp"}, {"id": 13, "url": "wp-content/uploads/2026/02/24EC784-071-RGBWW-nw-IC_7.webp"}, {"id": 14, "url": "wp-content/uploads/2026/01/dtrue.webp"}, {"id": 15, "url": "wp-content/uploads/2026/02/lumigen-1-1-1768571866070.webp"}], "background_slideshow_slide_duration": 5000, "background_slideshow_slide_transition": "fade", "background_slideshow_transition_duration": 500}'>
 <div class="elementor-background-overlay"></div>
 <div class="elementor-container elementor-column-gap-no">
 <div class="elementor-column elementor-col-50 elementor-top-column elementor-element elementor-element-3d1e87a1" data-e-type="column" data-element_type="column" data-id="3d1e87a1">
@@ -1140,13 +1140,21 @@ setTimeout(function(){
     },50)
 }, 500)
 
+function resolveAssetUrl(url) {
+    if (!url) return '';
+    var isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.startsWith('/prescotpl');
+    var prefix = isGH ? '/prescotpl/' : '/';
+    var clean = url.replace(/^\/prescotpl\//, '').replace(/^\//, '');
+    return prefix + clean;
+}
+
 var bgs = JSON.parse($this.attr('data-settings')).background_slideshow_gallery,
-    bgHTML = '<div class="as-slider-background">'
+    bgHTML = '<div class="as-slider-background">'
 
 if(bgs){
-    bgs.forEach(function(background){
-        bgHTML += `<img decoding="async" src="${background.url}"/>`
-    })
+    bgs.forEach(function(background){
+        bgHTML += `<img decoding="async" src="${resolveAssetUrl(background.url)}" alt="Prescot LED"/>`
+    })
 }
 bgHTML += '</div>'
 

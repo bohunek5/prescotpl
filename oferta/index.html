@@ -630,7 +630,7 @@ document.addEventListener('keydown', function(e) {
 				</div>
 					</div>
 				</div>
-		<div class="elementor-element elementor-element-41e0875b e-con-full as-slider elementor-hidden-mobile e-flex e-con e-parent" data-id="41e0875b" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;slideshow&quot;,&quot;background_slideshow_gallery&quot;:[{&quot;id&quot;:26000,&quot;url&quot;:&quot;/wp-content/uploads/2026/02/ua-1.webp&quot;},{&quot;id&quot;:26001,&quot;url&quot;:&quot;/wp-content/uploads/2026/02/oprawa-led-prescot.webp&quot;},{&quot;id&quot;:26002,&quot;url&quot;:&quot;/wp-content/uploads/2026/02/KOSZULKA-START.webp&quot;},{&quot;id&quot;:26003,&quot;url&quot;:&quot;/assets/controllers/rgbcct-main.jpg&quot;},{&quot;id&quot;:26004,&quot;url&quot;:&quot;/assets/prmad/pr-mad-family.webp&quot;},{&quot;id&quot;:26005,&quot;url&quot;:&quot;&quot;},{&quot;id&quot;:26006,&quot;url&quot;:&quot;/assets/offer/profile-led.webp&quot;}],&quot;background_slideshow_slide_duration&quot;:5000,&quot;background_slideshow_slide_transition&quot;:&quot;fade&quot;,&quot;background_slideshow_transition_duration&quot;:500}">
+		<div class="elementor-element elementor-element-41e0875b e-con-full as-slider elementor-hidden-mobile e-flex e-con e-parent" data-id="41e0875b" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;slideshow&quot;,&quot;background_slideshow_gallery&quot;:[{&quot;id&quot;:26000,&quot;url&quot;:&quot;wp-content/uploads/2026/02/ua-1.webp&quot;},{&quot;id&quot;:26001,&quot;url&quot;:&quot;wp-content/uploads/2026/02/oprawa-led-prescot.webp&quot;},{&quot;id&quot;:26002,&quot;url&quot;:&quot;wp-content/uploads/2026/02/KOSZULKA-START.webp&quot;},{&quot;id&quot;:26003,&quot;url&quot;:&quot;assets/controllers/rgbcct-main.webp&quot;},{&quot;id&quot;:26004,&quot;url&quot;:&quot;assets/prmad/pr-mad-family.webp&quot;},{&quot;id&quot;:26005,&quot;url&quot;:&quot;assets/offer/klus-profile.webp&quot;},{&quot;id&quot;:26006,&quot;url&quot;:&quot;wp-content/uploads/2026/02/top-pro_2-akcesoria.webp&quot;}],&quot;background_slideshow_slide_duration&quot;:5000,&quot;background_slideshow_slide_transition&quot;:&quot;fade&quot;,&quot;background_slideshow_transition_duration&quot;:500}">
 		<div class="elementor-element elementor-element-545c1b1a e-con-full e-flex e-con e-child" data-id="545c1b1a" data-element_type="container" data-e-type="container">
 		<div class="elementor-element elementor-element-619febb9 e-con-full as-bar e-flex e-con e-child" data-id="619febb9" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;position&quot;:&quot;absolute&quot;}">
 				</div>
@@ -700,12 +700,20 @@ setTimeout(function(){
     },50)
 }, 500)
 
+function resolveAssetUrl(url) {
+    if (!url) return '';
+    var isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.startsWith('/prescotpl');
+    var prefix = isGH ? '/prescotpl/' : '/';
+    var clean = url.replace(/^\/prescotpl\//, '').replace(/^\//, '');
+    return prefix + clean;
+}
+
 var bgs = JSON.parse($this.attr('data-settings')).background_slideshow_gallery,
     bgHTML = '<div class="as-slider-background">'
 
 if(bgs){
     bgs.forEach(function(background){
-        bgHTML += `<img decoding="async" src="${background.url}"/>`
+        bgHTML += `<img decoding="async" src="${resolveAssetUrl(background.url)}" alt="Prescot LED"/>`
     })
 }
 bgHTML += '</div>'

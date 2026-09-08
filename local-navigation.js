@@ -390,28 +390,98 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateNavVisibility();
 
-  // 5. Initialize GTranslate on dynamically created dock if needed
-  if (!document.getElementById("gt-wrapper-prescot-global-script") && !window.gtranslateSettings) {
-    const isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.startsWith("/prescotpl");
-    const prefix = isGH ? "/prescotpl" : "";
-    window.gtranslateSettings = window.gtranslateSettings || {};
-    window.gtranslateSettings['prescot-global'] = {
-      default_language: "pl",
-      languages: ["ar", "zh-CN", "cs", "da", "en", "et", "fi", "fr", "de", "it", "lt", "pl", "es", "sv"],
-      url_structure: "none",
-      flag_style: "3d",
-      wrapper_selector: ".gtranslate_wrapper",
-      alt_flags: [],
-      float_switcher_open_direction: "top",
-      switcher_horizontal_position: "inline",
-      flags_location: prefix + "/wp-content/plugins/gtranslate/flags/"
-    };
-    const gtScript = document.createElement("script");
-    gtScript.id = "gt-wrapper-prescot-global-script";
-    gtScript.src = "wp-content/plugins/gtranslate/js/float.js?ver=3.1.1";
-    gtScript.defer = true;
-    document.body.appendChild(gtScript);
+  // 5. Automatic GTranslate Dock Sync & Mounting
+  function syncGTranslateToDock() {
+    const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
+    if (!dockLang) return;
+
+    // If dock already has the active switcher, we are good
+    if (dockLang.querySelector("#gt_float_wrapper")) return;
+
+    // Check if WordPress generated a wrapper elsewhere on the page
+    const origWrapper = document.querySelector('[id^="gt-wrapper-"]:not(#gt-wrapper-prescot-global)');
+    if (origWrapper) {
+      dockLang.innerHTML = "";
+      dockLang.appendChild(origWrapper);
+      return;
+    }
+
+    // If no existing wrapper, check if loose switcher exists
+    const looseSwitcher = document.getElementById("gt_float_wrapper");
+    if (looseSwitcher && !dockLang.contains(looseSwitcher)) {
+      dockLang.innerHTML = "";
+      dockLang.appendChild(looseSwitcher);
+      return;
+    }
+
+    // Fallback: If not initialized at all, dynamically initialize GTranslate
+    if (!document.getElementById("gt-wrapper-prescot-global-script")) {
+      const isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.startsWith("/prescotpl");
+      const prefix = isGH ? "/prescotpl/" : "/";
+      const widgetId = "prescot-global-widget";
+      window.gtranslateSettings = window.gtranslateSettings || {};
+      window.gtranslateSettings[widgetId] = {
+        default_language: "pl",
+        languages: ["ar", "zh-CN", "cs", "da", "en", "et", "fi", "fr", "de", "it", "lt", "pl", "es", "sv"],
+        url_structure: "none",
+        flag_style: "3d",
+        wrapper_selector: ".prescot-dock .gtranslate_wrapper",
+        alt_flags: [],
+        float_switcher_open_direction: "top",
+        switcher_horizontal_position: "inline",
+        flags_location: prefix + "wp-content/plugins/gtranslate/flags/"
+      };
+      const gtScript = document.createElement("script");
+      gtScript.id = "gt-wrapper-prescot-global-script";
+      gtScript.src = prefix + "wp-content/plugins/gtranslate/js/float.js?ver=3.1.2";
+      gtScript.setAttribute("data-gt-widget-id", widgetId);
+      gtScript.setAttribute("data-no-optimize", "1");
+      gtScript.setAttribute("data-no-minify", "1");
+      gtScript.defer = true;
+      document.body.appendChild(gtScript);
+    }
   }
+
+  // 6. Fix Slider Background Images (ensure proper prefix on GitHub Pages & subdirectories)
+  function fixSliderBackgrounds() {
+    const isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.startsWith("/prescotpl");
+    if (!isGH) return;
+    document.querySelectorAll(".as-slider-background img").forEach(img => {
+      const src = img.getAttribute("src");
+      if (src && (src.startsWith("/wp-content/") || src.startsWith("/assets/"))) {
+        img.src = "/prescotpl" + src;
+      }
+    });
+  }
+
+  syncGTranslateToDock();
+  fixSliderBackgrounds();
+
+  window.addEventListener("load", () => {
+    syncGTranslateToDock();
+    fixSliderBackgrounds();
+  });
+
+  // Polling checks for async scripts
+  [150, 400, 900, 1800, 3000].forEach(delay => {
+    setTimeout(() => {
+      syncGTranslateToDock();
+      fixSliderBackgrounds();
+    }, delay);
+  });
+
+  // MutationObserver to catch dynamically injected GTranslate float switcher
+  try {
+    const gtObserver = new MutationObserver(() => {
+      const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
+      if (dockLang && !dockLang.querySelector("#gt_float_wrapper")) {
+        syncGTranslateToDock();
+      }
+      fixSliderBackgrounds();
+    });
+    gtObserver.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => gtObserver.disconnect(), 6000);
+  } catch(e) {}
 });
 
 
