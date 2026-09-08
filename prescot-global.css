@@ -43,6 +43,14 @@ html body .distKicker {
   display: none !important;
 }
 
+/* Redundant content down-arrows in hero sections */
+.elementor-element-89ac1c6,
+.elementor-element-44cdc488,
+.elementor-element-2635332e,
+.elementor-element-c617617 {
+  display: none !important;
+}
+
 .prescot-dock,
 .prescot-dock .dock-lang-item,
 .gtranslate_wrapper,
