@@ -224,12 +224,34 @@ html body .distKicker {
   left: auto !important;
   right: auto !important;
   margin: 0 !important;
-  display: block !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.prescot-dock .dock-lang-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+}
+
+.prescot-dock #gt_float_wrapper .gt-selected {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 4px !important;
+  height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
 }
 
 #gt_float_wrapper .gt-selected .gt-current-lang {
-  padding-right: 10px !important;
-  padding-left: 10px !important;
+  padding-right: 6px !important;
+  padding-left: 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
 }
 
 #gt_float_wrapper .gt-selected,
@@ -1997,4 +2019,139 @@ body.has-card-slider #prescotScrollDown {
   border-radius: 0 !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+/* =========================================================
+   HOMEPAGE HERO: VIBRANT PRESCOT BUILDING PHOTO (NO DARK VIDEO)
+   ========================================================= */
+.elementor-20127 .elementor-element.elementor-element-216d8696,
+.elementor-element.elementor-element-216d8696 {
+  background-image: url("wp-content/uploads/2026/01/FirmaPRESCOTLED.webp") !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  position: relative !important;
+}
+
+/* Hide and suppress the dark machine video that covers the hero photo */
+.elementor-element-216d8696 .elementor-background-video-container,
+.elementor-element-216d8696 video.elementor-background-video-hosted {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Modern luxury gradient overlay: lets the building facade and glowing orange LED contours shine through vividly */
+.elementor-20127 .elementor-element.elementor-element-216d8696::before,
+.elementor-element.elementor-element-216d8696::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, 
+    rgba(15, 23, 42, 0.36) 0%, 
+    rgba(15, 23, 42, 0.44) 45%, 
+    rgba(15, 23, 42, 0.70) 100%) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.elementor-element-216d8696 > .e-con-inner {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Shape divider transition into white distribution section */
+.elementor-20127 .elementor-element.elementor-element-216d8696 > .elementor-shape-bottom .elementor-shape-fill,
+.elementor-20127 .elementor-element.elementor-element-216d8696 > .e-con-inner > .elementor-shape-bottom .elementor-shape-fill,
+.elementor-element.elementor-element-216d8696 > .elementor-shape-bottom .elementor-shape-fill,
+.elementor-element.elementor-element-216d8696 > .e-con-inner > .elementor-shape-bottom .elementor-shape-fill {
+  fill: #ffffff !important;
+}
+
+/* High contrast text shadows for maximum legibility */
+.elementor-element-216d8696 .elementor-icon-box-title,
+.elementor-element-216d8696 .elementor-icon-box-title span,
+.elementor-element-216d8696 .elementor-icon-box-title a,
+.elementor-element-216d8696 .elementor-divider__text {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85) !important;
+}
+
+/* Premium glassmorphism badges for the 4 hero feature cards */
+.elementor-element-216d8696 .elementor-view-stacked .elementor-icon {
+  background-color: rgba(255, 255, 255, 0.20) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.elementor-element-216d8696 .elementor-icon-box-wrapper:hover .elementor-icon {
+  background-color: #e14e26 !important;
+  border-color: #e14e26 !important;
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+/* =========================================================
+   DOCK MOBILE NARROW OPTIMIZATION (< 420px)
+   ========================================================= */
+@media (max-width: 420px) {
+  .prescot-dock {
+    gap: 4px !important;
+    padding: 4px 8px !important;
+    bottom: 10px !important;
+    height: 44px !important;
+    max-width: calc(100vw - 12px) !important;
+  }
+  .prescot-dock .dock-item {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .prescot-dock .dock-item svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .prescot-dock .dock-item .dock-logo-icon {
+    width: 22px !important;
+    height: 15px !important;
+  }
+  .prescot-dock .dock-lang-item {
+    padding-left: 2px !important;
+  }
+  #gt_float_wrapper .gt-selected .gt-current-lang {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* =========================================================
+   HOMEPAGE FOOTER: LUXURY KONTAKT BUTTON
+   ========================================================= */
+.p-full-kontakt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #e55933 0%, #c94622 100%);
+  color: #ffffff !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 14px;
+  margin-top: 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(229, 89, 51, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+}
+
+.p-full-kontakt-btn:hover {
+  background: linear-gradient(135deg, #f06a46 0%, #d8512b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(229, 89, 51, 0.5);
+  color: #ffffff !important;
 }
