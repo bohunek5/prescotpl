@@ -43,13 +43,24 @@ html body .distKicker {
   display: none !important;
 }
 
-/* Redundant content down-arrows in hero sections */
+/* Redundant content down-arrows in hero sections and portfolio cards */
 .elementor-element-89ac1c6,
 .elementor-element-44cdc488,
 .elementor-element-2635332e,
-.elementor-element-c617617 {
+.elementor-element-c617617,
+.elementor-element-a31d3c9,
+.elementor-element-cf23908,
+.elementor-element-8041948,
+.elementor-element-bcb598a,
+.elementor-element-218256f,
+.elementor-element-9b89c26,
+.elementor-element-88613a7,
+.elementor-element-12f58fa,
+.elementor-element-a589c260,
+.elementor-element-90c0f07 {
   display: none !important;
 }
+
 
 .prescot-dock,
 .prescot-dock .dock-lang-item,
