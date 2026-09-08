@@ -406,14 +406,14 @@ class="hfeed site" id="page">
 							<div class="elementor-icon-box-wrapper">
 
 						<div class="elementor-icon-box-icon">
-				<a href="dystrybucja/#zostan-dystrybutorem" class="elementor-icon" tabindex="-1" aria-label="B2B">
+				<a href="dystrybucja/#stopka" class="elementor-icon" tabindex="-1" aria-label="B2B">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-shopping-basket" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><path d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z"></path></svg>				</a>
 			</div>
 			
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
-						<a href="dystrybucja/#zostan-dystrybutorem" >
+						<a href="dystrybucja/#stopka" >
 							B2B						</a>
 					</h3>
 				
@@ -1259,7 +1259,7 @@ $(document).ready(function(){
 			</div> <!-- ast-container -->
 	</div><!-- #content -->
 		<footer data-elementor-type="footer" data-elementor-id="25535" class="elementor elementor-25535 elementor-location-footer" data-elementor-post-type="elementor_library">
-			<div class="elementor-element elementor-element-5a4fefb6 e-con-full e-flex e-con e-parent" data-id="5a4fefb6" data-element_type="container" data-e-type="container" id="stopka" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-element elementor-element-5a4fefb6 e-con-full e-flex e-con e-parent" data-id="5a4fefb6" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 				<div class="elementor-element elementor-element-dca2ef5 elementor-widget__width-inherit elementor-widget elementor-widget-html" data-id="dca2ef5" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
 					<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -1594,8 +1594,9 @@ $(document).ready(function(){
 <div id="stopka">
    
   <div class="footerSlide">
-    
-    
+    <div class="stopkaArrowUp" id="arrowToMiboxer" aria-label="Powrót do MiBoxer">
+      <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+    </div>
 
     <div class="footerGrid">
        
@@ -1614,10 +1615,6 @@ $(document).ready(function(){
             <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
           </button>
         </form>
-
-        <div class="footerMobileScroll" id="scrollBtnMobile">
-          <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-        </div>
       </div>
 
       <div class="footerInfoCol" id="daneFirmyTarget">
@@ -1645,6 +1642,10 @@ $(document).ready(function(){
             Tel.: <a href="tel:+48877776482">+48 87 777 64 82</a><br>
             e-mail: <a href="mailto:komponenty@prescot.pl">komponenty@prescot.pl</a>
           </div>
+        <div style="margin-top: 18px; margin-bottom: 22px;">
+          <a href="kontakt/" class="p-full-kontakt-btn" style="width: 100%; box-sizing: border-box;">
+            Zobacz pełny kontakt: sekretariat, zarząd, księgowość &amp; bezpośrednie numery do handlowców →
+          </a>
         </div>
 
         <div class="bottomStack">
@@ -1679,15 +1680,6 @@ $(document).ready(function(){
 
 <script>
 (function() {
-  const mobileArrow = document.getElementById("scrollBtnMobile");
-  const targetSection = document.getElementById("daneFirmyTarget");
-
-  if (mobileArrow && targetSection) {
-    mobileArrow.addEventListener("click", () => {
-      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
-
   // --- NOWY SKRYPT: Strzałka do Miboxera ---
   const arrowToMiboxer = document.getElementById("arrowToMiboxer");
   if (arrowToMiboxer) {
