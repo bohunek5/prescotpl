@@ -20,17 +20,22 @@
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Krona+One&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="prescot-global.css?v=20260906-kontakt-v5">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    if (window.location.hash) {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+    }
+  </script>
   <title>Kontakt, Dział Handlowy & Sekretariat — Prescot LED Giżycko</title>
   <meta name="description"
     content="Oficjalne dane kontaktowe PRESCOT Sp. z o.o. w Giżycku. Dział handlowy, bezpośrednie numery do handlowców, sekretariat, zarząd, księgowość i serwis reklamacji.">
   <style>
     :root {
-      --p-primary: #e55933;
-      --p-primary-hover: #c94622;
-      --p-primary-soft: rgba(229, 89, 51, 0.08);
-      --p-primary-glow: rgba(229, 89, 51, 0.25);
+      --p-primary: #334155;
+      --p-primary-hover: #1e293b;
+      --p-primary-soft: rgba(241, 245, 249, 0.9);
+      --p-primary-glow: rgba(51, 65, 85, 0.15);
       --p-dark: #0f172a;
       --p-dark-soft: #1e293b;
       --p-text: #212a35;
@@ -59,6 +64,13 @@
       scroll-behavior: smooth;
       -webkit-text-size-adjust: 100%;
       overflow-x: hidden;
+    }
+
+    #handlowcy,
+    #centrala,
+    #formularz-kontaktowy,
+    #mapa-dojazdu {
+      scroll-margin-top: 45px;
     }
 
     body {
@@ -119,8 +131,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(229, 89, 51, 0.22);
-      color: #ff9d7d;
+      background: rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
       font-size: 13px;
       font-weight: 700;
       text-transform: uppercase;
@@ -128,16 +140,18 @@
       padding: 8px 20px;
       border-radius: var(--p-radius-pill);
       margin-bottom: 22px;
-      border: 1px solid rgba(229, 89, 51, 0.45);
-      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .p-hero-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #ff5722;
-      box-shadow: 0 0 10px #ff5722;
+      background: #cbd5e1;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       animation: pulse-dot 2s infinite ease-in-out;
     }
 
@@ -191,20 +205,7 @@
       -webkit-backdrop-filter: blur(16px);
     }
 
-    .p-hero-btn.primary {
-      background: rgba(225, 78, 38, 0.88);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      box-shadow: 0 8px 32px rgba(225, 78, 38, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-    }
-
-    .p-hero-btn.primary:hover {
-      background: rgba(240, 90, 48, 0.95);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(225, 78, 38, 0.45);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
+    .p-hero-btn.primary,
     .p-hero-btn.secondary {
       background: rgba(255, 255, 255, 0.14);
       color: #ffffff;
@@ -212,6 +213,7 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3);
     }
 
+    .p-hero-btn.primary:hover,
     .p-hero-btn.secondary:hover {
       background: rgba(255, 255, 255, 0.24);
       border-color: rgba(255, 255, 255, 0.7);
@@ -233,6 +235,7 @@
       transform: translateY(-2px);
       box-shadow: 0 12px 36px rgba(255, 255, 255, 0.45);
     }
+
 
 
     /* MAIN CONTAINER */
@@ -275,17 +278,25 @@
     .p-section-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12.5px;
+      gap: 7px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--p-primary);
-      background: var(--p-primary-soft);
-      padding: 5px 14px;
+      letter-spacing: 1.1px;
+      color: #334155;
+      background: rgba(241, 245, 249, 0.85);
+      padding: 6px 16px;
       border-radius: var(--p-radius-pill);
-      margin-bottom: 10px;
-      border: 1px solid rgba(229, 89, 51, 0.18);
+      margin-bottom: 12px;
+      border: 1px solid rgba(203, 213, 225, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .p-section-eyebrow svg {
+      color: #475569;
+      stroke: #475569;
     }
 
     .p-section-title {
@@ -325,7 +336,7 @@
       left: 0;
       width: 5px;
       height: 100%;
-      background: var(--p-primary);
+      background: #334155;
     }
 
     .p-company-top {
@@ -429,7 +440,7 @@
     .p-team-card:hover {
       transform: translateY(-4px);
       box-shadow: var(--p-shadow-lg);
-      border-color: var(--p-primary);
+      border-color: #cbd5e1;
     }
 
     .p-team-top {
@@ -460,7 +471,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: linear-gradient(135deg, #e55933 0%, #1e293b 100%);
+      background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
       color: #ffffff;
       display: flex;
       align-items: center;
@@ -500,8 +511,8 @@
 
     .p-team-role {
       font-size: 13px;
-      font-weight: 600;
-      color: var(--p-primary);
+      font-weight: 700;
+      color: #475569;
       display: inline-block;
       margin-bottom: 2px;
     }
@@ -533,7 +544,7 @@
     }
 
     .p-contact-line svg {
-      color: var(--p-primary);
+      color: #64748b;
       flex-shrink: 0;
     }
 
@@ -545,7 +556,7 @@
     }
 
     .p-contact-line a:hover {
-      color: var(--p-primary);
+      color: #0f172a;
       text-decoration: underline;
     }
 
@@ -588,8 +599,8 @@
     }
 
     .p-btn-call:hover {
-      background: var(--p-primary);
-      border-color: var(--p-primary);
+      background: #1e293b;
+      border-color: #1e293b;
       color: #ffffff;
       transform: translateY(-2px);
     }
@@ -601,9 +612,9 @@
     }
 
     .p-btn-mail:hover {
-      background: var(--p-primary-soft);
-      border-color: var(--p-primary);
-      color: var(--p-primary);
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      color: #0f172a;
       transform: translateY(-2px);
     }
 
@@ -633,7 +644,7 @@
     .p-dept-card:hover {
       transform: translateY(-4px);
       box-shadow: var(--p-shadow-lg);
-      border-color: var(--p-primary);
+      border-color: #cbd5e1;
     }
 
     .p-dept-header {
@@ -647,8 +658,12 @@
       width: 50px;
       height: 50px;
       border-radius: 14px;
-      background: var(--p-primary-soft);
-      color: var(--p-primary);
+      background: rgba(241, 245, 249, 0.9);
+      color: #334155;
+      border: 1px solid rgba(203, 213, 225, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -715,8 +730,8 @@
 
     .p-person-role {
       font-size: 12.5px;
-      color: var(--p-primary);
-      font-weight: 600;
+      color: #475569;
+      font-weight: 700;
     }
 
     .p-person-links {
@@ -736,7 +751,7 @@
     }
 
     .p-person-links a:hover {
-      color: var(--p-primary);
+      color: #0f172a;
       text-decoration: underline;
     }
 
@@ -800,9 +815,9 @@
     .p-group input:focus,
     .p-group select:focus,
     .p-group textarea:focus {
-      border-color: var(--p-primary);
+      border-color: #475569;
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(229, 89, 51, 0.14);
+      box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.15);
     }
 
     .p-group textarea {
@@ -832,9 +847,9 @@
     }
 
     .p-form-submit-btn:hover {
-      background: var(--p-primary);
+      background: #1e293b;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--p-primary-glow);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25);
     }
 
     /* 5. MAPA & DOJAZD */
@@ -892,8 +907,8 @@
     }
 
     .p-map-btn:hover {
-      background: var(--p-primary);
-      border-color: var(--p-primary);
+      background: #1e293b;
+      border-color: #1e293b;
       transform: translateY(-2px);
     }
 
@@ -1127,7 +1142,7 @@
         sekretariatem lub odwiedź naszą centralę produkcyjno-magazynową w Giżycku.
       </p>
       <div class="p-hero-actions">
-        <a href="#handlowcy" class="p-hero-btn primary">
+        <a href="#handlowcy" class="p-hero-btn primary" onclick="document.getElementById('handlowcy')?.scrollIntoView({behavior:'smooth', block:'start'}); history.pushState(null, '', '#handlowcy'); return false;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
             <circle cx="9" cy="7" r="4" />
@@ -1136,13 +1151,13 @@
           </svg>
           Dział Handlowy & Handlowcy ↓
         </a>
-        <a href="#centrala" class="p-hero-btn secondary">
+        <a href="#centrala" class="p-hero-btn secondary" onclick="document.getElementById('centrala')?.scrollIntoView({behavior:'smooth', block:'start'}); history.pushState(null, '', '#centrala'); return false;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M10 2v5M14 2v5" />
           </svg>
           Sekretariat & Centrala ↓
         </a>
-        <a href="#formularz-kontaktowy" class="p-hero-btn white-navy">
+        <a href="#formularz-kontaktowy" class="p-hero-btn white-navy" onclick="document.getElementById('formularz-kontaktowy')?.scrollIntoView({behavior:'smooth', block:'start'}); history.pushState(null, '', '#formularz-kontaktowy'); return false;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
             <polyline points="22,6 12,13 2,6" />
@@ -1165,11 +1180,11 @@
     <section class="p-company-banner" aria-label="Oficjalne Dane Rejestrowe Spółki">
       <div class="p-company-top">
         <div class="p-company-heading">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--p-primary)" stroke-width="2.5">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5">
               <path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M10 2v5M14 2v5" />
             </svg>
-            <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--p-primary);">Dane Rejestrowe</span>
+            <span style="display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:1.1px; color:#334155; background:rgba(241,245,249,0.9); padding:5px 14px; border-radius:999px; border:1px solid rgba(203,213,225,0.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 1px 4px rgba(15,23,42,0.04);">Dane Rejestrowe</span>
           </div>
           <h2>PRESCOT SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ</h2>
           <p>
@@ -1750,7 +1765,7 @@
         <div class="p-group full">
           <label
             style="display:flex; align-items:flex-start; gap:12px; font-size:13px; color:var(--p-text-muted); cursor:pointer;">
-            <input type="checkbox" id="c-agree" required style="margin-top:3px; width:18px; height:18px; accent-color: var(--p-primary);">
+            <input type="checkbox" id="c-agree" required style="margin-top:3px; width:18px; height:18px; accent-color: #334155;">
             <span>Wyrażam zgodę na przetwarzanie moich danych osobowych przez PRESCOT sp. z o.o. (ul. Wileńska 1, 11-500 Giżycko) w celu odpowiedzi na przesłaną wiadomość zgodnie z Polityką Prywatności.</span>
           </label>
         </div>
@@ -1915,7 +1930,7 @@
   <nav class="prescot-dock" aria-label="Nawigacja główna">
     <a href="prescotled/" class="dock-item" data-tooltip="Prescot LED" aria-label="Prescot LED">
       <svg class="dock-logo-icon" viewBox="0 0 378 258" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#e14e26"
+        <path fill="currentColor"
           d="M0,0h106.7v50H0V0ZM0,100.9h97.7v48.2H0v-48.2ZM0,206.6h106.7v51.2H0v-51.2h0ZM149.3,100.7h82v48.4h-82v-48.4h0ZM149.3,0h87.4C317.7,0,377.9,42.6,377.9,128.9s-60.1,128.9-141.2,128.9h-87.4v-51.2h90.8c47.8,0,76.6-29.1,76.6-77.7s-27.6-78.8-76.6-78.8h-90.8V0h0Z" />
       </svg>
     </a>
@@ -1972,6 +1987,59 @@
   </script>
   <script src="wp-content/plugins/gtranslate/js/float.js?ver=3.1.1" data-no-optimize="1" data-no-minify="1"
     data-gt-widget-id="85632840" defer></script>
+  <script>
+    // Bezpośrednie przewijanie kotwic na stronie kontakt (rozwiązanie problemu <base href>)
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('a[href*="#"]');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const hashIdx = href.indexOf('#');
+        if (hashIdx !== -1) {
+          const targetId = href.substring(hashIdx + 1);
+          if (targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+              e.preventDefault();
+              e.stopPropagation();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              history.pushState(null, '', '#' + targetId);
+            }
+          }
+        }
+      }
+    }, true);
+
+    // Dociąganie do sekcji po bezpośrednim wejściu z linku (np. kontakt/#handlowcy)
+    function scrollToHashTarget(smooth) {
+      if (window.location.hash) {
+        const targetId = window.location.hash.slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+        }
+      }
+    }
+
+    if (window.location.hash) {
+      scrollToHashTarget(false);
+      window.addEventListener('DOMContentLoaded', function() {
+        scrollToHashTarget(false);
+        setTimeout(function() { scrollToHashTarget(false); }, 50);
+        setTimeout(function() { scrollToHashTarget(false); }, 150);
+        setTimeout(function() { scrollToHashTarget(false); }, 300);
+      });
+      window.addEventListener('load', function() {
+        scrollToHashTarget(false);
+        setTimeout(function() { scrollToHashTarget(true); }, 100);
+        setTimeout(function() { scrollToHashTarget(true); }, 400);
+      });
+    }
+
+    window.addEventListener('hashchange', function() {
+      scrollToHashTarget(true);
+    });
+  </script>
   <script src="local-navigation.js?v=20260906-kontakt-v5" defer></script>
 </body>
 
