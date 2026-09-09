@@ -1596,15 +1596,22 @@ footer.white-footer {
   align-items: center !important;
   gap: 6px !important;
   font-size: 11px !important;
-  font-weight: 800 !important;
+  font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 1px !important;
-  color: #df3f19 !important;
-  background: #fff1ee !important;
-  border: 1px solid #fed7cc !important;
-  padding: 6px 16px !important;
+  letter-spacing: 0.8px !important;
+  color: #334155 !important;
+  background: rgba(241, 245, 249, 0.8) !important;
+  border: 1px solid rgba(203, 213, 225, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  padding: 6px 14px !important;
   border-radius: 999px !important;
   margin-bottom: 16px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+}
+
+.b2c-dialog-badge svg {
+  stroke: #475569 !important;
 }
 
 .b2c-dialog-title,
@@ -1656,13 +1663,13 @@ footer.white-footer {
   justify-content: center !important;
   gap: 8px !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 6px 18px rgba(223, 63, 25, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(223, 63, 25, 0.18) !important;
 }
 
 .b2c-btn-confirm:hover {
   background: linear-gradient(135deg, #f4511e 0%, #c6330f 100%) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 8px 22px rgba(223, 63, 25, 0.45) !important;
+  box-shadow: 0 6px 16px rgba(223, 63, 25, 0.26) !important;
 }
 
 .b2c-btn-cancel {
@@ -2450,7 +2457,7 @@ html {
 }
 
 /* =========================================================
-   HOMEPAGE HERO: VIBRANT PRESCOT BUILDING PHOTO (NO DARK VIDEO)
+   HOMEPAGE HERO: VIDEO BACKGROUND WITH POSTER FALLBACK
    ========================================================= */
 .elementor-20127 .elementor-element.elementor-element-216d8696,
 .elementor-element.elementor-element-216d8696 {
@@ -2459,27 +2466,51 @@ html {
   background-size: cover !important;
   background-repeat: no-repeat !important;
   position: relative !important;
+  overflow: hidden !important;
 }
 
-/* Hide and suppress the dark machine video that covers the hero photo */
-.elementor-element-216d8696 .elementor-background-video-container,
+/* Allow hero background video to display, cover and loop seamlessly */
+.elementor-element-216d8696 .elementor-background-video-container {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 .elementor-element-216d8696 video.elementor-background-video-hosted {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  z-index: 0 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   pointer-events: none !important;
 }
 
-/* Modern luxury gradient overlay: lets the building facade and glowing orange LED contours shine through vividly */
+/* Modern luxury gradient overlay: lets the video shine through vividly with high text legibility */
 .elementor-20127 .elementor-element.elementor-element-216d8696::before,
 .elementor-element.elementor-element-216d8696::before {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
   background: linear-gradient(180deg, 
-    rgba(15, 23, 42, 0.36) 0%, 
-    rgba(15, 23, 42, 0.44) 45%, 
-    rgba(15, 23, 42, 0.70) 100%) !important;
+    rgba(15, 23, 42, 0.40) 0%, 
+    rgba(15, 23, 42, 0.46) 45%, 
+    rgba(15, 23, 42, 0.72) 100%) !important;
   pointer-events: none !important;
   z-index: 1 !important;
 }
@@ -2487,6 +2518,15 @@ html {
 .elementor-element-216d8696 > .e-con-inner {
   position: relative !important;
   z-index: 2 !important;
+}
+
+/* Shape divider transition into white distribution section */
+.elementor-20127 .elementor-element.elementor-element-216d8696 > .elementor-shape-bottom,
+.elementor-20127 .elementor-element.elementor-element-216d8696 > .e-con-inner > .elementor-shape-bottom,
+.elementor-element.elementor-element-216d8696 > .elementor-shape-bottom,
+.elementor-element.elementor-element-216d8696 > .e-con-inner > .elementor-shape-bottom {
+  z-index: 3 !important;
+  pointer-events: none !important;
 }
 
 /* Shape divider transition into white distribution section */

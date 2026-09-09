@@ -432,3 +432,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setupB2CModal();
   setTimeout(setupB2CModal, 600);
+
+  // Hero background video autoplay guarantee
+  function initHeroVideo() {
+    const video = document.querySelector(".elementor-element-216d8696 video, video.elementor-background-video-hosted");
+    if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("autoplay", "");
+    
+    const playVideo = () => {
+      const p = video.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          const resume = () => {
+            video.play().catch(() => {});
+            ['click', 'touchstart', 'scroll'].forEach(ev => window.removeEventListener(ev, resume));
+          };
+          ['click', 'touchstart', 'scroll'].forEach(ev => window.addEventListener(ev, resume, { once: true, passive: true }));
+        });
+      }
+    };
+    playVideo();
+  }
+  initHeroVideo();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeroVideo);
+  }
