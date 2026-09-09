@@ -299,13 +299,11 @@ html body .distKicker {
 }
 
 /* 1. Standardowe przyciski CTA (Pill Buttons) */
-.as-changing-widget .elementor-widget-button .elementor-button,
-.as-changing-widget .elementor-button,
+.as-changing-widget .elementor-widget.currentUp a.elementor-button,
+.as-changing-widget .elementor-widget.currentDown a.elementor-button,
+.as-changing-widget .elementor-widget.currentUp .elementor-button,
+.as-changing-widget .elementor-widget.currentDown .elementor-button,
 .as-slider .elementor-button,
-.elementor-element-2531bbe9 a.elementor-button,
-.elementor-element-7ade0441 a.elementor-button,
-.as-changing-widget[data-id="2531bbe9"] a.elementor-button,
-.as-changing-widget[data-id="7ade0441"] a.elementor-button,
 .prescot-standard-cta.elementor-button,
 .prescot-cta,
 a.elementor-button[href="tasmy-led/"],
@@ -330,10 +328,24 @@ a.elementor-button[href*="produkty"] {
   text-decoration: none !important;
   cursor: pointer !important;
   pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
   /* 3D PODSTAWKA: solidna krawedz bazowa 4px + ambient glow */
   box-shadow: 0 4px 0 #b33614, 0 8px 18px rgba(229, 89, 51, 0.35) !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.as-changing-widget .elementor-widget.currentUp a.elementor-button span,
+.as-changing-widget .elementor-widget.currentDown a.elementor-button span,
+.as-changing-widget .elementor-widget.currentUp .elementor-button span,
+.as-changing-widget .elementor-widget.currentDown .elementor-button span,
+.prescot-standard-cta.elementor-button span,
+.prescot-cta span {
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #ffffff !important;
 }
 
 /* Hover: Uniesienie w gore, poszerzona podstawka 3D do 6px, soczysty zywy pomarancz (ZADNEJ CZERNI/GRANATU!) */
@@ -583,6 +595,8 @@ html body .elementor .elementor-element.as-changing-widget,
   min-width: 48px !important;
   min-height: 48px !important;
   padding: 0 !important;
+  border: none !important;
+  outline: none !important;
   border-radius: 50% !important;
   background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
   box-shadow: 0 4px 0 #b33614, 0 6px 14px rgba(229, 89, 51, 0.35) !important;
@@ -593,6 +607,9 @@ html body .elementor .elementor-element.as-changing-widget,
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
   pointer-events: auto !important;
   cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 15 !important;
 }
 
 .as-slider-left .elementor-button:hover,
@@ -1718,18 +1735,47 @@ a[href="#masthead"] {
   pointer-events: none !important;
 }
 
-/* Bulletproof slider text isolation: only the active slide widget is visible */
+/* Bulletproof slider text & button isolation:
+   Only the ACTIVE slide widget (.currentUp, .currentDown) is visible and active.
+   All inactive slide widgets are completely hidden. */
 .as-changing-widget .elementor-widget:not(.currentUp):not(.currentDown) {
-  opacity: 0 !important;
+  display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.as-changing-widget .elementor-widget:not(.currentUp):not(.currentDown) * {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
   pointer-events: none !important;
 }
 
 .as-changing-widget .elementor-widget.currentUp,
 .as-changing-widget .elementor-widget.currentDown {
+  display: block !important;
+  visibility: visible !important;
   opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.as-changing-widget .elementor-widget.currentUp *,
+.as-changing-widget .elementor-widget.currentDown * {
   visibility: visible !important;
   pointer-events: auto !important;
+}
+
+/* Fallback before JS runs: if neither currentUp nor currentDown exists yet */
+.as-changing-widget:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child,
+.as-changing-widget:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child * {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
 }
 /* =========================================================
 
@@ -1961,27 +2007,63 @@ html {
 }
 
 
-.as-changing-widget[data-id="2531bbe9"] a.elementor-button,
-.elementor-element-2531bbe9 a.elementor-button,
-.as-changing-widget[data-id="7ade0441"] a.elementor-button,
-.elementor-element-7ade0441 a.elementor-button {
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentUp a.elementor-button,
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentDown a.elementor-button,
+.as-changing-widget[data-id="2531bbe9"]:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button,
+.elementor-element-2531bbe9 .elementor-widget.currentUp a.elementor-button,
+.elementor-element-2531bbe9 .elementor-widget.currentDown a.elementor-button,
+.elementor-element-2531bbe9:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentUp a.elementor-button,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button,
+.as-changing-widget[data-id="7ade0441"]:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button,
+.elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button,
+.elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button,
+.elementor-element-7ade0441:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button {
   font-size: 18px !important;
   font-weight: 700 !important;
   padding: 16px 42px !important;
   background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
   color: #ffffff !important;
+  border: none !important;
+  outline: none !important;
   border-radius: 9999px !important;
   box-shadow: 0 4px 0 #b33614, 0 8px 20px rgba(229, 89, 51, 0.4) !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
   pointer-events: auto !important;
   cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.as-changing-widget[data-id="2531bbe9"] a.elementor-button:hover,
-.elementor-element-2531bbe9 a.elementor-button:hover,
-.as-changing-widget[data-id="7ade0441"] a.elementor-button:hover,
-.elementor-element-7ade0441 a.elementor-button:hover {
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentUp a.elementor-button *,
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentDown a.elementor-button *,
+.as-changing-widget[data-id="2531bbe9"]:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button *,
+.elementor-element-2531bbe9 .elementor-widget.currentUp a.elementor-button *,
+.elementor-element-2531bbe9 .elementor-widget.currentDown a.elementor-button *,
+.elementor-element-2531bbe9:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button *,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentUp a.elementor-button *,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button *,
+.as-changing-widget[data-id="7ade0441"]:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button *,
+.elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button *,
+.elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button *,
+.elementor-element-7ade0441:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child a.elementor-button * {
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentUp a.elementor-button:hover,
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentDown a.elementor-button:hover,
+.elementor-element-2531bbe9 .elementor-widget.currentUp a.elementor-button:hover,
+.elementor-element-2531bbe9 .elementor-widget.currentDown a.elementor-button:hover,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentUp a.elementor-button:hover,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button:hover,
+.elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button:hover,
+.elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button:hover {
   background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
@@ -1989,15 +2071,48 @@ html {
   cursor: pointer !important;
 }
 
-.as-changing-widget[data-id="2531bbe9"] a.elementor-button:active,
-.elementor-element-2531bbe9 a.elementor-button:active,
-.as-changing-widget[data-id="7ade0441"] a.elementor-button:active,
-.elementor-element-7ade0441 a.elementor-button:active {
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentUp a.elementor-button:active,
+.as-changing-widget[data-id="2531bbe9"] .elementor-widget.currentDown a.elementor-button:active,
+.elementor-element-2531bbe9 .elementor-widget.currentUp a.elementor-button:active,
+.elementor-element-2531bbe9 .elementor-widget.currentDown a.elementor-button:active,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentUp a.elementor-button:active,
+.as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button:active,
+.elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button:active,
+.elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button:active {
   background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
   transform: translateY(2px) !important;
   box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
   pointer-events: auto !important;
   cursor: pointer !important;
+}
+
+/* Zapobieganie obcinaniu cieni oraz zdublowanym strzalkom swipera */
+.as-changing-widget,
+.as-changing-widget[data-id="2531bbe9"],
+.as-changing-widget[data-id="7ade0441"],
+.elementor-element-2531bbe9,
+.elementor-element-7ade0441,
+.as-changing-widget .elementor-widget-container,
+.as-changing-widget .elementor-button-wrapper,
+.as-slider-left,
+.as-slider-right,
+.as-slider-left .elementor-widget-container,
+.as-slider-right .elementor-widget-container,
+.as-slider-left .elementor-button-wrapper,
+.as-slider-right .elementor-button-wrapper,
+.elementor-element-2dc0ac4a,
+.elementor-element-2eac45c {
+  overflow: visible !important;
+}
+
+.as-side-slider .elementor-swiper-button-prev,
+.as-side-slider .elementor-swiper-button-next,
+.as-slider .elementor-swiper-button-prev,
+.as-slider .elementor-swiper-button-next {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* =========================================================
