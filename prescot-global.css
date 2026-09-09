@@ -456,6 +456,86 @@ a.elementor-button[role="button"]:not([href*="/"]):hover {
   transform: translateY(-2px) !important;
 }
 
+/* =========================================================
+   SHOWCASE: KARTA SERII (PRZYCISK POBIERANIA PDF)
+   Czysty, płaski pomarańcz (#e55933), biały napis "Karta serii",
+   BEZWZGLĘDNIE BEZ CIENI I BEZ WIELKICH BUKW (16-17px)
+   ========================================================= */
+.mdw-card-portfolio .mdw-email-box,
+.mdw-email-box {
+  margin: 20px auto 6px auto !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+.mdw-card-portfolio .mdw-email-box > .elementor-widget-container,
+.mdw-email-box > .elementor-widget-container {
+  background-color: #e55933 !important;
+  background: #e55933 !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 12px !important;
+  padding: 12px 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  cursor: pointer !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.mdw-card-portfolio .mdw-email-box > .elementor-widget-container:hover,
+.mdw-email-box > .elementor-widget-container:hover {
+  background-color: #e55933 !important;
+  background: #e55933 !important;
+  opacity: 0.92 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+.mdw-card-portfolio .mdw-email-box h2,
+.mdw-card-portfolio .mdw-email-box .elementor-heading-title,
+.mdw-email-box h2,
+.mdw-email-box .elementor-heading-title,
+.mdw-card-portfolio .mdw-email-box a,
+.mdw-email-box a {
+  font-family: var(--prescot-font-body, 'Inter', sans-serif) !important;
+  font-size: 16.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Tekst pod przyciskiem: POBIERZ KARTĘ KATALOGOWĄ (bez zmian) */
+.mdw-card-portfolio .mdw-email-box + .elementor-widget-text-editor p,
+.mdw-card-portfolio [class*="elementor-element-2a1b0e57"] p,
+.mdw-card-portfolio [class*="elementor-element-79e493d"] p,
+.mdw-card-portfolio [class*="elementor-element-d4d7466"] p {
+  font-family: var(--prescot-font-body, 'Inter', sans-serif) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  opacity: 0.85 !important;
+  text-shadow: none !important;
+  margin: 8px 0 0 0 !important;
+  text-align: center !important;
+}
+
 /* 2. Okragle przyciski strzalek slidera (.as-slider-left, .as-slider-right) - 3D PODSTAWKA */
 .as-slider-left .elementor-button,
 .as-slider-right .elementor-button,
@@ -1781,8 +1861,8 @@ html {
 .elementor-element-46a33e30 h2,
 .as-changing-widget[data-id="46a33e30"] .elementor-heading-title,
 .elementor-element-46a33e30 .elementor-heading-title,
-.mdw-card-portfolio h2,
-.mdw-card-portfolio .elementor-heading-title {
+.mdw-card-portfolio .elementor-widget-heading:not(.mdw-email-box) h2,
+.mdw-card-portfolio .elementor-widget-heading:not(.mdw-email-box) .elementor-heading-title {
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-size: 50px !important;
   font-weight: 800 !important;

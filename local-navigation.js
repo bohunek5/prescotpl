@@ -361,6 +361,34 @@ document.addEventListener("DOMContentLoaded", () => {
   hydrateImages();
   window.addEventListener('load', hydrateImages);
 
+  // 4b. Showcase: Karta serii zamiast technicznych numerów / wielkich bukw
+  function updateShowcaseCardButtons() {
+    const emailBoxes = document.querySelectorAll(".mdw-email-box, .mdw-card-portfolio .mdw-email-box");
+    emailBoxes.forEach(box => {
+      const link = box.querySelector("a");
+      const heading = box.querySelector("h2, .elementor-heading-title");
+      if (link) {
+        link.textContent = "Karta serii";
+        link.setAttribute("title", "Karta serii - pobierz kartę katalogową");
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener noreferrer");
+      } else if (heading && !box.innerText.toLowerCase().includes("katalog") && !box.innerText.toLowerCase().includes("instrukcja")) {
+        heading.textContent = "Karta serii";
+      }
+      const container = box.querySelector(".elementor-widget-container");
+      if (container && link && !container.dataset.hasCardClick) {
+        container.dataset.hasCardClick = "true";
+        container.addEventListener("click", (e) => {
+          if (e.target !== link) {
+            link.click();
+          }
+        });
+      }
+    });
+  }
+  updateShowcaseCardButtons();
+  window.addEventListener('load', updateShowcaseCardButtons);
+
   updateNavVisibility();
 
   // 5. Automatic GTranslate Dock Sync & Mounting
