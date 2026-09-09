@@ -121,34 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pomocnicza funkcja do dynamicznego wykrywania jasności tła pod strzałką
   function updateArrowColor(btn, currentScrollY) {
     if (!btn) return;
-    const pPath = (window.location.pathname || "").toLowerCase();
-    const isLightBg = pPath.includes("oferta") || pPath.includes("produkty");
-
-    if (isLightBg) {
-      btn.classList.add("is-light");
-    } else {
-      btn.classList.remove("is-light");
-    }
+    // Wszystkie sekcje hero w ekosystemie Prescot (oferta, tasmy-led, dpro itp.) posiadają ciemne tła.
+    // Strzałka jest czysto biała z eleganckim cieniem drop-shadow, a przy najechaniu świeci na firmowy pomarańcz.
+    btn.classList.remove("is-light");
   }
 
   function checkScrollDown() {
-    const pName = (window.location.pathname || "").toLowerCase();
-    
-    // Wykluczenie dla stron typu showcase (rozchodzące się slajdy lewo/prawo) oraz Oferta:
-    // Mają już własne oryginalne strzałki nawigacyjne – nie dublujemy ich!
-    const isShowcaseOrOferta = pName.includes("oferta") ||
-      pName.includes("produkty") ||
-      pName.includes("produkt") ||
-      document.querySelector(".dm-card-slider, .mdw-card-portfolio, .card-portfolio, [id^='card']") !== null ||
-      document.body.classList.contains("mdw-card-portfolio");
-
-    if (isShowcaseOrOferta) {
-      const existing = document.getElementById("prescotScrollDown");
-      if (existing) existing.remove();
-      scrollDownBtn = null;
-      return;
-    }
-
     if (document.getElementById("prescotScrollDown")) return;
 
     // Sprawdź czy strona ma więcej treści
@@ -169,21 +147,26 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       document.body.appendChild(scrollDownBtn);
 
-      const isLight = pName.includes("oferta") || pName.includes("produkty");
-      if (isLight) {
-        scrollDownBtn.classList.add("is-light");
-      }
-
       scrollDownBtn.addEventListener("click", (e) => {
         e.preventDefault();
         
-        // Priorytet 1: Sprawdź bezpośrednie cele pod hero na znanych podstronach
-        const directTarget = document.querySelector(
-          "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, main section:first-of-type"
-        );
-        if (directTarget && window.scrollY < (window.innerHeight * 0.6)) {
-          directTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        // 1. Sprawdź karty produktowe / showcase rozsuwające się w lewo i prawo (mdw-card-portfolio)
+        const cardTarget = document.querySelector(".mdw-card-portfolio, #dl1, #true1, #sl1");
+        if (cardTarget && window.scrollY < (window.innerHeight * 0.7)) {
+          cardTarget.scrollIntoView({ behavior: "smooth", block: "start" });
           return;
+        }
+
+        // 2. Bezpośrednie cele pod hero na znanych podstronach (w tym oferta, tasmy-led)
+        const directTarget = document.querySelector(
+          "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, #stopka, main section:first-of-type"
+        );
+        if (directTarget && window.scrollY < (window.innerHeight * 0.7)) {
+          const r = directTarget.getBoundingClientRect();
+          if (r.top > 60) {
+            directTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+          }
         }
 
         const topSections = getTopLevelSections();

@@ -880,10 +880,4 @@
 .elementor-13905 .elementor-element.elementor-element-76efc104 .as-slider-right{
     right: calc(50% - 300px/2) !important;
 }
-}
-html, body {
-    height: 100%; /* Bezpieczniejsze niż vh na mobile */
-    /* LUB */
-    height: 100dvh; /* Dynamicznie dopasowuje się do paska adresu */
-    overflow: hidden;
 }/* End custom CSS */
