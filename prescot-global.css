@@ -174,20 +174,20 @@ html body .distKicker {
 @media (max-width: 768px) {
   .prescot-dock {
     bottom: 14px !important;
-    padding: 6px 12px !important;
-    gap: 8px !important;
-    height: 48px !important;
+    padding: 8px 16px !important;
+    gap: 14px !important;
+    height: 56px !important;
     max-width: calc(100vw - 20px) !important;
   }
 
   .prescot-dock .dock-item {
-    width: 32px !important;
-    height: 32px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .prescot-dock .dock-item svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   .prescot-dock .dock-item::after {
@@ -488,6 +488,23 @@ html body .elementor .elementor-element.as-changing-widget,
   transform: translateY(-2px) !important;
 }
 
+@media (max-width: 768px) {
+  .mdw-card-portfolio .elementor-widget-button:first-of-type .elementor-button,
+  .mdw-card-portfolio .elementor-widget-button:first-of-type a.elementor-button,
+  .card-portfolio .elementor-widget-button:first-of-type .elementor-button,
+  .card-portfolio .elementor-widget-button:first-of-type a.elementor-button {
+    font-size: 11px !important;
+    padding: 6px 14px !important;
+  }
+  
+  .mdw-card-portfolio a.elementor-button[href*="tasmy"],
+  .mdw-card-portfolio a.elementor-button[href*="oferta"],
+  .mdw-card-portfolio a.elementor-button[href*="produkty"] {
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+  }
+}
+
 /* =========================================================
    SHOWCASE: KARTA SERII (PRZYCISK POBIERANIA PDF)
    Czysty, płaski pomarańcz (#e55933), biały napis "Karta serii",
@@ -642,6 +659,26 @@ html body .elementor .elementor-element.as-changing-widget,
   height: 18px !important;
   fill: #ffffff !important;
   color: #ffffff !important;
+}
+
+/* Hide text inside circle arrow buttons */
+.as-slider-left .elementor-button span,
+.as-slider-right .elementor-button span,
+.card-prev a span,
+.card-next a span {
+  display: none !important;
+}
+
+/* Hide native Elementor slider arrows that might overlap */
+.as-slider .elementor-swiper-button-prev,
+.as-slider .elementor-swiper-button-next,
+.mdw-card-portfolio .elementor-swiper-button-prev,
+.mdw-card-portfolio .elementor-swiper-button-next,
+.elementor-element-2531bbe9 .elementor-swiper-button-prev,
+.elementor-element-2531bbe9 .elementor-swiper-button-next,
+.elementor-element-7ade0441 .elementor-swiper-button-prev,
+.elementor-element-7ade0441 .elementor-swiper-button-next {
+  display: none !important;
 }
 
 html, body,

@@ -575,28 +575,33 @@
       font-weight: 700;
     }
 
-    /* ACTION BUTTONS IN CARDS (>= 48px touch targets) */
+    /* ACTION BUTTONS IN CARDS */
     .p-card-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: auto;
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      justify-content: flex-start;
     }
 
     .p-btn-card {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px 14px;
-      border-radius: var(--p-radius-sm);
-      font-size: 13.5px;
-      font-weight: 700;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      font-size: 0; /* Ukrywamy powtarzalny tekst */
       text-decoration: none;
-      min-height: 48px;
       transition: all 0.2s ease;
       cursor: pointer;
-      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .p-btn-card svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      margin: auto;
     }
 
     .p-btn-call {

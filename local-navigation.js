@@ -81,10 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkScrollDown() {
     if (document.getElementById("prescotScrollDown")) return;
 
-    // Strzałka w dół jest WYŁĄCZNIE dla podstron produktowych z kartami showcase (.mdw-card-portfolio)
-    // Na stronach takich jak Oferta, Taśmy LED, Dystrybucja, Strona Główna itp. NIE MOŻE SIĘ POJAWIAĆ,
-    // ponieważ koliduje z suwakami poziomymi i strzałkami slidera!
-    if (!document.querySelector(".mdw-card-portfolio")) return;
+    // Strzałka w dół dla podstron produktowych z kartami showcase (.mdw-card-portfolio) oraz dla strony głównej.
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/prescotpl/' || window.location.pathname === '';
+    if (!document.querySelector(".mdw-card-portfolio") && !isHomePage) return;
 
     // Sprawdź czy strona ma więcej treści
     const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -450,9 +449,9 @@ document.addEventListener("DOMContentLoaded", () => {
         p.catch(() => {
           const resume = () => {
             video.play().catch(() => {});
-            ['click', 'touchstart', 'scroll'].forEach(ev => window.removeEventListener(ev, resume));
+            ['click', 'touchstart'].forEach(ev => window.removeEventListener(ev, resume));
           };
-          ['click', 'touchstart', 'scroll'].forEach(ev => window.addEventListener(ev, resume, { once: true, passive: true }));
+          ['click', 'touchstart'].forEach(ev => window.addEventListener(ev, resume, { once: true, passive: true }));
         });
       }
     };
