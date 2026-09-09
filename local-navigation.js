@@ -121,8 +121,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pomocnicza funkcja do dynamicznego wykrywania jasności tła pod strzałką
   function updateArrowColor(btn, currentScrollY) {
     if (!btn) return;
-    // Wszystkie sekcje hero w ekosystemie Prescot (oferta, tasmy-led, dpro itp.) posiadają ciemne tła.
-    // Strzałka jest czysto biała z eleganckim cieniem drop-shadow, a przy najechaniu świeci na firmowy pomarańcz.
+    try {
+      const testX = Math.round(window.innerWidth / 2);
+      const testY = Math.round(window.innerHeight - 80);
+      const elBelow = document.elementFromPoint(testX, testY);
+      if (elBelow) {
+        let cur = elBelow;
+        let isLight = false;
+        while (cur && cur !== document.body && cur !== document.documentElement) {
+          const bg = window.getComputedStyle(cur).backgroundColor;
+          if (bg && bg !== "transparent" && bg !== "rgba(0, 0, 0, 0)") {
+            const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (m) {
+              const r = parseInt(m[1]), g = parseInt(m[2]), b = parseInt(m[3]);
+              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+              if (brightness > 190) {
+                isLight = true;
+              }
+            }
+            break;
+          }
+          cur = cur.parentElement;
+        }
+        if (isLight) {
+          btn.classList.add("is-light");
+          return;
+        }
+      }
+    } catch (e) {}
     btn.classList.remove("is-light");
   }
 
@@ -149,29 +175,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
       scrollDownBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        
-        // 1. Sprawdź karty produktowe / showcase rozsuwające się w lewo i prawo (mdw-card-portfolio)
-        const cardTarget = document.querySelector(".mdw-card-portfolio, #dl1, #true1, #sl1");
-        if (cardTarget && window.scrollY < (window.innerHeight * 0.7)) {
-          cardTarget.scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
+        const winH = window.innerHeight || 700;
 
-        // 2. Bezpośrednie cele pod hero na znanych podstronach (w tym oferta, tasmy-led)
-        const directTarget = document.querySelector(
-          "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, #stopka, main section:first-of-type"
-        );
-        if (directTarget && window.scrollY < (window.innerHeight * 0.7)) {
-          const r = directTarget.getBoundingClientRect();
-          if (r.top > 60) {
-            directTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+        // 1. Priorytet: Karty produktowe / showcase rozsuwające się w lewo i prawo (mdw-card-portfolio, true, dl, oc, sl)
+        const hasCards = document.querySelector(".mdw-card-portfolio, [id^='true'], [id^='dl'], [id^='oc'], [id^='sl']");
+        if (hasCards) {
+          const cardCandidates = Array.from(
+            new Set(document.querySelectorAll(".mdw-card-portfolio, [id^='true'], [id^='dl'], [id^='oc'], [id^='sl'], #stopka, footer.elementor-location-footer, footer"))
+          );
+          const below = cardCandidates
+            .filter(el => {
+              if (el.offsetHeight < 50) return false;
+              const rect = el.getBoundingClientRect();
+              return rect.top > 60;
+            })
+            .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+          if (below.length > 0) {
+            below[0].scrollIntoView({ behavior: "smooth", block: "start" });
             return;
           }
         }
 
-        const topSections = getTopLevelSections();
-        const winH = window.innerHeight || 700;
+        // 2. Priorytet: Slajdy na podstronie Dystrybucja (.distSlide)
+        const hasDist = document.querySelector(".distSlide");
+        if (hasDist) {
+          const distCandidates = Array.from(
+            new Set(document.querySelectorAll(".dist-why-section, .dist-form-section, .distSlide, #stopka, footer"))
+          );
+          const belowDist = distCandidates
+            .filter(el => {
+              if (el.offsetHeight < 50) return false;
+              const rect = el.getBoundingClientRect();
+              return rect.top > 60;
+            })
+            .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
+          if (belowDist.length > 0) {
+            belowDist[0].scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+          }
+        }
+
+        // 3. Sprawdź bezpośrednie cele pod hero na znanych podstronach (w tym oferta, tasmy-led)
+        const keyTargets = Array.from(
+          new Set(document.querySelectorAll(
+            "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, #stopka, footer"
+          ))
+        );
+        const belowKeys = keyTargets
+          .filter(el => {
+            if (el.offsetHeight < 50) return false;
+            const rect = el.getBoundingClientRect();
+            return rect.top > 60;
+          })
+          .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+        if (belowKeys.length > 0) {
+          belowKeys[0].scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
+        // 4. Ogólne top-level sekcje
+        const topSections = getTopLevelSections();
         let nextSec = null;
         for (const sec of topSections) {
           const rect = sec.getBoundingClientRect();
@@ -183,6 +249,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (nextSec) {
           nextSec.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
+        // 5. Ostateczny fallback: stopka lub dół
+        const stopka = document.getElementById("stopka") || document.querySelector("footer");
+        if (stopka && stopka.getBoundingClientRect().top > 60) {
+          stopka.scrollIntoView({ behavior: "smooth", block: "start" });
         } else {
           window.scrollBy({ top: Math.round(winH * 0.85), behavior: "smooth" });
         }
@@ -222,13 +295,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (scrollDownBtn) {
-      // W hero (scrollY <= 60): strzałka widoczna i aktywna
-      if (currentScrollY <= 60) {
+      const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      const winH = window.innerHeight || 700;
+      const stopka = document.getElementById("stopka") || document.querySelector("footer.elementor-location-footer, footer, .site-footer");
+
+      let isAtEnd = false;
+      // 1. Sprawdź czy jesteśmy blisko fizycznego końca dokumentu
+      if (docH - (currentScrollY + winH) < 80) {
+        isAtEnd = true;
+      } else if (stopka) {
+        // 2. Sprawdź czy stopka wjechała na ekran (widoczna w co najmniej 55% widoku)
+        const stopkaRect = stopka.getBoundingClientRect();
+        if (stopkaRect.top <= (winH * 0.55)) {
+          isAtEnd = true;
+        }
+      }
+
+      if (isAtEnd) {
+        scrollDownBtn.classList.add("psd-hidden");
+      } else {
         scrollDownBtn.classList.remove("psd-hidden");
         updateArrowColor(scrollDownBtn, currentScrollY);
-      } else {
-        // Po przewinięciu niżej (> 60px): strzałka natychmiast ukryta
-        scrollDownBtn.classList.add("psd-hidden");
       }
     }
 

@@ -302,9 +302,13 @@ html body .distKicker {
 .as-changing-widget .elementor-widget-button .elementor-button,
 .as-changing-widget .elementor-button,
 .as-slider .elementor-button,
-.elementor-widget-button .elementor-button,
-a.elementor-button,
-.prescot-standard-cta.elementor-button {
+.elementor-element-2531bbe9 a.elementor-button,
+.prescot-standard-cta.elementor-button,
+.prescot-cta,
+a.elementor-button[href="tasmy-led/"],
+a.elementor-button[href*="oferta"],
+a.elementor-button[href*="kontakt"],
+a.elementor-button[href*="produkty"] {
   color: #ffffff !important;
   fill: #ffffff !important;
   background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
@@ -335,12 +339,13 @@ a.elementor-button,
 .as-changing-widget .elementor-button:focus,
 .as-slider .elementor-button:hover,
 .as-slider .elementor-button:focus,
-.elementor-widget-button .elementor-button:hover,
-.elementor-widget-button .elementor-button:focus,
-a.elementor-button:hover,
-a.elementor-button:focus,
+.elementor-element-2531bbe9 a.elementor-button:hover,
 .prescot-standard-cta.elementor-button:hover,
-.prescot-standard-cta.elementor-button:focus {
+.prescot-standard-cta.elementor-button:focus,
+a.elementor-button[href="tasmy-led/"]:hover,
+a.elementor-button[href*="oferta"]:hover,
+a.elementor-button[href*="kontakt"]:hover,
+a.elementor-button[href*="produkty"]:hover {
   color: #ffffff !important;
   fill: #ffffff !important;
   background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
@@ -352,14 +357,103 @@ a.elementor-button:focus,
 .as-changing-widget .elementor-widget-button .elementor-button:active,
 .as-changing-widget .elementor-button:active,
 .as-slider .elementor-button:active,
-.elementor-widget-button .elementor-button:active,
-a.elementor-button:active,
-.prescot-standard-cta.elementor-button:active {
+.elementor-element-2531bbe9 a.elementor-button:active,
+.prescot-standard-cta.elementor-button:active,
+a.elementor-button[href="tasmy-led/"]:active,
+a.elementor-button[href*="oferta"]:active,
+a.elementor-button[href*="kontakt"]:active,
+a.elementor-button[href*="produkty"]:active {
   color: #ffffff !important;
   fill: #ffffff !important;
   background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
   transform: translateY(2px) !important;
   box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
+}
+
+/* =========================================================
+   SHOWCASE BADGES / SLOGANY (NIEKLIKALNE DYMKI):
+   Czysty, płaski pomarańcz (#e55933), biały napis,
+   BEZWZGLĘDNIE BEZ JAKICHKOLWIEK CIENI, FILTRÓW I PODSTAWEK
+   ========================================================= */
+.mdw-card-portfolio .elementor-widget-button .elementor-button,
+.mdw-card-portfolio .elementor-button,
+.mdw-card-portfolio .elementor-button-link,
+.card-portfolio .elementor-widget-button .elementor-button,
+.card-portfolio .elementor-button,
+.dm-card-slider .elementor-widget-button .elementor-button,
+.dm-card-slider .elementor-button,
+[id^='true'] .elementor-widget-button .elementor-button,
+[id^='dl'] .elementor-widget-button .elementor-button,
+[id^='oc'] .elementor-widget-button .elementor-button,
+[id^='sl'] .elementor-widget-button .elementor-button,
+a.elementor-button[href="#"],
+a.elementor-button:not([href]),
+a.elementor-button[role="button"]:not([href*="/"]) {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  background: #e55933 !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 9999px !important;
+  padding: 8px 24px !important;
+  font-family: var(--prescot-font-body, 'Inter', sans-serif) !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  line-height: 1.2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  cursor: default !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.mdw-card-portfolio .elementor-widget-button .elementor-button:hover,
+.mdw-card-portfolio .elementor-widget-button .elementor-button:focus,
+.mdw-card-portfolio .elementor-widget-button .elementor-button:active,
+.mdw-card-portfolio .elementor-button:hover,
+.mdw-card-portfolio .elementor-button:focus,
+.mdw-card-portfolio .elementor-button:active,
+.card-portfolio .elementor-button:hover,
+.dm-card-slider .elementor-button:hover,
+[id^='true'] .elementor-button:hover,
+[id^='dl'] .elementor-button:hover,
+[id^='oc'] .elementor-button:hover,
+[id^='sl'] .elementor-button:hover,
+a.elementor-button[href="#"]:hover,
+a.elementor-button:not([href]):hover,
+a.elementor-button[role="button"]:not([href*="/"]):hover {
+  background: #e55933 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* Wyjątek: faktyczny przycisk CTA na dole kart (np. 'Sprawdź wszystkie Taśmy LED') */
+.mdw-card-portfolio a.elementor-button[href*="tasmy"],
+.mdw-card-portfolio a.elementor-button[href*="oferta"],
+.mdw-card-portfolio a.elementor-button[href*="produkty"] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  padding: 14px 34px !important;
+  font-size: 16.5px !important;
+  box-shadow: 0 4px 0 #b33614, 0 8px 18px rgba(229, 89, 51, 0.35) !important;
+}
+
+.mdw-card-portfolio a.elementor-button[href*="tasmy"]:hover,
+.mdw-card-portfolio a.elementor-button[href*="oferta"]:hover,
+.mdw-card-portfolio a.elementor-button[href*="produkty"]:hover {
+  box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  transform: translateY(-2px) !important;
 }
 
 /* 2. Okragle przyciski strzalek slidera (.as-slider-left, .as-slider-right) - 3D PODSTAWKA */
@@ -1534,7 +1628,7 @@ a[href="#masthead"] {
   bottom: 90px !important;
   left: 50% !important;
   margin-left: -16px !important;
-  z-index: 999 !important;
+  z-index: 9999 !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1631,27 +1725,10 @@ svg.p-pure-arrow-down {
 }
 
 /* =========================================================
-   APP-LIKE SECTION SCROLL SNAP (DOCIĄGANIE BLOKÓW STRONY)
+   NATURAL FLUID SCROLLING
    ========================================================= */
 html {
   scroll-behavior: smooth !important;
-  scroll-snap-type: y proximity;
-}
-
-.dist-hero-section,
-.dist-why-section,
-.dist-form-section,
-.distSlide,
-.p-full-hero,
-.hero-section,
-#dlaczego-warto,
-#zostan-dystrybutorem,
-#sprawdz-nasza-oferte,
-#kreci,
-#prawdziwe-mozliwosci,
-[data-element_type="container"].e-parent {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
 }
 
 
