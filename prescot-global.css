@@ -303,6 +303,9 @@ html body .distKicker {
 .as-changing-widget .elementor-button,
 .as-slider .elementor-button,
 .elementor-element-2531bbe9 a.elementor-button,
+.elementor-element-7ade0441 a.elementor-button,
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button,
 .prescot-standard-cta.elementor-button,
 .prescot-cta,
 a.elementor-button[href="tasmy-led/"],
@@ -326,6 +329,7 @@ a.elementor-button[href*="produkty"] {
   justify-content: center !important;
   text-decoration: none !important;
   cursor: pointer !important;
+  pointer-events: auto !important;
   /* 3D PODSTAWKA: solidna krawedz bazowa 4px + ambient glow */
   box-shadow: 0 4px 0 #b33614, 0 8px 18px rgba(229, 89, 51, 0.35) !important;
   transform: translateY(0) !important;
@@ -340,6 +344,9 @@ a.elementor-button[href*="produkty"] {
 .as-slider .elementor-button:hover,
 .as-slider .elementor-button:focus,
 .elementor-element-2531bbe9 a.elementor-button:hover,
+.elementor-element-7ade0441 a.elementor-button:hover,
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button:hover,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button:hover,
 .prescot-standard-cta.elementor-button:hover,
 .prescot-standard-cta.elementor-button:focus,
 a.elementor-button[href="tasmy-led/"]:hover,
@@ -351,6 +358,8 @@ a.elementor-button[href*="produkty"]:hover {
   background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* Active / Click: Wcisniecie przycisku w podstawke */
@@ -358,6 +367,9 @@ a.elementor-button[href*="produkty"]:hover {
 .as-changing-widget .elementor-button:active,
 .as-slider .elementor-button:active,
 .elementor-element-2531bbe9 a.elementor-button:active,
+.elementor-element-7ade0441 a.elementor-button:active,
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button:active,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button:active,
 .prescot-standard-cta.elementor-button:active,
 a.elementor-button[href="tasmy-led/"]:active,
 a.elementor-button[href*="oferta"]:active,
@@ -368,6 +380,33 @@ a.elementor-button[href*="produkty"]:active {
   background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
   transform: translateY(2px) !important;
   box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* =========================================================
+   ROZWIĄZANIE UCINANIA CIENI: UN-CLIP BUTTON SHADOWS & PODSTAWKA 3D
+   Kontenery przycisków w sliderze kategorii nie mogą ucinać cienia!
+   ========================================================= */
+html body .elementor .elementor-element.elementor-element-2531bbe9,
+html body .elementor .elementor-element.elementor-element-7ade0441,
+html body .elementor-element.elementor-element-2531bbe9,
+html body .elementor-element.elementor-element-7ade0441,
+html body .as-changing-widget[data-id="2531bbe9"],
+html body .as-changing-widget[data-id="7ade0441"],
+html body .elementor .elementor-element.as-changing-widget,
+.as-changing-widget,
+.as-changing-widget.e-con,
+.as-changing-widget .e-con-inner,
+.as-changing-widget .elementor-widget-wrap,
+.as-changing-widget .elementor-widget-container,
+.as-changing-widget .elementor-button-wrapper,
+.elementor-element-2531bbe9,
+.elementor-element-7ade0441,
+.as-changing-widget[data-id="2531bbe9"],
+.as-changing-widget[data-id="7ade0441"] {
+  overflow: visible !important;
+  --overflow: visible !important;
 }
 
 /* =========================================================
@@ -375,20 +414,10 @@ a.elementor-button[href*="produkty"]:active {
    Czysty, płaski pomarańcz (#e55933), biały napis,
    BEZWZGLĘDNIE BEZ JAKICHKOLWIEK CIENI, FILTRÓW I PODSTAWEK
    ========================================================= */
-.mdw-card-portfolio .elementor-widget-button .elementor-button,
-.mdw-card-portfolio .elementor-button,
-.mdw-card-portfolio .elementor-button-link,
-.card-portfolio .elementor-widget-button .elementor-button,
-.card-portfolio .elementor-button,
-.dm-card-slider .elementor-widget-button .elementor-button,
-.dm-card-slider .elementor-button,
-[id^='true'] .elementor-widget-button .elementor-button,
-[id^='dl'] .elementor-widget-button .elementor-button,
-[id^='oc'] .elementor-widget-button .elementor-button,
-[id^='sl'] .elementor-widget-button .elementor-button,
-a.elementor-button[href="#"],
-a.elementor-button:not([href]),
-a.elementor-button[role="button"]:not([href*="/"]) {
+.mdw-card-portfolio .elementor-widget-button:first-of-type .elementor-button,
+.mdw-card-portfolio .elementor-widget-button:first-of-type a.elementor-button,
+.card-portfolio .elementor-widget-button:first-of-type .elementor-button,
+.card-portfolio .elementor-widget-button:first-of-type a.elementor-button {
   color: #ffffff !important;
   fill: #ffffff !important;
   background: #e55933 !important;
@@ -415,21 +444,12 @@ a.elementor-button[role="button"]:not([href*="/"]) {
   transition: none !important;
 }
 
-.mdw-card-portfolio .elementor-widget-button .elementor-button:hover,
-.mdw-card-portfolio .elementor-widget-button .elementor-button:focus,
-.mdw-card-portfolio .elementor-widget-button .elementor-button:active,
-.mdw-card-portfolio .elementor-button:hover,
-.mdw-card-portfolio .elementor-button:focus,
-.mdw-card-portfolio .elementor-button:active,
-.card-portfolio .elementor-button:hover,
-.dm-card-slider .elementor-button:hover,
-[id^='true'] .elementor-button:hover,
-[id^='dl'] .elementor-button:hover,
-[id^='oc'] .elementor-button:hover,
-[id^='sl'] .elementor-button:hover,
-a.elementor-button[href="#"]:hover,
-a.elementor-button:not([href]):hover,
-a.elementor-button[role="button"]:not([href*="/"]):hover {
+.mdw-card-portfolio .elementor-widget-button:first-of-type .elementor-button:hover,
+.mdw-card-portfolio .elementor-widget-button:first-of-type .elementor-button:focus,
+.mdw-card-portfolio .elementor-widget-button:first-of-type .elementor-button:active,
+.mdw-card-portfolio .elementor-widget-button:first-of-type a.elementor-button:hover,
+.card-portfolio .elementor-widget-button:first-of-type .elementor-button:hover,
+.card-portfolio .elementor-widget-button:first-of-type a.elementor-button:hover {
   background: #e55933 !important;
   color: #ffffff !important;
   box-shadow: none !important;
@@ -536,7 +556,22 @@ a.elementor-button[role="button"]:not([href*="/"]):hover {
   text-align: center !important;
 }
 
-/* 2. Okragle przyciski strzalek slidera (.as-slider-left, .as-slider-right) - 3D PODSTAWKA */
+.as-slider-left,
+.as-slider-right,
+.as-slider-left .elementor-button,
+.as-slider-right .elementor-button,
+.as-slider-left a.elementor-button,
+.as-slider-right a.elementor-button,
+.as-slider-left a,
+.as-slider-right a,
+.card-prev,
+.card-next,
+.card-prev a,
+.card-next a {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
 .as-slider-left .elementor-button,
 .as-slider-right .elementor-button,
 .as-slider-left a.elementor-button,
@@ -556,6 +591,8 @@ a.elementor-button[role="button"]:not([href*="/"]):hover {
   justify-content: center !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 .as-slider-left .elementor-button:hover,
@@ -1924,8 +1961,10 @@ html {
 }
 
 
-.as-changing-widget[data-id=2531bbe9] a.elementor-button,
-.elementor-element-2531bbe9 a.elementor-button {
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button,
+.elementor-element-2531bbe9 a.elementor-button,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button,
+.elementor-element-7ade0441 a.elementor-button {
   font-size: 18px !important;
   font-weight: 700 !important;
   padding: 16px 42px !important;
@@ -1935,20 +1974,30 @@ html {
   box-shadow: 0 4px 0 #b33614, 0 8px 20px rgba(229, 89, 51, 0.4) !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
-.as-changing-widget[data-id=2531bbe9] a.elementor-button:hover,
-.elementor-element-2531bbe9 a.elementor-button:hover {
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button:hover,
+.elementor-element-2531bbe9 a.elementor-button:hover,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button:hover,
+.elementor-element-7ade0441 a.elementor-button:hover {
   background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
-.as-changing-widget[data-id=2531bbe9] a.elementor-button:active,
-.elementor-element-2531bbe9 a.elementor-button:active {
+.as-changing-widget[data-id="2531bbe9"] a.elementor-button:active,
+.elementor-element-2531bbe9 a.elementor-button:active,
+.as-changing-widget[data-id="7ade0441"] a.elementor-button:active,
+.elementor-element-7ade0441 a.elementor-button:active {
   background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
   transform: translateY(2px) !important;
   box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 /* =========================================================

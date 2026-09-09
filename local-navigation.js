@@ -78,205 +78,91 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2b. Utworzenie inteligentnej strzałki w dół (Scroll-Down) nad dockiem
   let scrollDownBtn = document.getElementById("prescotScrollDown");
 
-  // Pomocnicza funkcja: pobiera wyłącznie nienadrzędne, widoczne bloki strony
-  function getTopLevelSections() {
-    const candidates = document.querySelectorAll(
-      ".e-parent, section, .distSlide, .dist-why-section, .dist-form-section, #stopka, #kreci, #prawdziwe-mozliwosci, .distribution-intro, .site-footer, [id^='sec']"
-    );
-    const cSet = new Set(candidates);
-    const topSections = [];
-    
-    candidates.forEach(el => {
-      // Pomiń elementy o zerowej wysokości lub ukryte w stylach
-      if (el.offsetHeight < 60) return;
-      const disp = window.getComputedStyle(el).display;
-      if (disp === "none") return;
-
-      // Jeśli element jest nadrzędnym kontenerem zawierającym w sobie slajdy .distSlide,
-      // to pomijamy sam nadrzędny kontener, a nawigujemy bezpośrednio po poszczególnych slajdach .distSlide
-      if (el.querySelector(".distSlide") && !el.classList.contains("distSlide")) {
-        return;
-      }
-
-      let isNested = false;
-      let p = el.parentElement;
-      while (p && p !== document.body) {
-        // .distSlide nie traktujemy jako zagnieżdżonego odrzutka
-        if (el.classList.contains("distSlide")) {
-          break;
-        }
-        if (cSet.has(p)) {
-          isNested = true;
-          break;
-        }
-        p = p.parentElement;
-      }
-      if (!isNested) {
-        topSections.push(el);
-      }
-    });
-    return topSections;
-  }
-
-  // Pomocnicza funkcja do dynamicznego wykrywania jasności tła pod strzałką
-  function updateArrowColor(btn, currentScrollY) {
-    if (!btn) return;
-    try {
-      const testX = Math.round(window.innerWidth / 2);
-      const testY = Math.round(window.innerHeight - 80);
-      const elBelow = document.elementFromPoint(testX, testY);
-      if (elBelow) {
-        let cur = elBelow;
-        let isLight = false;
-        while (cur && cur !== document.body && cur !== document.documentElement) {
-          const bg = window.getComputedStyle(cur).backgroundColor;
-          if (bg && bg !== "transparent" && bg !== "rgba(0, 0, 0, 0)") {
-            const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-            if (m) {
-              const r = parseInt(m[1]), g = parseInt(m[2]), b = parseInt(m[3]);
-              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-              if (brightness > 190) {
-                isLight = true;
-              }
-            }
-            break;
-          }
-          cur = cur.parentElement;
-        }
-        if (isLight) {
-          btn.classList.add("is-light");
-          return;
-        }
-      }
-    } catch (e) {}
-    btn.classList.remove("is-light");
-  }
-
   function checkScrollDown() {
     if (document.getElementById("prescotScrollDown")) return;
+
+    // Strzałka w dół jest WYŁĄCZNIE dla podstron produktowych z kartami showcase (.mdw-card-portfolio)
+    // Na stronach takich jak Oferta, Taśmy LED, Dystrybucja, Strona Główna itp. NIE MOŻE SIĘ POJAWIAĆ,
+    // ponieważ koliduje z suwakami poziomymi i strzałkami slidera!
+    if (!document.querySelector(".mdw-card-portfolio")) return;
 
     // Sprawdź czy strona ma więcej treści
     const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
     const winH = window.innerHeight || 700;
     const hasMoreContent = docH > (winH + 30);
+    if (!hasMoreContent) return;
 
-    if (hasMoreContent) {
-      scrollDownBtn = document.createElement("a");
-      scrollDownBtn.id = "prescotScrollDown";
-      scrollDownBtn.className = "prescot-scroll-down";
-      scrollDownBtn.setAttribute("aria-label", "Przewiń do kolejnego bloku");
-      scrollDownBtn.setAttribute("href", "#");
-      scrollDownBtn.innerHTML = `
-        <svg class="p-pure-arrow-down" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-          <path d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path>
-        </svg>
-      `;
-      document.body.appendChild(scrollDownBtn);
+    scrollDownBtn = document.createElement("a");
+    scrollDownBtn.id = "prescotScrollDown";
+    scrollDownBtn.className = "prescot-scroll-down";
+    scrollDownBtn.setAttribute("aria-label", "Przewiń do kolejnego bloku");
+    scrollDownBtn.setAttribute("href", "#");
+    scrollDownBtn.innerHTML = `
+      <svg class="p-pure-arrow-down" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+        <path d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path>
+      </svg>
+    `;
+    document.body.appendChild(scrollDownBtn);
 
-      scrollDownBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const winH = window.innerHeight || 700;
+    scrollDownBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const currentWinH = window.innerHeight || 700;
 
-        // 1. Priorytet: Karty produktowe / showcase rozsuwające się w lewo i prawo (mdw-card-portfolio, true, dl, oc, sl)
-        const hasCards = document.querySelector(".mdw-card-portfolio, [id^='true'], [id^='dl'], [id^='oc'], [id^='sl']");
-        if (hasCards) {
-          const cardCandidates = Array.from(
-            new Set(document.querySelectorAll(".mdw-card-portfolio, [id^='true'], [id^='dl'], [id^='oc'], [id^='sl'], #stopka, footer.elementor-location-footer, footer"))
-          );
-          const below = cardCandidates
-            .filter(el => {
-              if (el.offsetHeight < 50) return false;
-              const rect = el.getBoundingClientRect();
-              return rect.top > 60;
-            })
-            .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+      // Priorytet: Karty produktowe / showcase (.mdw-card-portfolio)
+      const cardCandidates = Array.from(
+        new Set(document.querySelectorAll(".mdw-card-portfolio, #stopka, footer.elementor-location-footer, footer"))
+      );
+      const below = cardCandidates
+        .filter(el => {
+          if (el.offsetHeight < 50) return false;
+          const rect = el.getBoundingClientRect();
+          return rect.top > 60;
+        })
+        .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
-          if (below.length > 0) {
-            below[0].scrollIntoView({ behavior: "smooth", block: "start" });
-            return;
-          }
-        }
+      if (below.length > 0) {
+        below[0].scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
 
-        // 2. Priorytet: Slajdy na podstronie Dystrybucja (.distSlide)
-        const hasDist = document.querySelector(".distSlide");
-        if (hasDist) {
-          const distCandidates = Array.from(
-            new Set(document.querySelectorAll(".dist-why-section, .dist-form-section, .distSlide, #stopka, footer"))
-          );
-          const belowDist = distCandidates
-            .filter(el => {
-              if (el.offsetHeight < 50) return false;
-              const rect = el.getBoundingClientRect();
-              return rect.top > 60;
-            })
-            .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-
-          if (belowDist.length > 0) {
-            belowDist[0].scrollIntoView({ behavior: "smooth", block: "start" });
-            return;
-          }
-        }
-
-        // 3. Sprawdź bezpośrednie cele pod hero na znanych podstronach (w tym oferta, tasmy-led)
-        const keyTargets = Array.from(
-          new Set(document.querySelectorAll(
-            "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, #stopka, footer"
-          ))
-        );
-        const belowKeys = keyTargets
-          .filter(el => {
-            if (el.offsetHeight < 50) return false;
-            const rect = el.getBoundingClientRect();
-            return rect.top > 60;
-          })
-          .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-
-        if (belowKeys.length > 0) {
-          belowKeys[0].scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
-
-        // 4. Ogólne top-level sekcje
-        const topSections = getTopLevelSections();
-        let nextSec = null;
-        for (const sec of topSections) {
-          const rect = sec.getBoundingClientRect();
-          if (rect.top > 80) {
-            nextSec = sec;
-            break;
-          }
-        }
-
-        if (nextSec) {
-          nextSec.scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
-
-        // 5. Ostateczny fallback: stopka lub dół
-        const stopka = document.getElementById("stopka") || document.querySelector("footer");
-        if (stopka && stopka.getBoundingClientRect().top > 60) {
-          stopka.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else {
-          window.scrollBy({ top: Math.round(winH * 0.85), behavior: "smooth" });
-        }
-      });
-    }
+      // Fallback: stopka lub dół
+      const stopka = document.getElementById("stopka") || document.querySelector("footer");
+      if (stopka && stopka.getBoundingClientRect().top > 60) {
+        stopka.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollBy({ top: Math.round(currentWinH * 0.85), behavior: "smooth" });
+      }
+    });
   }
   checkScrollDown();
   window.addEventListener("load", checkScrollDown);
   setTimeout(checkScrollDown, 400);
   setTimeout(checkScrollDown, 1200);
 
-  // 3. Smart Scroll Controller (Ultra-smooth 60/120 FPS via requestAnimationFrame)
+  // 3. Smart Scroll Controller (Ultra-smooth 60/120 FPS via requestAnimationFrame & zero layout thrashing)
   let lastScrollY = window.scrollY;
   const scrollThreshold = 8;
   const smartLogo = document.querySelector(".prescot-smart-logo");
+  const heroEl = document.querySelector(".p-full-hero, .hero-section, .hero, .catalog-hero, .elementor-top-section, [data-element_type='container']:first-child");
+  const currentDock = document.querySelector(".prescot-dock");
+  const stopkaEl = document.getElementById("stopka") || document.querySelector("footer.elementor-location-footer, footer, .site-footer");
+
+  let heroThreshold = 180;
+  let cachedDocH = 2000;
+  let cachedWinH = window.innerHeight || 700;
+
+  function measureDimensions() {
+    cachedWinH = window.innerHeight || 700;
+    cachedDocH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    const heroH = heroEl ? heroEl.offsetHeight : cachedWinH;
+    heroThreshold = Math.max(120, Math.min(260, heroH * 0.45));
+  }
+  measureDimensions();
+  window.addEventListener("resize", measureDimensions, { passive: true });
+  window.addEventListener("load", measureDimensions, { passive: true });
 
   function updateNavVisibility() {
     const currentScrollY = window.scrollY;
-    const heroEl = document.querySelector(".p-full-hero, .hero-section, .hero, .catalog-hero, .elementor-top-section, [data-element_type='container']:first-child");
-    const heroHeight = heroEl ? heroEl.offsetHeight : (window.innerHeight || 700);
-    const heroThreshold = Math.max(120, Math.min(260, heroHeight * 0.45));
 
     if (smartLogo) {
       if (currentScrollY <= heroThreshold) {
@@ -295,18 +181,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (scrollDownBtn) {
-      const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-      const winH = window.innerHeight || 700;
-      const stopka = document.getElementById("stopka") || document.querySelector("footer.elementor-location-footer, footer, .site-footer");
-
       let isAtEnd = false;
-      // 1. Sprawdź czy jesteśmy blisko fizycznego końca dokumentu
-      if (docH - (currentScrollY + winH) < 80) {
+      if (cachedDocH - (currentScrollY + cachedWinH) < 80) {
         isAtEnd = true;
-      } else if (stopka) {
-        // 2. Sprawdź czy stopka wjechała na ekran (widoczna w co najmniej 55% widoku)
-        const stopkaRect = stopka.getBoundingClientRect();
-        if (stopkaRect.top <= (winH * 0.55)) {
+      } else if (stopkaEl) {
+        const stopkaRect = stopkaEl.getBoundingClientRect();
+        if (stopkaRect.top <= (cachedWinH * 0.55)) {
           isAtEnd = true;
         }
       }
@@ -315,11 +195,9 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollDownBtn.classList.add("psd-hidden");
       } else {
         scrollDownBtn.classList.remove("psd-hidden");
-        updateArrowColor(scrollDownBtn, currentScrollY);
       }
     }
 
-    const currentDock = document.querySelector(".prescot-dock");
     if (currentDock) {
       if (currentScrollY < 30) {
         currentDock.classList.remove("dock-hidden");
@@ -471,17 +349,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }, delay);
   });
 
-  // MutationObserver to catch dynamically injected GTranslate float switcher
+  // MutationObserver to catch dynamically injected GTranslate float switcher (isolated to dock)
   try {
-    const gtObserver = new MutationObserver(() => {
-      const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
-      if (dockLang && !dockLang.querySelector("#gt_float_wrapper")) {
-        syncGTranslateToDock();
-      }
-      fixSliderBackgrounds();
-    });
-    gtObserver.observe(document.body, { childList: true, subtree: true });
-    setTimeout(() => gtObserver.disconnect(), 6000);
+    const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
+    if (dockLang) {
+      const gtObserver = new MutationObserver(() => {
+        if (!dockLang.querySelector("#gt_float_wrapper")) {
+          syncGTranslateToDock();
+        } else {
+          gtObserver.disconnect();
+        }
+      });
+      gtObserver.observe(dockLang, { childList: true, subtree: true });
+      setTimeout(() => gtObserver.disconnect(), 6000);
+    }
   } catch(e) {}
 });
 
