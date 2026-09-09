@@ -662,10 +662,10 @@ html body .elementor .elementor-element.as-changing-widget,
 }
 
 /* Hide text inside circle arrow buttons */
-.as-slider-left .elementor-button span,
-.as-slider-right .elementor-button span,
-.card-prev a span,
-.card-next a span {
+.as-slider-left .elementor-button span.elementor-button-text,
+.as-slider-right .elementor-button span.elementor-button-text,
+.card-prev a span.elementor-button-text,
+.card-next a span.elementor-button-text {
   display: none !important;
 }
 
