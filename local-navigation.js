@@ -121,40 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pomocnicza funkcja do dynamicznego wykrywania jasności tła pod strzałką
   function updateArrowColor(btn, currentScrollY) {
     if (!btn) return;
-    const pPath = window.location.pathname.toLowerCase();
-    let isLightBg = false;
-
-    if (pPath.includes("oferta") || pPath.includes("produkty")) {
-      isLightBg = true;
-    } else if (pPath.includes("dystrybucja")) {
-      const heroEl = document.querySelector(".distribution-intro, .dist-hero-section");
-      const heroH = heroEl ? (heroEl.offsetTop + heroEl.offsetHeight) : 550;
-      if (currentScrollY > heroH - 220) {
-        isLightBg = true;
-      }
-    } else {
-      const testX = window.innerWidth / 2;
-      const testY = window.innerHeight - 80;
-      const elUnder = document.elementFromPoint(testX, testY);
-      if (elUnder) {
-        const lightParent = elUnder.closest(".dist-why-section, .dist-form-section, .distWrap, .distSlide, .distGrid, .distCard, #dystrybucja-marki, .distContentBox, [style*='background:#ffffff'], [style*='background: #ffffff'], .site-footer");
-        if (lightParent) {
-          isLightBg = true;
-        } else {
-          let cur = elUnder;
-          while (cur && cur !== document.body) {
-            const bg = window.getComputedStyle(cur).backgroundColor;
-            const rgb = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-            if (rgb && !bg.includes("rgba(0, 0, 0, 0)") && !bg.includes("transparent")) {
-              const lum = (parseInt(rgb[1]) * 299 + parseInt(rgb[2]) * 587 + parseInt(rgb[3]) * 114) / 1000;
-              if (lum > 170) isLightBg = true;
-              break;
-            }
-            cur = cur.parentElement;
-          }
-        }
-      }
-    }
+    const pPath = (window.location.pathname || "").toLowerCase();
+    const isLightBg = pPath.includes("oferta") || pPath.includes("produkty");
 
     if (isLightBg) {
       btn.classList.add("is-light");
@@ -209,13 +177,21 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollDownBtn.addEventListener("click", (e) => {
         e.preventDefault();
         
+        // Priorytet 1: Sprawdź bezpośrednie cele pod hero na znanych podstronach
+        const directTarget = document.querySelector(
+          "#artykuly-blog, #content-start, #dlaczego-warto, #sl-prescot, #dzial-handlowy, #zespol, .p-contact-container, #kalkulator-led, main section:first-of-type"
+        );
+        if (directTarget && window.scrollY < (window.innerHeight * 0.6)) {
+          directTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
         const topSections = getTopLevelSections();
         const winH = window.innerHeight || 700;
 
         let nextSec = null;
         for (const sec of topSections) {
           const rect = sec.getBoundingClientRect();
-          // Szukamy sekcji, której górna krawędź zaczyna się poniżej obecnego ekranu
           if (rect.top > 80) {
             nextSec = sec;
             break;
@@ -225,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (nextSec) {
           nextSec.scrollIntoView({ behavior: "smooth", block: "start" });
         } else {
-          window.scrollBy({ top: Math.round(winH * 0.9), behavior: "smooth" });
+          window.scrollBy({ top: Math.round(winH * 0.85), behavior: "smooth" });
         }
       });
     }
@@ -235,9 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(checkScrollDown, 400);
   setTimeout(checkScrollDown, 1200);
 
-
-
-  // 3. Smart Scroll Controller
+  // 3. Smart Scroll Controller (Ultra-smooth 60/120 FPS via requestAnimationFrame)
   let lastScrollY = window.scrollY;
   const scrollThreshold = 8;
   const smartLogo = document.querySelector(".prescot-smart-logo");
@@ -265,97 +239,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (scrollDownBtn) {
-      const docTotalH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-      const winH = window.innerHeight || 700;
-      const maxPageScroll = Math.max(1, docTotalH - winH);
-      const remainingScroll = docTotalH - (currentScrollY + winH);
-
-      // 0. STOPKA / DÓŁ STRONY: BEZWZGLĘDNY ZAKAZ STRZAŁKI W DÓŁ!
-      // Gdy użytkownik dociera do stopki lub do końca strony, nie ma nic niżej.
-      const footerEl = document.querySelector("#stopka, footer, .elementor-location-footer");
-      let footerInView = false;
-      if (footerEl) {
-        const fRect = footerEl.getBoundingClientRect();
-        if (fRect.top <= winH) {
-          footerInView = true;
-        }
-      }
-
-      if (remainingScroll <= 80 || footerInView) {
-        scrollDownBtn.classList.add("psd-hidden");
-        scrollDownBtn.style.top = "";
-        scrollDownBtn.style.bottom = "";
-        return;
-      }
-
-      // 1. Startowo na Hero: widoczna w pozycji startowej
-      if (currentScrollY <= 80) {
+      // W hero (scrollY <= 60): strzałka widoczna i aktywna
+      if (currentScrollY <= 60) {
         scrollDownBtn.classList.remove("psd-hidden");
         updateArrowColor(scrollDownBtn, currentScrollY);
-        return;
-      }
-
-      // 2. REGUŁA KAROLA - ZASADA 90%:
-      // W przedziale 0% - 89% bloku: STRZAŁKI MA BEZWZGLĘDNIE NIE BYĆ!
-      // Pojawia się DOPIERO OD 90% wysokości aktywnego bloku w górę, aby przejść do kolejnej sekcji.
-      let shouldShow = false;
-
-      // Sprawdź postęp w aktualnie widocznym bloku:
-      const topSections = getTopLevelSections();
-      const vCenter = winH * 0.5;
-
-      let activeIndex = -1;
-      for (let i = 0; i < topSections.length; i++) {
-        const r = topSections[i].getBoundingClientRect();
-        if (r.top <= vCenter && r.bottom >= vCenter) {
-          activeIndex = i;
-          break;
-        }
-      }
-
-      if (activeIndex !== -1) {
-        const activeSec = topSections[activeIndex];
-        const aRect = activeSec.getBoundingClientRect();
-        const aHeight = activeSec.offsetHeight;
-
-        // Jeśli aktywną sekcją jest formularz handlowy, slajd marki z własną dedykowaną strzałką .distArrow, lub ostatnia sekcja:
-        if (activeSec.matches("#zostan-dystrybutorem, .dist-form-section") || activeSec.classList.contains("distSlide") || activeSec.querySelector(".distArrow") || activeIndex >= topSections.length - 1) {
-          shouldShow = false;
-        } else {
-          const isFullScreenSlide = Math.abs(aHeight - winH) < 140;
-          if (isFullScreenSlide) {
-            if (Math.abs(aRect.top) <= winH * 0.25) {
-              shouldShow = true;
-            }
-          } else {
-            const maxScroll = Math.max(1, aHeight - winH);
-            const currentInSec = -aRect.top;
-            const progress = currentInSec / maxScroll;
-
-            // STRZAŁKA POJAWIA SIĘ DOPIERO NA >= 90% WYSOKOŚCI BLOKU!
-            // 0% - 89% -> 100% UKRYTA!
-            if (progress >= 0.90) {
-              shouldShow = true;
-            }
-          }
-        }
-      }
-
-      if (shouldShow) {
-        scrollDownBtn.classList.remove("psd-hidden");
-        updateArrowColor(scrollDownBtn, currentScrollY);
-
-        scrollDownBtn.style.top = "";
-        const hasDock = document.querySelector(".prescot-dock");
-        scrollDownBtn.style.bottom = hasDock ? "90px" : "28px";
       } else {
+        // Po przewinięciu niżej (> 60px): strzałka natychmiast ukryta
         scrollDownBtn.classList.add("psd-hidden");
-        scrollDownBtn.style.top = "";
-        scrollDownBtn.style.bottom = "";
       }
     }
 
-        const currentDock = document.querySelector(".prescot-dock");
+    const currentDock = document.querySelector(".prescot-dock");
     if (currentDock) {
       if (currentScrollY < 30) {
         currentDock.classList.remove("dock-hidden");
@@ -370,7 +264,16 @@ document.addEventListener("DOMContentLoaded", () => {
     lastScrollY = currentScrollY;
   }
 
-  window.addEventListener("scroll", updateNavVisibility, { passive: true });
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        updateNavVisibility();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 
   // 4. Automatic image hydration
   function hydrateImages() {
