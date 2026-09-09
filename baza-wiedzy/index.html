@@ -715,17 +715,19 @@
       transition: width 0.3s ease, background-color 0.3s ease;
     }
 
-    /* REKOMENDACJA: CZYSTY JASNY KARTON Z DELIKATNYM AKCENTEM */
+    /* REKOMENDACJA: GLASSPHORMISM GRANAT-SZARY Z POMARAŃCZOWĄ RAMKĄ */
     .calc-rec-card {
-      background: linear-gradient(135deg, #fffaf8 0%, #ffffff 100%);
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 41, 59, 0.90) 100%);
       border-radius: 16px;
       padding: 24px;
-      color: var(--p-dark);
-      border: 1px solid rgba(229, 89, 51, 0.28);
-      box-shadow: 0 6px 20px rgba(229, 89, 51, 0.06);
+      color: #ffffff;
+      border: 1.5px solid rgba(225, 78, 38, 0.85);
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.25), 0 0 16px rgba(225, 78, 38, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .calc-rec-tag {
@@ -736,27 +738,49 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: var(--p-primary);
+      color: #ff6a3d;
+    }
+
+    .calc-rec-brand {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: -2px;
     }
 
     .calc-rec-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
-      color: var(--p-dark);
+      color: #ffffff;
       line-height: 1.3;
       letter-spacing: -0.01em;
     }
 
     .calc-rec-desc {
-      font-size: 13.5px;
-      color: #475569;
-      line-height: 1.6;
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.65;
     }
 
     .calc-rec-btn {
       align-self: flex-start;
-      margin-top: 4px;
+      margin-top: 6px;
+      background: #e14e26 !important;
+      color: #ffffff !important;
+      border: 1px solid #e14e26 !important;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(225, 78, 38, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .calc-rec-btn:hover {
+      background: #c83d17 !important;
+      border-color: #c83d17 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(225, 78, 38, 0.5);
     }
 
     /* FAQ ACCORDION */
@@ -1516,7 +1540,7 @@
             </div>
           </div>
 
-          <!-- Recommendation Box (Clean Light Luxury) -->
+          <!-- Recommendation Box (Granat-Szary Glassmorphism z Pomarańczową Ramką) -->
           <div class="calc-rec-card">
             <div class="calc-rec-tag">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1525,10 +1549,9 @@
               </svg>
               Dobieramy dla Ciebie
             </div>
+            <div class="calc-rec-brand">Zasilacz z oferty PRESCOT LED</div>
             <div class="calc-rec-title" id="rec-psu-name">Zasilacz Prescot Ultra Slim 150W 24V</div>
-            <p class="calc-rec-desc" id="rec-psu-text">Idealnie dobrana moc z 20% bezpiecznego zapasu. Zasilacz nie
-              będzie się przegrzewał, ma zabezpieczenia przed zwarciem i posłuży na lata. Twój odcinek 6.0m możesz bez
-              problemu podłączyć z jednej strony.</p>
+            <p class="calc-rec-desc" id="rec-psu-text">Dobrana moc z bezpiecznym zapasem, aby zasilacz się nie przegrzewał i służył na lata. Twój odcinek 6.0m możesz bez problemu podłączyć z jednej strony.</p>
             <a href="https://www.prescot.com.pl/pl/searchquery/zasilacz+150W+24V/1/phot/5?url=zasilacz+150W+24V"
               id="rec-psu-link" target="_blank" rel="noopener" class="p-btn p-btn-primary calc-rec-btn">
               Kup zasilacz 150W w sklepie &rarr;
@@ -1858,11 +1881,11 @@
       var modelName = 'Zasilacz Prescot Ultra Slim ' + matchedPsu + 'W ' + state.voltage + 'V';
       document.getElementById('rec-psu-name').textContent = modelName;
 
-      var advice = 'Idealnie dobrana moc z 20% bezpiecznego zapasu. Zasilacz nie będzie się przegrzewał, ma zabezpieczenia przed zwarciem i posłuży na lata. ';
+      var advice = 'Dobrana moc z bezpiecznym zapasem, aby zasilacz się nie przegrzewał i służył na lata. ';
       if (state.voltage === 12 && state.length > 5) {
-        advice += 'Wskazówka: przy taśmie 12V i długości ' + state.length.toFixed(1) + 'm warto podpiąć zasilanie z obu stron, żeby na końcu taśmy nie tracić jasności.';
+        advice += 'Przy taśmie 12V i długości ' + state.length.toFixed(1) + 'm zalecane jest podłączenie zasilania z obu stron, aby uniknąć spadku jasności na końcu.';
       } else if (lossPct > 3.0) {
-        advice += 'Wskazówka: przewód ma ' + state.cable.toFixed(1) + 'm — wybierz grubszy kabel (np. 1.50 mm²), aby taśma świeciła pełną jasnością.';
+        advice += 'Przewód ma długość ' + state.cable.toFixed(1) + 'm — zastosuj przekrój min. 1.50 mm², aby taśma świeciła pełną jasnością.';
       } else {
         advice += 'Twój odcinek ' + state.length.toFixed(1) + 'm możesz bez problemu podłączyć z jednej strony.';
       }
