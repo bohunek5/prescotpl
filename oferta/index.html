@@ -811,6 +811,10 @@ $('.as-slider').each(function(){
         $(this).css('--h', texts.height()+'px')
     })
 })
+
+$(window).on('load', function(){
+    $(window).trigger('resize');
+});
 })
 
 

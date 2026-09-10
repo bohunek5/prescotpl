@@ -1163,7 +1163,6 @@ dialog#b2b-register-modal[open]::backdrop {
 
 /* Base Pill Button */
 .p-btn,
-.elementor-button,
 .submitBtn,
 .b2b-btn,
 .distBtn {
@@ -2068,6 +2067,9 @@ html {
   padding: 16px 42px !important;
   background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
   color: #ffffff !important;
+  border-radius: 100px !important;
+  box-shadow: 0 4px 0 #b33614, 0 8px 16px rgba(229, 89, 51, 0.45) !important;
+  border: none !important;
   border: none !important;
   outline: none !important;
   border-radius: 9999px !important;
@@ -2722,4 +2724,12 @@ html {
 
 .as-side-slider .swiper-slide:hover {
   transform: translateY(-4px) !important;
+}
+/* Force elementor button wrappers to have no background/shadow so only the button itself has it */
+.as-changing-widget .elementor-widget-button .elementor-widget-container,
+.as-changing-widget .elementor-widget-button .elementor-button-wrapper,
+.as-changing-widget .elementor-widget-button .elementor-button-content-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }
