@@ -312,7 +312,7 @@ a.elementor-button[href*="kontakt"],
 a.elementor-button[href*="produkty"] {
   color: #ffffff !important;
   fill: #ffffff !important;
-  background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
+  background: #e55933 !important;
   border: none !important;
   outline: none !important;
   border-radius: 9999px !important;
@@ -331,8 +331,8 @@ a.elementor-button[href*="produkty"] {
   visibility: visible !important;
   opacity: 1 !important;
   z-index: 10 !important;
-  /* 3D PODSTAWKA: solidna krawedz bazowa 4px + ambient glow */
-  box-shadow: 0 4px 0 #b33614, 0 8px 18px rgba(229, 89, 51, 0.35) !important;
+  /* Flat surface shared by category and product buttons. */
+  box-shadow: none !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -348,7 +348,7 @@ a.elementor-button[href*="produkty"] {
   color: #ffffff !important;
 }
 
-/* Hover: Uniesienie w gore, poszerzona podstawka 3D do 6px, soczysty zywy pomarancz (ZADNEJ CZERNI/GRANATU!) */
+/* Hover: a darker orange and a small lift. */
 .as-changing-widget .elementor-widget-button .elementor-button:hover,
 .as-changing-widget .elementor-widget-button .elementor-button:focus,
 .as-changing-widget .elementor-button:hover,
@@ -367,14 +367,14 @@ a.elementor-button[href*="kontakt"]:hover,
 a.elementor-button[href*="produkty"]:hover {
   color: #ffffff !important;
   fill: #ffffff !important;
-  background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
+  background: #cf4c28 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  box-shadow: none !important;
   pointer-events: auto !important;
   cursor: pointer !important;
 }
 
-/* Active / Click: Wcisniecie przycisku w podstawke */
+/* Pressed state. */
 .as-changing-widget .elementor-widget-button .elementor-button:active,
 .as-changing-widget .elementor-button:active,
 .as-slider .elementor-button:active,
@@ -389,16 +389,16 @@ a.elementor-button[href*="kontakt"]:active,
 a.elementor-button[href*="produkty"]:active {
   color: #ffffff !important;
   fill: #ffffff !important;
-  background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
+  background: #bd411f !important;
   transform: translateY(2px) !important;
-  box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
+  box-shadow: none !important;
   pointer-events: auto !important;
   cursor: pointer !important;
 }
 
 /* =========================================================
-   ROZWIĄZANIE UCINANIA CIENI: UN-CLIP BUTTON SHADOWS & PODSTAWKA 3D
-   Kontenery przycisków w sliderze kategorii nie mogą ucinać cienia!
+   SLIDER CONTROL CONTAINERS
+   Keep button movement and keyboard focus outlines visible.
    ========================================================= */
 html body .elementor .elementor-element.elementor-element-2531bbe9,
 html body .elementor .elementor-element.elementor-element-7ade0441,
@@ -478,13 +478,13 @@ html body .elementor .elementor-element.as-changing-widget,
   cursor: pointer !important;
   padding: 14px 34px !important;
   font-size: 16.5px !important;
-  box-shadow: 0 4px 0 #b33614, 0 8px 18px rgba(229, 89, 51, 0.35) !important;
+  box-shadow: none !important;
 }
 
 .mdw-card-portfolio a.elementor-button[href*="tasmy"]:hover,
 .mdw-card-portfolio a.elementor-button[href*="oferta"]:hover,
 .mdw-card-portfolio a.elementor-button[href*="produkty"]:hover {
-  box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) !important;
 }
 
@@ -615,8 +615,8 @@ html body .elementor .elementor-element.as-changing-widget,
   border: none !important;
   outline: none !important;
   border-radius: 50% !important;
-  background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
-  box-shadow: 0 4px 0 #b33614, 0 6px 14px rgba(229, 89, 51, 0.35) !important;
+  background: #e55933 !important;
+  box-shadow: none !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -635,9 +635,9 @@ html body .elementor .elementor-element.as-changing-widget,
 .as-slider-right a.elementor-button:hover,
 .card-prev a:hover,
 .card-next a:hover {
-  background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
+  background: #cf4c28 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #b33614, 0 12px 24px rgba(229, 89, 51, 0.55) !important;
+  box-shadow: none !important;
 }
 
 .as-slider-left .elementor-button:active,
@@ -646,9 +646,9 @@ html body .elementor .elementor-element.as-changing-widget,
 .as-slider-right a.elementor-button:active,
 .card-prev a:active,
 .card-next a:active {
-  background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
+  background: #bd411f !important;
   transform: translateY(2px) !important;
-  box-shadow: 0 1px 0 #b33614, 0 3px 8px rgba(229, 89, 51, 0.35) !important;
+  box-shadow: none !important;
 }
 
 .as-slider-left svg,
@@ -663,9 +663,7 @@ html body .elementor .elementor-element.as-changing-widget,
 
 /* Hide text inside circle arrow buttons */
 .as-slider-left .elementor-button span.elementor-button-text,
-.as-slider-right .elementor-button span.elementor-button-text,
-.card-prev a span.elementor-button-text,
-.card-next a span.elementor-button-text {
+.as-slider-right .elementor-button span.elementor-button-text {
   display: none !important;
 }
 
@@ -1778,47 +1776,51 @@ a[href="#masthead"] {
   pointer-events: none !important;
 }
 
-/* Bulletproof slider text & button isolation:
-   Only the ACTIVE slide widget (.currentUp, .currentDown) is visible and active.
-   All inactive slide widgets are completely hidden. */
-.as-changing-widget .elementor-widget:not(.currentUp):not(.currentDown) {
+/* Keep active slide copy in normal flow. Fonts, line wrapping and text changes
+   determine the height instead of the old animation's cached --h value. */
+html body .as-changing-widget,
+html body .as-changing-widget > .elementor-container,
+html body .as-changing-widget > .e-con-inner {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+html body .as-changing-widget > .e-con-inner,
+html body .as-changing-widget > .elementor-container > .elementor-column > .elementor-widget-wrap {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 0 !important;
+}
+html body .as-changing-widget .elementor-widget {
   display: none !important;
+  grid-area: 1 / 1 !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
-
-.as-changing-widget .elementor-widget:not(.currentUp):not(.currentDown) * {
-  display: none !important;
+html body .as-changing-widget .elementor-widget > .elementor-widget-container {
+  transform: none !important;
+  animation: none !important;
+}
+html body .as-changing-widget .elementor-widget.currentUp,
+html body .as-changing-widget .elementor-widget.currentDown,
+html body .as-changing-widget:not(:has(.currentUp, .currentDown)) .elementor-widget:first-child {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+/* Inactive descendants must never regain visibility through a button override. */
+html body .as-changing-widget:has(.currentUp, .currentDown) .elementor-widget:not(.currentUp):not(.currentDown) * {
   visibility: hidden !important;
-  opacity: 0 !important;
   pointer-events: none !important;
-}
-
-.as-changing-widget .elementor-widget.currentUp,
-.as-changing-widget .elementor-widget.currentDown {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-.as-changing-widget .elementor-widget.currentUp *,
-.as-changing-widget .elementor-widget.currentDown * {
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-/* Fallback before JS runs: if neither currentUp nor currentDown exists yet */
-.as-changing-widget:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child,
-.as-changing-widget:not(:has(.currentUp)):not(:has(.currentDown)) .elementor-widget:first-child * {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  position: relative !important;
 }
 /* =========================================================
 
@@ -2065,15 +2067,15 @@ html {
   font-size: 18px !important;
   font-weight: 700 !important;
   padding: 16px 42px !important;
-  background: linear-gradient(180deg, #f0643d 0%, #e55933 100%) !important;
+  background: #e55933 !important;
   color: #ffffff !important;
   border-radius: 100px !important;
-  box-shadow: 0 4px 0 #b33614, 0 8px 16px rgba(229, 89, 51, 0.45) !important;
+  box-shadow: none !important;
   border: none !important;
   border: none !important;
   outline: none !important;
   border-radius: 9999px !important;
-  box-shadow: 0 4px 0 #b33614, 0 8px 20px rgba(229, 89, 51, 0.4) !important;
+  box-shadow: none !important;
   transform: translateY(0) !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
   pointer-events: auto !important;
@@ -2110,9 +2112,9 @@ html {
 .as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button:hover,
 .elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button:hover,
 .elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button:hover {
-  background: linear-gradient(180deg, #ff714a 0%, #f0643d 100%) !important;
+  background: #cf4c28 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 0 #b33614, 0 14px 28px rgba(229, 89, 51, 0.55) !important;
+  box-shadow: none !important;
   pointer-events: auto !important;
   cursor: pointer !important;
 }
@@ -2125,9 +2127,9 @@ html {
 .as-changing-widget[data-id="7ade0441"] .elementor-widget.currentDown a.elementor-button:active,
 .elementor-element-7ade0441 .elementor-widget.currentUp a.elementor-button:active,
 .elementor-element-7ade0441 .elementor-widget.currentDown a.elementor-button:active {
-  background: linear-gradient(180deg, #e55933 0%, #cf4c28 100%) !important;
+  background: #bd411f !important;
   transform: translateY(2px) !important;
-  box-shadow: 0 1px 0 #b33614, 0 4px 10px rgba(229, 89, 51, 0.35) !important;
+  box-shadow: none !important;
   pointer-events: auto !important;
   cursor: pointer !important;
 }
@@ -2732,4 +2734,104 @@ html {
   background: transparent !important;
   box-shadow: none !important;
   border: none !important;
+}
+
+/* Shared CTA finish: one flat surface, including product cards and their wrappers. */
+html body .elementor .elementor-button,
+html body .elementor .elementor-button:hover,
+html body .elementor .elementor-button:active,
+html body .elementor .elementor-button *,
+html body .elementor .elementor-widget-button > .elementor-widget-container,
+html body .elementor .elementor-widget-button .elementor-button-wrapper,
+html body .elementor .mdw-email-box,
+html body .elementor .mdw-email-box * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+html body .elementor .elementor-button:focus-visible,
+html body .as-bar .dot:focus-visible {
+  outline: 2px solid currentColor !important;
+  outline-offset: 5px !important;
+}
+/* Copy spacing is independent of the old animation height variable. */
+html body .as-changing-widget:has(h2) {
+  margin: 0 0 18px !important;
+  padding: 0 !important;
+}
+html body .as-changing-widget:has(p) {
+  margin: 0 0 26px !important;
+  padding: 0 !important;
+}
+html body .as-slider .as-changing-widget h2.elementor-heading-title {
+  font-size: clamp(30px, 3.3vw, 50px) !important;
+  line-height: 1.15 !important;
+  margin: 0 !important;
+}
+html body .as-slider .as-changing-widget p {
+  font-size: clamp(16px, 1.3vw, 19px) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+}
+.prescot-scroll-down svg,
+.p-hero-arrow-down svg,
+.prescot-scroll-down:hover svg,
+.p-hero-arrow-down:hover svg {
+  filter: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prescot-scroll-down svg, .p-hero-arrow-down svg { animation: none !important; }
+}
+
+/* These mobile carousel controls use text arrows rather than SVG icons. */
+.card-prev .elementor-button-text, .card-next .elementor-button-text {
+  display: inline-block !important;
+  font: 600 26px/1 Arial, sans-serif !important;
+  color: #fff !important;
+}
+.prescot-scroll-down[data-hero-only] svg { fill: #fff !important; }
+@media (max-width: 767px) {
+  html body .as-slider .as-changing-widget h2.elementor-heading-title { font-size: 30px !important; }
+  html body .as-slider .as-changing-widget:has(h2) { margin-bottom: 14px !important; }
+  html body .as-slider .as-changing-widget:has(p) { margin-bottom: 20px !important; }
+}
+
+/* Consistent, readable introductory copy on all fifteen tape model pages. */
+html body .elementor-element-19d3d39b > .e-con-inner {
+  width: calc(100% - 48px) !important;
+  max-width: 1200px !important;
+  margin-inline: auto !important;
+}
+html body .elementor-element-19d3d39b .elementor-widget-text-editor,
+html body .elementor-element-19d3d39b p {
+  color: #f8fafc !important;
+  font-size: clamp(16px, 1.6vw, 22px) !important;
+  line-height: 1.65 !important;
+}
+
+/* Keep navigation still and above the carousel's transparent swipe area. */
+.card-prev, .card-next, .as-slider-left, .as-slider-right {
+  animation: none !important;
+}
+.as-slider .as-bar { z-index: 30 !important; }
+.as-slider .as-bar .dot {
+  width: 28px !important;
+  height: 28px !important;
+  transform: none !important;
+  background: transparent !important;
+}
+.as-slider .as-bar .dot::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #b0b7d0;
+  pointer-events: none;
+}
+.as-slider .as-bar .dot.active::after { width: 23px; height: 23px; }
+.as-slider .as-bar .dot-number { position: relative; z-index: 1; }
+@media (max-width: 767px) {
+  .as-slider .as-bar { width: calc(100vw - 48px) !important; max-width: 360px !important; }
+  .as-slider .as-bar .dot { flex: 1 1 0; min-width: 0; max-width: 24px; height: 32px !important; }
 }

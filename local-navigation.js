@@ -77,13 +77,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2b. Utworzenie inteligentnej strzałki w dół (Scroll-Down) nad dockiem
   let scrollDownBtn = document.getElementById("prescotScrollDown");
+  const heroOnlyScrollDown = Boolean(document.querySelector('.distSlide'));
 
   function checkScrollDown() {
     if (document.getElementById("prescotScrollDown")) return;
 
     // Strzałka w dół dla podstron produktowych z kartami showcase (.mdw-card-portfolio) oraz dla strony głównej.
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '/prescotpl/' || window.location.pathname === '';
-    if (!document.querySelector(".mdw-card-portfolio") && !isHomePage) return;
+    if (!document.querySelector(".mdw-card-portfolio") && !isHomePage && !heroOnlyScrollDown) return;
 
     // Sprawdź czy strona ma więcej treści
     const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -96,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollDownBtn.className = "prescot-scroll-down";
     scrollDownBtn.setAttribute("aria-label", "Przewiń do kolejnego bloku");
     scrollDownBtn.setAttribute("href", "#");
+    if (heroOnlyScrollDown) scrollDownBtn.dataset.heroOnly = 'true';
     scrollDownBtn.innerHTML = `
       <svg class="p-pure-arrow-down" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
         <path d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path>
@@ -106,6 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
     scrollDownBtn.addEventListener("click", (e) => {
       e.preventDefault();
       const currentWinH = window.innerHeight || 700;
+      if (heroOnlyScrollDown && heroEl) {
+        const nextSection = heroEl.nextElementSibling;
+        const target = nextSection?.offsetHeight > 50 ? nextSection : document.querySelector('.distSlide');
+        target?.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
+        return;
+      }
 
       // Priorytet: Karty produktowe / showcase (.mdw-card-portfolio)
       const cardCandidates = Array.from(
@@ -134,15 +142,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   checkScrollDown();
-  window.addEventListener("load", checkScrollDown);
-  setTimeout(checkScrollDown, 400);
-  setTimeout(checkScrollDown, 1200);
+  const refreshScrollDown = () => {checkScrollDown(); measureDimensions(); updateNavVisibility();};
+  window.addEventListener("load", refreshScrollDown);
+  setTimeout(refreshScrollDown, 400);
+  setTimeout(refreshScrollDown, 1200);
 
   // 3. Smart Scroll Controller (Ultra-smooth 60/120 FPS via requestAnimationFrame & zero layout thrashing)
   let lastScrollY = window.scrollY;
   const scrollThreshold = 8;
   const smartLogo = document.querySelector(".prescot-smart-logo");
-  const heroEl = document.querySelector(".p-full-hero, .hero-section, .hero, .catalog-hero, .elementor-top-section, [data-element_type='container']:first-child");
+  const heroEl = document.querySelector(".distribution-intro, .elementor-element-216d8696, .p-full-hero, .hero-section, .hero, .catalog-hero, .elementor-top-section, [data-element_type='container']:first-child");
   const currentDock = document.querySelector(".prescot-dock");
   const stopkaEl = document.getElementById("stopka") || document.querySelector("footer.elementor-location-footer, footer, .site-footer");
 
@@ -181,6 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (scrollDownBtn) {
       let isAtEnd = false;
+      if (heroOnlyScrollDown && heroEl && heroEl.getBoundingClientRect().bottom < cachedWinH - 110) {
+        isAtEnd = true;
+      }
       if (cachedDocH - (currentScrollY + cachedWinH) < 80) {
         isAtEnd = true;
       } else if (stopkaEl) {
@@ -195,6 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         scrollDownBtn.classList.remove("psd-hidden");
       }
+      scrollDownBtn.setAttribute('aria-hidden', String(isAtEnd));
+      scrollDownBtn.tabIndex = isAtEnd ? -1 : 0;
     }
 
     if (currentDock) {
@@ -221,6 +235,41 @@ document.addEventListener("DOMContentLoaded", () => {
       ticking = true;
     }
   }, { passive: true });
+
+  // Drive the actual carousel instance. Triggering hidden pagination bullets is
+  // unreliable on mobile and counted non-dot siblings as slide numbers.
+  const sliderControl = (event) => {
+    const control = event.target.closest('.as-bar .dot, .as-slider-left, .as-slider-right, .card-prev, .card-next');
+    if (!control) return;
+    const container = control.closest('.as-slider, .dm-card-slider');
+    const swiperElement = container?.querySelector('.as-side-slider .swiper, .as-side-slider .swiper-container, .elementor-main-swiper');
+    const swiper = swiperElement?.swiper;
+    if (!swiper || swiper.destroyed) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (control.matches('.dot')) {
+      const index = Array.from(container.querySelectorAll('.as-bar .dot')).indexOf(control);
+      if (swiper.params.loop) swiper.slideToLoop(index); else swiper.slideTo(index);
+    } else if (control.matches('.as-slider-left, .card-prev')) swiper.slidePrev();
+    else swiper.slideNext();
+  };
+  document.addEventListener('click', sliderControl, true);
+  document.querySelectorAll('.as-slider-left a, .card-prev a').forEach(el => el.setAttribute('aria-label', 'Poprzedni model'));
+  document.querySelectorAll('.as-slider-right a, .card-next a').forEach(el => el.setAttribute('aria-label', 'Następny model'));
+  const labelSliderDots = () => document.querySelectorAll('.as-slider').forEach(slider => {
+    const titles = slider.querySelectorAll('.as-changing-widget h2');
+    slider.querySelectorAll('.as-bar .dot').forEach((dot, index) => {
+      dot.setAttribute('role', 'button'); dot.tabIndex = 0;
+      dot.setAttribute('aria-label', `Pokaż model ${index + 1}: ${titles[index]?.textContent.trim() || ''}`);
+      if (!dot.dataset.keyboardReady) {
+        dot.dataset.keyboardReady = 'true';
+        dot.addEventListener('keydown', event => {if (event.key === 'Enter' || event.key === ' ') {event.preventDefault(); dot.click();}});
+      }
+    });
+  });
+  labelSliderDots();
+  window.addEventListener('load', labelSliderDots);
+  [400, 1200].forEach(delay => setTimeout(labelSliderDots, delay));
 
   // 4. Automatic image hydration
   function hydrateImages() {
