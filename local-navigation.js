@@ -1,7 +1,9 @@
 // Prescot LED — Global Navigation, Active Indicator, Dock, Hero Logo & Scroll-To-Top Controller
 const prescotNavigationSource = document.currentScript?.src || document.baseURI;
 document.addEventListener("DOMContentLoaded", () => {
-  import(new URL('shop-assistant/panel.mjs?v=20260910-1', prescotNavigationSource).href)
+  import(new URL('site-experience.mjs?v=20260911-mobile1', prescotNavigationSource).href)
+    .then(({initializeExperience}) => initializeExperience());
+  import(new URL('shop-assistant/panel.mjs?v=20260911-mobile1', prescotNavigationSource).href)
     .then(({initializeAssistant}) => initializeAssistant())
     .catch(() => { /* Existing shop links remain available if the assistant cannot load. */ });
   // 0. Ensure Unified Luxury Dock exists on every page
@@ -86,9 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function checkScrollDown() {
     if (document.getElementById("prescotScrollDown")) return;
 
-    // Strzałka w dół dla podstron produktowych z kartami showcase (.mdw-card-portfolio) oraz dla strony głównej.
-    const isHomePage = window.location.pathname === '/' || window.location.pathname === '/prescotpl/' || window.location.pathname === '';
-    if (!document.querySelector(".mdw-card-portfolio") && !isHomePage && !heroOnlyScrollDown) return;
+    // One shared arrow on every content page. Product pages already use this
+    // controller; never insert a second arrow alongside their existing one.
+    if (!document.querySelector('#content, main')) return;
 
     // Sprawdź czy strona ma więcej treści
     const docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -119,9 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Priorytet: Karty produktowe / showcase (.mdw-card-portfolio)
+      // Include ordinary content sections, not just product showcases/footer.
       const cardCandidates = Array.from(
-        new Set(document.querySelectorAll(".mdw-card-portfolio, #stopka, footer.elementor-location-footer, footer"))
+        new Set(document.querySelectorAll('.pm-collection, .mdw-card-portfolio, [data-elementor-type="wp-page"] > .e-con, [data-elementor-type="wp-page"] > section, main > section, #content > section, #stopka, footer.elementor-location-footer, footer'))
       );
       const below = cardCandidates
         .filter(el => {
@@ -132,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
       if (below.length > 0) {
-        below[0].scrollIntoView({ behavior: "smooth", block: "start" });
+        below[0].scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: "start" });
         return;
       }
 
@@ -148,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkScrollDown();
   const refreshScrollDown = () => {checkScrollDown(); measureDimensions(); updateNavVisibility();};
   window.addEventListener("load", refreshScrollDown);
+  window.addEventListener('prescot-layout-updated', refreshScrollDown);
   setTimeout(refreshScrollDown, 400);
   setTimeout(refreshScrollDown, 1200);
 
@@ -193,6 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (scrollDownBtn) {
+      // Re-measure after galleries, disclosure panels or late media change height.
+      cachedDocH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
       let isAtEnd = false;
       if (heroOnlyScrollDown && heroEl && heroEl.getBoundingClientRect().bottom < cachedWinH - 110) {
         isAtEnd = true;

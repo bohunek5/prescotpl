@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "python3 -m http.server 4178 --bind 127.0.0.1",
     "test:layout": "node scripts/check-site.mjs",
+    "test:responsive": "node scripts/check-responsive.mjs",
+    "test:mobile-interactions": "node scripts/check-mobile-interactions.mjs",
     "test:set": "node --test scripts/check-set-engine.test.mjs",
     "test:set-ui": "node scripts/check-set-panel.mjs"
   },

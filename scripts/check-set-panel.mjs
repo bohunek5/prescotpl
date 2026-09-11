@@ -15,11 +15,16 @@ try {
     page.on('pageerror', error => errors.push(error.message));
     await page.goto(new URL('produkt/', base).href, {waitUntil: 'load'});
     const assistant = page.locator('#prescot-set-assistant');
-    await assistant.locator('.teaser').waitFor({state: 'visible'});
+    const openShop = async () => {
+      if(width<768){await page.getByRole('button',{name:'Więcej stron',exact:true}).click();await page.locator('.pm-menu a').filter({hasText:'Sklep B2C'}).click();}
+      else await page.locator('.prescot-dock [data-tooltip="Sklep B2C"]').click();
+    };
+    await assistant.waitFor({state:'attached'});
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     // The small automatic prompt leaves the website interactive.
     assert.equal(await assistant.locator('dialog').evaluate(el => el.open), false);
-    await assistant.locator('.teaser-main').click();
+    if(width<768){assert.equal(await assistant.locator('.teaser').isVisible(),false);await openShop();}
+    else {await assistant.locator('.teaser').waitFor({state:'visible'});await assistant.locator('.teaser-main').click();}
     await assistant.locator('.product-card').first().waitFor();
     await page.waitForTimeout(300);
     await assistant.locator('.product-image img').first().waitFor();
@@ -44,13 +49,13 @@ try {
     assert.match(await assistant.locator('.cards').innerText(), /Scharfer 150 W/);
     await assistant.locator('.close').click();
     assert.equal(await assistant.locator('dialog').evaluate(el => el.open), false);
-    await page.locator('.prescot-dock [data-tooltip="Sklep B2C"]').click();
+    await openShop();
     assert.equal(await assistant.locator('dialog').evaluate(el => el.open), true);
     assert.match(await assistant.locator('.cards').innerText(), /Scharfer 150 W/);
     await page.keyboard.press('Escape');
     assert.equal(await assistant.locator('dialog').evaluate(el => el.open), false);
     // Re-open and follow the exact encoded handoff produced by the panel.
-    await page.locator('.prescot-dock [data-tooltip="Sklep B2C"]').click();
+    await openShop();
     await page.route('https://bohunek5.github.io/sklepSC/zestaw.html*', route => route.fulfill({status: 200, contentType: 'text/html', body: '<title>Handoff</title>'}));
     await assistant.locator('.handoff').click();
     await page.waitForURL('**/sklepSC/zestaw.html*');

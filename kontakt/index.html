@@ -2,14 +2,15 @@
 <html lang="pl">
 
 <head>
+<base href="/prescotpl/">
 <script>
 (function() {
   var isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.indexOf('/prescotpl') === 0;
   var b = isGH ? '/prescotpl/' : '/';
-  document.write('<base href="' + b + '">');
+  document.querySelector('base').href = b;
 })();
 </script>
-<noscript><base href="/prescotpl/"></noscript>
+
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -19,7 +20,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Krona+One&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="prescot-global.css?v=20260910-layout1">
+  <link rel="stylesheet" href="prescot-global.css?v=20260911-mobile1">
+  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-mobile1">
   <script>
     if (window.location.hash) {
       if ('scrollRestoration' in history) {
@@ -2074,7 +2076,7 @@
       scrollToHashTarget(true);
     });
   </script>
-  <script src="local-navigation.js?v=20260910-set1" defer></script>
+  <script src="local-navigation.js?v=20260911-mobile1" defer></script>
 </body>
 
 </html>

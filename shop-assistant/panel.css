@@ -87,7 +87,8 @@ h4 { font-size: 14px; line-height: 1.4; letter-spacing: -.35px; margin: 8px 0; }
 @keyframes rise { from { translate: 0 20px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
 @media (max-width: 1050px) { .sheet { padding-inline: 25px; } .sheet-body { gap: 26px; grid-template-columns: minmax(245px, .8fr) minmax(0, 1.4fr); } .cards { gap: 8px; } .product-copy { padding-inline: 10px; } .selection-footer { flex-wrap: wrap; } }
 @media (max-width: 760px) {
-  .teaser { bottom: calc(139px + env(safe-area-inset-bottom, 0px)); width: calc(100% - 24px); border-radius: 14px; }
+  /* The shop entry remains in the mobile menu; do not cover the hero on arrival. */
+  .teaser { display: none; }
   .teaser-main { padding: 11px; gap: 10px; }
   .teaser-main strong { font-size: 12px; }
   .teaser-main small { font-size: 10px; line-height: 1.4; }

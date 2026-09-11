@@ -1,14 +1,15 @@
 <!doctype html>
 <html lang="pl">
 <head>
+<base href="/prescotpl/">
 <script>
 (function() {
   var isGH = window.location.hostname.indexOf('github.io') !== -1 || window.location.pathname.indexOf('/prescotpl') === 0;
   var b = isGH ? '/prescotpl/' : '/';
-  document.write('<base href="' + b + '">');
+  document.querySelector('base').href = b;
 })();
 </script>
-<noscript><base href="/prescotpl/"></noscript>
+
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +20,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="baza-wiedzy.css?v=20260901-responsive-cards">
-  <link rel="stylesheet" href="prescot-global.css?v=20260910-layout1">
+  <link rel="stylesheet" href="prescot-global.css?v=20260911-mobile1">
+  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-mobile1">
 </head>
 <body>
   <a class="skip-link" href="#main">Przejdź do treści</a>
@@ -486,6 +488,6 @@ window.gtranslateSettings = window.gtranslateSettings || {};
 window.gtranslateSettings['85632840'] = {"default_language":"pl","languages":["ar","zh-CN","cs","da","en","et","fi","fr","de","it","lt","pl","es","sv"],"url_structure":"none","flag_style":"3d","wrapper_selector":"#gt-wrapper-85632840","alt_flags":[],"float_switcher_open_direction":"top","switcher_horizontal_position":"inline","flags_location":"wp-content/plugins/gtranslate/flags/"};
 </script>
 <script src="wp-content/plugins/gtranslate/js/float.js?ver=3.1.1" data-no-optimize="1" data-no-minify="1" data-gt-widget-id="85632840" defer></script>
-<script src="local-navigation.js?v=20260910-set1" defer></script>
+<script src="local-navigation.js?v=20260911-mobile1" defer></script>
 </body>
 </html>

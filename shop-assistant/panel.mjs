@@ -25,7 +25,7 @@ export function initializeAssistant(options = {}) {
   const host = document.createElement('div');
   host.id = 'prescot-set-assistant';
   const root = host.attachShadow({mode: 'open'});
-  root.innerHTML = `<link rel="stylesheet" href="${new URL('./panel.css?v=20260910-1', import.meta.url)}">
+  root.innerHTML = `<link rel="stylesheet" href="${new URL('./panel.css?v=20260911-mobile1', import.meta.url)}">
     <aside class="teaser" hidden aria-label="Dobór zestawu LED">
       <button class="teaser-main" type="button"><span class="mark">${svg('sparkle')}</span><span><strong>Światło zaczyna się od zestawu.</strong><small>Taśma, zasilacz i sterowanie. Dobierzmy je razem.</small></span><span class="teaser-action">Dobierz zestaw ${svg('chevron')}</span></button>
       <button class="teaser-close icon-button" type="button" aria-label="Ukryj podpowiedź">${svg('close')}</button>

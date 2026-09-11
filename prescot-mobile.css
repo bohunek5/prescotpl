@@ -1,0 +1,138 @@
+/* Responsive layer: retain the exported desktop design and real product data. */
+.pm-catalog, .pm-more, .pm-dock-label { display: none; }
+.prescot-scroll-down { mix-blend-mode: difference; }
+.prescot-scroll-down svg { fill: #fff !important; }
+.pm-menu { width: min(440px, calc(100% - 24px)); max-height: calc(100dvh - 32px); border: 1px solid #e5e7eb; border-radius: 24px; padding: 24px; color: #111827; background: #fff; }
+.pm-menu::backdrop { background: #070b13a8; backdrop-filter: blur(5px); }
+.pm-menu header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.pm-menu header h2 { margin: 0; font-size: 24px; }
+.pm-menu button { min-width: 44px; min-height: 44px; padding: 8px; border: 0; background: #f3f4f6; border-radius: 12px; color: #111827; }
+.pm-menu nav { display: grid; gap: 8px; }
+.pm-menu nav a { display: flex; align-items: center; gap: 16px; min-height: 56px; padding: 12px 16px; border-radius: 12px; background: #f5f6f8; color: #111827; text-decoration: none; }
+.pm-menu nav svg { width: 22px; height: 22px; fill: currentColor; }
+.pm-menu :focus-visible, .pm-catalog :focus-visible { outline: 3px solid #e55933; outline-offset: 4px; }
+
+/* Production: the sticky stage must use the viewport, not an overflow-x:hidden ancestor. */
+html:has(body.prescot-production), body.prescot-production { overflow-x: clip !important; overflow-y: visible !important; }
+body.prescot-production .prescot-production-motion { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow: clip !important; }
+.prescot-production-motion .elementor-widget-html, .prescot-production-motion .page-wrap, .prescot-production-motion .container { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+.prescot-production-motion .scroll-track { position: relative; height: 240svh; min-height: 0; }
+.prescot-production-motion .scroll-div { position: sticky !important; top: 0 !important; height: 100svh !important; min-height: 0 !important; display: grid !important; place-items: center; }
+.prescot-production-motion .grid { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: 12px; width: min(74vmin, 820px); height: min(74vmin, 820px); will-change: transform, opacity; transform-origin: center; }
+.prescot-production-motion .block { position: relative; grid-area: auto !important; width: auto; height: auto; overflow: hidden; border-radius: 14px; background: #10151b; }
+.prescot-production-motion .block:nth-child(2), .prescot-production-motion .block:nth-child(8) { transform: translateY(-12%); }
+.prescot-production-motion .block:nth-child(4), .prescot-production-motion .block:nth-child(6) { transform: translateY(12%); }
+.prescot-production-motion .video, .prescot-production-motion video { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover; filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  .prescot-production-motion .scroll-track { height: 120svh; }
+  .prescot-production-motion .grid { will-change: auto; }
+  html { scroll-behavior: auto !important; }
+}
+
+/* PR-MAD and PR controllers use packshots, not full-height photographic curtains. */
+body.prescot-series-page .mdw-card-portfolio { display: flex !important; width: min(1040px, calc(100% - 48px)) !important; max-width: none !important; height: auto !important; min-height: 0 !important; margin: 24px auto !important; padding: 32px !important; border: 1px solid #263241; border-radius: 24px; background: #101823 !important; overflow: hidden; }
+html body.prescot-series-page .mdw-card-portfolio .elementor-widget-heading .elementor-widget-container,
+html body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor .elementor-widget-container,
+html body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor p { text-align: left !important; }
+body.prescot-series-page .mdw-card-portfolio > .e-con-inner { display: grid !important; grid-template-columns: 1fr 1fr; width: 100% !important; max-width: none !important; padding: 0 !important; gap: 20px !important; }
+body.prescot-series-page .mdw-card-portfolio > .e-con-inner > * { margin: 0 !important; width: auto !important; max-width: none !important; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-button { grid-column: 1 / -1; order: 0; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-button a:not([href]) { padding: 0 !important; min-height: 0 !important; background: none !important; border: 0 !important; color: #aab7c6 !important; cursor: default; font-size: 14px !important; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-heading { grid-column: 1 / -1; order: 1; }
+body.prescot-series-page .mdw-card-portfolio h2 { margin: 0 !important; font-size: clamp(30px, 4vw, 46px) !important; line-height: 1.15 !important; }
+body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-left,
+body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { position: static !important; transform: none !important; order: 2; width: 100% !important; height: auto !important; pointer-events: auto; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-image .elementor-widget-container { padding: 0; border-radius: 14px; overflow: hidden; background: #f5f6f7; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { width: 100% !important; height: 300px !important; object-fit: contain !important; padding: 16px; border-radius: 14px; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor { grid-column: 1 / -1; order: 3; color: #e5eaf0; font-size: 16px; line-height: 1.7; }
+body.prescot-series-page .mdw-card-portfolio p { color: #e5eaf0 !important; font-size: 16px !important; line-height: 1.7 !important; margin: 0 !important; }
+body.prescot-series-page .mdw-card-portfolio p a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; margin: 4px 4px 0 0; border: 1px solid #526071; border-radius: 10px; font-size: 14px; text-decoration: none; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-divider { display: none !important; }
+body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -1; order: 4; }
+
+@media (max-width: 767px) {
+  :root { --pm-dock-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+  .prescot-dock { bottom: var(--pm-dock-bottom) !important; width: calc(100% - 24px) !important; max-width: 440px !important; height: 64px !important; gap: 0 !important; padding: 5px 6px !important; border-radius: 20px !important; }
+  .prescot-dock .dock-item, .prescot-dock .pm-more, .prescot-dock .dock-lang-item { flex: 1 1 0 !important; width: auto !important; min-width: 44px !important; height: 52px !important; margin: 0 !important; }
+  .prescot-dock .dock-item, .prescot-dock .pm-more { display: flex !important; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 4px 0 !important; border: 0; border-radius: 12px; background: transparent; color: #1e293b; }
+  .prescot-dock .dock-item[data-pm-secondary] { display: none !important; }
+  .prescot-dock .dock-item svg { width: 20px !important; height: 20px !important; }
+  .pm-dock-label { display: block; font-size: 9px; font-weight: 700; line-height: 1.2; }
+  .prescot-dock .pm-more > span:first-child { height: 20px; font: 700 22px/14px Arial; letter-spacing: 1px; }
+  .prescot-dock [data-tooltip]::after, .prescot-dock [data-tooltip]::before { display: none !important; }
+  .prescot-scroll-down { width: 44px !important; height: 44px !important; bottom: calc(var(--pm-dock-bottom) + 76px) !important; margin-left: -22px !important; }
+  .prescot-scroll-down svg { width: 24px !important; height: 28px !important; }
+  .prescot-scroll-to-top { bottom: calc(var(--pm-dock-bottom) + 82px) !important; right: 16px !important; width: 44px !important; height: 44px !important; }
+  html body .prescot-smart-logo { top: max(28px, env(safe-area-inset-top, 0px)) !important; }
+  html body .prescot-smart-logo img { width: 190px !important; max-width: 56vw !important; height: auto !important; }
+  html body .p-full-hero { min-height: 100svh !important; height: auto !important; padding: 124px 24px 164px !important; align-items: flex-start !important; text-align: left !important; }
+  html body .p-full-hero-content { width: 100%; margin: auto 0 0 !important; align-items: flex-start !important; }
+  html body .p-full-hero h1 { font-size: clamp(29px,8vw,36px) !important; line-height: 1.12 !important; text-align: left !important; letter-spacing: -.025em; text-shadow: none !important; margin-bottom: 18px !important; }
+  html body .p-full-hero p.lead { font-size: 15px !important; line-height: 1.6 !important; margin-bottom: 24px !important; text-shadow: none !important; }
+  html body .p-hero-eyebrow { font-size: 10px !important; letter-spacing: .08em; padding: 7px 11px !important; margin-bottom: 20px !important; box-shadow: none !important; }
+  html body .p-hero-actions { width: 100% !important; flex-direction: column !important; align-items: stretch !important; gap: 10px !important; }
+  html body .p-hero-actions > a { display: flex !important; justify-content: center; align-items: center; width: 100% !important; min-height: 48px !important; padding: 12px 16px !important; font-size: 13px !important; line-height: 1.4 !important; text-align: center !important; }
+  .pm-catalog { display: block; }
+  body.prescot-mobile-catalog .as-slider, body.prescot-mobile-catalog .dm-card-slider { display: none !important; }
+  .pm-catalog-hero { position: relative; min-height: 100svh; background: #0b1019; color: #fff; }
+  .pm-feature-track { display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; min-height: 100svh; }
+  .pm-feature-track::-webkit-scrollbar { display: none; }
+  .pm-feature { position: relative; flex: 0 0 100%; min-width: 0; min-height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; overflow: hidden; }
+  .pm-feature-photo { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-height: none !important; object-fit: cover; object-position: center; }
+  .pm-feature::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #07101b55 0%, #07101b0a 24%, #07101ba6 48%, #07101bf2 78%, #07101b 100%); pointer-events: none; }
+  .pm-feature-copy { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; min-height: 100svh; padding: 130px 24px calc(var(--pm-dock-bottom) + 208px); }
+  .pm-kicker { margin: 0 0 12px; font-size: 10px; line-height: 1.4; letter-spacing: .14em; font-weight: 700; text-transform: uppercase; }
+  .pm-feature h2 { max-width: 100%; margin: 0 0 12px; color: #fff; font-size: clamp(29px, 8.3vw, 40px); line-height: 1.08 !important; letter-spacing: -.035em; text-wrap: balance; }
+  .pm-feature-summary { max-width: 38ch; margin: 0 0 22px; font-size: 15px; line-height: 1.55; color: #edf0f4; }
+  .pm-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 24px; border-radius: 999px; background: #e55933; color: #fff !important; font-size: 14px; font-weight: 700; text-decoration: none; }
+  .pm-feature-controls { position: absolute; z-index: 2; bottom: calc(var(--pm-dock-bottom) + 145px); left: 24px; right: 24px; display: flex; align-items: center; gap: 14px; }
+  .pm-feature-controls button { width: 44px; height: 44px; padding: 0; border: 1px solid #ffffff55; border-radius: 50%; background: #ffffff10; color: white; font: 400 24px/1 Arial; }
+  .pm-feature-counter { min-width: 65px; color: #fff; text-align: center; font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: .1em; }
+  .pm-feature-controls button:last-child { margin-left: auto; }
+  .pm-collection { padding: 48px 20px 64px; background: #f5f6f8; color: #111827; scroll-margin-top: 20px; }
+  .pm-collection > h2 { font-size: 30px; line-height: 1.15 !important; margin: 0 0 24px; letter-spacing: -.025em; color: #111827; }
+  .pm-collection > .pm-kicker { color: #96503b; }
+  .pm-model-list { display: grid; gap: 12px; }
+  .pm-model { display: grid; grid-template-columns: 88px minmax(0, 1fr) 18px; align-items: center; gap: 14px; min-height: 122px; padding: 12px; border: 1px solid #e2e6eb; border-radius: 18px; background: #fff; text-decoration: none; color: #111827; }
+  .pm-model > img { width: 88px; height: 98px; object-fit: cover; border-radius: 10px; background: #eef0f3; }
+  .pm-model h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.2; color: #111827; }
+  .pm-model p { margin: 0; font-size: 12px; line-height: 1.5; color: #586473; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .pm-model-arrow { font-size: 20px; color: #c34d2f; }
+
+  .prescot-production-motion .scroll-track { height: 205svh; }
+  .prescot-production-motion .grid { width: 78vw; height: 78vw; gap: 8px; }
+  .prescot-production-motion .block { border-radius: 10px; }
+  body.prescot-production #kreci { padding: 48px 22px 0 !important; }
+  body.prescot-production .prescot-process-step { min-height: 0 !important; height: auto !important; padding: 40px 22px !important; gap: 20px !important; }
+  body.prescot-production .prescot-process-step > .e-con-inner { width: 100% !important; padding: 0 !important; gap: 20px !important; }
+  body.prescot-production .prescot-process-step .e-con { min-height: 0 !important; padding-block: 0 !important; gap: 16px !important; }
+  body.prescot-production .prescot-process-step h2 { font-size: 29px !important; line-height: 1.18 !important; margin: 0 !important; }
+  body.prescot-production .prescot-process-story .elementor-widget-heading:first-child h2 { font-size: 13px !important; letter-spacing: .025em; }
+  body.prescot-production .prescot-process-step > .prescot-process-photo { width: 100% !important; min-height: 210px !important; height: 58vw !important; max-height: 320px; border-radius: 18px; background-size: cover !important; background-position: center !important; }
+  body.prescot-production .prescot-process-step > .prescot-process-copy { width: 100% !important; padding: 24px 20px !important; border-radius: 18px; overflow: hidden; }
+  body.prescot-production .prescot-process-step p { font-size: 16px !important; line-height: 1.65 !important; margin-block: 0 !important; }
+  body.prescot-production .prescot-process-step .elementor-widget-spacer { display: none !important; }
+
+  body.prescot-series-page .elementor-element-19d3d39b { min-height: 100svh !important; height: auto !important; }
+  body.prescot-series-page .elementor-element-19d3d39b > .e-con-inner { min-height: 100svh; width: calc(100% - 48px) !important; padding: 120px 0 190px !important; justify-content: flex-end !important; align-items: flex-start !important; gap: 20px !important; }
+  body.prescot-series-page .elementor-element-19d3d39b h2 { font-size: 36px !important; line-height: 1.1 !important; margin: 0 !important; text-wrap: balance; }
+  body.prescot-series-page .elementor-element-19d3d39b .mdw-gradient .elementor-widget-container { background: none !important; -webkit-text-fill-color: #fff !important; color: #fff !important; }
+  body.prescot-series-page .elementor-element-19d3d39b p { font-size: 15px !important; line-height: 1.6 !important; margin: 0 !important; }
+  body.prescot-series-page .mdw-card-portfolio { width: calc(100% - 32px) !important; margin: 16px auto !important; padding: 20px !important; }
+  body.prescot-series-page .mdw-card-portfolio > .e-con-inner { gap: 14px !important; }
+  body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { height: 176px !important; padding: 8px; }
+  body.prescot-series-page .mdw-card-portfolio p { font-size: 15px !important; }
+  .footerSlide { min-height: 0 !important; padding: 48px 22px 120px !important; }
+  .footerGrid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
+  .footerGrid input, .footerGrid textarea { font-size: 16px !important; }
+}
+@media (max-width: 360px) {
+  .pm-feature-copy { padding-inline: 20px; }
+  .pm-feature h2 { font-size: 29px; }
+  .pm-feature-summary { font-size: 14px; }
+  .pm-model { grid-template-columns: 72px minmax(0,1fr) 14px; gap: 10px; }
+  .pm-model > img { width: 72px; height: 88px; }
+}
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .prescot-production-motion .scroll-track { height: 100svh; }
+}

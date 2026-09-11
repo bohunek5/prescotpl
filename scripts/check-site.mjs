@@ -34,7 +34,13 @@ for(const viewport of viewports){
  for(const route of process.env.ONLY_EXTRA?[]:['oferta/','tasmy-led/']){
   await go(route);
   const desktopSlider=page.locator('.as-slider');
-  if(await desktopSlider.isVisible()){
+  if(await page.locator('.pm-catalog').isVisible()){
+   await page.locator('.pm-feature-controls').getByRole('button',{name:'Następny model'}).click();
+   await page.waitForTimeout(650);
+   check((await page.locator('.pm-feature-counter').textContent()).startsWith('02'),'mobile catalogue next button works',{route,viewport});
+   await audit(route);
+   await page.screenshot({path:`${folder}/catalogue-${route.replace('/','')}-${viewport.width}.png`});
+  }else if(await desktopSlider.isVisible()){
    await page.waitForFunction(()=>document.querySelector('.as-side-slider .elementor-main-swiper')?.swiper);
    const count=await page.locator('.as-bar .dot').count();
    for(let i=0;i<count;i++){

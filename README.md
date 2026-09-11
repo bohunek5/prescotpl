@@ -17,6 +17,8 @@ Otwórz http://127.0.0.1:4178/. Strona nie wymaga kompilacji.
 
 - `prescot-global.css` zawiera wspólne style, w tym przyciski i układ tekstów karuzeli.
 - `local-navigation.js` obsługuje menu, przewijanie i kontrolki karuzeli.
+- `prescot-mobile.css` i `site-experience.mjs` uzupełniają widok mobilny,
+  menu „Więcej”, katalogi i animację produkcji. Nie są generowane z WordPressa.
 - Eksport zawiera równoległe adresy, np. `kontakt.html` i `kontakt/index.html`. Zmiany treści należy nanosić w obu plikach.
 - Po zmianach wspólnych plików zaktualizuj ich parametr `?v=` we wszystkich plikach HTML, aby przeglądarki pobrały poprawki.
 - Starsze skrypty generujące pliki zawierają ścieżki do wcześniejszego środowiska. Nie są częścią procesu publikacji.
@@ -75,3 +77,48 @@ na stronie zestawu; dotychczasowe pozycje pozostają zachowane.
 
 Po zmianie silnika lub eksportu synchronizuj `engine.mjs` i `catalog.json`
 z `sklepSC/js/set-assistant/`, testuj oba projekty i publikuj najpierw sklepSC.
+
+## Responsywność — 11 września 2026
+
+Oferta i taśmy LED na telefonie mają osobny, dotykowy katalog oparty na tych
+samych nazwach, opisach, zdjęciach i adresach, co eksport desktopowy. Pierwszy
+ekran pokazuje jeden model, a poniżej znajduje się pełna lista 7 kategorii lub
+15 serii. Obsługiwane są gesty, przyciski i klawisze strzałek. Widok desktopowy
+zachowuje dotychczasowy slider. Uzupełnienie działa przy włączonym JavaScript;
+bez niego pozostaje bazowy eksport.
+
+Mobilny dock pokazuje Start, Ofertę, Taśmy, Produkcję, „Więcej” i język.
+W „Więcej” pozostają dystrybucja, baza wiedzy, sklep/asystent i kontakt.
+Automatyczna podpowiedź asystenta jest ukryta na telefonie, aby nie zasłaniać
+wejścia. Panel nadal otwiera się z menu lub przez `?dobierz=1`.
+
+Strzałka przewijania jest wspólna dla stron z treścią; nie jest dublowana na
+kartach produktów. Produkcja używa lokalnej animacji przewijania zamiast
+zewnętrznego dema Webflow. Mozaika obraca się, pozostaje w widoku podczas
+przewijania i wygasa przy wejściu kolejnego bloku. Obsługuje ograniczenie ruchu;
+filmy mozaiki są pauzowane poza widokiem. Pionowy film hero został zachowany.
+
+Karty PR-MAD i sterowników mają zdjęcia bez przycinania, bezwzględnego
+pozycjonowania i nakładania na specyfikacje. Zmiany tych kart obejmują także
+desktop; pozostałe pojedyncze serie zachowują swoją prezentację. Poprawiono
+ścieżki zdjęć dla prefiksu `/prescotpl/` i brakujące tło współpracy B2B.
+
+```sh
+npm run test:responsive
+BROWSER=webkit TEST_WIDTHS=320,390,768,1440 npm run test:responsive
+npm run test:mobile-interactions
+node scripts/check-set-fallbacks.mjs
+TEST_WIDTHS=1440 npm run test:layout
+```
+
+Raporty i zrzuty są w `output/responsive-verification/`. Test interakcji serwuje
+lokalne pliki pod docelowym adresem przez przechwytywanie żądań, bez publikacji.
+Wyłącza tylko spekulacyjne pobieranie HTML w tej symulacji, żeby Chromium nie
+pobrał starej wersji z GitHub z pominięciem przechwytywania. Testuje także gest
+dotykowy w Chromium oraz menu, asystenta i odnośniki w obu silnikach.
+
+Wspólne zasoby mają wersję `20260911-mobile1`. Mechaniczną aktualizację ich
+odnośników we wszystkich wariantach HTML wykonuje
+`node scripts/update-responsive-assets.mjs`. Bazowy adres jest zapisany w HTML
+przed zasobami, żeby uniknąć spekulacyjnych żądań do błędnych podkatalogów.
+Skrypt dopasowuje bazę do lokalnego podglądu; wersja bez JS używa GitHub Pages.

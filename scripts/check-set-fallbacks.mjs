@@ -21,13 +21,12 @@ try {
   });
   await page.goto('http://127.0.0.1:4178/produkt/', {waitUntil: 'load'});
   const panel = page.locator('#prescot-set-assistant');
-  await panel.locator('.teaser').waitFor({state: 'visible'});
+  await page.locator('.pm-more').waitFor({state:'visible'});
   assert.equal(loads, 0, 'catalog stays unloaded until the user opens the panel');
   assert.equal(await page.evaluate(() => speechCalls.starts), 0, 'microphone never starts automatically');
-  const teaser = await panel.locator('.teaser').boundingBox();
-  const arrow = await page.locator('#prescotScrollDown').boundingBox();
-  assert.ok(teaser.y + teaser.height < arrow.y, 'teaser does not cover the existing down arrow');
-  await panel.locator('.teaser-main').click();
+  assert.equal(await panel.locator('.teaser').isVisible(),false,'mobile hero is not covered by an automatic prompt');
+  const openShop=async()=>{await page.getByRole('button',{name:'Więcej stron',exact:true}).click();await page.locator('.pm-menu a').filter({hasText:'Sklep B2C'}).click();};
+  await openShop();
   await panel.locator('.retry').waitFor();
   assert.equal(await panel.locator('.handoff').isDisabled(), true);
   await panel.locator('.retry').click();
@@ -37,7 +36,7 @@ try {
   assert.equal(await page.evaluate(() => speechCalls.starts), 1);
   await panel.locator('.close').click();
   assert.ok(await page.evaluate(() => speechCalls.aborts) >= 1, 'closing stops dictation');
-  await page.locator('.prescot-dock [data-tooltip="Sklep B2C"]').click();
+  await openShop();
   assert.equal(loads, 2, 'reopening reuses the loaded catalog');
   assert.equal(await page.evaluate(() => speechCalls.starts), 1);
   console.log('PASS lazy loading, unavailable catalog/retry, microphone lifecycle, arrow clearance');
