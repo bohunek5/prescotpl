@@ -163,6 +163,20 @@ function initializeHeroLayout() {
       wrapper.append(icon, element('h3', 'elementor-icon-box-title', title));
       badge.append(wrapper); capabilities.append(badge);
     }
+    // Keep the compact mobile artwork; desktop gets one consistent outline family.
+    const desktopIcons = [
+      '<path d="M3 21V3h4v9l7-4v4l7-4v13H3ZM7 17h1m4 0h1m4 0h1"/>',
+      '<rect x="9" y="3" width="6" height="5" rx="1"/><path d="M12 8v5M5 16v-3h14v3"/><rect x="2" y="16" width="6" height="5" rx="1"/><rect x="16" y="16" width="6" height="5" rx="1"/>',
+      '<path d="M9 18h6m-5 3h4M8.5 15.5a6 6 0 1 1 7 0c-.8.6-1.5 1.4-1.5 2.5h-4c0-1.1-.7-1.9-1.5-2.5Z"/><path d="m10 9 2 2 2-2m-2 2v4"/>',
+      '<path d="m3 9 9-6 9 6v12H3V9Zm5 12v-9h8v9M8 16h8"/><path d="M11 7h2"/>',
+      '<rect x="2" y="16" width="20" height="5" rx="2.5"/><path d="M5 16V4h14v12M5 7h14M10 7v5h4V7m-2 5v2M6 18.5h.01m4 0h.01m4 0h.01m4 0h.01"/>',
+      '<path d="M8 3h8m-6 0v7l-6 9a1.3 1.3 0 0 0 1.1 2h13.8a1.3 1.3 0 0 0 1.1-2l-6-9V3M8 15h8m-6 3h.01m4-1h.01"/>'
+    ];
+    [...capabilities.children].forEach((badge, index) => {
+      const icon = badge.querySelector('.elementor-icon');
+      if (!icon || !desktopIcons[index]) return;
+      icon.insertAdjacentHTML('beforeend', `<svg class="pm-capability-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${desktopIcons[index]}</svg>`);
+    });
     const caption = hero.querySelector('.elementor-element-ea903c0');
     if (caption) { caption.classList.add('pm-entrance-caption'); hero.append(caption); }
   }

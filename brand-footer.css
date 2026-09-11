@@ -1,3 +1,38 @@
+/* Desktop hero: six light outline marks, without solid orange hover discs. */
+html body .pm-capabilities .pm-capability-outline { display: none !important; }
+@media (min-width: 768px) {
+  html body .elementor-element-216d8696 .pm-capabilities { top: 27%; width: min(1100px,90%) !important; gap: clamp(14px,2vw,30px) !important; }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-wrapper { gap: 15px !important; cursor: default; }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon {
+    box-sizing: border-box; width: 68px !important; height: 68px !important; padding: 15px !important;
+    border: 1px solid #ffffff26 !important; border-radius: 20px !important;
+    background: #ffffff08 !important; color: #fff !important; box-shadow: none !important;
+    backdrop-filter: blur(6px) !important; -webkit-backdrop-filter: blur(6px) !important;
+    transform: none !important; transition: transform .24s ease, border-color .24s ease, background-color .24s ease !important;
+  }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon svg { display: none !important; }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon .pm-capability-outline {
+    display: block !important; width: 36px !important; height: 36px !important; overflow: visible;
+    fill: none !important; stroke: #fff !important; stroke-width: 1.5 !important; color: #fff !important;
+  }
+  html body .elementor-element-216d8696 .pm-capabilities .pm-capability-outline * { fill: none !important; stroke: #fff !important; stroke-width: 1.5 !important; }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-title { font-size: 14px !important; line-height: 1.5 !important; font-weight: 500 !important; max-width: 138px; margin-inline: auto !important; text-wrap: balance; }
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-title span { color: #f4f6fa !important; }
+  html body .elementor-element-216d8696 .pm-entrance-caption .elementor-divider-separator { width: fit-content !important; max-width: 100%; gap: 22px; }
+  html body .elementor-element-216d8696 .pm-entrance-caption .elementor-divider-separator::before,
+  html body .elementor-element-216d8696 .pm-entrance-caption .elementor-divider-separator::after { flex: 0 0 28px !important; width: 28px !important; border-top: 1px solid #ffffff55 !important; }
+  html body .elementor-element-216d8696 .pm-entrance-caption .elementor-divider__text { font-size: 21px !important; letter-spacing: .025em; margin: 0 !important; }
+}
+@media (min-width: 768px) and (hover: hover) {
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-wrapper:hover .elementor-icon {
+    background: #ffffff0f !important; border-color: #e14e26b3 !important; transform: translateY(-3px) !important; box-shadow: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon,
+  html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-wrapper:hover .elementor-icon { transition: none !important; transform: none !important; }
+}
+
 /* Light brand presentations: visible products, navy glass and flow-based controls. */
 html body .distSlide.pm-brand { min-height: 100svh !important; height: auto !important; display: flex !important; flex-direction: column; justify-content: center; padding: 100px 32px 116px !important; gap: 26px; isolation: isolate; }
 html body .pm-brand .distGrid { display: grid !important; grid-template-columns: minmax(0,460px) minmax(180px,300px) !important; justify-content: space-between; align-items: center !important; gap: 7vw !important; max-width: 1100px !important; margin: auto !important; }
