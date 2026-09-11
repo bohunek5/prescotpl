@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 4178 --bind 127.0.0.1",
+    "build:v2": "node scripts/build-v2.mjs",
+    "test:v2": "node scripts/check-v2.mjs",
     "test:layout": "node scripts/check-site.mjs",
     "test:responsive": "node scripts/check-responsive.mjs",
     "test:brand-mask": "node scripts/check-brand-mask.mjs",

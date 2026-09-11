@@ -1,4 +1,11 @@
 /* Responsive layer: retain the exported desktop design and real product data. */
+/* Desktop preview tiles: their labels need an opaque reading surface. */
+@media (min-width: 768px) {
+  html body .as-side-slider .swiper-slide { opacity: 1 !important; filter: none !important; }
+  html body .as-side-slider .elementor-testimonial__cite { position: absolute !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100% !important; padding: 18px 14px !important; margin: 0 !important; background: #10171ff5 !important; border-radius: 0 0 10px 10px; text-align: left !important; opacity: 1 !important; z-index: 3; }
+  html body .as-side-slider .elementor-testimonial__name { color: #fff !important; font-size: 15px !important; font-weight: 700 !important; line-height: 1.3 !important; opacity: 1 !important; display: block; }
+  html body .as-side-slider .elementor-testimonial__title { color: #e5ebef !important; font-size: 12px !important; line-height: 1.5 !important; opacity: 1 !important; display: block; margin-top: 7px !important; }
+}
 .pm-catalog, .pm-more, .pm-dock-label { display: none; }
 .prescot-scroll-down { mix-blend-mode: difference; }
 .prescot-scroll-down svg { fill: #fff !important; }

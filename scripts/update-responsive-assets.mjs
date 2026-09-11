@@ -10,7 +10,7 @@ async function walk(dir) {
     if (!item.name.endsWith('.html')) continue;
     const before = await fs.readFile(file,'utf8');
     let after = before.replace(/(prescot-global\.css)\?v=[^"\s]+/g,'$1?v=20260911-mobile1')
-      .replace(/(local-navigation\.js|prescot-mobile\.css)\?v=[^"\s]+/g,'$1?v=20260911-brand2');
+      .replace(/(local-navigation\.js|prescot-mobile\.css)\?v=[^"\s]+/g,'$1?v=20260911-brand3');
     // Give the preload scanner the deployment base before it scans assets.
     // document.write(base) caused speculative requests to /page/wp-content/.
     if (after.includes("document.write('<base href=\"' + b + '\">');")) {
@@ -19,7 +19,7 @@ async function walk(dir) {
         .replace('<noscript><base href="/prescotpl/"></noscript>', '');
     }
     if (after.includes('prescot-global.css') && !after.includes('prescot-mobile.css')) {
-      after = after.replace(/(<link[^>]+href="prescot-global\.css[^>]+>)/, '$1\n  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-brand2">');
+      after = after.replace(/(<link[^>]+href="prescot-global\.css[^>]+>)/, '$1\n  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-brand3">');
     }
     if (after !== before) { await fs.writeFile(file,after); count++; }
   }

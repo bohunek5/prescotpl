@@ -135,9 +135,28 @@ Wyłącza tylko spekulacyjne pobieranie HTML w tej symulacji, żeby Chromium nie
 pobrał starej wersji z GitHub z pominięciem przechwytywania. Testuje także gest
 dotykowy w Chromium oraz menu, asystenta i odnośniki w obu silnikach.
 
-Warstwa mobilna i nawigacja mają wersję `20260911-brand2`, pozostałe wspólne
+Warstwa mobilna i nawigacja mają wersję `20260911-brand3`, pozostałe wspólne
 zasoby zachowują `20260911-mobile1`. Mechaniczną aktualizację ich
 odnośników we wszystkich wariantach HTML wykonuje
 `node scripts/update-responsive-assets.mjs`. Bazowy adres jest zapisany w HTML
 przed zasobami, żeby uniknąć spekulacyjnych żądań do błędnych podkatalogów.
 Skrypt dopasowuje bazę do lokalnego podglądu; wersja bez JS używa GitHub Pages.
+
+## Alternatywne strony V2
+
+`/v2/` zbiera cztery niezależne prezentacje: `sterowniki-led/`, `zasilacze-led/`,
+`profile-led/` i `akcesoria-led/`. Nie zastępują obecnych podstron ani ich
+odnośników. Podglądy mają `noindex,follow` i link powrotny do obecnej wersji.
+Kategoria profili nie miała osobnej strony — jej stary przycisk prowadził do `#`.
+
+Źródła treści i zdjęć są w `v2/catalogue-data.mjs`. `npm run build:v2` generuje
+statyczne strony. Działają bez WordPressa, z osobnym CSS i małym modułem JS.
+Bez JavaScript wszystkie modele pozostają widoczne; z JS działają przełączanie
+modeli, zdjęć i odtwarzacz filmów. Zdjęcia pochodzą z istniejących zasobów projektu.
+Parametry serii PR i PR-MAD przeniesiono z obecnych stron; profile prezentują
+zastosowania, bez przypisywania zdjęciom niepotwierdzonych modeli.
+
+`npm run test:v2` sprawdza obie przeglądarki, układy 320–1440 px, każdy wariant,
+galerie, filmy, klawiaturę i poprawność kotwic. Raporty: `output/v2-review/`.
+Kafelki starej oferty dostały wyraźne tło pod podpisami i odrębne zdjęcia profili
+oraz akcesoriów; nie zmieniono docelowych linków na V2.

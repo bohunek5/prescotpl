@@ -11,6 +11,12 @@ const element = (tag, cls, text) => {
 function initializeCatalog() {
   const slider = document.querySelector('.as-slider');
   if (!slider || document.querySelector('.pm-catalog')) return;
+  // These two tiles previously reused a generic strip photograph.
+  const categoryPhotos = {'Profile LED':'assets/offer/klus-profile.webp','Akcesoria LED':'wp-content/uploads/2026/03/nowe-zlaczki_27.webp'};
+  document.querySelectorAll('.as-side-slider img, .dm-card-slider img').forEach(image => {
+    const replacement = categoryPhotos[image.alt];
+    if (replacement) { image.src = asset(replacement); image.setAttribute('data-src',asset(replacement)); }
+  });
   const titles = [...slider.querySelectorAll('.as-changing-widget h2')];
   const descriptions = [...slider.querySelectorAll('.as-changing-widget p')];
   const links = [...slider.querySelectorAll('.as-changing-widget a.elementor-button')];
