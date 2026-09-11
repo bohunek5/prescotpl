@@ -1,7 +1,7 @@
 // Prescot LED — Global Navigation, Active Indicator, Dock, Hero Logo & Scroll-To-Top Controller
 const prescotNavigationSource = document.currentScript?.src || document.baseURI;
 document.addEventListener("DOMContentLoaded", () => {
-  import(new URL('site-experience.mjs?v=20260911-glass5', prescotNavigationSource).href)
+  import(new URL('site-experience.mjs?v=20260911-motion7', prescotNavigationSource).href)
     .then(({initializeExperience}) => initializeExperience());
   import(new URL('shop-assistant/panel.mjs?v=20260911-mobile1', prescotNavigationSource).href)
     .then(({initializeAssistant}) => initializeAssistant())

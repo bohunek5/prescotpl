@@ -1,4 +1,5 @@
 import {initializeBrandFooter} from './brand-footer.mjs?v=20260911-glass5';
+import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -104,12 +105,7 @@ function initializeProduction() {
   const track = document.querySelector('.scroll-track');
   const stage = track?.querySelector('.scroll-div'), grid = track?.querySelector('.grid');
   if (!stage || !grid) return;
-  // Rotate the brand-shaped aperture, not the footage. Counter-rotation keeps
-  // the film plane level and stationary behind the original SVG silhouette.
-  const filmPlane = element('div', 'pm-film-plane');
-  filmPlane.append(...grid.children);
-  grid.append(filmPlane);
-  grid.classList.add('pm-brand-mask');
+  // Each of the five original SVG components owns a different film.
   grid.setAttribute('aria-hidden', 'true');
   document.body.classList.add('prescot-production');
   const section = track.closest('.e-parent');
@@ -125,34 +121,8 @@ function initializeProduction() {
       }
     }
   }
-  let frame = 0;
-  function update() {
-    frame = 0;
-    const rect = track.getBoundingClientRect();
-    const progress = clamp(-rect.top / Math.max(1, track.offsetHeight - stage.offsetHeight * .25));
-    // Clear the brand silhouette before the following introduction reaches it.
-    // Measure the real next section, not the bottom of the taller sticky track.
-    const nextTop = section.nextElementSibling?.getBoundingClientRect().top ?? rect.bottom;
-    const fade = clamp((innerHeight * 1.18 - nextTop) / (innerHeight * .33));
-    const angle = reduced() ? 0 : progress * 150;
-    grid.style.transform = `rotate(${angle}deg)`;
-    filmPlane.style.transform = `rotate(${-angle}deg)`;
-    grid.style.opacity = String(1 - fade);
-    grid.style.visibility = fade >= 1 ? 'hidden' : 'visible';
-    stage.setAttribute('aria-hidden', String(fade >= 1));
-    track.dataset.progress = progress.toFixed(3);
-  }
-  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-  window.addEventListener('scroll', schedule, {passive: true});
-  window.addEventListener('resize', schedule, {passive: true});
-  new ResizeObserver(schedule).observe(track);
-  const visibility = new IntersectionObserver(entries => entries.forEach(({isIntersecting}) => {
-    grid.querySelectorAll('video').forEach(video => {
-      if (isIntersecting && !reduced()) video.play().catch(() => {});
-      else video.pause();
-    });
-  }));
-  visibility.observe(stage); update();
+  initializeProductionMotion(track,stage,grid);
+  initializeProductionHero();
 }
 
 function initializeStartVideo() {
@@ -276,7 +246,10 @@ function initializeMobileMenu() {
   const dialog = element('dialog', 'pm-menu'); dialog.setAttribute('aria-label', 'Menu Prescot');
   const header = element('header');
   const close = element('button', '', '×'); close.type = 'button'; close.setAttribute('aria-label', 'Zamknij menu');
-  header.append(element('h2', '', 'Prescot'), close);
+  const menuLogo = element('img', 'pm-menu-logo');
+  menuLogo.src = asset('wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg');
+  menuLogo.alt = 'PRESCOT LED'; menuLogo.width = 190; menuLogo.height = 40;
+  header.append(menuLogo, close);
   const nav = element('nav');
   [links[7], links[5], links[6]].filter(Boolean).forEach(original => {
     const link = element('a'); link.href = original.href;

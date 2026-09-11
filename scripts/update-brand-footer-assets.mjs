@@ -10,8 +10,9 @@ async function walk(dir) {
     if (!item.name.endsWith('.html')) continue;
     const before = await fs.readFile(file,'utf8');
     if (!before.includes('local-navigation.js')) continue;
-    let after = before.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260911-glass5');
-    if (!after.includes('brand-footer.css')) after = after.replace('</head>','<link rel="stylesheet" href="brand-footer.css?v=20260911-glass5">\n</head>');
+    let after = before.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260911-motion7')
+      .replace(/brand-footer\.css\?v=[^"\s]+/g,'brand-footer.css?v=20260911-motion7');
+    if (!after.includes('brand-footer.css')) after = after.replace('</head>','<link rel="stylesheet" href="brand-footer.css?v=20260911-motion7">\n</head>');
     if (before !== after) { await fs.writeFile(file,after); changed.push(path.relative(root,file)); }
   }
 }

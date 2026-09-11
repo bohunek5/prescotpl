@@ -1,7 +1,7 @@
 /* Light brand presentations: visible products, navy glass and flow-based controls. */
 html body .distSlide.pm-brand { min-height: 100svh !important; height: auto !important; display: flex !important; flex-direction: column; justify-content: center; padding: 100px 32px 116px !important; gap: 26px; isolation: isolate; }
 html body .pm-brand .distGrid { display: grid !important; grid-template-columns: minmax(0,460px) minmax(180px,300px) !important; justify-content: space-between; align-items: center !important; gap: 7vw !important; max-width: 1100px !important; margin: auto !important; }
-html body .pm-brand .distContentBox { order: 0 !important; width: 100% !important; min-height: 0 !important; height: auto !important; padding: 30px !important; border: 1px solid #ffffff42; border-radius: 24px !important; background: linear-gradient(135deg,#142942d9,#102039b8) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 12px 36px #10203916 !important; }
+html body .pm-brand .distContentBox { order: 0 !important; width: 100% !important; min-height: 0 !important; height: auto !important; padding: 30px !important; border: 1px solid #ffffff66; border-radius: 24px !important; background: #1c334dc4 !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 8px 28px #10203912 !important; }
 html body .pm-brand .distCard { order: 1 !important; justify-self: center !important; width: 100% !important; height: 116px !important; min-height: 0 !important; padding: 24px !important; border: 1px solid #ffffff80; border-radius: 20px !important; background: #ffffff87 !important; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); box-shadow: none !important; }
 html body .pm-brand .distCard img { max-width: 90% !important; max-height: 64px !important; width: auto !important; height: auto !important; object-fit: contain !important; }
 html body .pm-brand .distKicker { margin: 0 0 10px !important; font-size: 11px !important; line-height: 1.4; letter-spacing: .07em; color: #bbd0e8 !important; opacity: 1 !important; }
@@ -16,6 +16,7 @@ html body .pm-brand .distArrowUp { position: absolute !important; top: 24px !imp
 html body .pm-brand .distArrow:focus-visible, html body .pm-brand .distBtn:focus-visible { outline: 3px solid #e55933; outline-offset: 4px; }
 
 /* One contact footer, shared by all original pages. Keep form behavior untouched. */
+html body .pm-menu .pm-menu-logo { width: min(190px,55%); height: auto; max-height: 42px; object-fit: contain; object-position: left center; }
 html body.pm-footer-visible #top-sticky-logo, html body.pm-footer-visible .prescot-smart-logo, html body.pm-footer-visible #prescotScrollDown { visibility: hidden !important; pointer-events: none !important; }
 html body .pm-footer-duplicate { display: none !important; }
 html body #stopka.pm-footer-shell, html body .pm-footer { background: #0d1b30 !important; color: #f4f7fc !important; }
@@ -79,4 +80,23 @@ html body .pm-footer .stopkaArrowUp { display: none !important; }
 }
 @media (min-width: 768px) and (prefers-reduced-motion: reduce) {
   html body.prescot-production .prescot-production-motion .scroll-track { height: 92svh; }
+}
+
+/* Five original SVG parts, five separate films; two turns followed by a fade. */
+html body [data-pm-production-hero] .elementor-background-video-hosted { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; transform: none !important; object-fit: cover !important; }
+html body.prescot-production .prescot-production-motion .scroll-track { height: 220svh; }
+html body.prescot-production .prescot-production-motion .scroll-div { height: 82svh !important; align-items: center !important; overflow: visible; }
+html body.prescot-production .prescot-production-motion .grid.pm-five-films { width: min(76vmin,820px); height: auto; aspect-ratio: 841.9 / 595.3; margin: -14svh 0 0; mask: none; -webkit-mask: none; }
+html body .pm-film-piece { position: absolute; overflow: hidden; background: #172431; isolation: isolate; }
+html body .pm-film-curve { mask: url('assets/production/d-curve-mask.svg') center / 100% 100% no-repeat; -webkit-mask: url('assets/production/d-curve-mask.svg') center / 100% 100% no-repeat; }
+html body .pm-piece-plane { position: absolute; left: 50%; top: 50%; width: 150%; aspect-ratio: 1; transform: translate(-50%,-50%) rotate(var(--pm-counter-turn,0deg)); will-change: transform; }
+html body .pm-film-curve .pm-piece-plane { width: 155%; }
+html body .prescot-production-motion .pm-piece-plane video { display: block; width: 100% !important; height: 100% !important; object-fit: cover; }
+@media (max-width: 767px) {
+  html body.prescot-production .prescot-production-motion .scroll-track { height: 240svh; }
+  html body.prescot-production .prescot-production-motion .grid.pm-five-films { width: 84vw; margin-top: -12svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body.prescot-production .prescot-production-motion .scroll-track { height: 110svh; }
+  html body .pm-piece-plane { will-change: auto; }
 }

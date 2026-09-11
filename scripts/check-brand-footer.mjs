@@ -52,7 +52,7 @@ for (const [name,engine] of Object.entries({chromium,webkit})) {
         await next.evaluate(el=>scrollTo({top:el.getBoundingClientRect().top+scrollY-innerHeight*.84,behavior:'instant'}));await page.waitForTimeout(180);
         assert.equal(await page.locator('.pm-brand-mask').evaluate(el=>getComputedStyle(el).opacity),'0','D fades before next introduction enters its space');
         if (width>=768) {
-          assert.ok(await track.evaluate(el=>el.offsetHeight<=innerHeight*1.61),'short desktop animation track');
+          assert.ok(await track.evaluate(el=>el.offsetHeight<=innerHeight*2.21),'bounded two-turn desktop animation track');
           await page.locator('#kreci').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));await page.waitForTimeout(120);
           const gap=await page.evaluate(()=>{const grid=document.querySelector('.pm-brand-mask').getBoundingClientRect(),p=document.querySelector('#kreci p').getBoundingClientRect();return grid.top+(grid.height-grid.width*595.3/841.9)/2+19.5/841.9*grid.width-p.bottom;});
           assert.ok(gap>=0&&gap<110,`introduction-to-artwork gap ${gap}`);

@@ -24,7 +24,7 @@ async function walk(dir) {
     }
     if (!seriesRevisionPages.has(path.relative(root, file))) after = after.replaceAll('20260911-series4', '20260911-brand3');
     // Keep the shared footer/brand module current when rerunning this older asset updater.
-    after = after.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260911-glass5');
+    after = after.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260911-motion7');
     if (after !== before) { await fs.writeFile(file,after); count++; }
   }
 }
