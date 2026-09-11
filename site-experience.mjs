@@ -229,6 +229,33 @@ function initializeSeries() {
   if (hero) {
     hero.style.setProperty('background-image', `linear-gradient(0deg, #070b13cf, #070b1333), url("${asset(folder)}")`, 'important');
   }
+  const cards = [...document.querySelectorAll('.mdw-card-portfolio')];
+  cards.forEach(card => {
+    const stage = card.querySelector(':scope > .e-con-inner');
+    if (!stage || stage.querySelector('.pm-series-copy')) return;
+    const copy = element('div', 'pm-series-copy');
+    const visuals = element('div', 'pm-series-visuals');
+    [...stage.children].forEach(child => {
+      if (child.matches('.mdw-card-portfolio-image-left, .mdw-card-portfolio-image-right')) visuals.append(child);
+      else copy.append(child);
+    });
+    stage.append(visuals, copy);
+    card.classList.add('pm-series-showcase');
+  });
+  let frame = 0;
+  const update = () => {
+    frame = 0;
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const progress = reduced() ? 1 : clamp((innerHeight * .8 - rect.top) / (innerHeight * .8));
+      card.style.setProperty('--pm-series-progress', progress.toFixed(4));
+    });
+  };
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+  addEventListener('scroll', schedule, {passive:true});
+  addEventListener('resize', schedule, {passive:true});
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', schedule);
+  update();
 }
 
 function initializeMobileMenu() {

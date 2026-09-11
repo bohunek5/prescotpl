@@ -72,26 +72,46 @@ body.prescot-production .prescot-production-motion { margin: 0 !important; paddi
   html { scroll-behavior: auto !important; }
 }
 
-/* PR-MAD and PR controllers use packshots, not full-height photographic curtains. */
-body.prescot-series-page .mdw-card-portfolio { display: flex !important; width: min(1040px, calc(100% - 48px)) !important; max-width: none !important; height: auto !important; min-height: 0 !important; margin: 24px auto !important; padding: 32px !important; border: 1px solid #263241; border-radius: 24px; background: #101823 !important; overflow: hidden; }
+/* Series share the opening-curtain showcase, with uncropped product photographs. */
+body.prescot-series-page .pm-series-showcase { display: block !important; position: relative; width: 100% !important; max-width: none !important; height: auto !important; min-height: 130svh !important; margin: 0 !important; padding: 0 !important; border: 0; border-radius: 0; background: #080b10 !important; overflow: clip; }
 html body.prescot-series-page .mdw-card-portfolio .elementor-widget-heading .elementor-widget-container,
 html body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor .elementor-widget-container,
-html body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor p { text-align: left !important; }
-body.prescot-series-page .mdw-card-portfolio > .e-con-inner { display: grid !important; grid-template-columns: 1fr 1fr; width: 100% !important; max-width: none !important; padding: 0 !important; gap: 20px !important; }
-body.prescot-series-page .mdw-card-portfolio > .e-con-inner > * { margin: 0 !important; width: auto !important; max-width: none !important; }
-body.prescot-series-page .mdw-card-portfolio .elementor-widget-button { grid-column: 1 / -1; order: 0; }
+html body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor p { text-align: center !important; }
+body.prescot-series-page .pm-series-showcase > .e-con-inner { position: sticky !important; top: 0; display: grid !important; place-items: center; width: 100% !important; max-width: none !important; min-height: 100svh !important; padding: 90px 0 140px !important; gap: 0 !important; }
+body.prescot-series-page .pm-series-copy { position: relative; z-index: 2; width: min(34vw, 490px); display: flex; flex-direction: column; gap: 20px; align-items: center; opacity: var(--pm-series-progress, 1); transform: translateY(calc((1 - var(--pm-series-progress, 1)) * 36px)); }
+body.prescot-series-page .pm-series-copy:focus-within { opacity: 1; }
+body.prescot-series-page .pm-series-copy > * { position: static !important; margin: 0 !important; width: 100% !important; max-width: none !important; }
+body.prescot-series-page .pm-series-copy .elementor-widget-container { margin: 0 !important; padding: 0 !important; }
+body.prescot-series-page .pm-series-copy .elementor-button-wrapper { text-align: center !important; }
 body.prescot-series-page .mdw-card-portfolio .elementor-widget-button a:not([href]) { padding: 0 !important; min-height: 0 !important; background: none !important; border: 0 !important; color: #aab7c6 !important; cursor: default; font-size: 14px !important; }
-body.prescot-series-page .mdw-card-portfolio .elementor-widget-heading { grid-column: 1 / -1; order: 1; }
-body.prescot-series-page .mdw-card-portfolio h2 { margin: 0 !important; font-size: clamp(30px, 4vw, 46px) !important; line-height: 1.15 !important; }
+body.prescot-series-page .mdw-card-portfolio h2 { margin: 0 !important; font-size: clamp(40px, 5vw, 76px) !important; line-height: 1.05 !important; }
+body.prescot-series-page .pm-series-visuals { position: absolute; inset: 0; pointer-events: none; }
 body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-left,
-body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { position: static !important; transform: none !important; order: 2; width: 100% !important; height: auto !important; pointer-events: auto; }
-body.prescot-series-page .mdw-card-portfolio .elementor-widget-image .elementor-widget-container { padding: 0; border-radius: 14px; overflow: hidden; background: #f5f6f7; }
-body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { width: 100% !important; height: 300px !important; object-fit: contain !important; padding: 16px; border-radius: 14px; }
-body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor { grid-column: 1 / -1; order: 3; color: #e5eaf0; font-size: 16px; line-height: 1.7; }
+body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { position: absolute !important; left: 50% !important; right: auto !important; top: 46% !important; bottom: auto !important; margin: 0 !important; width: 31vw !important; max-width: none !important; height: 60svh !important; z-index: 3; }
+body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-left { transform: translate(calc(-100% - var(--pm-series-progress, 1) * 19vw), -50%) rotate(calc(var(--pm-series-progress, 1) * -5deg)) !important; }
+body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { transform: translate(calc(var(--pm-series-progress, 1) * 19vw), -50%) rotate(calc(var(--pm-series-progress, 1) * 5deg)) !important; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-image .elementor-widget-container { height: 100%; padding: 0; margin: 0; border-radius: 18px; overflow: hidden; background: #f5f6f7; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { display: block; width: 100% !important; height: 100% !important; object-fit: contain !important; padding: 18px; border-radius: 18px; }
+body.prescot-series-page .mdw-card-portfolio .elementor-widget-text-editor { color: #e5eaf0; font-size: 16px; line-height: 1.7; }
 body.prescot-series-page .mdw-card-portfolio p { color: #e5eaf0 !important; font-size: 16px !important; line-height: 1.7 !important; margin: 0 !important; }
 body.prescot-series-page .mdw-card-portfolio p a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; margin: 4px 4px 0 0; border: 1px solid #526071; border-radius: 10px; font-size: 14px; text-decoration: none; }
 body.prescot-series-page .mdw-card-portfolio .elementor-widget-divider { display: none !important; }
-body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -1; order: 4; }
+body.prescot-series-page .mdw-card-portfolio .mdw-email-box h2 { font-size: 25px !important; }
+body.prescot-series-page .pm-series-copy .mdw-email-box > .elementor-widget-container { padding: 12px 24px !important; }
+body.prescot-series-page .pm-series-copy > .elementor-widget-icon { display: none !important; }
+@media (max-width: 1024px), (max-height: 650px) {
+  body.prescot-series-page .pm-series-showcase { min-height: 0 !important; padding: 60px 24px 100px !important; }
+  body.prescot-series-page .pm-series-showcase > .e-con-inner { position: relative !important; min-height: 0 !important; padding: 0 !important; gap: 36px !important; }
+  body.prescot-series-page .pm-series-copy { width: min(100%, 600px); opacity: 1; transform: none; gap: 16px; }
+  body.prescot-series-page .pm-series-visuals { position: relative; inset: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(100%, 720px); }
+  body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-left,
+  body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { position: relative !important; inset: auto !important; width: 100% !important; height: clamp(180px, 42vw, 330px) !important; }
+  body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-left { transform: translateX(calc(var(--pm-series-progress, 1) * -7px)) rotate(calc(var(--pm-series-progress, 1) * -2deg)) !important; }
+  body.prescot-series-page .mdw-card-portfolio .mdw-card-portfolio-image-right { transform: translateX(calc(var(--pm-series-progress, 1) * 7px)) rotate(calc(var(--pm-series-progress, 1) * 2deg)) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.prescot-series-page .pm-series-showcase { --pm-series-progress: 1 !important; min-height: 100svh !important; }
+}
 
 @media (max-width: 767px) {
   :root { --pm-dock-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
@@ -183,9 +203,8 @@ body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -
   body.prescot-series-page .elementor-element-19d3d39b h2 { font-size: 36px !important; line-height: 1.1 !important; margin: 0 !important; text-wrap: balance; }
   body.prescot-series-page .elementor-element-19d3d39b .mdw-gradient .elementor-widget-container { background: none !important; -webkit-text-fill-color: #fff !important; color: #fff !important; }
   body.prescot-series-page .elementor-element-19d3d39b p { font-size: 15px !important; line-height: 1.6 !important; margin: 0 !important; }
-  body.prescot-series-page .mdw-card-portfolio { width: calc(100% - 32px) !important; margin: 16px auto !important; padding: 20px !important; }
-  body.prescot-series-page .mdw-card-portfolio > .e-con-inner { gap: 14px !important; }
-  body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { height: 176px !important; padding: 8px; }
+  body.prescot-series-page .mdw-card-portfolio .elementor-widget-image img { padding: 8px; }
+  body.prescot-series-page .mdw-card-portfolio h2 { font-size: 38px !important; }
   body.prescot-series-page .mdw-card-portfolio p { font-size: 15px !important; }
   .footerSlide { min-height: 0 !important; padding: 48px 22px 120px !important; }
   .footerGrid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
