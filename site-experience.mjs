@@ -76,7 +76,7 @@ function initializeCatalog() {
     if (!track.clientWidth) return;
     active = Math.max(0, Math.min(models.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
     counter.textContent = `${String(active + 1).padStart(2, '0')} / ${String(models.length).padStart(2, '0')}`;
-    cards.forEach((card, i) => { card.inert = i !== active; });
+    cards.forEach((card, i) => { card.inert = i !== active; card.classList.toggle('pm-selected', i === active); });
   };
   const select = index => {
     const i = (index + models.length) % models.length;
@@ -97,6 +97,13 @@ function initializeProduction() {
   const track = document.querySelector('.scroll-track');
   const stage = track?.querySelector('.scroll-div'), grid = track?.querySelector('.grid');
   if (!stage || !grid) return;
+  // Rotate the brand-shaped aperture, not the footage. Counter-rotation keeps
+  // the film plane level and stationary behind the original SVG silhouette.
+  const filmPlane = element('div', 'pm-film-plane');
+  filmPlane.append(...grid.children);
+  grid.append(filmPlane);
+  grid.classList.add('pm-brand-mask');
+  grid.setAttribute('aria-hidden', 'true');
   document.body.classList.add('prescot-production');
   const section = track.closest('.e-parent');
   section.classList.add('prescot-production-motion');
@@ -119,7 +126,9 @@ function initializeProduction() {
     // Fade only while the next block is entering the viewport. Fading at the
     // end of the sticky interval left a whole empty viewport before that block.
     const fade = clamp((stage.offsetHeight - rect.bottom) / (stage.offsetHeight * .7));
-    grid.style.transform = reduced() ? 'none' : `rotate(${-24 + progress * 174}deg) scale(${.9 - fade * .4})`;
+    const angle = reduced() ? 0 : progress * 150;
+    grid.style.transform = `rotate(${angle}deg)`;
+    filmPlane.style.transform = `rotate(${-angle}deg)`;
     grid.style.opacity = String(1 - fade);
     grid.style.visibility = fade >= 1 ? 'hidden' : 'visible';
     stage.setAttribute('aria-hidden', String(fade >= 1));
@@ -138,6 +147,73 @@ function initializeProduction() {
   visibility.observe(stage); update();
 }
 
+function initializeStartVideo() {
+  const hero = document.querySelector('.elementor-element-216d8696');
+  const video = hero?.querySelector('video');
+  if (!video) return;
+  // The referenced PrescotLED page supplies one landscape START.mov, not a
+  // separate phone film. Use our existing MP4 copy with a centred cover crop.
+  const source = asset('wp-content/uploads/2026/01/START.mp4');
+  const settings = JSON.parse(hero.dataset.settings || '{}');
+  settings.background_video_link = source;
+  hero.dataset.settings = JSON.stringify(settings);
+  if (window.jQuery) window.jQuery(hero).data('settings', settings);
+  video.poster = asset('wp-content/uploads/2026/01/FirmaPRESCOTLED.webp');
+  video.muted = true;
+  video.playsInline = true;
+  if (video.currentSrc !== source) video.src = source;
+  if (!reduced()) video.play().catch(() => {});
+  video.addEventListener('playing', () => hero.classList.add('pm-video-playing'));
+}
+
+function initializeHeroLayout() {
+  const hero = document.querySelector('.elementor-element-216d8696');
+  const capabilities = hero?.querySelector('.elementor-element-a848c53');
+  if (capabilities) {
+    const badges = [...capabilities.querySelectorAll('.elementor-widget-icon-box')];
+    capabilities.classList.add('pm-capabilities');
+    capabilities.replaceChildren(...badges);
+    const icons = [
+      ['Linia produkcyjna SMT', '<path d="M3 17h18v4H3zM6 17v-4h12v4M9 3h6v7H9zM12 10v3M6 5h3M15 5h3"/><circle cx="7" cy="19" r=".5"/><circle cx="17" cy="19" r=".5"/>'],
+      ['Laboratorium pomiarowe', '<path d="M8 3h8M10 3v7l-6 9a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M8 15h8M11 17h2"/>']
+    ];
+    for (const [title, path] of icons) {
+      const badge = element('div', 'elementor-widget-icon-box pm-capability');
+      const wrapper = element('div', 'elementor-icon-box-wrapper');
+      const icon = element('span', 'elementor-icon');
+      icon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
+      wrapper.append(icon, element('h3', 'elementor-icon-box-title', title));
+      badge.append(wrapper); capabilities.append(badge);
+    }
+    const caption = hero.querySelector('.elementor-element-ea903c0');
+    if (caption) { caption.classList.add('pm-entrance-caption'); hero.append(caption); }
+  }
+  document.querySelectorAll('.elementor-element-280b012, .elementor-element-629d57a0').forEach(hero => {
+    hero.classList.add('pm-production-hero');
+    const heading = hero.querySelector('h2');
+    if (!heading) return;
+    const caption = element('div', 'pm-entrance-caption pm-production-caption');
+    heading.replaceChildren(document.createTextNode('Polska produkcja'), element('br','pm-mobile-break'), document.createTextNode(' to sprawdzona '), element('span','pm-brand-accent','jakość'));
+    caption.append(heading, element('p','pm-production-invite','Zobacz, jak to się kręci'));
+    hero.append(caption);
+  });
+}
+
+function initializeShowcases() {
+  const slides = document.querySelectorAll('.distSlide');
+  if (!slides.length) return;
+  // Native observation never resets scroll position when phone browser chrome resizes.
+  const observer = new IntersectionObserver(entries => entries.forEach(({target,isIntersecting}) => {
+    target.classList.toggle('is-active',isIntersecting);
+    if (isIntersecting) {
+      target.classList.add('pm-revealed');
+      const wrap = target.closest('.distWrap');
+      if (wrap && target.dataset.bg) wrap.style.background = target.dataset.bg;
+    }
+  }), {rootMargin:'0px 0px -8% 0px', threshold:.08});
+  slides.forEach(slide => { slide.classList.add('pm-reveal-ready'); observer.observe(slide); });
+}
+
 function initializeSeries() {
   if (!['powers', 'controllers'].includes(document.body.dataset.prescotPage)) return;
   document.body.classList.add('prescot-series-page');
@@ -153,9 +229,9 @@ function initializeMobileMenu() {
   const dock = document.querySelector('.prescot-dock');
   if (!dock || dock.querySelector('.pm-more')) return;
   const links = [...dock.querySelectorAll('a.dock-item')];
-  const labels = ['Start', 'Oferta', 'Taśmy', 'Produkcja'];
+  const labels = ['Start', 'Oferta', 'Taśmy', 'Produkcja', 'Dystrybucja'];
   links.forEach((link, i) => {
-    if (i < 4) link.append(element('span', 'pm-dock-label', labels[i]));
+    if (i < 5) link.append(element('span', 'pm-dock-label', labels[i]));
     else link.dataset.pmSecondary = 'true';
   });
   const more = element('button', 'pm-more'); more.type = 'button';
@@ -167,25 +243,38 @@ function initializeMobileMenu() {
   const close = element('button', '', '×'); close.type = 'button'; close.setAttribute('aria-label', 'Zamknij menu');
   header.append(element('h2', '', 'Prescot'), close);
   const nav = element('nav');
-  links.slice(4).forEach(original => {
+  [links[7], links[5], links[6]].filter(Boolean).forEach(original => {
     const link = element('a'); link.href = original.href;
     const icon = original.querySelector('svg'); if (icon) link.append(icon.cloneNode(true));
     link.append(element('span', '', original.dataset.tooltip || original.getAttribute('aria-label')));
     link.onclick = event => { event.preventDefault(); dialog.close(); original.click(); };
     nav.append(link);
   });
+  const b2b = element('a'); b2b.href = 'https://prescot.abstore.pl/';
+  const shopIcon = links[6]?.querySelector('svg');
+  if (shopIcon) b2b.append(shopIcon.cloneNode(true));
+  b2b.append(element('span', '', 'Sklep B2B · WAPRO'));
+  nav.append(b2b);
   dialog.append(header, nav); document.body.append(dialog);
   more.onclick = () => { dialog.showModal(); more.setAttribute('aria-expanded', 'true'); };
   close.onclick = () => dialog.close();
-  dialog.addEventListener('close', () => { more.setAttribute('aria-expanded', 'false'); more.focus(); });
+  dialog.addEventListener('close', () => { more.setAttribute('aria-expanded', 'false'); more.focus({preventScroll:true}); });
   dialog.addEventListener('click', event => { if (event.target === dialog) {
     const rect = dialog.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
   }});
   dock.insertBefore(more, dock.querySelector('.dock-lang-item'));
+  const language = dock.querySelector('.dock-lang-item');
+  const mobile = matchMedia('(max-width:767px)');
+  const positionLanguage = () => {
+    if (!language) return;
+    if (mobile.matches) header.insertBefore(language, close);
+    else dock.append(language);
+  };
+  mobile.addEventListener('change',positionLanguage); positionLanguage();
 }
 
 export function initializeExperience() {
-  initializeCatalog(); initializeProduction(); initializeSeries(); initializeMobileMenu();
+  initializeCatalog(); initializeProduction(); initializeStartVideo(); initializeHeroLayout(); initializeShowcases(); initializeSeries(); initializeMobileMenu();
   window.dispatchEvent(new Event('prescot-layout-updated'));
 }

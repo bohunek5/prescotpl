@@ -1,7 +1,7 @@
 // Prescot LED — Global Navigation, Active Indicator, Dock, Hero Logo & Scroll-To-Top Controller
 const prescotNavigationSource = document.currentScript?.src || document.baseURI;
 document.addEventListener("DOMContentLoaded", () => {
-  import(new URL('site-experience.mjs?v=20260911-mobile1', prescotNavigationSource).href)
+  import(new URL('site-experience.mjs?v=20260911-brand2', prescotNavigationSource).href)
     .then(({initializeExperience}) => initializeExperience());
   import(new URL('shop-assistant/panel.mjs?v=20260911-mobile1', prescotNavigationSource).href)
     .then(({initializeAssistant}) => initializeAssistant())
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 5. Automatic GTranslate Dock Sync & Mounting
   function syncGTranslateToDock() {
-    const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
+    const dockLang = document.querySelector(".prescot-dock .dock-lang-item, .pm-menu .dock-lang-item");
     if (!dockLang) return;
 
     // If dock already has the active switcher, we are good
@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
         languages: ["ar", "zh-CN", "cs", "da", "en", "et", "fi", "fr", "de", "it", "lt", "pl", "es", "sv"],
         url_structure: "none",
         flag_style: "3d",
-        wrapper_selector: ".prescot-dock .gtranslate_wrapper",
+        wrapper_selector: ".prescot-dock .gtranslate_wrapper, .pm-menu .gtranslate_wrapper",
         alt_flags: [],
         float_switcher_open_direction: "top",
         switcher_horizontal_position: "inline",
@@ -408,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // MutationObserver to catch dynamically injected GTranslate float switcher (isolated to dock)
   try {
-    const dockLang = document.querySelector(".prescot-dock .dock-lang-item");
+    const dockLang = document.querySelector(".prescot-dock .dock-lang-item, .pm-menu .dock-lang-item");
     if (dockLang) {
       const gtObserver = new MutationObserver(() => {
         if (!dockLang.querySelector("#gt_float_wrapper")) {

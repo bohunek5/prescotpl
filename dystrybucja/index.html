@@ -9,14 +9,14 @@
 </script>
 
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Dystrybucja Prescot LED: własna produkcja, profile KLUŚ, zasilacze Scharfer oraz sterowanie MiBoxer z doborem technicznym."><title>Dystrybucja oświetlenia LED - Prescot</title><link rel="icon" href="wp-content/uploads/2025/09/cropped-favicon-1-32x32.png" sizes="32x32"><link rel="stylesheet" href="wp-content/plugins/elementor/assets/css/frontend.min.css?ver=4.2.2"><link rel="stylesheet" href="wp-content/plugins/elementor/assets/css/widget-icon-box.min.css?ver=4.2.2"><link rel="stylesheet" href="wp-content/plugins/elementor/assets/css/widget-divider.min.css?ver=4.2.2"><link rel="stylesheet" href="wp-content/uploads/elementor/css/post-13905.css"><link rel="stylesheet" href="wp-content/uploads/elementor/css/post-25535.css"><link rel="stylesheet" href="prescot-global.css?v=20260911-mobile1">
-  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-mobile1"><link rel="stylesheet" href="offer.css?v=20260816-1"><link rel="stylesheet" href="dystrybucja.css?v=20260903-1">
+  <link rel="stylesheet" href="prescot-mobile.css?v=20260911-brand2"><link rel="stylesheet" href="offer.css?v=20260816-1"><link rel="stylesheet" href="dystrybucja.css?v=20260903-1">
 </head><body><main class="distribution-page">
-  
+
   <section class="distribution-intro" style="background: linear-gradient(180deg, rgba(10, 15, 22, 0.45) 0%, rgba(10, 15, 22, 0.85) 100%), url('wp-content/uploads/2026/01/FirmaPRESCOTLED.webp') center/cover no-repeat;">
     <div class="dist-hero-badge">Produkcja · Dystrybucja · Wsparcie Techniczne</div>
     <h1 class="dist-hero-title">Dystrybucja,<br>która zaczyna się od doboru.</h1>
     <p class="dist-hero-subtitle">Prescot łączy polską produkcję taśm LED z ofertą renomowanych marek KLUŚ, Scharfer i MiBoxer. Dobieramy taśmę, profil, zasilanie i sterowanie jako jeden zgrany, certyfikowany układ.</p>
-    
+
 
 
     <div class="dist-floating-pills">
@@ -51,7 +51,7 @@
         <h2 class="dist-section-title">Dlaczego warto zostać dystrybutorem Prescot LED?</h2>
         <p class="dist-section-desc">Zapewniamy realne wsparcie polskiego producenta: najwyższe marże handlowe, ochronę projektów inwestycyjnych i natychmiastową wysyłkę z magazynu centralnego.</p>
       </div>
-      
+
             <div class="dist-why-grid">
         <div class="dist-why-card">
           <div class="dist-why-icon-wrap"><svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
@@ -569,7 +569,7 @@ window.addEventListener("load", () => {
     const isKlus = slide.classList.contains("is-klus");
     const isScharfer = slide.classList.contains("is-scharfer");
     const isElba = slide.classList.contains("is-elba");
-    
+
     const useLanes = isPrescot || isMiboxer || isKlus || isScharfer || isElba;
 
     let numLanes = 6;
@@ -703,44 +703,18 @@ window.addEventListener("load", () => {
     }
   });
 
-  if (typeof gsap !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const wrap = document.querySelector(".distWrap");
-    const slides = document.querySelectorAll(".distSlide");
-    
-    slides.forEach(slide => {
-      ScrollTrigger.create({
-        trigger: slide,
-        start: "top 60%",
-        onEnter: () => gsap.to(wrap, { background: slide.dataset.bg || "#ffffff", duration: .8 }),
-        onEnterBack: () => gsap.to(wrap, { background: slide.dataset.bg || "#ffffff", duration: .8 })
-      });
-
-      if(slide.classList.contains("distFloat")) {
-        ScrollTrigger.create({
-          trigger: slide,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => slide.classList.add("is-active"),
-          onEnterBack: () => slide.classList.add("is-active"),
-          onLeave: () => slide.classList.remove("is-active"),
-          onLeaveBack: () => slide.classList.remove("is-active")
-        });
-      }
-    });
-  }
+  // Showcase visibility and transitions: site-experience.mjs (no scroll resets).
 });
 </script></div>
 
 
-  
+
 </main><footer data-elementor-type="footer" data-elementor-id="25535" class="elementor elementor-25535 elementor-location-footer" data-elementor-post-type="elementor_library">
 			<div class="elementor-element elementor-element-5a4fefb6 e-con-full e-flex e-con e-parent" data-id="5a4fefb6" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
 				<div class="elementor-element elementor-element-dca2ef5 elementor-widget__width-inherit elementor-widget elementor-widget-html" data-id="dca2ef5" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
-					<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+
 
 <style>
 /* Import czcionki Krona One z Google Fonts */
@@ -865,11 +839,11 @@ window.addEventListener("load", () => {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  
+
   background: #212a35; 
   color: #ffffff;
   border: 1px solid #212a35;
-  
+
   padding: 16px 32px;
   border-radius: 999px;
   font-weight: 400;
@@ -1030,17 +1004,17 @@ window.addEventListener("load", () => {
   .stopkaArrowUp svg { width: 20px; height: 20px; }
 
   .footerGrid { grid-template-columns: 1fr; gap: 30px; }
-   
+
   .footerTitle { 
     font-size: 32px;
     text-align: center; 
     white-space: normal;
     margin-top: 80px; /* Zrobienie miejsca na strzałkę */
   }
-   
+
   .footerSubtitle { text-align: center; margin-left: auto; margin-right: auto; }
   .submitBtn { width: 100%; justify-content: center; }
-   
+
   .footerMobileScroll { display: flex; }
 
   .footerInfoCol { 
@@ -1050,7 +1024,7 @@ window.addEventListener("load", () => {
     padding-top: 30px; 
     margin-top: 10px;
   }
-   
+
   .infoBlock { margin-bottom: 25px; } 
 
   .bottomStack { 
@@ -1060,7 +1034,7 @@ window.addEventListener("load", () => {
     margin-top: 10px;
     gap: 15px;
   }
-  
+
   .footerLogo { align-items: center; }
   .footerTagline { margin-left: 0; }
 
@@ -1069,24 +1043,24 @@ window.addEventListener("load", () => {
 </style>
 
 <div id="stopka">
-   
+
   <div class="footerSlide">
     <div class="stopkaArrowUp" id="arrowToMiboxer" aria-label="Powrót do MiBoxer">
       <svg viewBox="0 0 24 24"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
     </div>
 
     <div class="footerGrid">
-       
+
       <div class="footerFormCol">
         <h2 class="footerTitle">Skontaktuj się z <span class="orangeAccent">nami</span></h2>
         <p class="footerSubtitle">Masz pytania dotyczące dystrybucji lub produktów? Wypełnij formularz, a nasz zespół skontaktuje się z Tobą najszybciej jak to możliwe.</p>
-        
+
         <form class="contactForm" action="/wyslij-wiadomosc" method="POST">
           <div class="inpGroup"><input type="text" placeholder="Imię i nazwisko" required></div>
           <div class="inpGroup"><input type="email" placeholder="Adres e-mail" required></div>
           <div class="inpGroup"><input type="tel" placeholder="Numer telefonu"></div>
           <div class="inpGroup"><textarea placeholder="Twoja wiadomość..."></textarea></div>
-          
+
           <button type="submit" class="submitBtn">
             Wyślij wiadomość 
             <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
@@ -1095,7 +1069,7 @@ window.addEventListener("load", () => {
       </div>
 
       <div class="footerInfoCol" id="daneFirmyTarget">
-        
+
         <div class="infoBlock">
           <div class="infoLabel">Adres</div>
           <div class="infoContent">
@@ -1183,17 +1157,17 @@ window.addEventListener("load", () => {
 				<a href="prescotled" class="elementor-icon" tabindex="-1" aria-label="Prescot LED">
 				<svg xmlns="http://www.w3.org/2000/svg" id="Warstwa_1" viewBox="0 0 377.9 257.7"><defs><style>      .st0 {        fill: #e14e26;      }    </style></defs><path class="st0" d="M0,0h106.7v50H0V0ZM0,100.9h97.7v48.2H0v-48.2ZM0,206.6h106.7v51.2H0v-51.2h0ZM149.3,100.7h82v48.4h-82v-48.4h0ZM149.3,0h87.4C317.7,0,377.9,42.6,377.9,128.9s-60.1,128.9-141.2,128.9h-87.4v-51.2h90.8c47.8,0,76.6-29.1,76.6-77.7s-27.6-78.8-76.6-78.8h-90.8V0h0Z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="prescotled" >
 							Prescot LED						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1205,17 +1179,17 @@ window.addEventListener("load", () => {
 				<a href="produkty/" class="elementor-icon" tabindex="-1" aria-label="Oferta">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-book-open" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><path d="M542.22 32.05c-54.8 3.11-163.72 14.43-230.96 55.59-4.64 2.84-7.27 7.89-7.27 13.17v363.87c0 11.55 12.63 18.85 23.28 13.49 69.18-34.82 169.23-44.32 218.7-46.92 16.89-.89 30.02-14.43 30.02-30.66V62.75c.01-17.71-15.35-31.74-33.77-30.7zM264.73 87.64C197.5 46.48 88.58 35.17 33.78 32.05 15.36 31.01 0 45.04 0 62.75V400.6c0 16.24 13.13 29.78 30.02 30.66 49.49 2.6 149.59 12.11 218.77 46.95 10.62 5.35 23.21-1.94 23.21-13.46V100.63c0-5.29-2.62-10.14-7.27-12.99z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="produkty/" >
 							Oferta						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1227,17 +1201,17 @@ window.addEventListener("load", () => {
 				<a href="tasmy-led" class="elementor-icon" tabindex="-1" aria-label="Taśmy LED">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-tape" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><path d="M224 192c-35.3 0-64 28.7-64 64s28.7 64 64 64 64-28.7 64-64-28.7-64-64-64zm400 224H380.6c41.5-40.7 67.4-97.3 67.4-160 0-123.7-100.3-224-224-224S0 132.3 0 256s100.3 224 224 224h400c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-400-64c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="tasmy-led" >
 							Taśmy LED						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1249,17 +1223,17 @@ window.addEventListener("load", () => {
 				<a href="produkcja" class="elementor-icon" tabindex="-1" aria-label="Produkcja">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-industry" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M475.115 163.781L336 252.309v-68.28c0-18.916-20.931-30.399-36.885-20.248L160 252.309V56c0-13.255-10.745-24-24-24H24C10.745 32 0 42.745 0 56v400c0 13.255 10.745 24 24 24h464c13.255 0 24-10.745 24-24V184.029c0-18.917-20.931-30.399-36.885-20.248z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="produkcja" >
 							Produkcja						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1271,17 +1245,17 @@ window.addEventListener("load", () => {
 				<a href="dystrybucja" class="elementor-icon" tabindex="-1" aria-label="Dystrybucja">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-sitemap" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><path d="M128 352H32c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32zm-24-80h192v48h48v-48h192v48h48v-57.59c0-21.17-17.23-38.41-38.41-38.41H344v-64h40c17.67 0 32-14.33 32-32V32c0-17.67-14.33-32-32-32H256c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h40v64H94.41C73.23 224 56 241.23 56 262.41V320h48v-48zm264 80h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32zm240 0h-96c-17.67 0-32 14.33-32 32v96c0 17.67 14.33 32 32 32h96c17.67 0 32-14.33 32-32v-96c0-17.67-14.33-32-32-32z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="dystrybucja" >
 							Dystrybucja						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1293,17 +1267,17 @@ window.addEventListener("load", () => {
 				<a href="dystrybucja/#stopka" class="elementor-icon" tabindex="-1" aria-label="B2B">
 				<svg aria-hidden="true" class="e-font-icon-svg e-fas-shopping-basket" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><path d="M576 216v16c0 13.255-10.745 24-24 24h-8l-26.113 182.788C514.509 462.435 494.257 480 470.37 480H105.63c-23.887 0-44.139-17.565-47.518-41.212L32 256h-8c-13.255 0-24-10.745-24-24v-16c0-13.255 10.745-24 24-24h67.341l106.78-146.821c10.395-14.292 30.407-17.453 44.701-7.058 14.293 10.395 17.453 30.408 7.058 44.701L170.477 192h235.046L326.12 82.821c-10.395-14.292-7.234-34.306 7.059-44.701 14.291-10.395 34.306-7.235 44.701 7.058L484.659 192H552c13.255 0 24 10.745 24 24zM312 392V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm112 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24zm-224 0V280c0-13.255-10.745-24-24-24s-24 10.745-24 24v112c0 13.255 10.745 24 24 24s24-10.745 24-24z"></path></svg>				</a>
 			</div>
-			
+
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
 						<a href="dystrybucja/#stopka" >
 							B2B						</a>
 					</h3>
-				
-				
+
+
 			</div>
-			
+
 		</div>
 						</div>
 				</div>
@@ -1329,7 +1303,7 @@ var $ = jQuery,
     currentIndexes = [],
     movingAnimations = [],
     hash = true,
-    
+
     // ZMIENNE DO NOWEGO EFEKTU SCROLLA
     lastScrollTop = 0,      // Pamięta ostatnią pozycję
     delta = 5,              // Czułość scrolla (żeby nie reagował na drgnięcia)
@@ -1485,13 +1459,13 @@ var delay = 100;
 $(window).on('load scroll resize', function(e){
     // Pobierz aktualną pozycję scrolla
     var st = $(window).scrollTop();
-    
+
     // --- ✅ NOWA LOGIKA UKRYWANIA (Smart Scroll) ---
     // Działa tylko jeśli scrollujemy więcej niż 'delta' i nie jesteśmy na samej górze
     if(Math.abs(lastScrollTop - st) > delta){
         $('.icon-menu').each(function(){
             var $this = $(this);
-            
+
             // Jeśli scrollujemy W DÓŁ i jesteśmy poniżej 100px od góry -> UKRYJ
             if (st > lastScrollTop && st > 100){
                 $this.addClass('hidden');
@@ -1523,7 +1497,7 @@ $(window).on('load scroll resize', function(e){
         $('.icon-menu').each(function(i){
             var $this = $(this),
                 menuIndex;
-            
+
             // Tutaj usunąłem starą logikę "Hide menu near window bottom"
 
             // Auto highlight icon logic...
@@ -1730,4 +1704,4 @@ $(document).ready(function(){
 </script>
 				</div>
 				</div>
-				</div></div><script>window.gtranslateSettings=window.gtranslateSettings||{};window.gtranslateSettings['84539111']={"default_language":"pl","languages":["ar","zh-CN","cs","da","en","et","fi","fr","de","it","lt","pl","es","sv"],"url_structure":"none","flag_style":"3d","wrapper_selector":"#gt-wrapper-84539111","alt_flags":[],"float_switcher_open_direction":"top","switcher_horizontal_position":"inline","flags_location":"wp-content/plugins/gtranslate/flags/"};</script><script src="wp-content/plugins/gtranslate/js/float.js?ver=3.1.1" data-no-optimize="1" data-no-minify="1" data-gt-orig-url="/dystrybucja/" data-gt-orig-domain="tasmaled.com.pl" data-gt-widget-id="84539111" defer></script><script src="offer.js?v=20260816-1" defer></script><script src="local-navigation.js?v=20260911-mobile1" defer></script></body></html>
+				</div></div><script>window.gtranslateSettings=window.gtranslateSettings||{};window.gtranslateSettings['84539111']={"default_language":"pl","languages":["ar","zh-CN","cs","da","en","et","fi","fr","de","it","lt","pl","es","sv"],"url_structure":"none","flag_style":"3d","wrapper_selector":"#gt-wrapper-84539111","alt_flags":[],"float_switcher_open_direction":"top","switcher_horizontal_position":"inline","flags_location":"wp-content/plugins/gtranslate/flags/"};</script><script src="wp-content/plugins/gtranslate/js/float.js?ver=3.1.1" data-no-optimize="1" data-no-minify="1" data-gt-orig-url="/dystrybucja/" data-gt-orig-domain="tasmaled.com.pl" data-gt-widget-id="84539111" defer></script><script src="offer.js?v=20260816-1" defer></script><script src="local-navigation.js?v=20260911-brand2" defer></script></body></html>

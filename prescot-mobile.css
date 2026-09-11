@@ -10,7 +10,43 @@
 .pm-menu nav { display: grid; gap: 8px; }
 .pm-menu nav a { display: flex; align-items: center; gap: 16px; min-height: 56px; padding: 12px 16px; border-radius: 12px; background: #f5f6f8; color: #111827; text-decoration: none; }
 .pm-menu nav svg { width: 22px; height: 22px; fill: currentColor; }
+.pm-menu .dock-lang-item { margin-left: auto; margin-right: 16px; min-width: 54px; min-height: 44px; display: flex; align-items: center; }
+.pm-menu .dock-lang-item a { min-height: 44px; display: inline-flex; align-items: center; }
+.pm-menu .dock-lang-item, .pm-menu .gtranslate_wrapper, .pm-menu #gt_float_wrapper, .pm-menu .gt_float_switcher { position: static !important; transform: none !important; }
+.pm-menu .gt_options { position: absolute !important; top: 78px !important; bottom: auto !important; left: 24px !important; right: 24px !important; width: auto !important; max-height: calc(100% - 100px) !important; transform: none !important; overflow-y: auto !important; z-index: 5 !important; }
+.pm-menu .gt_options a { display: flex !important; min-height: 44px; align-items: center; padding: 8px 12px !important; font-size: 14px !important; }
 .pm-menu :focus-visible, .pm-catalog :focus-visible { outline: 3px solid #e55933; outline-offset: 4px; }
+
+/* One edge-to-edge video canvas, with a shared baseline for both entrances. */
+html body .elementor-element-216d8696 { height: 100svh !important; min-height: 580px !important; padding: 0 !important; isolation: isolate; }
+html body .elementor-element-216d8696 > .e-con-inner { width: 100% !important; max-width: none !important; padding: 0 !important; }
+html body .elementor-element-216d8696 .elementor-shape-bottom { display: none !important; }
+html body .elementor-element-216d8696 .elementor-background-video-container { inset: 0 !important; border-radius: 0 !important; }
+html body .elementor-element-216d8696 video.elementor-background-video-hosted { inset: 0 !important; transform: none !important; width: 100% !important; height: 100% !important; max-width: none !important; max-height: none !important; object-fit: cover !important; object-position: 50% 50% !important; }
+html body .elementor-element-216d8696.pm-video-playing { background-image: none !important; background-color: #101823 !important; }
+html body .pm-capabilities { position: absolute !important; top: 24%; left: 50%; transform: translateX(-50%); display: grid !important; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 24px !important; width: min(1120px,90%) !important; padding: 0 !important; margin: 0 !important; min-height: 0 !important; }
+html body .pm-capabilities > .elementor-widget-icon-box { width: 100% !important; max-width: none !important; margin: 0 !important; }
+html body .pm-capabilities .elementor-widget-container { padding: 0 !important; margin: 0 !important; }
+html body .pm-capabilities .elementor-icon-box-wrapper { display: flex !important; flex-direction: column !important; align-items: center; gap: 10px !important; }
+html body .pm-capabilities .elementor-icon-box-icon { display: flex; justify-content: center; width: auto !important; margin: 0 !important; }
+html body .pm-capabilities .elementor-icon { display: flex; align-items: center; justify-content: center; width: 50px !important; height: 50px !important; padding: 12px !important; border: 1px solid #ffffff66 !important; border-radius: 50%; background: #ffffff24 !important; color: #fff !important; }
+html body .pm-capabilities .elementor-icon svg { width: 25px !important; height: 25px !important; }
+html body .pm-capabilities .pm-capability svg { fill: none !important; }
+html body .pm-capabilities .pm-capability svg * { fill: none !important; stroke: currentColor !important; }
+html body .pm-capabilities .elementor-icon-box-title { font-size: 15px !important; line-height: 1.4 !important; font-weight: 600 !important; text-align: center !important; color: #fff !important; margin: 0 !important; }
+html body .pm-entrance-caption { position: absolute !important; inset: auto 20px 155px !important; z-index: 2; width: auto !important; padding: 0 !important; margin: 0 !important; min-height: 0 !important; text-align: center !important; }
+html body .pm-entrance-caption .elementor-divider__text { font-size: 24px !important; line-height: 1.3 !important; }
+html body .pm-entrance-caption .elementor-divider { padding-block: 0 !important; }
+.pm-mobile-break { display: none; }
+html body .pm-production-hero { position: relative; height: 100svh !important; min-height: 580px !important; padding: 0 !important; }
+html body .pm-production-hero > .elementor-widget-spacer { display: none !important; }
+html body .pm-production-caption h2 { font-size: 28px !important; line-height: 1.3 !important; margin: 0 auto 10px !important; max-width: 620px; color: white !important; }
+.pm-brand-accent { color: #e14e26 !important; }
+html body .pm-production-invite { font-size: 16px; color: #fff; margin: 0 !important; }
+.distWrap { transition: background-color .6s ease; }
+.pm-reveal-ready .distContentBox, .pm-reveal-ready .distCard { transition: opacity .55s ease, transform .55s ease !important; }
+.pm-reveal-ready:not(.pm-revealed) .distContentBox { opacity: 0; transform: translateY(18px) !important; }
+.pm-reveal-ready:not(.pm-revealed) .distCard { opacity: 0; transform: translateY(28px) !important; }
 
 /* Production: the sticky stage must use the viewport, not an overflow-x:hidden ancestor. */
 html:has(body.prescot-production), body.prescot-production { overflow-x: clip !important; overflow-y: visible !important; }
@@ -18,14 +54,14 @@ body.prescot-production .prescot-production-motion { margin: 0 !important; paddi
 .prescot-production-motion .elementor-widget-html, .prescot-production-motion .page-wrap, .prescot-production-motion .container { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
 .prescot-production-motion .scroll-track { position: relative; height: 240svh; min-height: 0; }
 .prescot-production-motion .scroll-div { position: sticky !important; top: 0 !important; height: 100svh !important; min-height: 0 !important; display: grid !important; place-items: center; }
-.prescot-production-motion .grid { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: 12px; width: min(74vmin, 820px); height: min(74vmin, 820px); will-change: transform, opacity; transform-origin: center; }
-.prescot-production-motion .block { position: relative; grid-area: auto !important; width: auto; height: auto; overflow: hidden; border-radius: 14px; background: #10151b; }
-.prescot-production-motion .block:nth-child(2), .prescot-production-motion .block:nth-child(8) { transform: translateY(-12%); }
-.prescot-production-motion .block:nth-child(4), .prescot-production-motion .block:nth-child(6) { transform: translateY(12%); }
+.prescot-production-motion .grid { position: relative; display: block; width: min(86vmin, 920px); height: min(86vmin, 920px); will-change: transform, opacity; transform-origin: center; }
+.prescot-production-motion .pm-brand-mask { -webkit-mask: url("wp-content/uploads/2025/05/PRESCOT_pattern2-1.svg") center / contain no-repeat; mask: url("wp-content/uploads/2025/05/PRESCOT_pattern2-1.svg") center / contain no-repeat; mask-mode: alpha; }
+.prescot-production-motion .pm-film-plane { position: absolute; inset: -21%; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); gap: 0; transform-origin: center; will-change: transform; }
+.prescot-production-motion .block { position: relative; grid-area: auto !important; width: auto; height: auto; overflow: hidden; border-radius: 0; background: #10151b; }
 .prescot-production-motion .video, .prescot-production-motion video { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover; filter: none; }
 @media (prefers-reduced-motion: reduce) {
   .prescot-production-motion .scroll-track { height: 120svh; }
-  .prescot-production-motion .grid { will-change: auto; }
+  .prescot-production-motion .grid, .prescot-production-motion .pm-film-plane { will-change: auto; }
   html { scroll-behavior: auto !important; }
 }
 
@@ -52,6 +88,16 @@ body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -
 
 @media (max-width: 767px) {
   :root { --pm-dock-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+  .pm-mobile-break { display: initial; }
+  html body .pm-capabilities { top: 20%; width: calc(100% - 40px) !important; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px 12px !important; }
+  html body .pm-capabilities .elementor-icon { width: 38px !important; height: 38px !important; padding: 9px !important; }
+  html body .pm-capabilities .elementor-icon svg { width: 20px !important; height: 20px !important; }
+  html body .pm-capabilities .elementor-icon-box-title { font-size: 12px !important; line-height: 1.4 !important; }
+  html body .pm-capabilities .elementor-icon-box-wrapper { gap: 7px !important; }
+  html body .pm-entrance-caption { bottom: calc(var(--pm-dock-bottom) + 144px) !important; }
+  html body .pm-entrance-caption .elementor-divider__text { font-size: 19px !important; }
+  html body .pm-production-caption h2 { font-size: 20px !important; max-width: 290px; margin-bottom: 8px !important; }
+  html body .pm-production-invite { font-size: 13px !important; }
   .prescot-dock { bottom: var(--pm-dock-bottom) !important; width: calc(100% - 24px) !important; max-width: 440px !important; height: 64px !important; gap: 0 !important; padding: 5px 6px !important; border-radius: 20px !important; }
   .prescot-dock .dock-item, .prescot-dock .pm-more, .prescot-dock .dock-lang-item { flex: 1 1 0 !important; width: auto !important; min-width: 44px !important; height: 52px !important; margin: 0 !important; }
   .prescot-dock .dock-item, .prescot-dock .pm-more { display: flex !important; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 4px 0 !important; border: 0; border-radius: 12px; background: transparent; color: #1e293b; }
@@ -82,9 +128,13 @@ body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -
   .pm-feature::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #07101b55 0%, #07101b0a 24%, #07101ba6 48%, #07101bf2 78%, #07101b 100%); pointer-events: none; }
   .pm-feature-copy { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; min-height: 100svh; padding: 130px 24px calc(var(--pm-dock-bottom) + 208px); }
   .pm-kicker { margin: 0 0 12px; font-size: 10px; line-height: 1.4; letter-spacing: .14em; font-weight: 700; text-transform: uppercase; }
-  .pm-feature h2 { max-width: 100%; margin: 0 0 12px; color: #fff; font-size: clamp(29px, 8.3vw, 40px); line-height: 1.08 !important; letter-spacing: -.035em; text-wrap: balance; }
-  .pm-feature-summary { max-width: 38ch; margin: 0 0 22px; font-size: 15px; line-height: 1.55; color: #edf0f4; }
-  .pm-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 24px; border-radius: 999px; background: #e55933; color: #fff !important; font-size: 14px; font-weight: 700; text-decoration: none; }
+  .pm-feature h2 { max-width: 100%; margin: 0 0 10px; color: #fff; font-size: clamp(25px, 7vw, 30px); line-height: 1.15 !important; letter-spacing: -.025em; text-wrap: balance; }
+  .pm-feature-summary { max-width: 38ch; margin: 0 0 18px; font-size: 13px; line-height: 1.55; color: #edf0f4; }
+  .pm-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 20px; border-radius: 999px; background: #e14e26; color: #fff !important; font-size: 13px; font-weight: 700; text-decoration: none; }
+  .pm-feature-copy > * { transition: transform .35s ease, opacity .35s ease; }
+  .pm-feature:not(.pm-selected) .pm-feature-copy > * { transform: translateY(12px); opacity: 0; }
+  .pm-feature.pm-selected .pm-feature-summary { transition-delay: .06s; }
+  .pm-feature.pm-selected .pm-cta { transition-delay: .1s; }
   .pm-feature-controls { position: absolute; z-index: 2; bottom: calc(var(--pm-dock-bottom) + 145px); left: 24px; right: 24px; display: flex; align-items: center; gap: 14px; }
   .pm-feature-controls button { width: 44px; height: 44px; padding: 0; border: 1px solid #ffffff55; border-radius: 50%; background: #ffffff10; color: white; font: 400 24px/1 Arial; }
   .pm-feature-counter { min-width: 65px; color: #fff; text-align: center; font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: .1em; }
@@ -98,10 +148,18 @@ body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -
   .pm-model h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.2; color: #111827; }
   .pm-model p { margin: 0; font-size: 12px; line-height: 1.5; color: #586473; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .pm-model-arrow { font-size: 20px; color: #c34d2f; }
+  html body .distSlide { min-height: 0 !important; padding: 44px 20px 100px !important; overflow: clip !important; }
+  html body .distSlide .distGrid { gap: 14px !important; max-width: 480px !important; }
+  html body .distSlide .distCard { height: 96px !important; min-height: 96px !important; padding: 16px !important; border-radius: 16px !important; }
+  html body .distSlide .distCard img { max-height: 56px !important; }
+  html body .distSlide .distContentBox { padding: 24px 20px !important; border-radius: 16px !important; }
+  html body .distSlide .distTitle { font-size: 24px !important; }
+  html body .distSlide .distText { font-size: 14px !important; line-height: 1.65 !important; }
+  html body .distSlide .floatLayer { opacity: .1 !important; pointer-events: none !important; }
+  html body .distSlide .distArrowUp { display: none !important; }
 
   .prescot-production-motion .scroll-track { height: 205svh; }
-  .prescot-production-motion .grid { width: 78vw; height: 78vw; gap: 8px; }
-  .prescot-production-motion .block { border-radius: 10px; }
+  .prescot-production-motion .grid { width: 80vw; height: 80vw; }
   body.prescot-production #kreci { padding: 48px 22px 0 !important; }
   body.prescot-production .prescot-process-step { min-height: 0 !important; height: auto !important; padding: 40px 22px !important; gap: 20px !important; }
   body.prescot-production .prescot-process-step > .e-con-inner { width: 100% !important; padding: 0 !important; gap: 20px !important; }
@@ -128,11 +186,14 @@ body.prescot-series-page .mdw-card-portfolio .mdw-email-box { grid-column: 1 / -
 }
 @media (max-width: 360px) {
   .pm-feature-copy { padding-inline: 20px; }
-  .pm-feature h2 { font-size: 29px; }
-  .pm-feature-summary { font-size: 14px; }
+  .pm-feature h2 { font-size: 25px; }
+  .pm-feature-summary { font-size: 13px; }
   .pm-model { grid-template-columns: 72px minmax(0,1fr) 14px; gap: 10px; }
   .pm-model > img { width: 72px; height: 88px; }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
   .prescot-production-motion .scroll-track { height: 100svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pm-reveal-ready .distContentBox, .pm-reveal-ready .distCard, .pm-feature-copy > * { transition: none !important; transform: none !important; opacity: 1 !important; }
 }
