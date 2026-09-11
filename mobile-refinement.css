@@ -1,0 +1,180 @@
+/* Keep the original desktop product pages; refine their shared phone reveal. */
+.pm-original-copy { display: contents; }
+.pm-mobile-description { display: none; }
+html body .pm-download {
+  display: inline-flex !important; align-items: center; justify-content: center; gap: 10px;
+  min-height: 50px !important; padding: 13px 21px !important; border: 1px solid #ffffff54 !important;
+  border-radius: 15px !important; background: linear-gradient(145deg,#f37950,#df4b23) !important;
+  color: #fff !important; font: 600 14px/1.35 var(--prescot-font-body, sans-serif) !important;
+  text-decoration: none !important; box-shadow: inset 0 1px 1px #ffffff70, 0 5px 18px #0002 !important;
+}
+html body .pm-download svg { width: 19px; height: 19px; flex: 0 0 19px; }
+html body .pm-download-widget .elementor-widget-container { background: none !important; padding: 0 !important; }
+html body .pm-download-widget h2 { font-size: 14px !important; }
+html body .pm-download:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+
+/* Native compositions using the actual source product cutouts. */
+html body .pm-product-artwork .pm-product-scene {
+  position: relative; isolation: isolate; overflow: hidden; border-radius: 26px !important;
+  background: radial-gradient(ellipse at 50% 38%,#334150,#080d15 70%) !important;
+  border: 1px solid #ffffff27; box-shadow: inset 0 1px #ffffff28;
+}
+html body .pm-product-artwork .pm-kit-scene::before {
+  content: ''; position: absolute; z-index: 0; inset: 44% -6% 7%; border-radius: 50%;
+  background: linear-gradient(155deg,#6b778040,#131b22 45%,#020609); border: 1px solid #ffffff34;
+  box-shadow: 0 14px 25px #0007, inset 0 2px 1px #ffffff30; transform: rotate(-10deg);
+}
+html body .pm-product-artwork .pm-product-scene img { border-radius: 0 !important; padding: 0 !important; object-fit: contain !important; background: none !important; }
+html body #content .pm-product-artwork .pm-product-scene .pm-remote { position: absolute; width: 165% !important; max-width: none !important; height: 82% !important; top: 8%; left: -32.5%; filter: drop-shadow(0 15px 12px #0009); z-index: 1; }
+html body #content .pm-product-artwork .pm-product-scene .pm-room { position: absolute; inset: 0; width: 100% !important; height: 100% !important; opacity: .16; object-fit: cover !important; filter: grayscale(1); z-index: -1; }
+html body #content .pm-product-artwork .pm-product-scene .pm-receiver { position: absolute; width: 85% !important; height: 55% !important; right: 3%; top: 30%; filter: drop-shadow(0 15px 12px #0007); }
+html body .pm-product-artwork .pm-magnet { position: absolute; top: 17%; left: 9%; width: 25%; height: 38%; filter: drop-shadow(0 8px 6px #0009); }
+html body .pm-product-artwork .pm-magnet svg { display: block; width: 100%; height: 100%; }
+html body .pm-product-artwork .pm-mode { position: absolute; left: 20px; top: 20px; display: flex; align-items: center; gap: 8px; color: #fff; font: 600 11px/1.3 sans-serif; letter-spacing: .08em; }
+html body .pm-product-artwork .pm-mode::before { content: ''; width: 12px; height: 12px; border: 1px solid #ffffff80; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #ffffff50; }
+html body .pm-product-artwork .pm-mode-cct::before { background: linear-gradient(90deg,#ffd594,#e9f6ff); }
+html body .pm-product-artwork .pm-mode-rgb::before,
+html body .pm-product-artwork .pm-mode-rgbw::before,
+html body .pm-product-artwork .pm-mode-rgbcct::before { background: conic-gradient(#ee6681,#819de8,#73e8b0,#f8de78,#ee6681); }
+html body .pm-product-artwork .pm-photo-caption { position: absolute; inset: auto 18px 20px; color: #e9eef6; text-align: center; font: 500 12px/1.45 sans-serif; }
+html body #content .pm-product-artwork .pm-product-scene .pm-power { position: absolute; top: 5%; left: -25%; height: 90% !important; width: 150% !important; max-width: none !important; filter: drop-shadow(0 16px 14px #0008); }
+html body #content .pm-product-artwork .pm-product-scene .pm-power-detail { position: absolute; top: 7%; left: -55%; width: 210% !important; max-width: none !important; height: 85% !important; border-radius: 18px !important; }
+
+/* White glass shared by the brand cards and the contact footer. */
+html body .pm-brand .distContentBox {
+  background: #ffffffab !important; color: #15243a !important; border-color: #ffffffb8 !important;
+  backdrop-filter: blur(18px) saturate(1.1); -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  box-shadow: 0 8px 28px #10203912, inset 0 1px #fff8 !important;
+}
+html body .pm-brand .distKicker { color: #53667b !important; }
+html body .pm-brand .distTitle { color: #14263d !important; }
+html body .pm-brand .distText { color: #304259 !important; }
+html body .pm-brand .distBtn { color: #14263d !important; border-color: #fff !important; background: #ffffffad !important; box-shadow: 0 4px 14px #20345013, inset 0 1px #fff !important; }
+html body .pm-brand .distBtn span { color: #14263d !important; }
+html body #stopka.pm-footer-shell, html body .pm-footer { background: #f5f7fa !important; color: #14263d !important; }
+html body .pm-footer .footerFormCol, html body .pm-footer .footerInfoCol {
+  background: linear-gradient(145deg,#fff,#ffffff8c) !important; border-color: #fff !important;
+  box-shadow: 0 10px 35px #1c354b09, inset 0 1px #fff;
+}
+html body .pm-footer .footerTitle, html body .pm-footer .infoContent, html body .pm-footer .infoContent a { color: #16283e !important; }
+html body .pm-footer .footerSubtitle, html body .pm-footer .footerTagline, html body .pm-footer .infoLabel,
+html body .pm-footer label, html body .pm-footer .legalLink { color: #536278 !important; }
+html body .pm-footer .contactForm input, html body .pm-footer .contactForm textarea { color: #14263d !important; background: #f2f5f8 !important; border-color: #d6dfe8 !important; }
+html body .pm-footer .contactForm input::placeholder, html body .pm-footer .contactForm textarea::placeholder { color: #63758a !important; }
+html body .pm-footer .pm-full-contact {
+  color: #15283f !important; background: linear-gradient(145deg,#fff,#e8eef4) !important; border: 1px solid #fff !important;
+  box-shadow: 5px 5px 15px #1c354b12, -3px -3px 12px #fff, inset 0 1px #fff !important;
+  min-height: 56px !important; border-radius: 18px !important;
+}
+html body .pm-footer .bottomStack { border-color: #dfe5ec !important; }
+html body .pm-footer .socialIcon { color: #1d344d !important; background: #fff !important; border-color: #dce4ed !important; box-shadow: 0 3px 9px #1c354b0b; }
+html body .pm-footer .contactForm button { border-radius: 15px !important; box-shadow: inset 0 1px #ffffff70, 0 4px 12px #e14e261a !important; }
+
+/* One hero hint; discreet, idle-only navigation thereafter. Floating brand
+   presentations retain their own flow-based controls instead of this overlay. */
+html body.pm-guides-managed #prescotScrollDown,
+html body.pm-guides-managed #prescotScrollToTop { display: none !important; }
+html body .pm-scroll-guides { position: fixed; right: 14px; bottom: 104px; z-index: 990; display: grid; gap: 8px; }
+html body .pm-scroll-guides[hidden], html body .pm-scroll-guides button[hidden], html body .pm-intro-guide[hidden] { display: none !important; }
+html body .pm-scroll-guides button {
+  display: grid; place-items: center; width: 42px; height: 42px; padding: 10px; border-radius: 50%;
+  color: #24394f; background: #fffffff0; border: 1px solid #fff; cursor: pointer;
+  box-shadow: 0 4px 14px #1830491f, inset 0 1px #fff; backdrop-filter: blur(12px);
+}
+html body .pm-scroll-guides svg { width: 20px; height: 20px; }
+html body .pm-intro-guide {
+  position: fixed; left: 50%; bottom: 82px; z-index: 980; transform: translateX(-50%); display: grid; place-items: center;
+  width: 44px; height: 44px; padding: 7px; color: white; background: transparent; border: 0;
+  filter: drop-shadow(0 2px 4px #0007); animation: pm-intro-pulse 1.6s ease-in-out 3; cursor: pointer;
+}
+html body .pm-intro-guide svg { width: 30px; height: 30px; }
+html body .pm-intro-guide.pm-hint-seen { animation: none; }
+html body .pm-scroll-guides button:focus-visible, html body .pm-intro-guide:focus-visible { outline: 3px solid #e55933; outline-offset: 3px; }
+@keyframes pm-intro-pulse { 50% { transform: translate(-50%,5px); opacity: .55; } }
+
+@media (max-width: 767px) {
+  html:has(.pm-mobile-showcase), html body:has(.pm-mobile-showcase) { overflow-x: clip !important; overflow-y: visible !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase {
+    display: block !important; position: relative !important; min-height: 160svh !important; height: auto !important;
+    width: 100% !important; margin: 0 !important; padding: 0 !important; overflow: clip !important; background: #030508 !important;
+  }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-reveal-stage {
+    position: sticky !important; top: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important;
+    width: 100% !important; max-width: none !important; height: 100svh !important; min-height: 640px !important;
+    padding: 70px 34px 108px !important; gap: 0 !important; isolation: isolate;
+  }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-reveal-copy {
+    display: flex !important; flex-direction: column !important; align-items: center !important; gap: 16px !important;
+    width: 100% !important; max-width: 370px !important; margin: 0 !important; position: relative !important; z-index: 1;
+    opacity: 1 !important; transform: none !important; text-align: center !important;
+  }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-reveal-copy > * { position: static !important; width: 100% !important; margin: 0 !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-reveal-copy .elementor-widget-container { margin: 0 !important; padding: 0 !important; text-align: center !important; }
+  html body #content .mdw-card-portfolio.pm-mobile-showcase h2 { font-size: clamp(28px,8vw,36px) !important; line-height: 1.12 !important; margin: 0 !important; text-wrap: balance; }
+  html body #content .mdw-card-portfolio.pm-mobile-showcase p { font-size: 14px !important; line-height: 1.65 !important; margin: 0 !important; color: #e8edf4 !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .elementor-widget-button:first-child .elementor-button { font-size: 10px !important; line-height: 1.4 !important; padding: 7px 12px !important; min-height: 0 !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .elementor-widget-divider,
+  html body .mdw-card-portfolio.pm-mobile-showcase .elementor-widget-icon { display: none !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-series-visuals { position: absolute !important; inset: 0 !important; width: 100% !important; display: block !important; pointer-events: none; z-index: 3; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .mdw-card-portfolio-image-left,
+  html body .mdw-card-portfolio.pm-mobile-showcase .mdw-card-portfolio-image-right {
+    position: absolute !important; left: 50% !important; right: auto !important; top: 46% !important; bottom: auto !important;
+    width: 50vw !important; max-width: none !important; height: min(64svh,540px) !important; margin: 0 !important;
+    z-index: 3; pointer-events: none; transition: none !important;
+  }
+  html body .mdw-card-portfolio.pm-mobile-showcase .mdw-card-portfolio-image-left { transform: translate(calc(-100% - var(--pm-reveal,0) * 49vw),-50%) rotate(calc(var(--pm-reveal,0) * -3deg)) !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .mdw-card-portfolio-image-right { transform: translate(calc(var(--pm-reveal,0) * 49vw),-50%) rotate(calc(var(--pm-reveal,0) * 3deg)) !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .elementor-widget-image .elementor-widget-container { height: 100% !important; width: 100% !important; padding: 0 !important; border-radius: 22px !important; overflow: hidden; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .elementor-widget-image img { width: 100% !important; height: 100% !important; object-fit: cover !important; padding: 0 !important; border-radius: 22px !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase .pm-product-scene img { object-fit: contain !important; border-radius: 0 !important; }
+  html body .pm-reveal-copy .pm-original-description { display: none; }
+  html body .pm-reveal-copy .pm-mobile-description, html body .pm-full-description[open] .pm-original-description { display: block; }
+  html body .pm-full-description { margin-top: 8px; }
+  html body .pm-full-description summary { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #b8c6d7; font-size: 12px; cursor: pointer; list-style: none; }
+  html body .pm-full-description summary::after { content: '+'; font-size: 20px; }
+  html body .pm-full-description[open] summary::after { content: '−'; }
+  html body .pm-full-description .pm-original-description { padding: 14px 0; }
+  html body .pm-full-description .pm-original-description p { font-size: 13px !important; text-align: left !important; }
+  html body .mdw-card-portfolio.pm-description-open { min-height: 100svh !important; }
+  html body .mdw-card-portfolio.pm-description-open .pm-reveal-stage { height: auto !important; position: relative !important; padding-top: 80px !important; }
+  html body .mdw-card-portfolio.pm-description-open .mdw-card-portfolio-image-left,
+  html body .mdw-card-portfolio.pm-description-open .mdw-card-portfolio-image-right { opacity: 0 !important; }
+  html body .pm-reveal-copy .pm-download { width: 100% !important; min-height: 52px !important; margin: 6px 0 0 !important; }
+  html body .pm-reveal-copy .pm-download-widget h2 { font-size: 14px !important; }
+  html body .pm-reveal-copy .elementor-button[href*='tasmy'], html body .pm-reveal-copy .elementor-button[href*='produkty'] { font-size: 12px !important; min-height: 44px !important; padding: 10px 12px !important; }
+  html body .pm-intro-guide { bottom: calc(var(--pm-dock-bottom,12px) + 78px); }
+  html body .pm-scroll-guides { right: 10px; bottom: calc(var(--pm-dock-bottom,12px) + 90px); }
+
+  /* The photo gets a dedicated, unobscured upper field; copy and swipe controls below. */
+  html body .pm-feature-photo { inset: 0 0 auto; height: 64svh !important; object-position: var(--pm-image-position,50% 50%); }
+  html body .pm-feature::after { background: linear-gradient(180deg,#07101b10 0%,transparent 28%,#07101b30 45%,#0b1019ed 65%,#0b1019 80%); }
+  html body .pm-catalogue-contain .pm-feature-photo { object-fit: contain !important; height: 58svh !important; padding-top: 38px; }
+  html body .pm-feature-copy { justify-content: flex-end; padding: 105px 24px calc(var(--pm-dock-bottom,12px) + 160px); }
+  html body .pm-feature-controls { bottom: calc(var(--pm-dock-bottom,12px) + 94px); }
+  html body .pm-feature h2 { font-size: clamp(24px,6.5vw,28px); }
+  html body .pm-feature-summary { font-size: 13px; line-height: 1.55; }
+  html body .pm-catalogue-refined .dm-card-slider, html body .pm-catalogue-refined .pm-collection { display: none !important; }
+
+  /* A sheet anchored immediately above the dock, not a floating centre dialog. */
+  html body .pm-menu {
+    position: fixed; inset: auto 12px calc(var(--pm-dock-bottom,12px) + 76px); margin: 0 auto;
+    width: calc(100% - 24px); max-width: 480px; max-height: calc(100dvh - 130px); overflow: auto;
+    padding: 20px; border: 1px solid #ffffffd9; border-radius: 24px 24px 18px 18px;
+    background: #f6f9fdee; backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 -8px 40px #0d20332a, inset 0 1px #fff; transform-origin: bottom right;
+  }
+  html body .pm-menu[open] { animation: pm-sheet-in .2s ease-out; }
+  html body .pm-menu::backdrop { background: #12263b42; backdrop-filter: blur(2px); }
+  html body .pm-menu header { gap: 8px; margin-bottom: 16px; }
+  html body .pm-menu .pm-menu-logo { width: 145px; max-width: 45%; }
+  html body .pm-menu .dock-lang-item { margin: 0 0 0 auto; }
+  html body .pm-menu nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  html body .pm-menu nav a { flex-direction: column; align-items: flex-start; justify-content: center; min-height: 92px; padding: 14px; gap: 10px; background: #ffffffc9; border: 1px solid #fff; box-shadow: 0 3px 9px #12263b08; font-size: 13px; line-height: 1.4; }
+  html body .pm-menu nav svg { width: 22px; height: 22px; color: #283f57; }
+  html body:has(.pm-menu[open]) .prescot-dock { transform: translateX(-50%) !important; opacity: 1 !important; visibility: visible !important; }
+}
+@keyframes pm-sheet-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html body .pm-intro-guide, html body .pm-menu[open] { animation: none !important; }
+  html body .mdw-card-portfolio.pm-mobile-showcase { --pm-reveal: 1 !important; }
+}

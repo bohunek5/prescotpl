@@ -72,7 +72,7 @@ export function initializeBrandFooter() {
     contact.classList.add('pm-full-contact'); contact.removeAttribute('style'); info.append(contact);
   }
   const logo = footer.querySelector('.footerLogo img');
-  if (logo) { logo.src = asset('wp-content/uploads/2025/12/biale-z-kolorem.svg'); logo.setAttribute('data-src',logo.src); }
+  if (logo) { logo.src = asset('wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg'); logo.setAttribute('data-src',logo.src); }
   const legal = footer.querySelector('.legalLinks');
   if (legal) {
     legal.setAttribute('aria-label','Dokumenty');

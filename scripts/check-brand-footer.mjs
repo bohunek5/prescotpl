@@ -27,7 +27,7 @@ for (const [name,engine] of Object.entries({chromium,webkit})) {
         const legal=[...el.querySelectorAll('.legalLink')].map(e=>e.getBoundingClientRect());
         return {overflow:document.documentElement.scrollWidth>innerWidth+1,legalRow:Math.max(...legal.map(r=>r.top))-Math.min(...legal.map(r=>r.top))<2,socialBelow:el.querySelector('.socialRow').getBoundingClientRect().top>=Math.max(...legal.map(r=>r.bottom)),background:getComputedStyle(el).backgroundColor};
       });
-      assert.ok(!state.overflow);assert.ok(state.legalRow);assert.ok(state.socialBelow);assert.equal(state.background,'rgb(13, 27, 48)');
+      assert.ok(!state.overflow);assert.ok(state.legalRow);assert.ok(state.socialBelow);assert.equal(state.background,'rgb(245, 247, 250)');
       await page.screenshot({path:`${folder}/${name}-${width}-${route.replace('/','')||'home'}-footer.png`});
       const slides = page.locator('.pm-brand');
       for (let i=0;i<await slides.count();i++) {

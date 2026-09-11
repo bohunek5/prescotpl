@@ -1,5 +1,6 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260911-glass5';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260911-refine9';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260911-refine9';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -298,5 +299,6 @@ function initializeMobileMenu() {
 
 export function initializeExperience() {
   initializeCatalog(); initializeProduction(); initializeStartVideo(); initializeHeroLayout(); initializeShowcases(); initializeSeries(); initializeMobileMenu(); initializeBrandFooter();
+  initializeMobileRefinement();
   window.dispatchEvent(new Event('prescot-layout-updated'));
 }
