@@ -1,3 +1,4 @@
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260911-glass5';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -129,9 +130,10 @@ function initializeProduction() {
     frame = 0;
     const rect = track.getBoundingClientRect();
     const progress = clamp(-rect.top / Math.max(1, track.offsetHeight - stage.offsetHeight * .25));
-    // Fade only while the next block is entering the viewport. Fading at the
-    // end of the sticky interval left a whole empty viewport before that block.
-    const fade = clamp((stage.offsetHeight - rect.bottom) / (stage.offsetHeight * .7));
+    // Clear the brand silhouette before the following introduction reaches it.
+    // Measure the real next section, not the bottom of the taller sticky track.
+    const nextTop = section.nextElementSibling?.getBoundingClientRect().top ?? rect.bottom;
+    const fade = clamp((innerHeight * 1.18 - nextTop) / (innerHeight * .33));
     const angle = reduced() ? 0 : progress * 150;
     grid.style.transform = `rotate(${angle}deg)`;
     filmPlane.style.transform = `rotate(${-angle}deg)`;
@@ -308,6 +310,6 @@ function initializeMobileMenu() {
 }
 
 export function initializeExperience() {
-  initializeCatalog(); initializeProduction(); initializeStartVideo(); initializeHeroLayout(); initializeShowcases(); initializeSeries(); initializeMobileMenu();
+  initializeCatalog(); initializeProduction(); initializeStartVideo(); initializeHeroLayout(); initializeShowcases(); initializeSeries(); initializeMobileMenu(); initializeBrandFooter();
   window.dispatchEvent(new Event('prescot-layout-updated'));
 }
