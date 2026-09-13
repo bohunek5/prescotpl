@@ -1,0 +1,58 @@
+{
+  "checked": "2026-09-13",
+  "version": "0.9.0",
+  "documents": [
+    {
+      "file": "wcob-mono.pdf",
+      "origin": "Karta producenta na dysku: TIM.PL / TIM - karty ce / Karty katalogowe / Taśmy LED / PREMIUM / 24WCOB320XX5IP62.pdf",
+      "verified": [
+        "8 × 5 mm — obrys zewnętrzny",
+        "półokrągły, mleczny przekrój",
+        "25 mm — moduł cięcia"
+      ],
+      "drawing_page": 2,
+      "sha256": "984266776ec188eff49b843d01a4fee9faed435123101876d42e15bc284cd4bc"
+    },
+    {
+      "file": "wcob-cct.pdf",
+      "origin": "Karta producenta na dysku: TIM.PL / TIM - karty ce / Karty katalogowe / Taśmy LED / PREMIUM / 24WCOB280CCT5IP62 .pdf",
+      "verified": [
+        "8 × 5 mm — obrys zewnętrzny",
+        "półokrągły, mleczny przekrój",
+        "25 mm — moduł cięcia CCT"
+      ],
+      "drawing_page": 2,
+      "sha256": "6efc2297c3a940a15fb4cf8a1837c8605b9e8448a9c7a7f2293d6cc100ec9be9"
+    },
+    {
+      "file": "premium-rgbw.pdf",
+      "url": "https://www.prescot.com.pl/pl/p/file/280c4bc90d8f22c7df9f8f66d4734eda/24E033-100-10-RGBXX50.pdf",
+      "verified": [
+        "24E033-100-RGBWW50",
+        "24 V, SMD 5050, 60 LED/m, 10 mm, cięcie 100 mm, 3 oz",
+        "19,6 W/m — wszystkie kanały; biel 4,6 W/m",
+        "W / R / G / B / +24V"
+      ],
+      "conflict": "Strona sklepu: 19,7 W/m i SMD 2835 w tabeli; użyto PDF 19,6 W/m i SMD 5050.",
+      "sha256": "3b08d5620012b9607184eaa14a7247880d2044209a829ba2e9cca7812bb0fd3e"
+    }
+  ],
+  "sleeves": {
+    "drawings": [
+      "reference-13133-0.jpg",
+      "reference-13134-0.jpg",
+      "reference-13135-0.jpg",
+      "reference-13136-0.jpg",
+      "reference-13137-0.jpg",
+      "reference-13138-0.jpg"
+    ],
+    "local_catalog": "KATALOG 2026 / STRONY SKOŃCZONE / kopia / PDF / 17.koszulki i 18.koszulki",
+    "note": "Własne koszulki PRESCOT, bez przesłony KLUŚ w studium koszulki. Obrysy z rysunków; część wnętrz poglądowa."
+  },
+  "release_liner_references": [
+    "https://www.3m.com/3M/en_US/p/d/b40070440/",
+    "https://www.3m.com/3M/en_US/p/dc/v000142870/",
+    "https://www.3m.com/3M/en_US/p/dc/v000296190/"
+  ],
+  "release_liner_note": "Wygląd rodziny kleju, nie zadeklarowany klej fabryczny produktu. Rozdzielenie papieru od środka to animacja prezentacyjna."
+}

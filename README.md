@@ -160,3 +160,12 @@ zastosowania, bez przypisywania zdjęciom niepotwierdzonych modeli.
 galerie, filmy, klawiaturę i poprawność kotwic. Raporty: `output/v2-review/`.
 Kafelki starej oferty dostały wyraźne tło pod podpisami i odrębne zdjęcia profili
 oraz akcesoriów; nie zmieniono docelowych linków na V2.
+
+
+## Konfigurator LED — 13 września 2026
+
+Podstrona `konfigurator/` zawiera samodzielne PRESCOT Light Studio 09. Na telefonie prowadzi do niej pozycja z ikoną w „Więcej”; na desktopie osobna ikona w docku. Konfigurator nie ładuje docka, stopki ani skryptów WordPressa. Nagłówek ma logo po lewej i bezpośredni powrót do `https://www.prescot.pl/` po prawej. Eksport projektu i „O modelach” znajdują się przy ustawieniach zestawu.
+
+Źródło aplikacji pozostaje w sąsiednim `../prescot-led-studio`. Po zmianie źródła wykonaj `npm run sync:configurator`, następnie `npm run test:configurator`. Synchronizacja kopiuje kod aplikacji, dokumentację produktów i wyłącznie potrzebne moduły Three.js z licencją. Pomija QA, skrypty robocze, logi i pełne node_modules. Wygenerowane pliki są częścią repozytorium, więc GitHub Pages nie wymaga dodatkowego procesu budowania. `konfigurator/build.json` identyfikuje wersję i pliki; wersja importów zmienia się przy zmianie kodu.
+
+Test sprawdza wejście z menu, nagłówek 320/390/1440 px, model WebGL, zachowanie kamery, okna eksportu i JSON oraz ścieżki źródeł pod prefiksem `/prescotpl/konfigurator/`. Raport i obrazy: `output/configurator/`.

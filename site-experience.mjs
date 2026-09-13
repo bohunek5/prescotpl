@@ -1,6 +1,6 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-app11';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio1';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-app11';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio1';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -293,6 +293,18 @@ function initializeMobileMenu() {
   ]){
     const link=element('a');link.href=asset(href);link.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="${path}"/></svg>`;link.append(element('span','',label));nav.append(link);
   }
+  const configurator = element('a', 'pm-configurator-link');
+  configurator.href = asset('konfigurator/');
+  configurator.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M3 17l9 4 9-4"/></svg><span><strong>Konfigurator LED</strong><small>Profil, taśma i montaż w 3D</small></span><span class="pm-configurator-arrow" aria-hidden="true">↗</span>';
+  configurator.addEventListener('click', () => dialog.close());
+  nav.prepend(configurator);
+  const desktopConfigurator = element('a', 'dock-item pm-configurator-dock');
+  desktopConfigurator.href = configurator.href;
+  desktopConfigurator.dataset.pmSecondary = 'true';
+  desktopConfigurator.dataset.tooltip = 'Konfigurator LED';
+  desktopConfigurator.setAttribute('aria-label', 'Konfigurator LED');
+  desktopConfigurator.append(configurator.querySelector('svg').cloneNode(true));
+  dock.insertBefore(desktopConfigurator, dock.querySelector('.dock-lang-item'));
   dialog.append(header, nav); document.body.append(dialog);
   more.onclick = () => { dialog.showModal(); more.setAttribute('aria-expanded', 'true'); };
   close.onclick = () => dialog.close();

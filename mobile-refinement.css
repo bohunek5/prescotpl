@@ -188,6 +188,11 @@ html body .pm-capability-link:is(:hover,:active,:focus-visible) .elementor-icon 
 html body .pm-capability-link:focus-visible { outline:2px solid #fff; outline-offset:3px; border-radius:18px; }
 html body .pm-capability-link .elementor-icon-box-title { font-family:var(--prescot-font-body,Arial,sans-serif) !important; }
 html body .pm-menu nav a { -webkit-tap-highlight-color:transparent; }
+html body .pm-menu nav .pm-configurator-link{grid-column:1/-1;gap:12px!important;min-height:62px!important;border-bottom:1px solid #283f571a!important;border-radius:0!important;margin-bottom:6px;padding-bottom:12px!important}
+html body .pm-menu .pm-configurator-link strong{display:block;font-size:13px;font-weight:600;color:#283f57}
+html body .pm-menu .pm-configurator-link small{display:block;font-size:10px;line-height:1.5;color:#697785;margin-top:3px}
+html body .pm-menu .pm-configurator-link .pm-configurator-arrow{margin-left:auto;color:#b75432;font-size:19px}
+html body .pm-menu .pm-configurator-link svg,html body .prescot-dock .pm-configurator-dock svg{fill:none!important;stroke:currentColor}
 @media(max-width:767px){
  html body .prescot-dock { left:50% !important; right:auto !important; margin:0 !important; transform:translateX(-50%) !important; box-sizing:border-box; }
  html body .prescot-dock [data-tooltip]::before, html body .prescot-dock [data-tooltip]::after,

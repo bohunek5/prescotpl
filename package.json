@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 4178 --bind 127.0.0.1",
+    "sync:configurator": "node scripts/sync-configurator.mjs",
+    "test:configurator": "node scripts/check-configurator.mjs",
     "build:v2": "node scripts/build-v2.mjs",
     "test:v2": "node scripts/check-v2.mjs",
     "test:layout": "node scripts/check-site.mjs",

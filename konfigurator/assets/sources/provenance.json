@@ -1,0 +1,78 @@
+{
+  "checked": "2026-09-13",
+  "profile_model": "https://www.klusprofile.de/user/related_files/model_3d_micro-plus.zip",
+  "profile_card": "https://www.klusprofile.de/user/related_files/produktkarte_micro-plus_de.pdf",
+  "local_profiles": "Desktop/_PRESCOT/_2026/_Profile osłony akcesoria KLUŚ/profile-PL (1).xlsx",
+  "local_strips": "prescot/data/prescot_led_catalog_master_2026.json",
+  "conflicts": [
+    "MICRO-PLUS local sheet width 15.6 mm; downloaded 3DS and product card width 16 mm. Using downloaded model version.",
+    "Delux 24D160-10-3097-810 local sheet width 10 mm; manufacturer product page width 8 mm. Using 8 mm.",
+    "Catalog generic warranty and features conflict with some individual product fields: not imported.",
+    "Delux CRI97, COB LB and Slim use local catalog cutting pitch 50 mm; confirm on PCB. CCT 100 mm and 3in1 50 mm are checked against manufacturer cards.",
+    "CCT 24E024-100-10-CCT: local aggregate data lists 2700 K and 50 mm. Manufacturer catalog says 3000–6500 K and 100 mm. Using manufacturer data.",
+    "3in1 24D160-11-3080-1010: local generic description incorrectly implies switching mains power to change modes. Manufacturer card specifies connection to L/M/H, 3/6/11 W/m.",
+    "3in1 PDF lumen row has inconsistent units for medium/high; official product title gives 460/930/1750 lm/m. Only used as a relative artistic light scale.",
+    "S-shape aggregate catalog says 8 mm and cut 25 mm. Manufacturer PDF page 16 says 6 mm and 50 mm; using manufacturer PDF. Three temperature variants use PDF lumen data 920 / 1000 / 1030 lm/m; these differ from rounded store descriptions.",
+    "Premium Slim5 aggregate data says 50 mm cut, CRI90 and 700 lm/m. Manufacturer PDF page 15 prints 31 mm, CRI80 and 720 lm/m for 24ES004-031-5-NW. Using that documented catalog version; printed pitch may be rounded and needs confirmation on physical PCB.",
+    "New profile colors limited to documented finish variants; MICRO-K uses archived silver merchant item only."
+  ],
+  "simplifications": [
+    "PDS-4-PLUS envelope and channel from worksheet. Simplified cross section, not original CAD.",
+    "Except for the HS geometry included in MICRO-PLUS 3DS, cover shapes and LED PCB geometry are illustrative; uploaded artwork supplies only the surface image.",
+    "CCT and illumination are visual comparison, no photometry or lux claims.",
+    "CE/RoHS optional concept artwork does not assert product conformity. Source 3in1 card has marks, but proposed PCB location is unverified.",
+    "CCT uses 5050 dual emitter model, 3 terminals +24V/CW/WW. 3in1 uses 2835 with 4 pads and only the selected negative terminal connected. Wire colors are illustrative.",
+    "Supplemental room lighting is excluded from SKU BOM and electrical calculations. No measured lux or CRI simulation.",
+    "Room cameras use fixed targets, bounded azimuth/polar angle and zoom; no free panning. Day/night exterior is generated artwork from built-in imagegen; prompts saved in assets/environment/prompts.md.",
+    "Additional profile contours are authored from manufacturer cards and dimension drawings; retaining lips, wall details and all non-MICRO covers are illustrative, not original CAD.",
+    "Cabinets, drawers, hinges, cable channels, brackets, screws, springs and routing clearances are demonstration geometry. They are not selected accessory SKUs or fabrication dimensions.",
+    "S-shape contour is modeled after the official flat strip photo s-shape-reference.jpg; lateral bend illustrates flexibility without specifying a minimum bend radius.",
+    "Mounting sample is 100 mm; zone product is 300 mm; GLB is full ordered length with complete cut sections of LED tape.",
+    "Room visualization modules and UI removed in V5. Future real-photo lighting concept recorded in ROADMAP.md."
+  ],
+  "local_klus_assets": {
+    "eps": 60,
+    "jpg": 80,
+    "directory": "Desktop/_PRESCOT/RYSUNKI TECHNICZNE/KLUS"
+  },
+  "pds_card": "Local manufacturer PDF: prescot/tmp/pdfs/klus-official-active/KLUS_4cd587a66b3d_Product_datasheet_PDS-4-PLUS_EN.pdf",
+  "model_extraction": "micro-plus.3ds group materialIndex 1: profile extrusion; group 2: cover. Profile and HS cover sections re-extruded for display, with small presentation chamfers. End caps are not used. The unchanged source section is used for the cut face.",
+  "cover_generations": {
+    "micro": "B17208M 73%, B17208T 94%, B17037C 32% — downloaded older MICRO-PLUS card",
+    "pds": "B17208F 59%, B17208C 88%, B17037B 21% — local newer PDS-4-PLUS card"
+  },
+  "cct_card": "https://www.prescot.pl/wp-content/uploads/2021/12/PRESCOT-LED-STRIP-LIGHTS-CATALOG-PREMIUM.pdf (page 20)",
+  "threeinone_card": "assets/sources/delux-3in1.pdf — local manufacturer PDF, TIM.PL/TIM - karty ce/Karty katalogowe/Taśmy LED/DELUX/24D160-11-3080-1010.pdf",
+  "exterior_assets": {
+    "day": "assets/environment/outside-day.png",
+    "night": "assets/environment/outside-night.png",
+    "method": "built-in imagegen, original day image then lighting-weather edit",
+    "prompts": "assets/environment/prompts.md",
+    "note": "Fictional exterior view, not a photograph of a PRESCOT installation."
+  },
+  "v4_presentation": {
+    "profile_bevel_mm": 0.1,
+    "cover_bevel_mm": 0.025,
+    "display_sample_mm": 100,
+    "section_visible_length_mm": 24,
+    "pcb": "0.26 mm layered illustrative laminate, curved by arc length in macro view. Bend is for presentation, not a declared minimum bend radius. Imported artwork replaces procedural surface components.",
+    "reference_photo": "https://www.prescot.com.pl/environment/cache/images/productGfx_47788_0_0/24D160-10-3097-810.webp",
+    "cover": "HS on MICRO-PLUS uses the cover geometry included in the legacy 3DS assembly. Other shapes remain illustrative.",
+    "camera": "Orthographic product views with automatic visible-bounds framing. Perspective rooms are optional."
+  },
+  "version": "0.5.0",
+  "installation_sources": {
+    "micro": "assets/sources/micro-installation.pdf",
+    "pds": "assets/sources/pds-installation.pdf",
+    "piko": "assets/sources/piko-installation.pdf",
+    "larko": "assets/sources/larko-installation.pdf",
+    "kozus": "assets/sources/kozus-installation.pdf"
+  },
+  "additional_profile_sources": {
+    "MICRO-K": "Local technical drawing microK-mm.jpg: 22 mm overall, 15.2 mm body, 6 mm height, 11.2 mm LED channel; merchant code MICRO-K-ALU-2M from local store catalog. Archived product.",
+    "PIKO": "Manufacturer card A08288: 10 × 7 mm, LED gluing width 7 mm.",
+    "LARKO": "Manufacturer card A05552: 46.2 × 24.5 mm, LED gluing width 24 mm; mounting instructions use springs.",
+    "KOZUS": "Manufacturer card A07823: 66.8 × 17.5 mm, LED gluing width 24 mm; 16 mm drywall, mounting adhesive and protective TECH-22 insert."
+  },
+  "additional_strip_source": "assets/sources/premium-catalog.pdf, printed pages 15–16"
+}

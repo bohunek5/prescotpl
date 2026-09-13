@@ -1,0 +1,1033 @@
+{
+  "source": "Cennik KLUŚ Profile & Akcesoria 1.09.2026 PLN.xlsx",
+  "tab": "Cennik 2026 Prod. Uniwersalne",
+  "url": "https://docs.google.com/spreadsheets/d/1qEiUyQi65O7tsKOoVj8Mn28CqQn3tXIp/edit?gid=615585310",
+  "products": [
+    {
+      "row": 10,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A_1",
+      "name": "Profil MICRO-PLUS anoda e6-k1 1m"
+    },
+    {
+      "row": 11,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A_2",
+      "name": "Profil MICRO-PLUS anoda e6-k1 2m"
+    },
+    {
+      "row": 12,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A_3",
+      "name": "Profil MICRO-PLUS anoda e6-k1 3m"
+    },
+    {
+      "row": 13,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A07_1",
+      "name": "Profil MICRO-PLUS anoda e6-k7 1m"
+    },
+    {
+      "row": 14,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A07_2",
+      "name": "Profil MICRO-PLUS anoda e6-k7 2m"
+    },
+    {
+      "row": 15,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966A07_3",
+      "name": "Profil MICRO-PLUS anoda e6-k7 3m"
+    },
+    {
+      "row": 16,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966L9010OD_1",
+      "name": "Profil MICRO-PLUS lakier RAL9010 1m"
+    },
+    {
+      "row": 17,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966L9010OD_2",
+      "name": "Profil MICRO-PLUS lakier RAL9010 2m"
+    },
+    {
+      "row": 18,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966L9010OD_3",
+      "name": "Profil MICRO-PLUS lakier RAL9010 3m"
+    },
+    {
+      "row": 19,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966NA_1",
+      "name": "Profil MICRO-PLUS surowy 1m"
+    },
+    {
+      "row": 20,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966NA_2",
+      "name": "Profil MICRO-PLUS surowy 2m"
+    },
+    {
+      "row": 21,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02966NA_3",
+      "name": "Profil MICRO-PLUS surowy 3m"
+    },
+    {
+      "row": 22,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00599A_1",
+      "name": "Profil MICRO-H anoda e6-k1 1m"
+    },
+    {
+      "row": 23,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00599A_2",
+      "name": "Profil MICRO-H anoda e6-k1 2m"
+    },
+    {
+      "row": 24,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00599A_3",
+      "name": "Profil MICRO-H anoda e6-k1 3m"
+    },
+    {
+      "row": 25,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A_1",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k1 1m"
+    },
+    {
+      "row": 26,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A_2",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k1 2m"
+    },
+    {
+      "row": 27,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A_3",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k1 3m"
+    },
+    {
+      "row": 28,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A07_1",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k7 1m"
+    },
+    {
+      "row": 29,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A07_2",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k7 2m"
+    },
+    {
+      "row": 30,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056A07_3",
+      "name": "Profil PDS-ZM-PLUS anoda e6-k7 3m"
+    },
+    {
+      "row": 31,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056L10OD_1",
+      "name": "Profil PDS-ZM-PLUS lakier ral9010 1m"
+    },
+    {
+      "row": 32,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056L10OD_2",
+      "name": "Profil PDS-ZM-PLUS lakier ral9010 2m"
+    },
+    {
+      "row": 33,
+      "category": "A_Profile do taśm LED",
+      "ref": "A02056L10OD_3",
+      "name": "Profil PDS-ZM-PLUS lakier ral9010 3m"
+    },
+    {
+      "row": 34,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09204A_1",
+      "name": "Profil PDS-H anoda e6-k1 1m"
+    },
+    {
+      "row": 35,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09204A_2",
+      "name": "Profil PDS-H anoda e6-k1 2m"
+    },
+    {
+      "row": 36,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09204A_3",
+      "name": "Profil PDS-H anoda e6-k1 3m"
+    },
+    {
+      "row": 37,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A_1",
+      "name": "Profil PDS-4-PLUS anoda e6-k1  1m"
+    },
+    {
+      "row": 38,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A_2",
+      "name": "Profil PDS-4-PLUS anoda e6-k1  2m"
+    },
+    {
+      "row": 39,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A_3",
+      "name": "Profil PDS-4-PLUS anoda e6-k1  3m"
+    },
+    {
+      "row": 40,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A07_1",
+      "name": "Profil PDS-4-PLUS anoda e6-k7  1m"
+    },
+    {
+      "row": 41,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A07_2",
+      "name": "Profil PDS-4-PLUS anoda e6-k7  2m"
+    },
+    {
+      "row": 42,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263A07_3",
+      "name": "Profil PDS-4-PLUS anoda e6-k7  3m"
+    },
+    {
+      "row": 43,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263N_1",
+      "name": "Profil PDS-4-PLUS surowy  1m"
+    },
+    {
+      "row": 44,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263N_2",
+      "name": "Profil PDS-4-PLUS surowy  2m"
+    },
+    {
+      "row": 45,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263N_3",
+      "name": "Profil PDS-4-PLUS surowy  3m"
+    },
+    {
+      "row": 46,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263L10OD_1",
+      "name": "Profil PDS-4-PLUS lakier ral9010  1m"
+    },
+    {
+      "row": 47,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263L10OD_2",
+      "name": "Profil PDS-4-PLUS lakier ral9010  2m"
+    },
+    {
+      "row": 48,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01263L10OD_3",
+      "name": "Profil PDS-4-PLUS lakier ral9010  3m"
+    },
+    {
+      "row": 49,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A_1",
+      "name": "Profil SILER anoda e6-k1 1m"
+    },
+    {
+      "row": 50,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A_2",
+      "name": "Profil SILER anoda e6-k1 2m"
+    },
+    {
+      "row": 51,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A_3",
+      "name": "Profil SILER anoda e6-k1 3m"
+    },
+    {
+      "row": 52,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A07_1",
+      "name": "Profil SILER anoda e6-k7 1m"
+    },
+    {
+      "row": 53,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A07_2",
+      "name": "Profil SILER anoda e6-k7 2m"
+    },
+    {
+      "row": 54,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325A07_3",
+      "name": "Profil SILER anoda e6-k7 3m"
+    },
+    {
+      "row": 55,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325L10OD_1",
+      "name": "Profil SILER lakier ral9010 1m"
+    },
+    {
+      "row": 56,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325L10OD_2",
+      "name": "Profil SILER lakier ral9010 2m"
+    },
+    {
+      "row": 57,
+      "category": "A_Profile do taśm LED",
+      "ref": "A09325L10OD_3",
+      "name": "Profil SILER lakier ral9010 3m"
+    },
+    {
+      "row": 58,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A_1",
+      "name": "Profil MICRO-NK anoda e6-k1 1m"
+    },
+    {
+      "row": 59,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A_2",
+      "name": "Profil MICRO-NK anoda e6-k1 2m"
+    },
+    {
+      "row": 60,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A_3",
+      "name": "Profil MICRO-NK anoda e6-k1 3m"
+    },
+    {
+      "row": 61,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A07_1",
+      "name": "Profil MICRO-NK anoda e6-k7 1m"
+    },
+    {
+      "row": 62,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A07_2",
+      "name": "Profil MICRO-NK anoda e6-k7 2m"
+    },
+    {
+      "row": 63,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587A07_3",
+      "name": "Profil MICRO-NK anoda e6-k7 3m"
+    },
+    {
+      "row": 64,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587L10OD_1",
+      "name": "Profil MICRO-NK lakier ral9010 1m"
+    },
+    {
+      "row": 65,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587L10OD_2",
+      "name": "Profil MICRO-NK lakier ral9010 2m"
+    },
+    {
+      "row": 66,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01587L10OD_3",
+      "name": "Profil MICRO-NK lakier ral9010 3m"
+    },
+    {
+      "row": 67,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A_1",
+      "name": "Profil PDS-NK anoda e6-k1 1m"
+    },
+    {
+      "row": 68,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A_2",
+      "name": "Profil PDS-NK anoda e6-k1 2m"
+    },
+    {
+      "row": 69,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A_3",
+      "name": "Profil PDS-NK anoda e6-k1 3m /PDS-NK"
+    },
+    {
+      "row": 70,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A07_1",
+      "name": "Profil PDS-NK anoda e6-k7 1m"
+    },
+    {
+      "row": 71,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A07_2",
+      "name": "Profil PDS-NK anoda e6-k7 2m"
+    },
+    {
+      "row": 72,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588A07_3",
+      "name": "Profil PDS-NK anoda e6-k7 3m"
+    },
+    {
+      "row": 73,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588L10OD_1",
+      "name": "Profil PDS-NK lakier ral9010 1m"
+    },
+    {
+      "row": 74,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588L10OD_2",
+      "name": "Profil PDS-NK lakier ral9010 2m"
+    },
+    {
+      "row": 75,
+      "category": "A_Profile do taśm LED",
+      "ref": "A01588L10OD_3",
+      "name": "Profil PDS-NK lakier ral9010 3m"
+    },
+    {
+      "row": 76,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A_1",
+      "name": "Profil 45-PLUS anoda aluminium 1m"
+    },
+    {
+      "row": 77,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A_2",
+      "name": "Profil 45-PLUS anoda aluminium 2m"
+    },
+    {
+      "row": 78,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A_3",
+      "name": "Profil 45-PLUS anoda aluminium 3m"
+    },
+    {
+      "row": 79,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A07_1",
+      "name": "Profil 45-PLUS anoda czarny 1m"
+    },
+    {
+      "row": 80,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A07_2",
+      "name": "Profil 45-PLUS anoda czarny 2m"
+    },
+    {
+      "row": 81,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005A07_3",
+      "name": "Profil 45-PLUS anoda czarny 3m"
+    },
+    {
+      "row": 82,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005L10OD_1",
+      "name": "Profil 45-PLUS lakier biały mat RAL9010 1m"
+    },
+    {
+      "row": 83,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005L10OD_2",
+      "name": "Profil 45-PLUS lakier biały mat RAL9010 2m"
+    },
+    {
+      "row": 84,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005L10OD_3",
+      "name": "Profil 45-PLUS lakier biały mat RAL9010 3m"
+    },
+    {
+      "row": 85,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005N_1",
+      "name": "Profil 45-PLUS surowy 1m"
+    },
+    {
+      "row": 86,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005N_2",
+      "name": "Profil 45-PLUS surowy 2m"
+    },
+    {
+      "row": 87,
+      "category": "A_Profile do taśm LED",
+      "ref": "A00005N_3",
+      "name": "Profil 45-PLUS surowy 3m"
+    },
+    {
+      "row": 88,
+      "category": "A_Profile do taśm LED",
+      "ref": "A08504A_1",
+      "name": "Profil 45-16 anoda e6-k1 1m"
+    },
+    {
+      "row": 89,
+      "category": "A_Profile do taśm LED",
+      "ref": "A08504A_2",
+      "name": "Profil 45-16 anoda e6-k1 2m"
+    },
+    {
+      "row": 90,
+      "category": "A_Profile do taśm LED",
+      "ref": "A08504A_3",
+      "name": "Profil 45-16 anoda e6-k1 3m"
+    },
+    {
+      "row": 91,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05390N_1",
+      "name": "Profil TAMI surowy 1m"
+    },
+    {
+      "row": 92,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05390N_2",
+      "name": "Profil TAMI surowy 2m"
+    },
+    {
+      "row": 93,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05390A_1",
+      "name": "Profil TAMI anoda e6-k1 1m"
+    },
+    {
+      "row": 94,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05390A_2",
+      "name": "Profil TAMI anoda e6-k1 2m"
+    },
+    {
+      "row": 95,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05392A_1",
+      "name": "Profil TAKO anoda e6-k1 1m"
+    },
+    {
+      "row": 96,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05392A_2",
+      "name": "Profil TAKO anoda e6-k1 2m"
+    },
+    {
+      "row": 97,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05393A_1",
+      "name": "Profil TOST anoda e6-k1 1m"
+    },
+    {
+      "row": 98,
+      "category": "A_Profile do taśm LED",
+      "ref": "A05393A_2",
+      "name": "Profil TOST anoda e6-k1 2m"
+    },
+    {
+      "row": 99,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04370A_1",
+      "name": "Profil PAC-ALU anoda e6-k1 1m"
+    },
+    {
+      "row": 100,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04370A_2",
+      "name": "Profil PAC-ALU anoda e6-k1 2m"
+    },
+    {
+      "row": 101,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04370A_3",
+      "name": "Profil PAC-ALU anoda e6-k1 3m"
+    },
+    {
+      "row": 102,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04369A_1",
+      "name": "Profil STOS-ALU anoda e6-k1 1m"
+    },
+    {
+      "row": 103,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04369A_2",
+      "name": "Profil STOS-ALU anoda e6-k1 2m"
+    },
+    {
+      "row": 104,
+      "category": "A_Profile do taśm LED",
+      "ref": "A04369A_3",
+      "name": "Profil STOS-ALU anoda e6-k1 3m"
+    },
+    {
+      "row": 105,
+      "category": "B_Osłony",
+      "ref": "B17064F_2",
+      "name": "Osłona KA-11 Mleczna 2m"
+    },
+    {
+      "row": 106,
+      "category": "B_Osłony",
+      "ref": "B17064F_3",
+      "name": "Osłona KA-11 Mleczna 3m"
+    },
+    {
+      "row": 107,
+      "category": "B_Osłony",
+      "ref": "B17064C_2",
+      "name": "Osłona KA-11 Przezroczysta 2m"
+    },
+    {
+      "row": 108,
+      "category": "B_Osłony",
+      "ref": "B17064C_3",
+      "name": "Osłona KA-11 Przezroczysta 3m"
+    },
+    {
+      "row": 109,
+      "category": "C_Akcesoria",
+      "ref": "C24392C02",
+      "name": "Zaślepka MICRO-PLUS ral7035"
+    },
+    {
+      "row": 110,
+      "category": "C_Akcesoria",
+      "ref": "C24392C02TW",
+      "name": "Zaślepka MICRO-PLUS-OTW ral7035"
+    },
+    {
+      "row": 111,
+      "category": "C_Akcesoria",
+      "ref": "C24392C10",
+      "name": "Zaślepka MICRO-PLUS ral9010 biała"
+    },
+    {
+      "row": 112,
+      "category": "C_Akcesoria",
+      "ref": "C24392C10TW",
+      "name": "Zaślepka MICRO-PLUS-OTW ral9010 biały"
+    },
+    {
+      "row": 113,
+      "category": "C_Akcesoria",
+      "ref": "C24392L01",
+      "name": "Zaślepka MICRO-PLUS Srebrny"
+    },
+    {
+      "row": 114,
+      "category": "C_Akcesoria",
+      "ref": "C24392L01TW",
+      "name": "Zaślepka MICRO-PLUS-OTW srebrny"
+    },
+    {
+      "row": 115,
+      "category": "C_Akcesoria",
+      "ref": "C24261C02",
+      "name": "Zaślepka MICRO-H ral7035"
+    },
+    {
+      "row": 116,
+      "category": "C_Akcesoria",
+      "ref": "C24427C02",
+      "name": "Zaślepka MICRO-LNK ral7035"
+    },
+    {
+      "row": 117,
+      "category": "C_Akcesoria",
+      "ref": "C24427C02TW",
+      "name": "Zaślepka MICRO-LNK-OTW ral7035"
+    },
+    {
+      "row": 118,
+      "category": "C_Akcesoria",
+      "ref": "C24427C07",
+      "name": "Zaślepka MICRO-LNK ral9005"
+    },
+    {
+      "row": 119,
+      "category": "C_Akcesoria",
+      "ref": "C24427C07TW",
+      "name": "Zaślepka MICRO-LNK-OTW ral9005"
+    },
+    {
+      "row": 120,
+      "category": "C_Akcesoria",
+      "ref": "C24427C10",
+      "name": "Zaślepka MICRO-LNK ral9010"
+    },
+    {
+      "row": 121,
+      "category": "C_Akcesoria",
+      "ref": "C24427C10TW",
+      "name": "Zaślepka MICRO-LNK-OTW ral9010"
+    },
+    {
+      "row": 122,
+      "category": "C_Akcesoria",
+      "ref": "C24427L10",
+      "name": "Zaślepka MICRO-LNK metalizowana"
+    },
+    {
+      "row": 123,
+      "category": "C_Akcesoria",
+      "ref": "C24427L10TW",
+      "name": "Zaślepka MICRO-LNK-OTW metalizowana"
+    },
+    {
+      "row": 124,
+      "category": "C_Akcesoria",
+      "ref": "C24346C02",
+      "name": "Zaślepka MICRO-NK ral7035"
+    },
+    {
+      "row": 125,
+      "category": "C_Akcesoria",
+      "ref": "C24346C02TW",
+      "name": "Zaślepka MICRO-NK-OTW ral7035"
+    },
+    {
+      "row": 126,
+      "category": "C_Akcesoria",
+      "ref": "C24346C10",
+      "name": "Zaślepka MICRO-NK ral9010"
+    },
+    {
+      "row": 127,
+      "category": "C_Akcesoria",
+      "ref": "C24346C10TW",
+      "name": "Zaślepka MICRO-NK-OTW ral9010"
+    },
+    {
+      "row": 128,
+      "category": "C_Akcesoria",
+      "ref": "C24346L01",
+      "name": "Zaślepka MICRO-NK metalizowana"
+    },
+    {
+      "row": 129,
+      "category": "C_Akcesoria",
+      "ref": "C24346L01TW",
+      "name": "Zaślepka MICRO-NK-OTW metalizowana"
+    },
+    {
+      "row": 130,
+      "category": "C_Akcesoria",
+      "ref": "C24337C02",
+      "name": "Zaślepka PDS-4-PLUS ral7035"
+    },
+    {
+      "row": 131,
+      "category": "C_Akcesoria",
+      "ref": "C24337C02TW",
+      "name": "Zaślepka PDS-4-PLUS-OTW ral7035"
+    },
+    {
+      "row": 132,
+      "category": "C_Akcesoria",
+      "ref": "C24337L01",
+      "name": "Zaślepka PDS-4-PLUS metalizowana"
+    },
+    {
+      "row": 133,
+      "category": "C_Akcesoria",
+      "ref": "C24337C07",
+      "name": "Zaślepka PDS-4-PLUS ral9005"
+    },
+    {
+      "row": 134,
+      "category": "C_Akcesoria",
+      "ref": "C24337C07TW",
+      "name": "Zaślepka PDS-4-PLUS-OTW ral9005"
+    },
+    {
+      "row": 135,
+      "category": "C_Akcesoria",
+      "ref": "C24337C10",
+      "name": "Zaślepka PDS-4-PLUS ral9010"
+    },
+    {
+      "row": 136,
+      "category": "C_Akcesoria",
+      "ref": "C24337C10TW",
+      "name": "Zaślepka PDS-4-PLUS-OTW ral9010"
+    },
+    {
+      "row": 137,
+      "category": "C_Akcesoria",
+      "ref": "C24236C02",
+      "name": "Zaślepka SILER ral7035"
+    },
+    {
+      "row": 138,
+      "category": "C_Akcesoria",
+      "ref": "C24428C02",
+      "name": "Zaślepka PDS-LNK ral7035"
+    },
+    {
+      "row": 139,
+      "category": "C_Akcesoria",
+      "ref": "C24428C02TW",
+      "name": "Zaślepka PDS-LNK-OTW ral7035"
+    },
+    {
+      "row": 140,
+      "category": "C_Akcesoria",
+      "ref": "C24428C07",
+      "name": "Zaślepka PDS-LNK ral9005"
+    },
+    {
+      "row": 141,
+      "category": "C_Akcesoria",
+      "ref": "C24428C07TW",
+      "name": "Zaślepka PDS-LNK-OTW ral9005"
+    },
+    {
+      "row": 142,
+      "category": "C_Akcesoria",
+      "ref": "C24428C10",
+      "name": "Zaślepka PDS-LNK ral9010"
+    },
+    {
+      "row": 143,
+      "category": "C_Akcesoria",
+      "ref": "C24428C10TW",
+      "name": "Zaślepka PDS-LNK-OTW ral9010"
+    },
+    {
+      "row": 144,
+      "category": "C_Akcesoria",
+      "ref": "C24428L01",
+      "name": "Zaślepka PDS-LNK metalizowana"
+    },
+    {
+      "row": 145,
+      "category": "C_Akcesoria",
+      "ref": "C24428L01TW",
+      "name": "Zaślepka PDS-LNK-OTW metalizowana"
+    },
+    {
+      "row": 146,
+      "category": "C_Akcesoria",
+      "ref": "C24338C02",
+      "name": "Zaślepka PDS-NK ral7035"
+    },
+    {
+      "row": 147,
+      "category": "C_Akcesoria",
+      "ref": "C24338C02TW",
+      "name": "Zaślepka PDS-NK-OTW ral7035"
+    },
+    {
+      "row": 148,
+      "category": "C_Akcesoria",
+      "ref": "C24338C10",
+      "name": "Zaślepka PDS-NK ral9010"
+    },
+    {
+      "row": 149,
+      "category": "C_Akcesoria",
+      "ref": "C24338C10TW",
+      "name": "Zaślepka PDS-NK-OTW ral9010"
+    },
+    {
+      "row": 150,
+      "category": "C_Akcesoria",
+      "ref": "C24338L01",
+      "name": "Zaślepka PDS-NK metalizowana"
+    },
+    {
+      "row": 151,
+      "category": "C_Akcesoria",
+      "ref": "C24338L01TW",
+      "name": "Zaślepka PDS-NK-OTW metalizowana"
+    },
+    {
+      "row": 152,
+      "category": "C_Akcesoria",
+      "ref": "C24206C02",
+      "name": "Zaślepka 45-16 ral7035"
+    },
+    {
+      "row": 153,
+      "category": "C_Akcesoria",
+      "ref": "C20007C02",
+      "name": "Zaślepka 45-PLUS szary"
+    },
+    {
+      "row": 154,
+      "category": "C_Akcesoria",
+      "ref": "C20007C02TW",
+      "name": "Zaślepka 45-PLUS-OTW szary"
+    },
+    {
+      "row": 155,
+      "category": "C_Akcesoria",
+      "ref": "C20007C07",
+      "name": "Zaślepka 45-PLUS czarny"
+    },
+    {
+      "row": 156,
+      "category": "C_Akcesoria",
+      "ref": "C20007C07TW",
+      "name": "Zaślepka 45-PLUS-OTW czarny"
+    },
+    {
+      "row": 157,
+      "category": "C_Akcesoria",
+      "ref": "C20007C10",
+      "name": "Zaślepka 45-PLUS biały"
+    },
+    {
+      "row": 158,
+      "category": "C_Akcesoria",
+      "ref": "C20007C10TW",
+      "name": "Zaślepka 45-PLUS-OTW biały"
+    },
+    {
+      "row": 159,
+      "category": "C_Akcesoria",
+      "ref": "C20008C02",
+      "name": "Zaślepka 45-PLUS-R szary"
+    },
+    {
+      "row": 160,
+      "category": "C_Akcesoria",
+      "ref": "C20008C02TW",
+      "name": "Zaślepka 45-PLUS-R-OTW szary"
+    },
+    {
+      "row": 161,
+      "category": "C_Akcesoria",
+      "ref": "C20008C07",
+      "name": "Zaślepka 45-PLUS-R czarny"
+    },
+    {
+      "row": 162,
+      "category": "C_Akcesoria",
+      "ref": "C20008C07TW",
+      "name": "Zaślepka 45-PLUS-R-OTW czarny"
+    },
+    {
+      "row": 163,
+      "category": "C_Akcesoria",
+      "ref": "C20008C10",
+      "name": "Zaślepka 45-PLUS-R biały"
+    },
+    {
+      "row": 164,
+      "category": "C_Akcesoria",
+      "ref": "C20008C10TW",
+      "name": "Zaślepka 45-PLUS-R-OTW biały"
+    },
+    {
+      "row": 165,
+      "category": "C_Akcesoria",
+      "ref": "C24145C02",
+      "name": "Zaślepka PDS-H ral7035 /endcao PDS-H"
+    },
+    {
+      "row": 166,
+      "category": "C_Akcesoria",
+      "ref": "C20108C02",
+      "name": "Zaślepka STOS-ALU ral7035"
+    },
+    {
+      "row": 167,
+      "category": "C_Akcesoria",
+      "ref": "C20107C02",
+      "name": "Zaślepka PAC-ALU ral7035"
+    },
+    {
+      "row": 168,
+      "category": "C_Akcesoria",
+      "ref": "C20051C10",
+      "name": "Zaślepka TAMI EKO biały"
+    },
+    {
+      "row": 169,
+      "category": "C_Akcesoria",
+      "ref": "C20053C10",
+      "name": "Zaślepka TAKO EKO biały"
+    },
+    {
+      "row": 170,
+      "category": "C_Akcesoria",
+      "ref": "C20054C10",
+      "name": "Zaślepka TOST EKO biały"
+    },
+    {
+      "row": 171,
+      "category": "C_Akcesoria",
+      "ref": "C24338C07",
+      "name": "Zaślepka PDS-NK ral9005"
+    },
+    {
+      "row": 172,
+      "category": "C_Akcesoria",
+      "ref": "C24338C07TW",
+      "name": "Zaślepka PDS-NK-OTW ral9005"
+    },
+    {
+      "row": 173,
+      "category": "C_Akcesoria",
+      "ref": "C24236C07",
+      "name": "Zaślepka SILER ral9005"
+    },
+    {
+      "row": 174,
+      "category": "C_Akcesoria",
+      "ref": "C24392C07",
+      "name": "Zaślepka MICRO-PLUS ral9005"
+    },
+    {
+      "row": 175,
+      "category": "C_Akcesoria",
+      "ref": "C24392C07TW",
+      "name": "Zaślepka MICRO-PLUS-OTW ral9005"
+    },
+    {
+      "row": 176,
+      "category": "C_Akcesoria",
+      "ref": "C24346C07",
+      "name": "Zaślepka MICRO-NK ral9005"
+    },
+    {
+      "row": 177,
+      "category": "C_Akcesoria",
+      "ref": "C24346C07TW",
+      "name": "Zaślepka MICRO-NK-OTW ral9005"
+    },
+    {
+      "row": 178,
+      "category": "C_Akcesoria",
+      "ref": "C20108L01",
+      "name": "Zaślepka STOS-ALU metalizowana"
+    },
+    {
+      "row": 179,
+      "category": "C_Akcesoria",
+      "ref": "C24145L01",
+      "name": "Zaślepka PDS-H metalizowana /PDS-H"
+    },
+    {
+      "row": 180,
+      "category": "C_Akcesoria",
+      "ref": "C24236C10",
+      "name": "Zaślepka SILER ral9010"
+    }
+  ]
+}
