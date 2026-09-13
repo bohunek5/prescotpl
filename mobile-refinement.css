@@ -174,6 +174,51 @@ html body .pm-scroll-guides button:focus-visible, html body .pm-intro-guide:focu
   html body:has(.pm-menu[open]) .prescot-dock { transform: translateX(-50%) !important; opacity: 1 !important; visibility: visible !important; }
 }
 @keyframes pm-sheet-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+/* App navigation: quiet compact rows, aligned language control, real service links. */
+html body .footerFormCol { display:none !important; }
+html body .pm-footer .footerGrid { grid-template-columns:minmax(0,1fr) !important; gap:24px !important; }
+html body .pm-footer .footerInfoCol { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px !important; }
+html body .pm-footer .pm-full-contact { grid-column:1/-1; width:min(100%,380px) !important; justify-self:center; margin-top:8px !important; }
+html body .pm-capabilities { grid-template-columns:repeat(7,minmax(0,1fr)); }
+html body .pm-capability-link { display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; text-decoration:none !important; color:#fff !important; padding:8px 2px; -webkit-tap-highlight-color:transparent; }
+html body .pm-capability-link .elementor-icon { background:#ffffff12 !important; border:1px solid #ffffff45 !important; border-radius:18px !important; box-shadow:inset 0 1px #ffffff25 !important; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+html body .pm-capability-link .pm-capability-outline { display:block !important; fill:none !important; stroke:#fff !important; }
+html body .pm-capability-link .pm-capability-outline * { fill:none !important; stroke:currentColor !important; }
+html body .pm-capability-link:is(:hover,:active,:focus-visible) .elementor-icon { background:#ffffff26 !important; border-color:#ffffff90 !important; transform:none !important; }
+html body .pm-capability-link:focus-visible { outline:2px solid #fff; outline-offset:3px; border-radius:18px; }
+html body .pm-capability-link .elementor-icon-box-title { font-family:var(--prescot-font-body,Arial,sans-serif) !important; }
+html body .pm-menu nav a { -webkit-tap-highlight-color:transparent; }
+@media(max-width:767px){
+ html body .prescot-dock { left:50% !important; right:auto !important; margin:0 !important; transform:translateX(-50%) !important; box-sizing:border-box; }
+ html body .prescot-dock [data-tooltip]::before, html body .prescot-dock [data-tooltip]::after,
+ html body .p-hero-eyebrow, html body .p-full-hero .p-pill, html body .p-full-hero .p-badge { display:none !important; }
+ html body .pm-menu { padding:14px !important; border-radius:22px !important; max-width:410px; }
+ html body .pm-menu header { display:grid; grid-template-columns:minmax(0,1fr) 56px 40px; align-items:center; gap:6px; margin-bottom:8px; height:44px; }
+ html body .pm-menu .pm-menu-logo { width:138px !important; max-width:100% !important; }
+ html body .pm-menu header>button { width:40px; min-width:40px; height:40px; min-height:40px; padding:0; font-size:24px; font-weight:400; background:transparent; }
+ html body .pm-menu .dock-lang-item { width:56px !important; min-width:0 !important; height:40px !important; min-height:0 !important; margin:0 !important; display:flex !important; justify-content:center !important; align-items:center !important; }
+ html body .pm-menu .gt_float_switcher, html body .pm-menu .gt-selected, html body .pm-menu .gt-current-lang { display:flex !important; align-items:center !important; justify-content:center !important; float:none !important; min-height:0 !important; height:40px !important; padding:0 !important; background:transparent !important; border:0 !important; box-shadow:none !important; border-radius:0 !important; }
+ html body .pm-menu .gt-current-lang { gap:5px !important; }
+ html body .pm-menu .gt-current-lang img { width:23px !important; height:16px !important; object-fit:cover; border-radius:3px !important; margin:0 !important; }
+ html body .pm-menu .gt-lang-code { font-size:10px !important; line-height:1 !important; margin:0 !important; }
+ html body .pm-menu .gt_float_switcher-arrow { display:none !important; }
+ html body .pm-menu nav { display:grid; grid-template-columns:1fr 1fr; gap:2px 8px; }
+ html body .pm-menu nav a { flex-direction:row !important; align-items:center !important; justify-content:flex-start !important; gap:9px !important; min-height:48px !important; padding:8px 7px !important; border:0 !important; border-radius:10px !important; background:transparent !important; box-shadow:none !important; font-size:12px !important; line-height:1.3 !important; }
+ html body .pm-menu nav a:is(:hover,:active,:focus-visible) { background:#ffffffaa !important; }
+ html body .pm-menu nav svg { width:19px !important; height:19px !important; flex:0 0 19px; }
+ html body .pm-menu nav a[href*='laboratorium'] svg,html body .pm-menu nav a[href*='wlasny-brand'] svg { fill:none !important; }
+ html body .pm-menu::backdrop { background:#14243526; backdrop-filter:none; }
+ html body .pm-footer .footerInfoCol { grid-template-columns:1fr; gap:18px !important; }
+ html body .pm-footer { padding-top:28px !important; }
+ html body .pm-capabilities { grid-template-columns:repeat(3,minmax(0,1fr)); top:28% !important; gap:10px 8px !important; }
+ html body .pm-capabilities> :last-child { grid-column:2; }
+ html body .pm-capability-link { gap:6px; padding:4px 0; }
+ html body .pm-capability-link .elementor-icon { width:42px !important; height:42px !important; padding:10px !important; border-radius:13px !important; }
+ html body .pm-capability-link .elementor-icon-box-title { font-size:11px !important; font-weight:500 !important; }
+ /* Reveal text only after the image pair has opened a dark, unobstructed field. */
+ html body .mdw-card-portfolio.pm-mobile-showcase .pm-reveal-copy { opacity:clamp(0,calc((var(--pm-reveal,0) - .72) * 5),1) !important; }
+ html body .mdw-card-portfolio.pm-mobile-showcase:focus-within .pm-reveal-copy, html body .mdw-card-portfolio.pm-description-open .pm-reveal-copy { opacity:1 !important; }
+}
 @media (prefers-reduced-motion: reduce) {
   html body .pm-intro-guide, html body .pm-menu[open] { animation: none !important; }
   html body .mdw-card-portfolio.pm-mobile-showcase { --pm-reveal: 1 !important; }

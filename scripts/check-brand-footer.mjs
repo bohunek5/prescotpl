@@ -20,7 +20,7 @@ for (const [name,engine] of Object.entries({chromium,webkit})) {
       const contacts = await footer.locator('.infoContent a').evaluateAll(links=>links.map(a=>a.getAttribute('href')));
       if (canonical) assert.deepEqual(contacts,canonical,'same company contact links'); else canonical=contacts;
       assert.ok((await footer.locator('.pm-full-contact').getAttribute('href')).endsWith('/kontakt/'));
-      assert.equal(await footer.locator('.contactForm').count(),1);
+      assert.equal(await footer.locator('.contactForm').count(),0,'Enquiry form belongs only on Kontakt');
       await footer.locator('.bottomStack').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
       await page.waitForTimeout(150);
       const state = await footer.evaluate(el=>{

@@ -187,7 +187,7 @@ function initializeScrollGuides() {
   group.append(up, down); document.body.append(group);
   const intro = button('down', 'Zobacz więcej poniżej'); intro.classList.add('pm-intro-guide'); document.body.append(intro);
   let timer, touching = false, busy = false, frame = 0;
-  const targets = () => [...new Set(document.querySelectorAll('.mdw-card-portfolio, .distSlide, .prescot-process-step, .pm-footer, [data-elementor-type="wp-page"] > .e-con'))]
+  const targets = () => [...new Set(document.querySelectorAll('.mdw-card-portfolio, .distSlide, .prescot-process-step, .pc-step, .pc-eprel, .pc-contact, .pm-footer, [data-elementor-type="wp-page"] > .e-con'))]
     .filter(e => e.getBoundingClientRect().height > 60 && getComputedStyle(e).display !== 'none' && !e.closest('.pm-footer-duplicate'));
   const go = direction => {
     const currentCard = [...document.querySelectorAll('.pm-mobile-showcase')].find(e => {const r=e.getBoundingClientRect();return r.top < 20 && r.bottom > innerHeight*.7;});
@@ -205,11 +205,12 @@ function initializeScrollGuides() {
     const inFloating = floating.some(e=>{const r=e.getBoundingClientRect();return r.top < innerHeight*.6 && r.bottom > innerHeight*.4;});
     const footer = document.querySelector('.pm-footer')?.getBoundingClientRect();
     const atStart = scrollY < 70;
+    const overPhoto = innerWidth < 768 && [...document.querySelectorAll('.pm-mobile-showcase')].some(e=>{const r=e.getBoundingClientRect();return r.top<innerHeight*.5&&r.bottom>innerHeight*.5&&Number(e.style.getPropertyValue('--pm-reveal'))<.85;});
     intro.hidden = catalogue || !atStart || inFloating;
     const atEnd = document.documentElement.scrollHeight-scrollY-innerHeight < 50 || (footer && footer.top < innerHeight*.5);
     up.hidden = scrollY < innerHeight*.45;
     down.hidden = catalogue || atEnd;
-    group.hidden = atStart || inFloating || busy || (up.hidden && down.hidden);
+    group.hidden = atStart || inFloating || overPhoto || busy || (up.hidden && down.hidden);
   };
   const active = () => {
     busy = true; group.hidden = true; intro.classList.add('pm-hint-seen'); clearTimeout(timer);

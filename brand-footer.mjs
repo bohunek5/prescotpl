@@ -8,6 +8,8 @@ const copy = {
 };
 
 export function initializeBrandFooter() {
+  // The only enquiry form belongs to Kontakt; footers contain contact links.
+  document.querySelectorAll('.footerFormCol').forEach(column => column.remove());
   document.querySelectorAll('.distSlide').forEach((slide, index, slides) => {
     slide.classList.add('pm-brand');
     const brand = Object.keys(copy).find(key => slide.classList.contains(`is-${key}`));
@@ -46,7 +48,7 @@ export function initializeBrandFooter() {
   const footers = [...document.querySelectorAll('.footerSlide')].filter(node => node.querySelector('.footerGrid'));
   const footer = footers.at(-1);
   if (!footer) return;
-  // A few exports include the same footer twice. Keep one live contact form.
+  // A few exports include the same footer twice. Keep one contact footer.
   footers.slice(0,-1).forEach(duplicate => { duplicate.classList.add('pm-footer-duplicate'); duplicate.inert = true; duplicate.setAttribute('aria-hidden','true'); });
   document.querySelectorAll('[id="stopka"]').forEach(node => node.classList.add('pm-footer-shell'));
   const footerAnchor = footer.closest('[id="stopka"]') || footer;

@@ -1,6 +1,6 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260911-refine9';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-app11';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260911-refine9';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-app11';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -154,7 +154,8 @@ function initializeHeroLayout() {
     capabilities.replaceChildren(...badges);
     const icons = [
       ['Linia produkcyjna SMT', '<path d="M3 17h18v4H3zM6 17v-4h12v4M9 3h6v7H9zM12 10v3M6 5h3M15 5h3"/><circle cx="7" cy="19" r=".5"/><circle cx="17" cy="19" r=".5"/>'],
-      ['Laboratorium pomiarowe', '<path d="M8 3h8M10 3v7l-6 9a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M8 15h8M11 17h2"/>']
+      ['Laboratorium pomiarowe', '<path d="M8 3h8M10 3v7l-6 9a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M8 15h8M11 17h2"/>'],
+      ['Własny brand', '<path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7.5" cy="7.5" r="1.5"/>']
     ];
     for (const [title, path] of icons) {
       const badge = element('div', 'elementor-widget-icon-box pm-capability');
@@ -171,12 +172,20 @@ function initializeHeroLayout() {
       '<path d="M9 18h6m-5 3h4M8.5 15.5a6 6 0 1 1 7 0c-.8.6-1.5 1.4-1.5 2.5h-4c0-1.1-.7-1.9-1.5-2.5Z"/><path d="m10 9 2 2 2-2m-2 2v4"/>',
       '<path d="m3 9 9-6 9 6v12H3V9Zm5 12v-9h8v9M8 16h8"/><path d="M11 7h2"/>',
       '<rect x="2" y="16" width="20" height="5" rx="2.5"/><path d="M5 16V4h14v12M5 7h14M10 7v5h4V7m-2 5v2M6 18.5h.01m4 0h.01m4 0h.01m4 0h.01"/>',
-      '<path d="M8 3h8m-6 0v7l-6 9a1.3 1.3 0 0 0 1.1 2h13.8a1.3 1.3 0 0 0 1.1-2l-6-9V3M8 15h8m-6 3h.01m4-1h.01"/>'
+      '<path d="M8 3h8m-6 0v7l-6 9a1.3 1.3 0 0 0 1.1 2h13.8a1.3 1.3 0 0 0 1.1-2l-6-9V3M8 15h8m-6 3h.01m4-1h.01"/>',
+      '<path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7.5" cy="7.5" r="1.5"/>'
     ];
     [...capabilities.children].forEach((badge, index) => {
       const icon = badge.querySelector('.elementor-icon');
       if (!icon || !desktopIcons[index]) return;
       icon.insertAdjacentHTML('beforeend', `<svg class="pm-capability-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${desktopIcons[index]}</svg>`);
+      const label=badge.querySelector('.elementor-icon-box-title').textContent.trim();
+      const link=element('a','pm-capability-link');
+      link.href=asset(['produkcja/','dystrybucja/','oferta/','wspolpraca-b2b/','produkcja/#kreci','laboratorium/','wlasny-brand/'][index]);
+      link.setAttribute('aria-label',label);
+      // One real link per tile, with no nested legacy anchors or tap handlers.
+      const mark=element('span','elementor-icon');mark.append(icon.querySelector('.pm-capability-outline').cloneNode(true));
+      link.append(mark,element('span','elementor-icon-box-title',label));badge.replaceChildren(link);
     });
     const caption = hero.querySelector('.elementor-element-ea903c0');
     if (caption) { caption.classList.add('pm-entrance-caption'); hero.append(caption); }
@@ -278,6 +287,12 @@ function initializeMobileMenu() {
   if (shopIcon) b2b.append(shopIcon.cloneNode(true));
   b2b.append(element('span', '', 'Sklep B2B · WAPRO'));
   nav.append(b2b);
+  for(const [href,label,path] of [
+    ['laboratorium/','Laboratorium','M8 3h8m-6 0v7l-6 9h16l-6-9V3M8 15h8'],
+    ['wlasny-brand/','Własny brand','M3 3h8l10 10-8 8L3 11V3Z']
+  ]){
+    const link=element('a');link.href=asset(href);link.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="${path}"/></svg>`;link.append(element('span','',label));nav.append(link);
+  }
   dialog.append(header, nav); document.body.append(dialog);
   more.onclick = () => { dialog.showModal(); more.setAttribute('aria-expanded', 'true'); };
   close.onclick = () => dialog.close();

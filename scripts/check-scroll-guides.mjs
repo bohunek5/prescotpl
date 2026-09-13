@@ -18,8 +18,9 @@ for(const engine of [chromium,webkit]){
   const guides=page.locator('.pm-scroll-guides');
   assert.equal(await guides.isVisible(),false);
   await page.waitForTimeout(1400);
-  assert.equal(await guides.isVisible(),true);
-  await guides.locator('.pm-guide-down').click();
+  assert.equal(await guides.isVisible(),false,'Controls stay off product photos even while idle');
+  assert.equal(await card.locator('.pm-reveal-copy').evaluate(e=>Number(getComputedStyle(e).opacity)),0,'Closed photos have no overlaid copy');
+  await card.evaluate(e=>scrollTo({top:scrollY+e.getBoundingClientRect().top+e.offsetHeight-innerHeight,behavior:'instant'}));
   await page.waitForTimeout(1800);
   assert.ok(await card.evaluate(e=>Number(e.style.getPropertyValue('--pm-reveal'))>.95));
   await page.evaluate(()=>dispatchEvent(new Event('touchstart')));

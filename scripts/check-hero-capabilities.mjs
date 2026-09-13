@@ -18,18 +18,18 @@ for (const engine of [chromium, webkit]) {
         await page.waitForSelector('.pm-capability-outline', {state: 'attached'});
         await page.waitForTimeout(600);
         const badges = page.locator('.pm-capabilities > .elementor-widget-icon-box');
-        assert.equal(await badges.count(), 6);
-        assert.equal(await page.locator('.pm-capabilities a, .pm-capabilities button, .pm-capabilities [tabindex]').count(), 0, 'Informational icons do not pretend to be links');
+        assert.equal(await badges.count(), 7);
+        assert.equal(await page.locator('.pm-capability-link[href]').count(), 7, 'Every capability links to its service');
         const mobile = width < 768;
-        assert.equal(await page.locator('.pm-capability-outline:visible').count(), mobile ? 0 : 6);
-        assert.equal(await page.locator('.pm-capabilities svg:visible').count(), 6);
+        assert.equal(await page.locator('.pm-capability-outline:visible').count(), 7);
+        assert.equal(await page.locator('.pm-capabilities svg:visible').count(), 7);
         const dimensions = await page.locator('.pm-capabilities').evaluate(element => {
           const r = element.getBoundingClientRect();
           return {left: r.left, right: r.right, columns: getComputedStyle(element).gridTemplateColumns.split(' ').length};
         });
         assert.ok(dimensions.left >= 0 && dimensions.right <= width);
-        assert.equal(dimensions.columns, mobile ? 3 : 6);
-        for (let index = 0; index < 6; index++) {
+        assert.equal(dimensions.columns, mobile ? 3 : 7);
+        for (let index = 0; index < 7; index++) {
           const badge = badges.nth(index);
           if (!mobile) await badge.hover();
           await page.waitForTimeout(mobile ? 0 : 270);
@@ -44,7 +44,7 @@ for (const engine of [chromium, webkit]) {
               iconWidth: icon.getBoundingClientRect().width, svgWidth: box.width, gap: title.top - box.bottom,
               text: element.textContent.trim()};
           });
-          assert.equal(state.iconWidth, mobile ? 38 : 68);
+          assert.equal(state.iconWidth, mobile ? 42 : 68);
           assert.ok(state.gap >= 0, `${state.text}: icon must not overlap the label`);
           if (!mobile) {
             assert.equal(state.stroke, 'rgb(255, 255, 255)');
@@ -63,7 +63,7 @@ for (const engine of [chromium, webkit]) {
         }
         await page.screenshot({path: `${folder}/${engine.name()}-${width}.png`});
         assert.deepEqual(errors, [], 'No JavaScript runtime errors');
-        results.push({engine: engine.name(), width, icons: 6, hover: !mobile, mobilePreserved: mobile});
+        results.push({engine: engine.name(), width, icons: 7, hover: !mobile, mobilePreserved: mobile});
         console.log(`PASS ${engine.name()} ${width}px`);
       } finally { await page.close(); }
     }
