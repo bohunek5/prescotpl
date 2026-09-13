@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import {chromium} from 'playwright';
-const root=new URL('../',import.meta.url),version='20260913-studio3';
+const root=new URL('../',import.meta.url),version='20260913-studio4';
 const media={lab:'wp-content/uploads/2026/02/lab2.webp',sphere:'wp-content/uploads/2026/01/kulka.png',tape:'wp-content/uploads/2026/01/24d160-9-4080-1010_2124d160-9-4080-1010-2-1024x683.png'};
 for(const file of Object.values(media))await fs.access(new URL(file,root));
 const browser=await chromium.launch();

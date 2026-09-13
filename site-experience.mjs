@@ -1,6 +1,7 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio3';
+import {initializeMobileMenu} from './mobile-navigation.mjs?v=20260913-studio4';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio4';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio3';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio4';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -253,76 +254,6 @@ function initializeSeries() {
   update();
 }
 
-function initializeMobileMenu() {
-  const dock = document.querySelector('.prescot-dock');
-  if (!dock || dock.querySelector('.pm-more')) return;
-  const links = [...dock.querySelectorAll('a.dock-item')];
-  const labels = ['Start', 'Oferta', 'Taśmy', 'Produkcja', 'Dystrybucja'];
-  links.forEach((link, i) => {
-    if (i < 5) link.append(element('span', 'pm-dock-label', labels[i]));
-    else link.dataset.pmSecondary = 'true';
-  });
-  const more = element('button', 'pm-more'); more.type = 'button';
-  more.append(element('span', '', '···'), element('span', 'pm-dock-label', 'Więcej'));
-  more.setAttribute('aria-label', 'Więcej stron'); more.setAttribute('aria-haspopup', 'dialog');
-  more.setAttribute('aria-expanded', 'false');
-  const dialog = element('dialog', 'pm-menu'); dialog.setAttribute('aria-label', 'Menu Prescot');
-  const header = element('header');
-  const close = element('button', '', '×'); close.type = 'button'; close.setAttribute('aria-label', 'Zamknij menu');
-  const menuLogo = element('img', 'pm-menu-logo');
-  menuLogo.src = asset('wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg');
-  menuLogo.alt = 'PRESCOT LED'; menuLogo.width = 190; menuLogo.height = 40;
-  header.append(menuLogo, close);
-  const nav = element('nav');
-  [links[7], links[5], links[6]].filter(Boolean).forEach(original => {
-    const link = element('a'); link.href = original.href;
-    const icon = original.querySelector('svg'); if (icon) link.append(icon.cloneNode(true));
-    link.append(element('span', '', original.dataset.tooltip || original.getAttribute('aria-label')));
-    link.onclick = event => { event.preventDefault(); dialog.close(); original.click(); };
-    nav.append(link);
-  });
-  const b2b = element('a'); b2b.href = 'https://prescot.abstore.pl/';
-  const shopIcon = links[6]?.querySelector('svg');
-  if (shopIcon) b2b.append(shopIcon.cloneNode(true));
-  b2b.append(element('span', '', 'Sklep B2B · WAPRO'));
-  nav.append(b2b);
-  for(const [href,label,path] of [
-    ['laboratorium/','Laboratorium','M8 3h8m-6 0v7l-6 9h16l-6-9V3M8 15h8'],
-  ]){
-    const link=element('a','pm-menu-feature pm-lab-link');link.href=asset(href);link.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="${path}"/></svg>`;const copy=element('span','pm-menu-copy');copy.append(element('strong','',label),element('small','','Pomiary światła'));link.append(copy,element('span','pm-configurator-arrow','↗'));nav.prepend(link);
-  }
-  const configurator = element('a', 'pm-configurator-link pm-menu-feature');
-  configurator.href = asset('konfigurator/');
-  configurator.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M3 17l9 4 9-4"/></svg><span><strong>Konfigurator LED</strong><small>Taśma, profil i montaż</small></span><span class="pm-configurator-arrow" aria-hidden="true">↗</span>';
-  configurator.addEventListener('click', () => dialog.close());
-  nav.prepend(configurator);
-  const desktopConfigurator = element('a', 'dock-item pm-configurator-dock');
-  desktopConfigurator.href = configurator.href;
-  desktopConfigurator.dataset.pmSecondary = 'true';
-  desktopConfigurator.dataset.tooltip = 'Konfigurator LED';
-  desktopConfigurator.setAttribute('aria-label', 'Konfigurator LED');
-  desktopConfigurator.append(configurator.querySelector('svg').cloneNode(true));
-  dock.insertBefore(desktopConfigurator, dock.querySelector('.dock-lang-item'));
-  const languageRow=element('div','pm-menu-language');languageRow.append(element('span','','Język strony'));
-  dialog.append(header, nav, languageRow); document.body.append(dialog);
-  more.onclick = () => { dialog.showModal(); more.setAttribute('aria-expanded', 'true'); };
-  close.onclick = () => dialog.close();
-  dialog.addEventListener('close', () => { more.setAttribute('aria-expanded', 'false'); more.focus({preventScroll:true}); });
-  dialog.addEventListener('click', event => { if (event.target === dialog) {
-    const rect = dialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
-  }});
-  dock.insertBefore(more, dock.querySelector('.dock-lang-item'));
-  const language = dock.querySelector('.dock-lang-item');
-  const mobile = matchMedia('(max-width:767px)');
-  const positionLanguage = () => {
-    if (!language) return;
-    languageRow.hidden=!mobile.matches;
-    if (mobile.matches) languageRow.append(language);
-    else dock.append(language);
-  };
-  mobile.addEventListener('change',positionLanguage); positionLanguage();
-}
 
 export function initializeExperience() {
   initializeCatalog(); initializeProduction(); initializeStartVideo(); initializeHeroLayout(); initializeShowcases(); initializeSeries(); initializeMobileMenu(); initializeBrandFooter();

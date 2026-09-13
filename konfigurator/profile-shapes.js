@@ -1,4 +1,4 @@
-import {tracedContours} from './profile-contours.js?v=cef4f759d5e8';
+import {tracedContours} from './profile-contours.js?v=a71cff26a3ca';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
@@ -21,22 +21,31 @@ export function profileContour(p){
   if(p.id==='larko')return[[-a,0],[a,0],[a,3],[a-1,3],[a-1,4.4],[a,4.4],[a,22.8],[23.1,22.8],[23.1,23.7],[a,24.5],[10.9,24.5],[10.9,23.4],[12,22.7],[12,base],[-12,base],[-12,22.7],[-10.9,23.4],[-10.9,24.5],[-a,24.5],[-23.1,23.7],[-23.1,22.8],[-a,22.8],[-a,4.4],[-a+1,4.4],[-a+1,3],[-a,3]];
   return[[-a,0],[a,0],[a,H],[b-.5,H],[b-.5,H-1],[b,H-1],[b,base],[-b,base],[-b,H-1],[-b+.5,H-1],[-b+.5,H],[-a,H]];
 }
-export function profileIcon(p){
+export function profileIcon(p,cover=null){
   const points=profileContour(p),W=p.width,H=p.height;
   // Match the model's cover plane: section X = -world Z, screen Y = H - world Y.
   const angle=(p.ledAngle||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
   const x=-(p.coverZ||0),y=H-(p.coverY??H),half=p.channel*.46;
-  const reach=Math.min(14,Math.max(7,H*.65+W*.2)),spread=half+reach*.25;
+  const depth=Math.max(1,((p.coverY??H)-p.ledBase)*c+((p.coverZ||0)-(p.ledZ||0))*s);
+  // LENSO's angle is documented. Plain-cover fans illustrate diffusion/clearance;
+  // they are not photometric measurements. Rounded covers spread light wider.
+  const round=['round','arch','dome','square'].includes(cover?.shape);
+  const slope=cover?.beamAngle?Math.tan(cover.beamAngle*Math.PI/360):round?1.55:cover?.id.endsWith('-clear')?Math.min(1.15,Math.max(.45,p.channel/2/depth)):1.15;
+  const reach=Math.min(16,Math.max(8,H*.45+W*.16)),spread=half+reach*slope;
   const beam=[[-half,0],[-spread,-reach],[spread,-reach],[half,0]];
-  const bounds=[...points.map(([x,y])=>[x,H-y]),...beam.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
+  // Reserve the widest preview so changing a compatible cover keeps the framing.
+  const envelope=[[-half,0],[-half-reach*1.55,-reach],[half+reach*1.55,-reach],[half,0]];
+  const bounds=[...points.map(([x,y])=>[x,H-y]),...envelope.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
   const minX=Math.min(...bounds.map(p=>p[0]))-1.5,minY=Math.min(...bounds.map(p=>p[1]))-1.5;
   const width=Math.max(...bounds.map(p=>p[0]))-minX+1.5,height=Math.max(...bounds.map(p=>p[1]))-minY+1.5;
-  const gradient=`profile-light-${p.id}`;
-  return `<svg class="profile-section-icon" viewBox="${minX} ${minY} ${width} ${height}" aria-hidden="true">
-    <defs><radialGradient id="${gradient}" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="scale(${spread} ${reach})">
-      <stop offset="0" stop-color="var(--profile-light)" stop-opacity=".55"/><stop offset=".35" stop-color="var(--profile-light)" stop-opacity=".24"/><stop offset=".7" stop-color="var(--profile-light)" stop-opacity=".06"/><stop offset="1" stop-color="var(--profile-light)" stop-opacity="0"/>
-    </radialGradient></defs>
-    <g transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})"><path class="profile-section-glow" fill="url(#${gradient})" d="${beam.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ')}Z"/></g>
+  const gradient=`profile-light-${p.id}`,edge=`${gradient}-edge`,mask=`${gradient}-mask`;
+  return `<svg class="profile-section-icon" data-cover="${cover?.id||''}" data-beam-angle="${cover?.beamAngle||''}" viewBox="${minX} ${minY} ${width} ${height}" aria-hidden="true">
+    <defs><linearGradient id="${gradient}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="${-reach}">
+      <stop offset="0" stop-color="var(--profile-light)" stop-opacity=".82"/><stop offset=".3" stop-color="var(--profile-light)" stop-opacity=".6"/><stop offset=".65" stop-color="var(--profile-light)" stop-opacity=".25"/><stop offset="1" stop-color="var(--profile-light)" stop-opacity="0"/>
+    </linearGradient><linearGradient id="${edge}">
+      <stop offset="0" stop-color="white" stop-opacity="0"/><stop offset=".16" stop-color="white" stop-opacity=".65"/><stop offset=".32" stop-color="white"/><stop offset=".68" stop-color="white"/><stop offset=".84" stop-color="white" stop-opacity=".65"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+    </linearGradient><mask id="${mask}" maskUnits="userSpaceOnUse" x="${-spread}" y="${-reach}" width="${spread*2}" height="${reach}"><rect x="${-spread}" y="${-reach}" width="${spread*2}" height="${reach}" fill="url(#${edge})"/></mask></defs>
+    <g transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})"><path class="profile-section-glow" fill="url(#${gradient})" mask="url(#${mask})" d="${beam.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ')}Z"/></g>
     <path class="profile-section-body" d="${points.map(([x,y],i)=>(i?'L':'M')+x+','+(H-y)).join(' ')}Z"/>
     <path class="profile-section-emitter" transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})" d="M${-half},0 H${half}"/>
   </svg>`;

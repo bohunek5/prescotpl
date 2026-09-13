@@ -10,10 +10,10 @@ async function walk(dir) {
     if (!item.name.endsWith('.html')) continue;
     const before = await fs.readFile(file,'utf8');
     if (!before.includes('local-navigation.js')) continue;
-    let after = before.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260913-studio3')
-      .replace(/brand-footer\.css\?v=[^"\s]+/g,'brand-footer.css?v=20260913-studio3');
-    if (!after.includes('brand-footer.css')) after = after.replace('</head>','<link rel="stylesheet" href="brand-footer.css?v=20260913-studio3">\n</head>');
-    if (!after.includes('mobile-refinement.css')) after = after.replace('</head>','<link rel="stylesheet" href="mobile-refinement.css?v=20260913-studio3">\n</head>');
+    let after = before.replace(/local-navigation\.js\?v=[^"\s]+/g,'local-navigation.js?v=20260913-studio4')
+      .replace(/brand-footer\.css\?v=[^"\s]+/g,'brand-footer.css?v=20260913-studio4');
+    if (!after.includes('brand-footer.css')) after = after.replace('</head>','<link rel="stylesheet" href="brand-footer.css?v=20260913-studio4">\n</head>');
+    if (!after.includes('mobile-refinement.css')) after = after.replace('</head>','<link rel="stylesheet" href="mobile-refinement.css?v=20260913-studio4">\n</head>');
     if (before !== after) { await fs.writeFile(file,after); changed.push(path.relative(root,file)); }
   }
 }

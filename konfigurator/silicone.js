@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=cef4f759d5e8';
+import {diffuserMap} from './light-textures.js?v=a71cff26a3ca';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){

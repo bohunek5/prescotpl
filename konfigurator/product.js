@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=cef4f759d5e8';
-import {buildPCB} from './tape.js?v=cef4f759d5e8';
-import {sectionGeometry} from './section.js?v=cef4f759d5e8';
-import {profileContour} from './profile-shapes.js?v=cef4f759d5e8';
-import {coverSection} from './cover-shapes.js?v=cef4f759d5e8';
-import {glowMaterial} from './glow.js?v=cef4f759d5e8';
-import {diffuserMap} from './light-textures.js?v=cef4f759d5e8';
-import {assemblyPose} from './assembly-motion.js?v=cef4f759d5e8';
+import {buildAccessories} from './accessories.js?v=a71cff26a3ca';
+import {buildPCB} from './tape.js?v=a71cff26a3ca';
+import {sectionGeometry} from './section.js?v=a71cff26a3ca';
+import {profileContour} from './profile-shapes.js?v=a71cff26a3ca';
+import {coverSection} from './cover-shapes.js?v=a71cff26a3ca';
+import {glowMaterial} from './glow.js?v=a71cff26a3ca';
+import {diffuserMap} from './light-textures.js?v=a71cff26a3ca';
+import {assemblyPose} from './assembly-motion.js?v=a71cff26a3ca';
 
 // Display samples and full-length export share one physical model, in metres.
 export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,sourceCover=null,quality='auto'}={}){
@@ -72,7 +72,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   }
   function update(s,color){
     state=s;metal.color.set({silver:'#e0e3e4',black:'#373a3b',white:'#efefeb',raw:'#bfc2c2'}[s.finish]);metal.metalness=s.finish==='white'?.05:.88;metal.roughness=s.finish==='raw'?.44:s.finish==='silver'?.24:.43;
-    metal.envMapIntensity=s.finish==='raw'?1.6:s.finish==='silver'?2.3:1;
+    metal.envMapIntensity=s.finish==='raw'?1.6:s.finish==='silver'?2.3:s.finish==='white'?.6:1;
     lens.color.set(s.cover.includes('black')?'#292b2c':s.cover.endsWith('-clear')?'#edf0f1':'#f5f4ef');
     lightColor.copy(color);updateCoverLight(s.exploded);details.update(s,color);
   }

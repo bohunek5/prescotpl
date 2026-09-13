@@ -15,12 +15,18 @@ for(const engine of [chromium,webkit]){
   await p.screenshot({path:`${out}/lab-${engine.name()}-${width}.png`,fullPage:true});
   if(width<768){
    await p.getByRole('button',{name:'Więcej stron',exact:true}).click();await p.waitForTimeout(300);
-   await p.locator('.pm-menu .gt-current-lang').click();await p.locator('.pm-menu .gt_options').waitFor({state:'visible'});
-   await p.waitForFunction(()=>getComputedStyle(document.querySelector('.pm-menu .gt_options')).opacity==='1');
-   const options=await p.locator('.pm-menu .gt_options').boundingBox();assert.ok(options.x>=0&&options.x+options.width<=width&&options.y>=0);
-   assert.ok(await p.evaluate(({x,y})=>!!document.elementFromPoint(x+30,y+20)?.closest('.gt_options a'),options),'Language options are clickable above the menu');
+   await p.getByRole('button',{name:'Choose another language',exact:true}).click();
+   await p.locator('.pm-menu').waitFor({state:'hidden'});
+   const list=p.locator('.pm-language-menu');await list.waitFor({state:'visible'});
+   assert.equal(await list.locator('[data-language]').count(),14);
+   const options=await list.boundingBox();assert.ok(options.x>=0&&options.x+options.width<=width&&options.y>=0);
+   for(const button of await list.locator('[data-language]').all()){
+    const b=await button.boundingBox();assert.ok(b.height>=44);
+    assert.ok(await button.evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),'Language choice receives taps');
+   }
    await p.screenshot({path:`${out}/language-${engine.name()}-${width}.png`});
-   await p.locator('.pm-menu .gt-current-lang').click();await p.getByRole('button',{name:'Zamknij menu',exact:true}).click();
+   await p.keyboard.press('Escape');await list.waitFor({state:'hidden'});
+
   }
   await p.goto(new URL('wlasny-brand/',base).href);await p.waitForURL('**/produkcja/');
   assert.deepEqual(errors,[]);console.log('PASS Lab / language / old URL',engine.name(),width);await p.close();

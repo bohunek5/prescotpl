@@ -24,10 +24,11 @@ for(const engine of process.env.BROWSER==='chromium'?[chromium]:[chromium,webkit
     const dock=await page.locator('.prescot-dock').boundingBox();assert.ok(Math.abs(dock.x+dock.width/2-width/2)<1);
     await page.getByRole('button',{name:'Więcej stron',exact:true}).click();await page.waitForTimeout(260);
     const menu=page.locator('.pm-menu');const box=await menu.boundingBox();assert.ok(box.height<=390,`Compact menu ${box.height}`);assert.ok(Math.abs(box.x+box.width/2-width/2)<1);
-    const links=menu.locator('nav a');assert.equal(await links.count(),6);
+    const links=menu.locator('nav a');assert.equal(await links.count(),8);
     for(const row of await links.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height)))assert.ok(row>=44&&row<=125,'Comfortable touch targets');
     assert.equal(await menu.locator('a[href*="wlasny-brand"]').count(),0);
-    const flag=await menu.locator('.gt-current-lang img').boundingBox();const control=await menu.locator('.dock-lang-item').boundingBox();if(flag)assert.ok(Math.abs(flag.y+flag.height/2-control.y-control.height/2)<2,'Vertically centred flag');
+    assert.ok(box.y+box.height<=dock.y,'Secondary menu stays above the dock');
+    for(const code of ['pl','en','de']){const flag=page.locator(`.pm-language-bar [data-language="${code}"]`);assert.ok(await flag.isVisible(),'Language visible without opening More');assert.ok(await flag.locator('img').evaluate(i=>i.complete&&i.naturalWidth>0));}
     await page.screenshot({path:`${folder}/${engine.name()}-${width}-${route.replaceAll('/','')||'home'}-menu.png`});
     await page.getByRole('button',{name:'Zamknij menu',exact:true}).click();
    }

@@ -1,12 +1,12 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=cef4f759d5e8';
-import {accessoryKit} from './accessory-data.js?v=cef4f759d5e8';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=cef4f759d5e8';
-import {zones} from './zones.js?v=cef4f759d5e8';
-import {mountingSteps} from './mounting.js?v=cef4f759d5e8';
-import {coverIcon} from './cover-shapes.js?v=cef4f759d5e8';
-import {profileIcon} from './profile-shapes.js?v=cef4f759d5e8';
-import {projectSheet} from './sheet.js?v=cef4f759d5e8';
-import {uiIcon,actionLabel} from './ui-icons.js?v=cef4f759d5e8';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=a71cff26a3ca';
+import {accessoryKit} from './accessory-data.js?v=a71cff26a3ca';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=a71cff26a3ca';
+import {zones} from './zones.js?v=a71cff26a3ca';
+import {mountingSteps} from './mounting.js?v=a71cff26a3ca';
+import {coverIcon} from './cover-shapes.js?v=a71cff26a3ca';
+import {profileIcon} from './profile-shapes.js?v=a71cff26a3ca';
+import {projectSheet} from './sheet.js?v=a71cff26a3ca';
+import {uiIcon,actionLabel} from './ui-icons.js?v=a71cff26a3ca';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -38,7 +38,7 @@ function updateAccessories(p){
     const span=document.createElement('span');span.innerHTML=`<strong>${a.name}</strong><small>${a.ref}</small>`;label.append(span);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';actionLabel(link,'Dane','external');link.setAttribute('aria-label','Dokumentacja: '+a.name);const note=document.createElement('p');note.textContent=a.note+(workbookRefs.has(a.ref)?' Pozycja w Twoim katalogu.':'');el.append(label,link,note);return el;}));
   $('bom-accessories').textContent=kit.filter(a=>a.selected).map(a=>a.name+' · '+a.ref+(a.quantity?' · '+a.quantity+' szt.':' · ilość do doboru')).join(' / ');
 }
-cards('profiles',profiles,'profile',profileIcon,p=>`${num(p.width,1)} × ${num(p.height,1)} mm · ${p.application}`);
+cards('profiles',profiles,'profile',p=>profileIcon(p,covers.find(c=>c.id===p.covers[0])),p=>`${num(p.width,1)} × ${num(p.height,1)} mm · ${p.application}`);
 cards('strips',strips,'strip',t=>`<span class="strip-icon ${t.technology==='WCOB'?'wcob':t.type==='COB'?'cob':t.shape==='s'?'serpentine':t.width<=5?'slim':''}"></span>`,t=>`${t.width} mm · ${t.type==='3IN1'?'3 / 6 / 11':num(t.watts,1)} W/m · ${t.voltage} V · ${t.type==='CCT'?t.cctMin+'–'+t.cctMax:t.cct} K`);
 cards('covers',covers,'cover',coverIcon,c=>`${c.ref} · ${Math.round(c.transmission*100)}% przepuszczalności${c.maxWatts?' · maks. '+c.maxWatts+' W/m':''}`);
 $('zones').replaceChildren(...zones.map(z=>{const b=document.createElement('button');b.dataset.zone=z.id;b.innerHTML=`<svg viewBox="0 0 32 34" aria-hidden="true"><path d="${z.icon}"/></svg><span><strong>${z.name}</strong><small>${z.subtitle}</small></span>`;b.onclick=()=>{stopAnimation();if(z.id==='drywall'&&!['kozus','larko'].includes(s.profile))chooseProfile(profiles.find(p=>p.id==='kozus'));else if(z.id!=='drywall'&&['kozus','larko'].includes(s.profile))chooseProfile(profiles[0]);s.zone=z.id;s.zoneOpen=true;s.zoneDetail=false;update();showMobilePreview();};return b;}));
@@ -61,6 +61,11 @@ function update(){
   if(spec.assemblyBlocked&&s.view!=='macro'){s.view='assembly';s.exploded=100;}
   const z=s.view==='zone',installed=['installation','section','mounting'].includes(s.view),walk=s.view==='mounting',site=zones.find(z=>z.id===s.zone);
   filterProfiles();updateAccessories(p);updateSleeves(spec);updateFit(spec);
+  for(const profile of profiles){
+    const cover=profile.id===p.id?spec.cover:covers.find(c=>c.id===profile.covers[0]);
+    const icon=$('profiles').querySelector(`[data-value="${profile.id}"] .profile-section-icon`);
+    if(icon.dataset.cover!==cover.id)icon.outerHTML=profileIcon(profile,cover);
+  }
   $('finish-note').textContent=spec.finish.name+' · '+spec.finish.ref;
   $('cover-count').textContent=`${p.covers.length} osłon przypisanych do ${p.name}`;
   $('cover-note').textContent=[spec.cover.material,spec.cover.beamAngle?'Soczewka '+spec.cover.beamAngle+'°':null,spec.cover.maxWatts?'Maksymalnie '+spec.cover.maxWatts+' W/m':null,spec.cover.capNote].filter(Boolean).join(' · ');
@@ -201,7 +206,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=cef4f759d5e8');
+      const {createStudio}=await import('./scene.js?v=a71cff26a3ca');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

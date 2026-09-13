@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=cef4f759d5e8';
-import {buildProduct} from './product.js?v=cef4f759d5e8';
-import {buildMount} from './mounting.js?v=cef4f759d5e8';
-import {buildZone} from './zones.js?v=cef4f759d5e8';
-import {sectionGeometry} from './section.js?v=cef4f759d5e8';
-import {lightColor} from './light-color.js?v=cef4f759d5e8';
-import {assemblyClip} from './assembly-export.js?v=cef4f759d5e8';
-import {createSoftShadow} from './soft-shadow.js?v=cef4f759d5e8';
+import {specification,displayLength} from './catalog.js?v=a71cff26a3ca';
+import {buildProduct} from './product.js?v=a71cff26a3ca';
+import {buildMount} from './mounting.js?v=a71cff26a3ca';
+import {buildZone} from './zones.js?v=a71cff26a3ca';
+import {sectionGeometry} from './section.js?v=a71cff26a3ca';
+import {lightColor} from './light-color.js?v=a71cff26a3ca';
+import {assemblyClip} from './assembly-export.js?v=a71cff26a3ca';
+import {createSoftShadow} from './soft-shadow.js?v=a71cff26a3ca';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -34,6 +34,12 @@ export async function createStudio(host,initial){
   const entryPlane=new T.Plane(new T.Vector3(-1,0,0),-.020);
   const endPlane=new T.Plane(new T.Vector3(1,0,0),-.020);
   const sectionPlane=new T.Plane(new T.Vector3(1,0,0),-.026),wiringPlane=new T.Plane(new T.Vector3(-1,0,0),-.020);
+  function detailCut(){
+    const t=specification(s).strip;
+    // Keep a complete printed/cut segment at the inspected end. A 30 mm crop
+    // crossed the logo on 50 mm PCB repeats. Margin also allows for the bend.
+    return (sample?.stripLength||100)/2000-Math.min(t.cut,(sample?.stripLength||100))/1000-.0015;
+  }
   const source=await new TDSLoader().loadAsync('assets/sources/micro-plus.3ds');source.updateMatrixWorld(true);
   let geometry,sourceCover;
   const extracted=new Map();
@@ -63,6 +69,7 @@ export async function createStudio(host,initial){
     const spec=specification(s),z=s.view==='zone',installed=['installation','section','mounting'].includes(s.view),color=lightColor(s,spec.strip);
     detailRoot.visible=!z;if(zone){zone.root.visible=z;if(z)zone.update(s,color);}
     detailRoot.rotation.x=installed?Math.PI:0;mount.visible=installed;cut.visible=s.view==='section';ground.visible=!s.lightStudy&&(s.view==='assembly'||s.view==='macro')&&displayLength(s)<=300;
+    entryPlane.constant=endPlane.constant=wiringPlane.constant=-detailCut();
     const clipping=s.view==='assembly'&&s.assemblyAngle==='entry'?[entryPlane]:s.view==='assembly'&&s.assemblyAngle==='end'?[endPlane]:s.view==='section'?[sectionPlane]:s.view==='macro'&&s.detail==='wiring'?[wiringPlane]:[];
     detailRoot.traverse(o=>{if(o.isMesh)for(const m of(Array.isArray(o.material)?o.material:[o.material]))m.clippingPlanes=clipping;});
     cutMat.color.set({silver:'#bcc2c4',black:'#303233',white:'#efeeeb',raw:'#b3b8ba'}[s.finish]);
@@ -115,9 +122,9 @@ export async function createStudio(host,initial){
       }
       if(['installation','section','mounting'].includes(s.view)){bounds.union(visibleBounds(mount));framingBoxes.push(...worldBoxes(mount));}
       if(section)bounds.min.x=.026;
-      if(s.view==='assembly'&&s.assemblyAngle==='entry')bounds.max.x=-.020;
-      if(s.view==='assembly'&&s.assemblyAngle==='end')bounds.min.x=.020;
-      if(s.view==='macro'&&s.detail==='wiring')bounds.max.x=-.020;
+      if(s.view==='assembly'&&s.assemblyAngle==='entry')bounds.max.x=-detailCut();
+      if(s.view==='assembly'&&s.assemblyAngle==='end')bounds.min.x=detailCut();
+      if(s.view==='macro'&&s.detail==='wiring')bounds.max.x=-detailCut();
       framingBoxes=framingBoxes.map(b=>b.intersect(bounds)).filter(b=>!b.isEmpty());
     }
     if(bounds.isEmpty())return;
@@ -135,7 +142,7 @@ export async function createStudio(host,initial){
   function requestDraw(){if(ready&&!framePending&&!disposed)framePending=requestAnimationFrame(draw);}
   function draw(){
     framePending=0;if(!ready||disposed||document.hidden)return;
-    if(shadowDirty&&ground.visible&&!interactive){softShadow.update(scene,s.view==='assembly'&&s.assemblyAngle==='end'?[endPlane]:s.view==='macro'&&s.detail==='wiring'?[wiringPlane]:[]);shadowDirty=false;}
+    if(shadowDirty&&ground.visible&&!interactive){softShadow.update(scene,s.view==='assembly'&&s.assemblyAngle==='end'?[endPlane]:s.view==='assembly'&&s.assemblyAngle==='entry'?[entryPlane]:s.view==='macro'&&s.detail==='wiring'?[wiringPlane]:[]);shadowDirty=false;}
     const start=performance.now();renderer.render(scene,camera);lastFrameMs=performance.now()-start;renderCount++;
     if(interactive&&++interactionFrames===6&&lastFrameMs>28)renderer.setPixelRatio(basePixelRatio*.55);
   }
@@ -171,8 +178,8 @@ export async function createStudio(host,initial){
   function projectedCover(){
     scene.updateMatrixWorld(true);camera.updateMatrixWorld();const points=[];
     for(const b of worldBoxes(sample.cover)){
-      if(s.view==='assembly'&&s.assemblyAngle==='end')b.min.x=Math.max(b.min.x,.020);
-      if(s.view==='assembly'&&s.assemblyAngle==='entry')b.max.x=Math.min(b.max.x,-.020);
+      if(s.view==='assembly'&&s.assemblyAngle==='end')b.min.x=Math.max(b.min.x,detailCut());
+      if(s.view==='assembly'&&s.assemblyAngle==='entry')b.max.x=Math.min(b.max.x,-detailCut());
       if(b.isEmpty())continue;
       for(const x of[b.min.x,b.max.x])for(const y of[b.min.y,b.max.y])for(const z of[b.min.z,b.max.z])points.push(new T.Vector3(x,y,z).project(camera).toArray());
     }

@@ -135,7 +135,7 @@ Wyłącza tylko spekulacyjne pobieranie HTML w tej symulacji, żeby Chromium nie
 pobrał starej wersji z GitHub z pominięciem przechwytywania. Testuje także gest
 dotykowy w Chromium oraz menu, asystenta i odnośniki w obu silnikach.
 
-Wspólne zasoby i nawigacja mają wersję `20260913-studio3`. Mechaniczną aktualizację ich odnośników we wszystkich wariantach HTML wykonuje `node scripts/bump-app-assets.mjs`. Bazowy adres jest zapisany w HTML
+Wspólne zasoby i nawigacja mają wersję `20260913-studio4`. Mechaniczną aktualizację ich odnośników we wszystkich wariantach HTML wykonuje `node scripts/bump-app-assets.mjs`. Bazowy adres jest zapisany w HTML
 przed zasobami, żeby uniknąć spekulacyjnych żądań do błędnych podkatalogów.
 Skrypt dopasowuje bazę do lokalnego podglądu; wersja bez JS używa GitHub Pages.
 
@@ -161,7 +161,7 @@ oraz akcesoriów; nie zmieniono docelowych linków na V2.
 
 ## Konfigurator LED — 13 września 2026
 
-Podstrona `konfigurator/` zawiera samodzielne PRESCOT Light Studio 09. Na telefonie prowadzi do niej pozycja z ikoną w „Więcej”; na desktopie osobna ikona w docku. Konfigurator nie ładuje docka, stopki ani skryptów WordPressa. Nagłówek ma logo po lewej i bezpośredni powrót do `https://www.prescot.pl/` po prawej. Eksport projektu i „O modelach” znajdują się przy ustawieniach zestawu.
+Podstrona `konfigurator/` zawiera samodzielne PRESCOT Light Studio 09. Na telefonie i desktopie prowadzi do niej osobna ikona w docku; dodatkowy odnośnik jest w mobilnym menu „Więcej”. Konfigurator nie ładuje docka, stopki ani skryptów WordPressa. Nagłówek ma logo po lewej i bezpośredni powrót do `https://www.prescot.pl/` po prawej. Eksport projektu i „O modelach” znajdują się przy ustawieniach zestawu.
 
 Źródło aplikacji pozostaje w sąsiednim `../prescot-led-studio`. Po zmianie źródła wykonaj `npm run sync:configurator`, następnie `npm run test:configurator` i `npm run test:configurator-studio`. Synchronizacja kopiuje kod aplikacji, dokumentację produktów i wyłącznie potrzebne moduły Three.js z licencją. Pomija QA, skrypty robocze, logi i pełne node_modules. Wygenerowane pliki są częścią repozytorium, więc GitHub Pages nie wymaga dodatkowego procesu budowania. `konfigurator/build.json` identyfikuje wersję i pliki; wersja importów zmienia się przy zmianie kodu.
 
@@ -176,7 +176,7 @@ Tryb nocny obejmuje całą aplikację: model, nagłówek, wybór produktów i ok
 
 ## Menu mobilne i Laboratorium
 
-„Więcej” ma dwie główne karty: Konfigurator LED i Laboratorium. Język znajduje się w osobnym, podpisanym wierszu. Menu mieści się na ekranach od 320 px. Test: `node scripts/check-app-navigation.mjs` (Chromium i WebKit).
+Dolny pasek mobilny ma pięć pozycji: Start, Oferta, Taśmy, Konfigurator i Więcej. Flagi Polski, Wielkiej Brytanii i Niemiec oraz nazwy języków są stale widoczne w jego górnym wierszu; globus otwiera wszystkie 14 języków obsługiwanych przez istniejący GTranslate. „Więcej” otwiera drugi panel nad paskiem: Konfigurator, Laboratorium i sześć pozostałych odnośników. Oba panele korzystają z natywnego Popover API i mieszczą się od 320 px, z przewijaniem na niskim ekranie. Nawigacja jest w `mobile-navigation.mjs`. Testy: `node scripts/check-app-navigation.mjs`, `node scripts/check-mobile-navigation.mjs` oraz `node scripts/check-lab-menu.mjs` (Chromium i WebKit, także niski ekran i odstęp bezpieczny).
 
 `laboratorium/` korzysta z istniejących zdjęć stanowiska pomiarowego, kuli całkującej i taśmy. Oryginalne logo ma stały rozmiar; podstrona prezentuje strumień, CCT i CRI bez deklarowania akredytacji ani fikcyjnych wyników. Źródło: `scripts/build-company-pages.mjs` i `company-pages.css`. Stara osobna strona `wlasny-brand/` kieruje do `produkcja/`; usunięto jej pozycje z menu i strony głównej.
 
@@ -184,3 +184,6 @@ Tryb nocny obejmuje całą aplikację: model, nagłówek, wybór produktów i ok
 Dalsze korekty z 13 września: większe opisy i odnośniki na stronie głównej, sześć kafelków w regularnej siatce, jasne bloki tekstu produkcji bez przygaszania na zdjęciu. Odnośniki ofert i pełnego kontaktu mają spokojne tło, cienki obrys, zwykłą pisownię i mniejszą strzałkę.
 
 Konfigurator: przewody podążają za opisem pól PCB, w tym wybranym minusem L/M/H w 3in1. Światło stref uwzględnia cienie zabudowy i obrót profilu. Kamera szuflady pokazuje wnętrze, a kamera cokołu — podłogę; pod szafką dodano mały fragment blatu. Testy geometrii, przewodów i przesłaniania światła są w repozytorium źródłowym studia.
+
+
+Korekta detali konfiguratora: krótkie zbliżenia końcówki i przewodu zachowują pełną sekcję cięcia taśmy, żeby kadr nie przecinał logo ani CE/RoHS. Dzienny viewport ma neutralne szare tło, a biały lakier słabsze odbicie otoczenia dla czytelniejszych krawędzi. Poświata 24 miniaturek rozchodzi się od otworu osłony w kierunku profilu. LENSO korzysta z udokumentowanego kąta 30°; pozostałe osłony pokazują poglądowe rozproszenie i prześwit kanału, bez deklaracji rozsyłu fotometrycznego. Miniatury są statycznym SVG, bez dodatkowych scen WebGL i animacji.

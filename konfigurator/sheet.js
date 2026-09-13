@@ -1,4 +1,4 @@
-import {accessoryKit} from './accessory-data.js?v=cef4f759d5e8';
+import {accessoryKit} from './accessory-data.js?v=a71cff26a3ca';
 // A self-contained client handout. The browser print dialog supplies PDF export.
 export function projectSheet(s,spec,image){
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

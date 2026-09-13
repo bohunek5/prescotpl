@@ -332,9 +332,9 @@ body[data-light-study=true] .welcome p{color:#babbbd}
 body[data-light-study=true] .start-configurator{background:#e8e1d5;color:#243441}
 
 /* Static section previews: light leaves the opening, with no animated rendering. */
-#profiles .profile-section-icon{width:52px;height:40px;overflow:hidden;--profile-light:#e6af62}
+#profiles .profile-section-icon{width:62px;height:52px;overflow:hidden;--profile-light:#e6af62}
 .profile-section-glow{pointer-events:none}
-.profile-section-emitter{fill:none;stroke:var(--profile-light);stroke-width:.9;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.profile-section-emitter{fill:none;stroke:var(--profile-light);stroke-width:1.2;stroke-linecap:round;vector-effect:non-scaling-stroke}
 body[data-light-study=true] #profiles .profile-section-icon{--profile-light:#ffe0a4}
 body[data-light-study=true] #profiles .profile-section-body{fill:#aeb4b9}
 body[data-light-study=true] #profiles .card[aria-pressed=true] .profile-section-body{fill:#d2d6d9}
@@ -356,3 +356,6 @@ body[data-light-study=true] #profiles .card[aria-pressed=true] .profile-section-
  #studio-stage #reset-camera .ui-icon{width:20px;height:20px}
  #studio-stage button[data-light-study] .ui-icon{width:14px;height:14px}
 }
+
+/* A neutral studio sweep separates pale aluminium/white paint from the page. */
+body:not([data-light-study=true]) #studio-stage #viewport{background:radial-gradient(ellipse at 48% 42%,#e7e9ed 0%,#d6dae0 65%,#ccd2da 100%);border-radius:12px}

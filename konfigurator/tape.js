@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=cef4f759d5e8';
-import {drawPcbBrand} from './brand-art.js?v=cef4f759d5e8';
-import {tapeLayout} from './tape-layout.js?v=cef4f759d5e8';
-import {tapeTerminals} from './tape-wiring.js?v=cef4f759d5e8';
-import {buildSilicone} from './silicone.js?v=cef4f759d5e8';
-import {glowMaterial} from './glow.js?v=cef4f759d5e8';
-import {phosphorMap} from './light-textures.js?v=cef4f759d5e8';
-import {buildReleaseLiner} from './release-liner.js?v=cef4f759d5e8';
+import {rgbwChannels,colorCct} from './light-color.js?v=a71cff26a3ca';
+import {drawPcbBrand} from './brand-art.js?v=a71cff26a3ca';
+import {tapeLayout} from './tape-layout.js?v=a71cff26a3ca';
+import {tapeTerminals} from './tape-wiring.js?v=a71cff26a3ca';
+import {buildSilicone} from './silicone.js?v=a71cff26a3ca';
+import {glowMaterial} from './glow.js?v=a71cff26a3ca';
+import {phosphorMap} from './light-textures.js?v=a71cff26a3ca';
+import {buildReleaseLiner} from './release-liner.js?v=a71cff26a3ca';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow

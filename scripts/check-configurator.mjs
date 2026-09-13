@@ -15,9 +15,9 @@ try{
       await page.getByRole('button',{name:'Więcej stron',exact:true}).click();const menu=page.locator('.pm-menu');
       await menu.waitFor({state:'visible'});await page.waitForTimeout(400);
       const box=await menu.boundingBox();assert.ok(box.x>=0&&box.x+box.width<=width+1&&box.height<=390);
-      assert.equal(await menu.locator('nav a').count(),6);
+      assert.equal(await menu.locator('nav a').count(),8);
       await page.screenshot({path:path.join(folder,`menu-${width}.png`)});
-      await page.locator('.pm-configurator-link').click();
+      await menu.getByRole('link',{name:'Konfigurator LED Skomponuj zestaw'}).click();
     }else{
       const dock=await page.locator('.prescot-dock').boundingBox();assert.ok(dock.x>=0&&dock.x+dock.width<=width+1);
       await page.screenshot({path:path.join(folder,'dock-desktop.png')});await page.locator('.pm-configurator-dock').click();
