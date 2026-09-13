@@ -135,7 +135,7 @@ Wyłącza tylko spekulacyjne pobieranie HTML w tej symulacji, żeby Chromium nie
 pobrał starej wersji z GitHub z pominięciem przechwytywania. Testuje także gest
 dotykowy w Chromium oraz menu, asystenta i odnośniki w obu silnikach.
 
-Wspólne zasoby i nawigacja mają wersję `20260913-studio2`. Mechaniczną aktualizację ich odnośników we wszystkich wariantach HTML wykonuje `node scripts/bump-app-assets.mjs`. Bazowy adres jest zapisany w HTML
+Wspólne zasoby i nawigacja mają wersję `20260913-studio3`. Mechaniczną aktualizację ich odnośników we wszystkich wariantach HTML wykonuje `node scripts/bump-app-assets.mjs`. Bazowy adres jest zapisany w HTML
 przed zasobami, żeby uniknąć spekulacyjnych żądań do błędnych podkatalogów.
 Skrypt dopasowuje bazę do lokalnego podglądu; wersja bez JS używa GitHub Pages.
 
@@ -179,3 +179,8 @@ Tryb nocny obejmuje całą aplikację: model, nagłówek, wybór produktów i ok
 „Więcej” ma dwie główne karty: Konfigurator LED i Laboratorium. Język znajduje się w osobnym, podpisanym wierszu. Menu mieści się na ekranach od 320 px. Test: `node scripts/check-app-navigation.mjs` (Chromium i WebKit).
 
 `laboratorium/` korzysta z istniejących zdjęć stanowiska pomiarowego, kuli całkującej i taśmy. Oryginalne logo ma stały rozmiar; podstrona prezentuje strumień, CCT i CRI bez deklarowania akredytacji ani fikcyjnych wyników. Źródło: `scripts/build-company-pages.mjs` i `company-pages.css`. Stara osobna strona `wlasny-brand/` kieruje do `produkcja/`; usunięto jej pozycje z menu i strony głównej.
+
+
+Dalsze korekty z 13 września: większe opisy i odnośniki na stronie głównej, sześć kafelków w regularnej siatce, jasne bloki tekstu produkcji bez przygaszania na zdjęciu. Odnośniki ofert i pełnego kontaktu mają spokojne tło, cienki obrys, zwykłą pisownię i mniejszą strzałkę.
+
+Konfigurator: przewody podążają za opisem pól PCB, w tym wybranym minusem L/M/H w 3in1. Światło stref uwzględnia cienie zabudowy i obrót profilu. Kamera szuflady pokazuje wnętrze, a kamera cokołu — podłogę; pod szafką dodano mały fragment blatu. Testy geometrii, przewodów i przesłaniania światła są w repozytorium źródłowym studia.

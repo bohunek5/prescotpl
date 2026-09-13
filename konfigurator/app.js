@@ -1,11 +1,11 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=9e675244bed0';
-import {accessoryKit} from './accessory-data.js?v=9e675244bed0';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=9e675244bed0';
-import {zones} from './zones.js?v=9e675244bed0';
-import {mountingSteps} from './mounting.js?v=9e675244bed0';
-import {coverIcon} from './cover-shapes.js?v=9e675244bed0';
-import {profileIcon} from './profile-shapes.js?v=9e675244bed0';
-import {projectSheet} from './sheet.js?v=9e675244bed0';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=b7faa7b30a34';
+import {accessoryKit} from './accessory-data.js?v=b7faa7b30a34';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=b7faa7b30a34';
+import {zones} from './zones.js?v=b7faa7b30a34';
+import {mountingSteps} from './mounting.js?v=b7faa7b30a34';
+import {coverIcon} from './cover-shapes.js?v=b7faa7b30a34';
+import {profileIcon} from './profile-shapes.js?v=b7faa7b30a34';
+import {projectSheet} from './sheet.js?v=b7faa7b30a34';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -109,7 +109,7 @@ function update(){
   $('envelope-note').textContent=spec.envelope?`${spec.sleeve?spec.sleeve.name:t.ip}: ${spec.fitVerified?'obrys '+spec.envelope.width+' × '+spec.envelope.height+' mm':'gabaryt osłony lub jej wnętrza do potwierdzenia'}. ${spec.fitVerified&&!spec.envelopeFits?'Wybierz szerszy lub głębszy profil.':''}`:'';
   $('cut-note').textContent=spec.cutVerified?`${spec.segments} segmentów × ${num(t.cut,2)} mm${spec.offcut>.01?` · ${num(spec.offcut,2)} mm wolnego profilu`:''}. Potwierdź skok cięcia na PCB.`:`Podgląd ${num(spec.stripLength/1000,2)} m. ${t.cutNote} Obliczenia długości i mocy są orientacyjne.`;
   const titles={assembly:['KLUŚ × PRESCOT',p.name],installation:['DETAL MONTAŻU','Od spodu.'],section:['OSADZENIE / PRZEKRÓJ',p.name],mounting:['MONTAŻ / '+p.name,'Krok po kroku.'],macro:['PRESCOT LED / DETAL',t.name],zone:['STREFA MONTAŻU',site.name+'.']};
-  const descriptions={assembly:`${t.name} · ${spec.cover.name} · ${p.application}.`,installation:s.mounting==='recessed'?'Profil we wpuście. Zobacz, jak wykańcza powierzchnię.':'Linia światła, mocowanie i styk z powierzchnią.',section:`${p.name} · kanał ${num(p.channel,1)} mm · ${p.id==='kozus'?'płyta 16 mm i warstwa wykończenia':'podłoże i osadzenie przesłony'}.`,mounting:'Od przygotowania podłoża do zamkniętej linii światła.',macro:s.detail==='sleeve'?(t.encapsulation==='coating'?'WCOB · półokrągła mleczna osłona 8 × 5 mm.':`${spec.sleeve?.name||t.ip} · taśma i koszulka PRESCOT, bez przesłony.`):s.detail==='seal'?'Przewód, silikon i zakończenia. Zobacz zamknięcie odcinka.':s.detail==='wiring'?`Pola podłączenia: ${spec.terminals.join(' / ')}.`:s.detail==='curve'?'S-shape. Elastyczne mostki pozwalają prowadzić taśmę po łuku.':t.shape==='s'?'Falujący laminat, wycięcia i pola miedziane. Zasilanie 12 V.':t.technology==='WCOB'?'Biała powierzchnia White COB, także przy wyłączonym świetle.':`Cienki laminat i ${t.type==='COB'?'ciągłe pasmo COB':'obudowy SMD '+(t.package||(t.type==='CCT'?'5050':'2835'))}.`,zone:site.description};
+  const descriptions={assembly:`${t.name} · ${spec.cover.name} · ${p.application}.`,installation:s.mounting==='recessed'?'Profil we wpuście. Zobacz, jak wykańcza powierzchnię.':'Linia światła, mocowanie i styk z powierzchnią.',section:`${p.name} · kanał ${num(p.channel,1)} mm · ${p.id==='kozus'?'płyta 16 mm i warstwa wykończenia':'podłoże i osadzenie przesłony'}.`,mounting:'Od przygotowania podłoża do zamkniętej linii światła.',macro:s.detail==='sleeve'?(t.encapsulation==='coating'?'WCOB · półokrągła mleczna osłona 8 × 5 mm.':`${spec.sleeve?.name||t.ip} · taśma i koszulka PRESCOT, bez przesłony.`):s.detail==='seal'?'Przewód, silikon i zakończenia. Zobacz zamknięcie odcinka.':s.detail==='wiring'?`Przewody: ${spec.connections.map(p=>p.label).join(' / ')}.${t.type==='3IN1'?' Czerwony plus · czarny minus przy wybranym L/M/H.':''}`:s.detail==='curve'?'S-shape. Elastyczne mostki pozwalają prowadzić taśmę po łuku.':t.shape==='s'?'Falujący laminat, wycięcia i pola miedziane. Zasilanie 12 V.':t.technology==='WCOB'?'Biała powierzchnia White COB, także przy wyłączonym świetle.':`Cienki laminat i ${t.type==='COB'?'ciągłe pasmo COB':'obudowy SMD '+(t.package||(t.type==='CCT'?'5050':'2835'))}.`,zone:site.description};
   $('stage-overline').textContent=titles[s.view][0];$('stage-heading').textContent=titles[s.view][1].replace(/(\d+)\s+K\b/g,'$1\u00a0K');$('detail-description').textContent=descriptions[s.view];
   $('mobile-assembly-play').hidden=s.view!=='assembly';$('mobile-assembly-play').disabled=spec.assemblyBlocked;syncAssemblyButton();$('exploded').disabled=s.view!=='assembly'||spec.assemblyBlocked;$('animate').disabled=s.view!=='assembly'||spec.assemblyBlocked;document.querySelectorAll('[data-step]').forEach(b=>b.disabled=spec.assemblyBlocked&&b.dataset.step!=='100');filterStrips();
   try{localStorage.setItem('prescot-light-studio-v9',JSON.stringify(s));}catch{}
@@ -196,7 +196,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=9e675244bed0');
+      const {createStudio}=await import('./scene.js?v=b7faa7b30a34');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

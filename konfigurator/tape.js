@@ -1,11 +1,12 @@
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=9e675244bed0';
-import {drawPcbBrand} from './brand-art.js?v=9e675244bed0';
-import {tapeLayout} from './tape-layout.js?v=9e675244bed0';
-import {buildSilicone} from './silicone.js?v=9e675244bed0';
-import {glowMaterial} from './glow.js?v=9e675244bed0';
-import {phosphorMap} from './light-textures.js?v=9e675244bed0';
-import {buildReleaseLiner} from './release-liner.js?v=9e675244bed0';
+import {rgbwChannels,colorCct} from './light-color.js?v=b7faa7b30a34';
+import {drawPcbBrand} from './brand-art.js?v=b7faa7b30a34';
+import {tapeLayout} from './tape-layout.js?v=b7faa7b30a34';
+import {tapeTerminals} from './tape-wiring.js?v=b7faa7b30a34';
+import {buildSilicone} from './silicone.js?v=b7faa7b30a34';
+import {glowMaterial} from './glow.js?v=b7faa7b30a34';
+import {phosphorMap} from './light-textures.js?v=b7faa7b30a34';
+import {buildReleaseLiner} from './release-liner.js?v=b7faa7b30a34';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -78,19 +79,20 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     if(mesh){mesh.castShadow=false;mesh.receiveShadow=false;mesh.visible=false;halos.push({mesh,style,channel});}
   }
   if(!art){addHalo(emitters,'WW');if(cct&&!continuous)addHalo(coldEmitters,'CW');if(rgbw)for(const key of ['R','G','B'])addHalo(rgbPoints[key],key);}
-  const pads=[],endPads=[],zs=rgbw?[W*.36,W*.18,0,-W*.18,-W*.36]:multi?[-W*.36,-W*.12,W*.12,W*.36]:cct?[-W*.34,0,W*.34]:serpentine?[-.00155,.00155]:[-W*.36,W*.36];
+  const terminals=tapeTerminals(t,state),pads=[],endPads=[],zs=terminals.map(p=>p.z);
   for(let i=0;i<=spec.segments;i++){
     const x=layout.contacts[i];
     for(const z of zs)(serpentine&&(i===0||i===spec.segments)?endPads:pads).push([x,.00029,z]);
   }
-  if(!art){instances(geometry(serpentine?.0028:.00165,.000055,serpentine?.00185:rgbw?.0012:(cct||multi)?.00140:W*.19,.000025),gold,pads,'Pola_miedziane');if(serpentine)instances(geometry(.0015,.000055,.00185,.000025),gold,endPads,'Pola_miedziane_koncowe');}
+  if(!art){instances(geometry(serpentine?.0028:.00165,.000055,serpentine?.00185:terminals.length>=5?Math.min(.0012,(zs[1]-zs[0])*.7):(cct||multi)?.00140:W*.19,.000025),gold,pads,'Pola_miedziane');if(serpentine)instances(geometry(.0015,.000055,.00185,.000025),gold,endPads,'Pola_miedziane_koncowe');}
   const wireGroup=new T.Group();wireGroup.name='Przewody_podlaczenia';group.add(wireGroup);
-  const wireColors=rgbw?['#eee8ca','#bc3025','#288b51','#356dae','#33383d']:multi?['#a94634','#353639','#353639','#353639']:cct?['#a94634','#d8dfe4','#b59444']:['#a94634','#2c2c2d'];
-  zs.forEach((z,i)=>{
-    if(multi&&i!==0&&i!==['low','medium','high'].indexOf(state.powerMode)+1)return;
-    const path=new T.CatmullRomCurve3([new T.Vector3(0,.0004,z),new T.Vector3(-.004,.002,z),new T.Vector3(-.013,.004,z*1.6),new T.Vector3(-.023,.001,z*2)]);
+  wireGroup.userData.terminals=terminals;
+  terminals.filter(p=>p.connected).forEach(({z,color,channel,label,polarity,index})=>{
+    const path=new T.CatmullRomCurve3([new T.Vector3(-.0012,.00055,z),new T.Vector3(-.004,.002,z),new T.Vector3(-.013,.004,z*1.6),new T.Vector3(-.023,.001,z*2)]);
     const g=new T.TubeGeometry(path,24,.00045,10,false);geometries.push(g);
-    const wire=new T.Mesh(g,mat(wireColors[i],.52));wire.name=rgbw?['W','R','G','B','V_plus'][i]:multi?['V_plus','L','M','H'][i]:cct?['V_plus','CW','WW'][i]:['V_plus','V_minus'][i];wire.castShadow=true;wireGroup.add(wire);
+    const wire=new T.Mesh(g,mat(color,.52));wire.name=channel;wire.userData={terminal:label,polarity,padIndex:index,padZ:z};wire.castShadow=true;wireGroup.add(wire);
+    const tipPath=new T.LineCurve3(new T.Vector3(0,.00039,z),new T.Vector3(-.0012,.00055,z)),tipGeo=new T.TubeGeometry(tipPath,1,.00022,8,false);geometries.push(tipGeo);
+    const tip=new T.Mesh(tipGeo,silver);tip.name='Koncowka_lutowana_'+channel;tip.userData={terminal:label,padIndex:index};wireGroup.add(tip);
   });
   const liner=buildReleaseLiner(L,W,boardAt,state.backing);group.add(liner.mesh);
   function peel(amount,exit=0,enabled=true){liner.update(amount,exit,enabled,lastPoint,[previousBend,previousLateral].join('|'));}
@@ -149,9 +151,9 @@ function pcbTexture(t,print){
   drawPcbBrand(x,w*.35,h*.84,Math.min(h*1.45,w*.28));
   x.font=`${h*.080}px Arial`;x.fillText(t.ref,w*.68,h*.14);
   x.font=`bold ${h*.084}px Arial`;x.fillText(`${t.voltage}V DC${t.copperOz?' · '+t.copperOz+' oz':''}`,w*.34,h*.14);
-  const terminals=t.markings||['+'+t.voltage+'V','−'];
+  const terminals=tapeTerminals(t);
   x.font=`bold ${h*.073}px Arial`;
-  terminals.forEach((label,i)=>{const y=h*(.12+i*.76/(terminals.length-1));x.fillText(label,w*.042,y);x.fillText(label,w*.958,y);});
+  terminals.forEach(({label,z})=>{const y=h*(.5+z/(t.width/1000));x.fillText(label,w*.042,y);x.fillText(label,w*.958,y);});
   if(t.type==='RGBW'&&print!=='concept'){x.font=`${h*.08}px Arial`;x.fillText('RGB + W 3000K',w*.73,h*.87);}
   else if(t.type==='CCT'&&print!=='concept'){x.font=`${h*.085}px Arial`;x.fillText('CCT · WW / CW',w*.73,h*.87);}
   else if(t.type==='3IN1'&&print!=='concept'){x.font=`${h*.081}px Arial`;x.fillText('L 3W   M 6W   H 11W',w*.72,h*.87);}

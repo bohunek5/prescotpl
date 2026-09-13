@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=9e675244bed0';
-import {accessoryKit} from './accessory-data.js?v=9e675244bed0';
+import {buildAccessories} from './accessories.js?v=b7faa7b30a34';
+import {accessoryKit} from './accessory-data.js?v=b7faa7b30a34';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 export function seatingHeight(p,recessed){

@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "9e675244bed0",
+  "revision": "b7faa7b30a34",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -121,6 +121,7 @@
     "soft-shadow.js",
     "studio.css",
     "tape-layout.js",
+    "tape-wiring.js",
     "tape.js",
     "vendor/three/LICENSE",
     "vendor/three/build/three.core.min.js",

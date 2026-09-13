@@ -1,6 +1,6 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio2';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio3';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio2';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio3';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));

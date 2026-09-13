@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=9e675244bed0';
-import {buildMount,seatingHeight} from './mounting.js?v=9e675244bed0';
+import {buildProduct} from './product.js?v=b7faa7b30a34';
+import {buildMount,seatingHeight} from './mounting.js?v=b7faa7b30a34';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -18,7 +18,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   const ivory=material({color:'#eae7df',roughness:.48}),edge=material({color:'#c7bdab',roughness:.7}),steel=material({color:'#aab0b4',metalness:.8,roughness:.24}),black=material({color:'#444441',roughness:.55});
   const add=(g,m,parent,x=0,y=0,z=0)=>{geos.push(g);const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;};
   const box=(parent,w,h,d,m,x=0,y=0,z=0,r=.0006)=>add(new RoundedBoxGeometry(w,h,d,3,Math.min(r,h*.2)),m,parent,x,y,z);
-  const product=buildProduct(source,sourceSize,spec,{...state,view:'zone'},{length:300,art,sourceCover});root.add(product.group);
+  const product=buildProduct(source,sourceSize,spec,{...state,view:'zone',exploded:0},{length:300,art,sourceCover});root.add(product.group);
   const wire=new T.Group();wire.name='Ukryty_przewod_niskiego_napiecia';root.add(wire);
   let door=null,drawer=null,fixture=null,sensor=null,plunger=null;
   const p=spec.profile,zone=state.zone,H=p.height/1000,seat=seatingHeight(p,state.mounting==='recessed');
@@ -57,6 +57,10 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     const y=zone==='under'?0:zone==='drawer'?.1945:state.zonePosition==='shelf'?.133:.240,z=state.zonePosition==='back'?-.068:zone==='drawer'?.091:.074;
     if(zone==='cabinet'&&state.zonePosition==='shelf'){const shelf=box(cabinet,.348,.016,.180,wood,0,.141,.005);shelf.name='Polka_nad_profilem';}
     product.group.rotation.x=Math.PI;product.group.position.set(0,y-seat,z);focus=new T.Vector3(0,y-seat-H,z);normal=new T.Vector3(0,-1,0);
+    if(zone==='under'){
+      box(root,.42,.014,.25,ivory,0,-.125,.02).name='Fragment_blatu';
+      box(root,.42,.112,.006,ivory,0,-.060,-.096).name='Powierzchnia_nad_blatem';
+    }
     if(zone!=='drawer'){
       door=new T.Group();door.name='Front_z_zawiasem';door.position.set(-.188,.003,.105);root.add(door);
       box(door,.375,.25,.016,wood,.1875,.125,.008,.0011);
@@ -88,21 +92,38 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     const conduit=box(wire,.006,.15,.005,ivory,-.167,.125,-.085);conduit.name='Maskownica_przewodu';
     for(const y of [.07,.15,.20])box(wire,.006,.002,.005,steel,-.167,y,-.081);
   }
-  const light=new T.RectAreaLight(0xffd4a3,0,.30,.012);light.position.copy(focus).addScaledVector(normal,.003);light.lookAt(light.position.clone().add(normal));root.add(light);
+  // Follow the actual lens face, including the 45-degree profiles. Shadowed
+  // emitters let the cabinet and drawer stop the light at their real surfaces.
+  if(zone==='plinth'&&p.ledAngle)product.group.rotation.y=Math.PI;
+  product.assemble(0);root.updateMatrixWorld(true);
+  const lens=product.cover.children.find(o=>o.isMesh&&!o.name.startsWith('Poswiata_'));
+  lens.geometry.computeBoundingBox();const lensBounds=lens.geometry.boundingBox;
+  normal.set(0,1,0).applyQuaternion(product.cover.getWorldQuaternion(new T.Quaternion())).normalize();
+  const lightFace=new T.Vector3(0,lensBounds.max.y+.00035,(lensBounds.min.z+lensBounds.max.z)/2);
+  focus.copy(product.cover.localToWorld(lightFace.clone()));
+  const lights=[-.105,0,.105].map(x=>{
+    const light=new T.SpotLight(0xffd4a3,0,.8,Math.min(Math.PI/3,(spec.cover.beamAngle||120)*Math.PI/360),.8,2);
+    light.name='Swiatlo_strefy';light.position.copy(product.cover.localToWorld(lightFace.clone().add(new T.Vector3(x,0,0))));
+    light.target.position.copy(light.position).addScaledVector(normal,.3);light.castShadow=true;
+    light.shadow.mapSize.set(512,512);light.shadow.camera.near=.0005;light.shadow.camera.far=.8;light.shadow.bias=-.000005;light.shadow.normalBias=.00002;
+    root.add(light,light.target);return light;
+  });
+  root.userData.lighting={type:'shadowed-strip',normal:normal.toArray(),origin:focus.toArray(),emitters:lights.length};
   let opening=state.zoneOpen?1:0,currentState=state,currentColor=new T.Color('#fff4df'),lastLight=null;
   function applyLight(){
-    const on=currentState.light&&(currentState.zoneTrigger!=='door'||opening>.07);light.color.copy(currentColor);light.intensity=on?currentState.dimmer/100*130*spec.cover.transmission*(spec.lumensPerMeter/1000):0;
-    if(lastLight!==on){product.update({...currentState,view:'zone',light:on},currentColor);lastLight=on;}
+    const on=currentState.light&&(currentState.zoneTrigger!=='door'||opening>.07);
+    for(const light of lights){light.color.copy(currentColor);light.visible=on;light.intensity=on?currentState.dimmer/100*.30*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
+    if(lastLight!==on){product.update({...currentState,view:'zone',exploded:0,light:on},currentColor);lastLight=on;}
     if(sensor){sensor.visible=currentState.zoneTrigger==='door';plunger.position.z=.006+Math.min(1,opening*8)*.003;}
     root.userData.lightOn=on;
   }
   function setOpening(value){opening=T.MathUtils.clamp(value,0,1);if(door)door.rotation.y=-(zone==='under'?.95:1.65)*opening;if(drawer)drawer.position.z=.137*opening;applyLight();root.updateMatrixWorld(true);}
   function update(s,color){
-    currentState=s;currentColor=color;lastLight=null;product.update({...s,view:'zone'},color);product.assemble(0);product.profile.visible=true;product.pcb.visible=true;product.cover.visible=true;
+    currentState=s;currentColor=color;lastLight=null;product.update({...s,view:'zone',exploded:0},color);product.assemble(0);product.profile.visible=true;product.pcb.visible=true;product.cover.visible=true;
     wire.visible=s.showCable;ivory.color.set({graphite:'#767b7e',sand:'#d6ccbb'}[s.material]||'#eae7df');
     setOpening(s.zoneOpen?1:0);
     if(fixture)fixture.update({...s,view:'installation'},product);
     if(zone==='drywall'){product.group.rotation.x=Math.PI;product.group.position.y=-seat;}
   }
-  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){product.dispose();fixture?.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
+  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){product.dispose();fixture?.dispose();for(const light of lights)light.shadow.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
 }

@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=9e675244bed0';
-import {buildProduct} from './product.js?v=9e675244bed0';
-import {buildMount} from './mounting.js?v=9e675244bed0';
-import {buildZone} from './zones.js?v=9e675244bed0';
-import {sectionGeometry} from './section.js?v=9e675244bed0';
-import {lightColor} from './light-color.js?v=9e675244bed0';
-import {assemblyClip} from './assembly-export.js?v=9e675244bed0';
-import {createSoftShadow} from './soft-shadow.js?v=9e675244bed0';
+import {specification,displayLength} from './catalog.js?v=b7faa7b30a34';
+import {buildProduct} from './product.js?v=b7faa7b30a34';
+import {buildMount} from './mounting.js?v=b7faa7b30a34';
+import {buildZone} from './zones.js?v=b7faa7b30a34';
+import {sectionGeometry} from './section.js?v=b7faa7b30a34';
+import {lightColor} from './light-color.js?v=b7faa7b30a34';
+import {assemblyClip} from './assembly-export.js?v=b7faa7b30a34';
+import {createSoftShadow} from './soft-shadow.js?v=b7faa7b30a34';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -87,7 +87,7 @@ export async function createStudio(host,initial){
     if(!sample&&!zone)return;
     const aspect=host.clientWidth/Math.max(1,host.clientHeight),z=s.view==='zone',section=s.view==='section',side=s.view==='assembly'&&s.assemblyAngle==='side';
     let direction;
-    if(z)direction=s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,-.04,.50]:s.zone==='under'?[.35,-.18,.48]:[.34,.015,.60];
+    if(z)direction=s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,.16,.50]:s.zone==='drawer'?[.34,.28,.60]:s.zone==='under'?[.35,-.03,.48]:[.34,.015,.60];
     else if(s.view==='assembly'&&s.assemblyAngle==='entry')direction=[-.065,.038,.11];
     else if(s.view==='assembly'&&s.assemblyAngle==='end')direction=[.045,.035,.12];
     else if(section)direction=[.068,-.030,.029];
@@ -179,7 +179,7 @@ export async function createStudio(host,initial){
     return points;
   }
   return{update,frame,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
-    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.find(o=>o.isRectAreaLight)?.intensity}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
+    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
     dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();woodMap.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }
