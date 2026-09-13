@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=b7faa7b30a34';
-import {buildProduct} from './product.js?v=b7faa7b30a34';
-import {buildMount} from './mounting.js?v=b7faa7b30a34';
-import {buildZone} from './zones.js?v=b7faa7b30a34';
-import {sectionGeometry} from './section.js?v=b7faa7b30a34';
-import {lightColor} from './light-color.js?v=b7faa7b30a34';
-import {assemblyClip} from './assembly-export.js?v=b7faa7b30a34';
-import {createSoftShadow} from './soft-shadow.js?v=b7faa7b30a34';
+import {specification,displayLength} from './catalog.js?v=d63062560f35';
+import {buildProduct} from './product.js?v=d63062560f35';
+import {buildMount} from './mounting.js?v=d63062560f35';
+import {buildZone} from './zones.js?v=d63062560f35';
+import {sectionGeometry} from './section.js?v=d63062560f35';
+import {lightColor} from './light-color.js?v=d63062560f35';
+import {assemblyClip} from './assembly-export.js?v=d63062560f35';
+import {createSoftShadow} from './soft-shadow.js?v=d63062560f35';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -87,7 +87,7 @@ export async function createStudio(host,initial){
     if(!sample&&!zone)return;
     const aspect=host.clientWidth/Math.max(1,host.clientHeight),z=s.view==='zone',section=s.view==='section',side=s.view==='assembly'&&s.assemblyAngle==='side';
     let direction;
-    if(z)direction=s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,.16,.50]:s.zone==='drawer'?[.34,.28,.60]:s.zone==='under'?[.35,-.03,.48]:[.34,.015,.60];
+    if(z)direction=s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,.16,.50]:s.zone==='drawer'?[.34,.28,.60]:s.zone==='under'?[.35,.14,.48]:[.34,.015,.60];
     else if(s.view==='assembly'&&s.assemblyAngle==='entry')direction=[-.065,.038,.11];
     else if(s.view==='assembly'&&s.assemblyAngle==='end')direction=[.045,.035,.12];
     else if(section)direction=[.068,-.030,.029];

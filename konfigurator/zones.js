@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=b7faa7b30a34';
-import {buildMount,seatingHeight} from './mounting.js?v=b7faa7b30a34';
+import {buildProduct} from './product.js?v=d63062560f35';
+import {buildMount,seatingHeight} from './mounting.js?v=d63062560f35';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -58,7 +58,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     if(zone==='cabinet'&&state.zonePosition==='shelf'){const shelf=box(cabinet,.348,.016,.180,wood,0,.141,.005);shelf.name='Polka_nad_profilem';}
     product.group.rotation.x=Math.PI;product.group.position.set(0,y-seat,z);focus=new T.Vector3(0,y-seat-H,z);normal=new T.Vector3(0,-1,0);
     if(zone==='under'){
-      box(root,.42,.014,.25,ivory,0,-.125,.02).name='Fragment_blatu';
+      box(root,.42,.014,.32,ivory,0,-.125,.055).name='Fragment_blatu';
       box(root,.42,.112,.006,ivory,0,-.060,-.096).name='Powierzchnia_nad_blatem';
     }
     if(zone!=='drawer'){
