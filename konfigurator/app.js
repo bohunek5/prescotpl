@@ -1,11 +1,11 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=feb910542c79';
-import {accessoryKit} from './accessory-data.js?v=feb910542c79';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=feb910542c79';
-import {zones} from './zones.js?v=feb910542c79';
-import {mountingSteps} from './mounting.js?v=feb910542c79';
-import {coverIcon} from './cover-shapes.js?v=feb910542c79';
-import {profileIcon} from './profile-shapes.js?v=feb910542c79';
-import {projectSheet} from './sheet.js?v=feb910542c79';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=42bf92f1850c';
+import {accessoryKit} from './accessory-data.js?v=42bf92f1850c';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=42bf92f1850c';
+import {zones} from './zones.js?v=42bf92f1850c';
+import {mountingSteps} from './mounting.js?v=42bf92f1850c';
+import {coverIcon} from './cover-shapes.js?v=42bf92f1850c';
+import {profileIcon} from './profile-shapes.js?v=42bf92f1850c';
+import {projectSheet} from './sheet.js?v=42bf92f1850c';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -200,7 +200,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=feb910542c79');
+      const {createStudio}=await import('./scene.js?v=42bf92f1850c');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

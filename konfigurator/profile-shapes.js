@@ -1,4 +1,4 @@
-import {tracedContours} from './profile-contours.js?v=feb910542c79';
+import {tracedContours} from './profile-contours.js?v=42bf92f1850c';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
@@ -23,5 +23,21 @@ export function profileContour(p){
 }
 export function profileIcon(p){
   const points=profileContour(p),W=p.width,H=p.height;
-  return `<svg class="profile-section-icon" viewBox="${-W/2-1} -1 ${W+2} ${H+2}" aria-hidden="true"><path d="${points.map(([x,y],i)=>(i?'L':'M')+x+','+(H-y)).join(' ')}Z"/></svg>`;
+  // Match the model's cover plane: section X = -world Z, screen Y = H - world Y.
+  const angle=(p.ledAngle||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
+  const x=-(p.coverZ||0),y=H-(p.coverY??H),half=p.channel*.46;
+  const reach=Math.min(14,Math.max(7,H*.65+W*.2)),spread=half+reach*.25;
+  const beam=[[-half,0],[-spread,-reach],[spread,-reach],[half,0]];
+  const bounds=[...points.map(([x,y])=>[x,H-y]),...beam.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
+  const minX=Math.min(...bounds.map(p=>p[0]))-1.5,minY=Math.min(...bounds.map(p=>p[1]))-1.5;
+  const width=Math.max(...bounds.map(p=>p[0]))-minX+1.5,height=Math.max(...bounds.map(p=>p[1]))-minY+1.5;
+  const gradient=`profile-light-${p.id}`;
+  return `<svg class="profile-section-icon" viewBox="${minX} ${minY} ${width} ${height}" aria-hidden="true">
+    <defs><radialGradient id="${gradient}" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1" gradientTransform="scale(${spread} ${reach})">
+      <stop offset="0" stop-color="var(--profile-light)" stop-opacity=".55"/><stop offset=".35" stop-color="var(--profile-light)" stop-opacity=".24"/><stop offset=".7" stop-color="var(--profile-light)" stop-opacity=".06"/><stop offset="1" stop-color="var(--profile-light)" stop-opacity="0"/>
+    </radialGradient></defs>
+    <g transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})"><path class="profile-section-glow" fill="url(#${gradient})" d="${beam.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ')}Z"/></g>
+    <path class="profile-section-body" d="${points.map(([x,y],i)=>(i?'L':'M')+x+','+(H-y)).join(' ')}Z"/>
+    <path class="profile-section-emitter" transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})" d="M${-half},0 H${half}"/>
+  </svg>`;
 }

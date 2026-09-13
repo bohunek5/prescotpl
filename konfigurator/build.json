@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "feb910542c79",
+  "revision": "42bf92f1850c",
   "three": "0.180.0",
   "files": [
     "accessories.js",

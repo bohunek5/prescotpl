@@ -39,7 +39,7 @@
 @media(max-width:780px){.intro br:after{content:' '}.intro br{display:initial}.stage-shell{min-height:620px;height:calc(90svh - 62px)}}
 
 @layer components {
- .profile-section-icon{width:34px;height:26px;flex-shrink:0;overflow:visible}.profile-section-icon path{fill:#a6a6a3}.card[aria-pressed=true] .profile-section-icon path{fill:#6f716f}
+ .profile-section-icon{width:34px;height:26px;flex-shrink:0;overflow:visible}.profile-section-body{fill:#a6a6a3}.card[aria-pressed=true] .profile-section-body{fill:#6f716f}
  .catalog-search{display:block;margin-bottom:12px}.catalog-search span{display:block;font-size:9px;color:#918e89;margin-bottom:8px}.catalog-search input{width:100%;background:transparent;border:0;border-bottom:1px solid #d8d5cf;padding:10px 0;font-size:11px;outline-offset:4px;border-radius:0}
  .strip-filters{display:flex;gap:13px;margin:14px 0 18px}.strip-filters button{font-size:9px;padding:6px 0;color:#99968f;border-bottom:1px solid transparent}.strip-filters button[aria-pressed=true]{color:#403e39;border-color:#6c6961}.card:disabled{cursor:not-allowed;opacity:.4}.strip-icon.slim{height:4px}.strip-icon.serpentine{height:8px;border:0;background:repeating-linear-gradient(90deg,#e3bd72 0 2px,#e9e4d6 2px 6px);clip-path:polygon(0 0,10% 20%,20% 70%,30% 80%,40% 20%,50% 0,60% 20%,70% 70%,80% 80%,90% 20%,100% 0,100% 40%,90% 70%,80% 100%,70% 100%,60% 70%,50% 40%,40% 70%,30% 100%,20% 100%,10% 70%,0 40%)}
  #zone-settings{padding-bottom:28px}#zone-settings h2{font-size:18px;font-weight:400;margin:12px 0 18px}.zone-picker{display:grid;grid-template-columns:1fr 1fr;gap:8px}.zone-picker button{display:flex;flex-direction:column;align-items:start;text-align:left;padding:16px 12px;border:1px solid #dfdcd6;border-radius:4px;background:#fff}.zone-picker button[aria-pressed=true]{background:#efede7;border-color:#a09b90}.zone-picker svg{width:29px;height:29px;margin-bottom:16px;stroke:#93918a;stroke-width:1;fill:none;stroke-linejoin:round}.zone-picker strong{display:block;font-size:11px;font-weight:400}.zone-picker small{display:block;font-size:8px;line-height:1.4;color:#99958d;margin-top:7px}
@@ -330,3 +330,11 @@ body[data-light-study=true] .welcome{background:radial-gradient(ellipse at 50% 3
 body[data-light-study=true] .welcome h1{color:#f4eee4}
 body[data-light-study=true] .welcome p{color:#babbbd}
 body[data-light-study=true] .start-configurator{background:#e8e1d5;color:#243441}
+
+/* Static section previews: light leaves the opening, with no animated rendering. */
+#profiles .profile-section-icon{width:52px;height:40px;overflow:hidden;--profile-light:#e6af62}
+.profile-section-glow{pointer-events:none}
+.profile-section-emitter{fill:none;stroke:var(--profile-light);stroke-width:.9;stroke-linecap:round;vector-effect:non-scaling-stroke}
+body[data-light-study=true] #profiles .profile-section-icon{--profile-light:#ffe0a4}
+body[data-light-study=true] #profiles .profile-section-body{fill:#aeb4b9}
+body[data-light-study=true] #profiles .card[aria-pressed=true] .profile-section-body{fill:#d2d6d9}
