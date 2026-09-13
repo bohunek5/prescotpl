@@ -1,11 +1,12 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=42bf92f1850c';
-import {accessoryKit} from './accessory-data.js?v=42bf92f1850c';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=42bf92f1850c';
-import {zones} from './zones.js?v=42bf92f1850c';
-import {mountingSteps} from './mounting.js?v=42bf92f1850c';
-import {coverIcon} from './cover-shapes.js?v=42bf92f1850c';
-import {profileIcon} from './profile-shapes.js?v=42bf92f1850c';
-import {projectSheet} from './sheet.js?v=42bf92f1850c';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=cef4f759d5e8';
+import {accessoryKit} from './accessory-data.js?v=cef4f759d5e8';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=cef4f759d5e8';
+import {zones} from './zones.js?v=cef4f759d5e8';
+import {mountingSteps} from './mounting.js?v=cef4f759d5e8';
+import {coverIcon} from './cover-shapes.js?v=cef4f759d5e8';
+import {profileIcon} from './profile-shapes.js?v=cef4f759d5e8';
+import {projectSheet} from './sheet.js?v=cef4f759d5e8';
+import {uiIcon,actionLabel} from './ui-icons.js?v=cef4f759d5e8';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -34,7 +35,7 @@ function updateAccessories(p){
   const kit=accessoryKit(p,s);$('selected-accessories').textContent=p.name+' · lista akcesoriów';
   $('accessories').replaceChildren(...kit.map(a=>{const el=document.createElement('div');el.className='accessory-row';const label=document.createElement('label');
     if(['endcap','bracket'].includes(a.kind)){const input=document.createElement('input');input.type='checkbox';input.checked=a.selected;input.onchange=()=>{s[a.kind==='endcap'?'endcaps':'showFixings']=input.checked;update();};label.append(input);}
-    const span=document.createElement('span');span.innerHTML=`<strong>${a.name}</strong><small>${a.ref}</small>`;label.append(span);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';link.textContent='Dane ↗';link.setAttribute('aria-label','Dokumentacja: '+a.name);const note=document.createElement('p');note.textContent=a.note+(workbookRefs.has(a.ref)?' Pozycja w Twoim katalogu.':'');el.append(label,link,note);return el;}));
+    const span=document.createElement('span');span.innerHTML=`<strong>${a.name}</strong><small>${a.ref}</small>`;label.append(span);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';actionLabel(link,'Dane','external');link.setAttribute('aria-label','Dokumentacja: '+a.name);const note=document.createElement('p');note.textContent=a.note+(workbookRefs.has(a.ref)?' Pozycja w Twoim katalogu.':'');el.append(label,link,note);return el;}));
   $('bom-accessories').textContent=kit.filter(a=>a.selected).map(a=>a.name+' · '+a.ref+(a.quantity?' · '+a.quantity+' szt.':' · ilość do doboru')).join(' / ');
 }
 cards('profiles',profiles,'profile',profileIcon,p=>`${num(p.width,1)} × ${num(p.height,1)} mm · ${p.application}`);
@@ -51,7 +52,7 @@ function updateFit(spec){
   $('fit-issues').replaceChildren(...spec.issues.map(x=>{const li=document.createElement('li');li.textContent=x.message;li.dataset.severity=x.severity;return li;}));
   $('fit-report').dataset.status=spec.fitStatus;
   const alternatives=spec.assemblyBlocked?profiles.filter(p=>p.id!==s.profile&&specification({...s,profile:p.id,cover:p.covers[0],finish:finishesFor(p)[0]}).fitStatus==='compatible').slice(0,3):[];
-  $('fit-alternatives').replaceChildren(...alternatives.map(p=>{const b=document.createElement('button');b.textContent=p.name+' ↗';b.onclick=()=>{chooseProfile(p);update();};return b;}));
+  $('fit-alternatives').replaceChildren(...alternatives.map(p=>{const b=document.createElement('button');actionLabel(b,p.name,'external');b.onclick=()=>{chooseProfile(p);update();};return b;}));
   $('export-glb').disabled=spec.fitStatus==='blocked'||spec.assemblyBlocked;
   $('export-glb').title=$('export-glb').disabled?'Rozwiąż wykluczenia zestawu przed eksportem złożonego modelu.':'';
 }
@@ -79,7 +80,7 @@ function update(){
   document.querySelectorAll('.brand img,.welcome-logo-fallback').forEach(img=>{
     if(img.getAttribute('src')!==logoSource)img.setAttribute('src',logoSource);
   });
-  $('product-wire').setAttribute('aria-pressed',String(s.showCable));$('led-toggle').setAttribute('aria-pressed',String(s.light));document.body.dataset.view=s.view;document.body.dataset.lightStudy=String(s.lightStudy);document.querySelectorAll('button[data-light-study]').forEach(b=>{b.setAttribute('aria-pressed',String(s.lightStudy));b.textContent=s.lightStudy?'Tryb dzienny':'Tryb nocny';});document.querySelector('meta[name=theme-color]').content=s.lightStudy?'#1c1f24':'#f7f7f2';document.querySelector('.canvas-help').textContent=z?'Obrót w obrębie strefy · kółko: zbliżenie':'Obrót 360° · kółko: zbliżenie · prawy przycisk: przesunięcie';
+  $('product-wire').setAttribute('aria-pressed',String(s.showCable));$('led-toggle').setAttribute('aria-pressed',String(s.light));document.body.dataset.view=s.view;document.body.dataset.lightStudy=String(s.lightStudy);document.querySelectorAll('button[data-light-study]').forEach(b=>{b.setAttribute('aria-pressed',String(s.lightStudy));actionLabel(b,s.lightStudy?'Tryb dzienny':'Tryb nocny',s.lightStudy?'sun':'moon');});document.querySelector('meta[name=theme-color]').content=s.lightStudy?'#1c1f24':'#f7f7f2';document.querySelector('.canvas-help').textContent=z?'Obrót w obrębie strefy · kółko: zbliżenie':'Obrót 360° · kółko: zbliżenie · prawy przycisk: przesunięcie';
   document.querySelector('.installation-toolbar').hidden=!installed;document.querySelector('.assembly-toolbar').hidden=s.view!=='assembly';document.querySelector('.macro-toolbar').hidden=s.view!=='macro';document.querySelector('.zone-toolbar').hidden=!z;document.querySelector('.assembly-steps').hidden=s.view!=='assembly';document.querySelector('.mount-guide').hidden=!walk;document.querySelector('.detail-metrics').hidden=false;$('zone-settings').hidden=!z;
   $('rgbw-controls').hidden=t.type!=='RGBW';$('rgb-color').value=s.rgbColor;document.querySelectorAll('[data-rgb-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rgbMode===s.rgbMode)));
   $('cct-control').hidden=t.type!=='CCT';$('cct-note').hidden=['CCT','RGBW'].includes(t.type);
@@ -92,7 +93,7 @@ function update(){
   document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.step)===(s.exploded>75?100:s.exploded>25?50:0))));
   document.querySelectorAll('[data-mount-step]').forEach(b=>{b.setAttribute('aria-pressed',String(Number(b.dataset.mountStep)===s.mountStep));b.setAttribute('aria-label',`Etap ${Number(b.dataset.mountStep)+1}: ${mountingSteps(p,s.mounting==='recessed')[Number(b.dataset.mountStep)][0]}`);});
   document.querySelectorAll('[data-zone-detail]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.zoneDetail==='true')===s.zoneDetail)));
-  $('zone-motion').hidden=['drywall','shelf','plinth'].includes(s.zone);$('zone-motion').textContent=s.zone==='drawer'?(s.zoneOpen?'Wsuń szufladę ↗':'Wysuń szufladę ↗'):(s.zoneOpen?'Zamknij front ↗':'Otwórz front ↗');$('zone-motion').setAttribute('aria-pressed',String(s.zoneOpen));
+  $('zone-motion').hidden=['drywall','shelf','plinth'].includes(s.zone);actionLabel($('zone-motion'),s.zone==='drawer'?(s.zoneOpen?'Wsuń szufladę':'Wysuń szufladę'):(s.zoneOpen?'Zamknij front':'Otwórz front'),'external');$('zone-motion').setAttribute('aria-pressed',String(s.zoneOpen));
   $('zone-cable').hidden=s.zone==='drywall';$('zone-cable').setAttribute('aria-pressed',String(s.showCable));
   $('zone-compatibility').textContent=s.zone==='drywall'?`${p.name} · ${p.id==='kozus'?'płyta 16 mm, klej i wkładka TECH-22':'wpust i dedykowane sprężyny'}.`:['shelf','plinth'].includes(s.zone)?'Fragment płyty i trasa przewodu pokazują zasadę osadzenia. Wymiary frezu wymagają doboru.':'Front i prowadnice pokazują zasadę zabudowy. Odcinek światła pozostaje na korpusie.';
   const steps=mountingSteps(p,s.mounting==='recessed');$('mount-heading').textContent=steps[s.mountStep][0];$('mount-copy').textContent=steps[s.mountStep][1];$('mount-source').href=p.instruction;$('mount-prev').disabled=s.mountStep===0;$('mount-next').disabled=s.mountStep===4;
@@ -158,12 +159,12 @@ function syncAssemblyButton(){
   $('mobile-assembly-play').title=assemblyTarget===null?label+' zestaw':'Odwróć animację · '+label.toLowerCase()+' zestaw';
   $('mobile-assembly-play').dataset.playing=String(assemblyTarget!==null);
 }
-function stopAnimation(){cancelAnimationFrame(animation);animation=0;assemblyTarget=null;$('animate').textContent='▶';$('animate').setAttribute('aria-label','Odtwórz animację montażu');$('play-mount').textContent='Odtwórz montaż ↗';$('play-mount').setAttribute('aria-label','Odtwórz montaż');syncAssemblyButton();}
+function stopAnimation(){cancelAnimationFrame(animation);animation=0;assemblyTarget=null;$('animate').innerHTML=uiIcon('play');$('animate').setAttribute('aria-label','Odtwórz animację montażu');actionLabel($('play-mount'),'Odtwórz montaż','play');$('play-mount').setAttribute('aria-label','Odtwórz montaż');syncAssemblyButton();}
 function playAssembly(to){
   cancelAnimationFrame(animation);animation=0;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){s.exploded=to;assemblyTarget=null;update();return;}
   const start=performance.now(),from=s.exploded,duration=Math.max(1,6200*Math.abs(to-from)/100);assemblyTarget=to;
-  $('animate').textContent='Ⅱ';$('animate').setAttribute('aria-label','Wstrzymaj animację montażu');$('play-mount').textContent='Ⅱ Wstrzymaj';$('play-mount').setAttribute('aria-label','Wstrzymaj montaż');syncAssemblyButton();
+  $('animate').innerHTML=uiIcon('pause');$('animate').setAttribute('aria-label','Wstrzymaj animację montażu');actionLabel($('play-mount'),'Wstrzymaj','pause');$('play-mount').setAttribute('aria-label','Wstrzymaj montaż');syncAssemblyButton();
   const tick=t=>{const f=Math.min(1,(t-start)/duration);s.exploded=from+(to-from)*f;$('exploded').value=s.exploded;studio?.setAssembly(s.exploded);if(f<1)animation=requestAnimationFrame(tick);else{stopAnimation();update();}};animation=requestAnimationFrame(tick);
 }
 $('play-mount').onclick=()=>$('animate').click();$('animate').onclick=()=>{
@@ -200,7 +201,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=42bf92f1850c');
+      const {createStudio}=await import('./scene.js?v=cef4f759d5e8');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

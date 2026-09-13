@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "42bf92f1850c",
+  "revision": "cef4f759d5e8",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -124,6 +124,7 @@
     "tape-layout.js",
     "tape-wiring.js",
     "tape.js",
+    "ui-icons.js",
     "vendor/three/LICENSE",
     "vendor/three/build/three.core.min.js",
     "vendor/three/build/three.module.min.js",

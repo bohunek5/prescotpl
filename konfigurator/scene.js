@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=42bf92f1850c';
-import {buildProduct} from './product.js?v=42bf92f1850c';
-import {buildMount} from './mounting.js?v=42bf92f1850c';
-import {buildZone} from './zones.js?v=42bf92f1850c';
-import {sectionGeometry} from './section.js?v=42bf92f1850c';
-import {lightColor} from './light-color.js?v=42bf92f1850c';
-import {assemblyClip} from './assembly-export.js?v=42bf92f1850c';
-import {createSoftShadow} from './soft-shadow.js?v=42bf92f1850c';
+import {specification,displayLength} from './catalog.js?v=cef4f759d5e8';
+import {buildProduct} from './product.js?v=cef4f759d5e8';
+import {buildMount} from './mounting.js?v=cef4f759d5e8';
+import {buildZone} from './zones.js?v=cef4f759d5e8';
+import {sectionGeometry} from './section.js?v=cef4f759d5e8';
+import {lightColor} from './light-color.js?v=cef4f759d5e8';
+import {assemblyClip} from './assembly-export.js?v=cef4f759d5e8';
+import {createSoftShadow} from './soft-shadow.js?v=cef4f759d5e8';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();

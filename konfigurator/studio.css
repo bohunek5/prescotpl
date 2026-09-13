@@ -338,3 +338,21 @@ body[data-light-study=true] .start-configurator{background:#e8e1d5;color:#243441
 body[data-light-study=true] #profiles .profile-section-icon{--profile-light:#ffe0a4}
 body[data-light-study=true] #profiles .profile-section-body{fill:#aeb4b9}
 body[data-light-study=true] #profiles .card[aria-pressed=true] .profile-section-body{fill:#d2d6d9}
+
+/* Shared line icons stay typographic on iOS instead of becoming emoji badges. */
+.ui-icon{width:16px;height:16px;display:inline-block;vertical-align:-3px;flex:none;pointer-events:none}
+.project-actions button{display:inline-flex;align-items:center;justify-content:space-between;gap:12px}
+.project-actions button span{font-size:inherit}
+#studio-stage :is(button[data-light-study],#play-mount,#reset-camera){display:inline-flex;align-items:center;justify-content:center;gap:7px}
+#studio-stage .angle-picker{flex-wrap:nowrap}
+@media(max-width:780px){
+ #studio-stage .assembly-toolbar{grid-template-columns:minmax(0,1fr)}
+ #studio-stage .assembly-toolbar .angle-picker{grid-template-columns:repeat(4,minmax(0,1fr))}
+ #studio-stage .assembly-toolbar #product-wire{min-height:40px;padding:8px 6px;border:0;border-radius:3px}
+ #studio-stage .assembly-steps{grid-template-columns:1fr 1.1fr 1.1fr}
+ #studio-stage .assembly-steps #play-mount{display:none}
+ #studio-stage #reset-camera:after{content:none}
+ #studio-stage #reset-camera span{display:none}
+ #studio-stage #reset-camera .ui-icon{width:20px;height:20px}
+ #studio-stage button[data-light-study] .ui-icon{width:14px;height:14px}
+}
