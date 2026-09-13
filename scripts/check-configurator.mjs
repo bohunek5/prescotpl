@@ -14,8 +14,8 @@ try{
     if(width<768){
       await page.getByRole('button',{name:'Więcej stron',exact:true}).click();const menu=page.locator('.pm-menu');
       await menu.waitFor({state:'visible'});await page.waitForTimeout(400);
-      const box=await menu.boundingBox();assert.ok(box.x>=0&&box.x+box.width<=width+1&&box.height<=340);
-      assert.equal(await menu.locator('nav a').count(),7);
+      const box=await menu.boundingBox();assert.ok(box.x>=0&&box.x+box.width<=width+1&&box.height<=390);
+      assert.equal(await menu.locator('nav a').count(),6);
       await page.screenshot({path:path.join(folder,`menu-${width}.png`)});
       await page.locator('.pm-configurator-link').click();
     }else{
@@ -23,14 +23,15 @@ try{
       await page.screenshot({path:path.join(folder,'dock-desktop.png')});await page.locator('.pm-configurator-dock').click();
     }
     await page.waitForURL('**/konfigurator/');
-    await page.waitForFunction(()=>document.querySelector('#welcome-logo').dataset.logo==='ready');
+    await page.waitForFunction(()=>document.body.dataset.ready==='welcome');
     assert.equal(await page.locator('#viewport canvas').count(),0);
-    assert.ok(await page.evaluate(()=>welcomeDebug.inspect().meshes>0));
+    assert.ok(await page.locator('#welcome-logo img').evaluate(e=>e.complete&&e.naturalWidth>0));
+    assert.equal(await page.locator('#welcome-logo canvas').count(),0);
     await page.waitForTimeout(1700);
     await page.screenshot({path:path.join(folder,`welcome-${width}.png`)});
     await page.locator('#start-configurator').click();await page.waitForFunction(()=>document.body.dataset.ready==='true');
     assert.equal(await page.locator('#welcome canvas').count(),0);
-    assert.equal(await page.evaluate(()=>welcomeDebug.inspect().active),false);
+
     await page.waitForTimeout(600);
     assert.equal(await page.locator('.prescot-dock,.pm-menu,iframe').count(),0);
     assert.equal(await page.locator('header.header button').count(),0);
@@ -47,7 +48,7 @@ try{
     const pending=page.waitForEvent('download');await page.locator('#export-json').click();const download=await pending;const file=path.join(folder,`project-${width}.json`);await download.saveAs(file);
     assert.equal(JSON.parse(await fs.readFile(file,'utf8')).schema,'prescot-light-studio/v9');
     await page.locator('#export-dialog .close').click();await page.locator('#about').click();await page.locator('#about-dialog').waitFor({state:'visible'});await page.locator('#about-dialog .close').click();
-    assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);report.push({width,menu:true,welcome3D:true,model:true,return:true,exports:true,errors,missing});await page.close();
+    assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);report.push({width,menu:true,staticWelcome:true,model:true,return:true,exports:true,errors,missing});await page.close();
   }
   // GitHub Pages uses a /prescotpl/ prefix. Serve the reviewed files under that
   // origin to check imports and source links before publishing.

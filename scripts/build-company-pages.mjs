@@ -1,45 +1,32 @@
 import fs from 'node:fs/promises';
 import {chromium} from 'playwright';
-const root=new URL('../',import.meta.url);
-const configs=[{
- slug:'laboratorium',title:'Laboratorium pomiarowe',headline:'Światło sprawdzone<br><em>w pomiarach.</em>',
- intro:'Strumień świetlny, temperatura barwowa i oddawanie barw. Poznaj zaplecze pomiarowe Prescot LED.',
- hero:'wp-content/uploads/2026/02/lab2.webp',
- sections:[
-  ['01 / Fotometria','Parametry, które opisują światło.','W wewnętrznym laboratorium sprawdzamy strumień świetlny, temperaturę barwową i współczynnik oddawania barw CRI. Pomiary pomagają porównać produkt z założeniami projektu.','wp-content/uploads/2026/02/lab2.webp'],
-  ['02 / Kontrola jakości','Od próbki do serii.','Zaplecze pomiarowe jest częścią naszego procesu produkcyjnego. Pozwala sprawdzać parametry taśm i oceniać ich zgodność z ustaloną specyfikacją.','wp-content/uploads/2026/01/kulka.png'],
-  ['03 / Dane produktu','Pomiary i dokumentacja.','Przy projekcie pod własną marką ustalamy zakres danych technicznych i materiałów potrzebnych do wprowadzenia produktu do oferty. Omów z nami model, jego zastosowanie i planowany zakres współpracy.','wp-content/uploads/2026/02/ce-rohs-eprel-2.webp']
- ], ep:true,cta:'Porozmawiajmy o parametrach Twojego produktu',related:'wlasny-brand/',relatedLabel:'Produkcja pod własną marką'
-},{
- slug:'wlasny-brand',title:'Własny brand',headline:'Twoja marka.<br><em>Nasze zaplecze.</em>',
- intro:'Taśmy LED pod Twoją marką — od doboru parametrów po oznaczenia, opakowanie i materiały produktowe.',
- hero:'assets/offer/profile-led.webp',video:true,
- sections:[
-  ['01 / Specyfikacja','Zaczynamy od światła.','Ustalamy zastosowanie, barwę, moc i wymiary taśmy. Na tej podstawie dobieramy rozwiązanie do Twojej oferty i uzgadniamy specyfikację produktu.','assets/offer/profile-led.webp'],
-  ['02 / Twoja marka','Oznaczenia i opakowanie.','Nadruk na laminacie oraz opakowanie tworzą spójną identyfikację produktu. Zakres personalizacji ustalamy dla wybranej serii.','wp-content/uploads/2026/01/24d160-9-4080-1010_2124d160-9-4080-1010-2-scaled.png'],
-  ['03 / Zaplecze','Produkcja i pomiary w jednym procesie.','Korzystasz z naszego zaplecza produkcyjnego i laboratorium. Parametry uzgadniamy przed realizacją, a zakres kontroli odnosimy do wybranego produktu.','wp-content/uploads/2026/02/lab2.webp'],
-  ['04 / Materiały','Przygotowanie do Twojej oferty.','Możemy przygotować materiały graficzne, zdjęcia produktowe i dane techniczne. Omówimy również zakres wsparcia przy dokumentacji oraz rejestracji modeli w EPREL.','wp-content/uploads/2026/02/ce-rohs-eprel-2.webp']
- ],cta:'Zaplanujmy Twoją linię produktów',related:'laboratorium/',relatedLabel:'Poznaj laboratorium'
-}];
+const root=new URL('../',import.meta.url),version='20260913-studio2';
+const media={lab:'wp-content/uploads/2026/02/lab2.webp',sphere:'wp-content/uploads/2026/01/kulka.png',tape:'wp-content/uploads/2026/01/24d160-9-4080-1010_2124d160-9-4080-1010-2-1024x683.png'};
+for(const file of Object.values(media))await fs.access(new URL(file,root));
 const browser=await chromium.launch();
 try{
- const p=await browser.newPage();const source=await fs.readFile(new URL('produkcja/index.html',root),'utf8');
- for(const c of configs){
-  for(const image of [c.hero,...c.sections.map(s=>s[3])])await fs.access(new URL(image,root));
-  const html=await p.evaluate(({source,c})=>{
-   const d=new DOMParser().parseFromString(source,'text/html');
-   const footer=d.querySelector('.footerSlide');footer.querySelectorAll('.footerFormCol').forEach(e=>e.remove());
-   const footerMarkup=footer.outerHTML;
-   d.title=c.title+' · PRESCOT LED';
-   d.querySelectorAll('link[rel="canonical"],link[type*="oembed"],meta[name="description"]').forEach(e=>e.remove());
-   const canonical=d.createElement('link');canonical.rel='canonical';canonical.href=c.slug+'/';d.head.append(canonical);
-   const description=d.createElement('meta');description.name='description';description.content=c.intro;d.head.append(description);
-   const style=d.createElement('link');style.rel='stylesheet';style.href='company-pages.css?v=20260913-app11';d.head.append(style);
-   d.body.className='prescot-company-page';
-   d.body.innerHTML=`<div id="top-sticky-logo"><a href="./" aria-label="Prescot — strona główna"><img src="wp-content/uploads/2025/12/biale-z-kolorem.svg" alt="PRESCOT LED"></a></div><main id="content"><section class="pc-hero"><img class="pc-hero-photo" src="${c.hero}" alt="${c.title}" fetchpriority="high">${c.video?'<video class="pc-hero-photo" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="assets/production/hero-mobile.mp4" media="(max-width:767px)" type="video/mp4"><source src="assets/production/hero-desktop.mp4" type="video/mp4"></video>':''}<div class="pc-hero-copy"><h1>${c.headline}</h1><p>${c.intro}</p><a class="pc-link" href="${c.slug}/#poznaj">Poznaj ${c.slug==='laboratorium'?'laboratorium':'możliwości'} ↓</a></div></section>${c.sections.map(([number,title,text,img],i)=>`<section class="pc-step" id="${i?'etap-'+(i+1):'poznaj'}"><div class="pc-step-copy"><span>${number}</span><h2>${title}</h2><p>${text}</p></div><figure><img src="${img}" alt="${title}" loading="lazy" decoding="async"></figure></section>`).join('')}${c.ep?'<section class="pc-eprel"><span>EPREL</span><h2>Dane o źródłach światła.</h2><p>EPREL to europejska baza produktów objętych etykietowaniem energetycznym. Publiczna część bazy pozwala sprawdzić informacje o zarejestrowanych modelach źródeł światła.</p><a class="pc-link" href="https://eprel.ec.europa.eu/screen/product/lightsources" target="_blank" rel="noopener">Otwórz oficjalną bazę EPREL ↗</a></section>':''}<section class="pc-contact"><h2>${c.cta}</h2><div><a class="pm-download" href="kontakt/?temat=${encodeURIComponent(c.title)}">Porozmawiaj z nami ↗</a><a class="pc-link" href="${c.related}">${c.relatedLabel} →</a></div></section>${footerMarkup}</main><script defer src="local-navigation.js?v=20260913-app11"></script><script type="module" src="company-pages.mjs?v=20260913-app11"></script>`;
-   return '<!doctype html>\n'+d.documentElement.outerHTML;
-  },{source,c});
-  await fs.mkdir(new URL(c.slug+'/',root),{recursive:true});await fs.writeFile(new URL(c.slug+'/index.html',root),html.replace(/[\t ]+$/gm,'')+'\n');
- }
+ const page=await browser.newPage(),source=await fs.readFile(new URL('produkcja/index.html',root),'utf8');
+ const html=await page.evaluate(({source,media,version})=>{
+  const d=new DOMParser().parseFromString(source,'text/html'),footer=d.querySelector('.footerSlide');footer.querySelectorAll('.footerFormCol').forEach(e=>e.remove());
+  d.title='Laboratorium pomiarowe · PRESCOT LED';
+  d.querySelectorAll('link[rel="canonical"],link[type*="oembed"],meta[name="description"]').forEach(e=>e.remove());
+  const canonical=d.createElement('link');canonical.rel='canonical';canonical.href='laboratorium/';d.head.append(canonical);
+  const description=d.createElement('meta');description.name='description';description.content='Laboratorium PRESCOT LED. Sprawdzamy strumień świetlny, temperaturę barwową i oddawanie barw taśm LED.';d.head.append(description);
+  const style=d.createElement('link');style.rel='stylesheet';style.href='company-pages.css?v='+version;d.head.append(style);
+  d.body.className='prescot-company-page prescot-lab';
+  d.body.innerHTML=`
+<header class="pc-header"><a class="pc-brand" href="./" aria-label="PRESCOT — strona główna"><img src="wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg" alt="PRESCOT LED" width="150" height="32"></a><a class="pc-back" href="./"><span aria-hidden="true">←</span> Strona główna</a></header>
+<main id="content">
+<section class="lab-hero" aria-labelledby="lab-title"><div class="lab-hero-copy"><p class="lab-eyebrow">PRESCOT LAB</p><h1 id="lab-title">Mierzymy<br><em>światło.</em></h1><p class="lab-intro">Strumień, barwa i oddawanie kolorów. Sprawdzamy parametry taśm LED w naszym laboratorium.</p><a class="pc-link" href="laboratorium/#pomiary">Poznaj nasze pomiary <span aria-hidden="true">↓</span></a></div><figure class="lab-hero-image"><img src="${media.lab}" alt="Stanowisko pomiarowe z kulą całkującą i aparaturą do badania światła" width="1536" height="1024" fetchpriority="high"><figcaption>Stanowisko pomiarowe PRESCOT LED</figcaption></figure></section>
+<section class="lab-measurements" id="pomiary" aria-labelledby="measurements-title"><div class="lab-section-heading"><p class="lab-eyebrow">OD ŚWIATŁA DO DANYCH</p><h2 id="measurements-title">Trzy parametry.<br>Konkretny obraz produktu.</h2></div><div class="lab-metrics"><article><span class="lab-metric-symbol">Φ <small>lm</small></span><h3>Strumień świetlny</h3><p>Ile światła emituje badana taśma. Wynik pomiaru wyrażamy w lumenach.</p></article><article><span class="lab-metric-symbol">CCT <small>K</small></span><h3>Temperatura barwowa</h3><p>Ciepła, neutralna czy chłodna biel. Sprawdzamy barwę emitowanego światła.</p></article><article><span class="lab-metric-symbol">CRI <small>Ra</small></span><h3>Oddawanie barw</h3><p>Współczynnik opisujący odwzorowanie kolorów w porównaniu ze światłem odniesienia.</p></article></div></section>
+<section class="lab-equipment pc-step"><figure><img src="${media.sphere}" alt="Kula całkująca GL Optic" width="1024" height="1024" loading="lazy" decoding="async"></figure><div class="pc-step-copy"><p class="lab-eyebrow">ZAPLECZE POMIAROWE</p><h2>Kontrola zaczyna się<br>od pomiaru.</h2><p>Kula całkująca i aparatura pomiarowa pozwalają sprawdzić parametry źródła światła. Odnosimy wyniki do specyfikacji wybranej taśmy.</p><p>Laboratorium jest częścią naszego zaplecza produkcyjnego. Pomaga przejść od próbki do danych produktu.</p><a class="pc-link" href="produkcja/">Zobacz produkcję PRESCOT <span aria-hidden="true">↗</span></a></div></section>
+<section class="lab-process pc-step"><div class="pc-step-copy"><p class="lab-eyebrow">PRÓBKA → POMIAR → DANE</p><h2>Od taśmy do<br>jej parametrów.</h2><ol class="lab-process-list"><li><span>01</span><div><h3>Określamy produkt</h3><p>Model taśmy, zastosowanie i parametry, które chcemy sprawdzić.</p></div></li><li><span>02</span><div><h3>Wykonujemy pomiar</h3><p>Badamy próbkę w ustalonych warunkach i porównujemy wynik ze specyfikacją.</p></div></li><li><span>03</span><div><h3>Pracujemy na danych</h3><p>Wyniki pomagają opisać produkt i ocenić jego parametry.</p></div></li></ol></div><figure><img src="${media.tape}" alt="Detal taśmy LED PRESCOT z diodami i polami lutowniczymi" width="1024" height="683" loading="lazy" decoding="async"></figure></section>
+<section class="pc-contact"><p class="lab-eyebrow">POROZMAWIAJMY O TWOIM PRODUKCIE</p><h2>Jakie światło<br>chcesz sprawdzić?</h2><p>Przekaż nam model taśmy i zakres potrzebnych pomiarów.</p><div><a class="pm-download" href="kontakt/?temat=Laboratorium">Kontakt z PRESCOT <span aria-hidden="true">↗</span></a><a class="pc-link" href="konfigurator/">Skomponuj zestaw w 3D <span aria-hidden="true">↗</span></a></div></section>
+${footer.outerHTML}</main><script defer src="local-navigation.js?v=${version}"></script>`;
+  return '<!doctype html>\n'+d.documentElement.outerHTML;
+ },{source,media,version});
+ await fs.mkdir(new URL('laboratorium/',root),{recursive:true});await fs.writeFile(new URL('laboratorium/index.html',root),html.replace(/[\t ]+$/gm,'')+'\n');
+ // The retired page has no navigation entry; old links resolve to production.
+ await fs.writeFile(new URL('wlasny-brand/index.html',root),'<!doctype html>\n<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=../produkcja/"><link rel="canonical" href="../produkcja/"><title>Produkcja · PRESCOT LED</title></head><body><a href="../produkcja/">Przejdź do produkcji PRESCOT LED</a></body></html>\n');
 }finally{await browser.close();}
-console.log('Built Laboratorium and Własny Brand using shared production typography, media and footer.');
+console.log('Built PRESCOT Lab and retired the separate brand page.');

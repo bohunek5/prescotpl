@@ -135,10 +135,7 @@ Wyłącza tylko spekulacyjne pobieranie HTML w tej symulacji, żeby Chromium nie
 pobrał starej wersji z GitHub z pominięciem przechwytywania. Testuje także gest
 dotykowy w Chromium oraz menu, asystenta i odnośniki w obu silnikach.
 
-Warstwa mobilna i nawigacja mają wersję `20260911-brand3`, pozostałe wspólne
-zasoby zachowują `20260911-mobile1`. Mechaniczną aktualizację ich
-odnośników we wszystkich wariantach HTML wykonuje
-`node scripts/update-responsive-assets.mjs`. Bazowy adres jest zapisany w HTML
+Wspólne zasoby i nawigacja mają wersję `20260913-studio2`. Mechaniczną aktualizację ich odnośników we wszystkich wariantach HTML wykonuje `node scripts/bump-app-assets.mjs`. Bazowy adres jest zapisany w HTML
 przed zasobami, żeby uniknąć spekulacyjnych żądań do błędnych podkatalogów.
 Skrypt dopasowuje bazę do lokalnego podglądu; wersja bez JS używa GitHub Pages.
 
@@ -171,6 +168,14 @@ Podstrona `konfigurator/` zawiera samodzielne PRESCOT Light Studio 09. Na telefo
 Test sprawdza wejście z menu, nagłówek 320/390/1440 px, model WebGL, zachowanie kamery, okna eksportu i JSON oraz ścieżki źródeł pod prefiksem `/prescotpl/konfigurator/`. Raport i obrazy: `output/configurator/`.
 
 
-Konfigurator wita przestrzennym logo PRESCOT z oryginalnego SVG oraz hasłem „Skomponuj swój zestaw.”. Renderowanie logo zatrzymuje się po krótkiej animacji i zwalnia zasoby po wejściu. Zapisane linki `#config=` pomijają ekran wejściowy. Na szerokich ekranach sterowanie znajduje się po prawej stronie nazwy produktu, dzięki czemu model otrzymuje więcej wysokości; parametry techniczne pozostają pod modelem.
+Konfigurator wita zwykłym, oryginalnym logo SVG PRESCOT oraz hasłem „Skomponuj swój zestaw.”. Bez animacji i zmiany kolorów; WebGL uruchamia się po wejściu. Zapisane linki `#config=` pomijają ekran wejściowy. Na szerokich ekranach sterowanie znajduje się po prawej stronie nazwy produktu. Na telefonie przyciski zajmują uporządkowane rzędy, model ma 330–430 px wysokości, a parametry techniczne mieszczą się w dwóch kolumnach. Dodatkowy przycisk w dolnym prawym rogu modelu składa i rozkłada zestaw, również odwracając trwający ruch bez zmiany kamery.
 
-`npm run test:configurator-studio` sprawdza siedem szerokości ekranu, brak nakładania przycisków na model, logo 3D i jego zatrzymywanie, wejście z klawiatury, zapisane linki, szybkie wejście przed pobraniem logo, fallback SVG, kadry animacji oraz WebKit z ograniczonym ruchem. Raport: `output/configurator/studio-layout-report.json`.
+Tryb nocny obejmuje całą aplikację: model, nagłówek, wybór produktów i okna eksportu. Wzmocniono światło luminoforu i koszulek oraz czytelność nadruku PCB. Wciąż jest to ilustracja, bez renderowania w bezruchu i bez świecenia od spodu PCB.
+
+`npm run test:configurator-studio` sprawdza 320/390/834/1440 px, układ i parametry, zwykłe logo bez renderera, tryb nocny, pełne cykle montażu i zmianę kierunku, kamerę oraz WebKit z ograniczonym ruchem. Raport: `output/configurator/v11-studio-report.json`.
+
+## Menu mobilne i Laboratorium
+
+„Więcej” ma dwie główne karty: Konfigurator LED i Laboratorium. Język znajduje się w osobnym, podpisanym wierszu. Menu mieści się na ekranach od 320 px. Test: `node scripts/check-app-navigation.mjs` (Chromium i WebKit).
+
+`laboratorium/` korzysta z istniejących zdjęć stanowiska pomiarowego, kuli całkującej i taśmy. Oryginalne logo ma stały rozmiar; podstrona prezentuje strumień, CCT i CRI bez deklarowania akredytacji ani fikcyjnych wyników. Źródło: `scripts/build-company-pages.mjs` i `company-pages.css`. Stara osobna strona `wlasny-brand/` kieruje do `produkcja/`; usunięto jej pozycje z menu i strony głównej.

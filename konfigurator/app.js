@@ -1,14 +1,13 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=e6079192090f';
-import {accessoryKit} from './accessory-data.js?v=e6079192090f';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=e6079192090f';
-import {createWelcome} from './welcome.js?v=e6079192090f';
-import {zones} from './zones.js?v=e6079192090f';
-import {mountingSteps} from './mounting.js?v=e6079192090f';
-import {coverIcon} from './cover-shapes.js?v=e6079192090f';
-import {profileIcon} from './profile-shapes.js?v=e6079192090f';
-import {projectSheet} from './sheet.js?v=e6079192090f';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=9e675244bed0';
+import {accessoryKit} from './accessory-data.js?v=9e675244bed0';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=9e675244bed0';
+import {zones} from './zones.js?v=9e675244bed0';
+import {mountingSteps} from './mounting.js?v=9e675244bed0';
+import {coverIcon} from './cover-shapes.js?v=9e675244bed0';
+import {profileIcon} from './profile-shapes.js?v=9e675244bed0';
+import {projectSheet} from './sheet.js?v=9e675244bed0';
 const $=id=>document.getElementById(id);
-let s=normalize(defaults);
+let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
 let studio,toastTimer,animation=0,stripFilter='all',profileFilter='all';
 const num=(v,d=0)=>v.toLocaleString('pl-PL',{maximumFractionDigits:d});
@@ -70,13 +69,13 @@ function update(){
   $('profile-source').href=p.source;$('strip-source').href=t.source;
   $('selected-profile').textContent=p.name;$('selected-strip').textContent=t.name;$('selected-cover').textContent=spec.cover.name;$('selected-settings').textContent=`${num(s.length/1000,2)} m · ${num(spec.power,1)} W`;
   $('detail-width').textContent=num(p.width,1)+' mm';$('detail-height').textContent=num(p.height,1)+' mm';$('detail-pcb').textContent=t.width+' mm';$('detail-color').textContent=t.type==='CCT'?t.cctMin+'–'+t.cctMax+' K':(t.type==='RGBW'?'RGB + ':'')+t.cct+' K';
-  $('detail-channel').textContent=num(p.channel,1)+' mm';$('detail-finish').textContent={silver:'Srebrna anoda',raw:'Surowe',black:'Czarna anoda',white:'Biały lakier'}[s.finish];$('detail-cri').textContent='CRI '+t.cri+(t.type==='RGBW'?' · W':'');$('detail-power').textContent=num(spec.wattsPerMeter,1)+' W';$('technical-profile').textContent=spec.finish.ref;$('technical-tape').textContent=t.ref+(t.copperOz?' · PCB '+t.copperOz+' oz':'');
+  $('detail-color').dataset.wide=String(['CCT','RGBW'].includes(t.type));$('detail-channel').textContent=num(p.channel,1)+' mm';$('detail-finish').textContent={silver:'Srebrna anoda',raw:'Surowe',black:'Czarna anoda',white:'Biały lakier'}[s.finish];$('detail-cri').textContent='CRI '+t.cri+(t.type==='RGBW'?' · W':'');$('detail-power').textContent=num(spec.wattsPerMeter,1)+' W';$('technical-profile').textContent=spec.finish.ref;$('technical-tape').textContent=t.ref+(t.copperOz?' · PCB '+t.copperOz+' oz':'');
   const sleeveDetail=s.view==='macro'&&(spec.sleeve||t.encapsulation)&&['sleeve','seal','segment'].includes(s.detail),housing=spec.sleeve||(t.encapsulation?spec.envelope:null);
   $('technical-profile-label').textContent=sleeveDetail?(spec.sleeve?'KOSZULKA PRESCOT':'OSŁONA TAŚMY PRESCOT'):'PROFIL KLUŚ';
   for(const [i,label]of(sleeveDetail?['Szerokość','Wysokość','PCB','Materiał']:['Szerokość','Wysokość','Kanał na taśmę','Wykończenie']).entries())$('profile-metric-label-'+i).textContent=label;
   if(sleeveDetail){$('detail-width').textContent=num(housing.width,1)+' mm';$('detail-height').textContent=num(housing.height,1)+' mm';$('detail-channel').textContent=(spec.sleeve?.pcbMax??t.width)+' mm';$('detail-finish').textContent=spec.sleeve?.clear||t.encapsulation==='tube'?'Silikon przezroczysty':'Silikon mleczny';$('technical-profile').textContent=spec.sleeve?.ref||t.ip;}
   $('led-toggle').innerHTML='<i></i>'+(s.light?'LED włączone':'LED wyłączone');
-  $('product-wire').setAttribute('aria-pressed',String(s.showCable));$('led-toggle').setAttribute('aria-pressed',String(s.light));document.body.dataset.view=s.view;document.body.dataset.lightStudy=String(s.lightStudy);document.querySelectorAll('[data-light-study]').forEach(b=>b.setAttribute('aria-pressed',String(s.lightStudy)));document.querySelector('.canvas-help').textContent=z?'Obrót w obrębie strefy · kółko: zbliżenie':'Obrót 360° · kółko: zbliżenie · prawy przycisk: przesunięcie';
+  $('product-wire').setAttribute('aria-pressed',String(s.showCable));$('led-toggle').setAttribute('aria-pressed',String(s.light));document.body.dataset.view=s.view;document.body.dataset.lightStudy=String(s.lightStudy);document.querySelectorAll('button[data-light-study]').forEach(b=>{b.setAttribute('aria-pressed',String(s.lightStudy));b.textContent=s.lightStudy?'Tryb dzienny':'Tryb nocny';});document.querySelector('meta[name=theme-color]').content=s.lightStudy?'#1c1f24':'#f7f7f2';document.querySelector('.canvas-help').textContent=z?'Obrót w obrębie strefy · kółko: zbliżenie':'Obrót 360° · kółko: zbliżenie · prawy przycisk: przesunięcie';
   document.querySelector('.installation-toolbar').hidden=!installed;document.querySelector('.assembly-toolbar').hidden=s.view!=='assembly';document.querySelector('.macro-toolbar').hidden=s.view!=='macro';document.querySelector('.zone-toolbar').hidden=!z;document.querySelector('.assembly-steps').hidden=s.view!=='assembly';document.querySelector('.mount-guide').hidden=!walk;document.querySelector('.detail-metrics').hidden=false;$('zone-settings').hidden=!z;
   $('rgbw-controls').hidden=t.type!=='RGBW';$('rgb-color').value=s.rgbColor;document.querySelectorAll('[data-rgb-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rgbMode===s.rgbMode)));
   $('cct-control').hidden=t.type!=='CCT';$('cct-note').hidden=['CCT','RGBW'].includes(t.type);
@@ -101,7 +100,7 @@ function update(){
   const availableFinishes=finishesFor(p);$('finishes').querySelectorAll('button').forEach(b=>b.hidden=!availableFinishes.includes(b.dataset.value));
   $('covers').querySelectorAll('button').forEach(b=>{b.hidden=!p.covers.includes(b.dataset.value);const c=covers.find(c=>c.id===b.dataset.value);b.disabled=!!c.maxWatts&&spec.wattsPerMeter>c.maxWatts;b.title=b.disabled?`Maks. ${c.maxWatts} W/m. Wybrana taśma: ${spec.wattsPerMeter} W/m.`:c.name;});
   for(const [id,k] of [['profiles','profile'],['strips','strip'],['covers','cover'],['finishes','finish'],['materials','material']])$(id).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===s[k])));
-  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===s.view||(installed&&b.dataset.view==='installation'&&!!b.closest('.views')))));
+  document.querySelectorAll('button[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===s.view||(installed&&b.dataset.view==='installation'&&!!b.closest('.views')))));
   for(const k of ['exploded','cct','dimmer','repeat','mounting'])$(k).value=s[k];$('light').checked=s.light;
   $('length-value').textContent=`${num(s.length/1000,3)} m`;$('cct-value').textContent=s.cct+' K';$('dimmer-value').textContent=s.dimmer+'%';$('cct-note').textContent=t.type==='CCT'?`CCT: regulacja ${t.cctMin}–${t.cctMax} K, kanały WW + CW.`:`Wybrana taśma: stałe ${t.cct} K.`;
   $('assembly-value').textContent=s.exploded===0?'Zestaw zamknięty':s.exploded<=50?'Osadź przesłonę':'Ułóż taśmę w profilu';$('geometry-note').textContent=p.geometry;
@@ -112,7 +111,7 @@ function update(){
   const titles={assembly:['KLUŚ × PRESCOT',p.name],installation:['DETAL MONTAŻU','Od spodu.'],section:['OSADZENIE / PRZEKRÓJ',p.name],mounting:['MONTAŻ / '+p.name,'Krok po kroku.'],macro:['PRESCOT LED / DETAL',t.name],zone:['STREFA MONTAŻU',site.name+'.']};
   const descriptions={assembly:`${t.name} · ${spec.cover.name} · ${p.application}.`,installation:s.mounting==='recessed'?'Profil we wpuście. Zobacz, jak wykańcza powierzchnię.':'Linia światła, mocowanie i styk z powierzchnią.',section:`${p.name} · kanał ${num(p.channel,1)} mm · ${p.id==='kozus'?'płyta 16 mm i warstwa wykończenia':'podłoże i osadzenie przesłony'}.`,mounting:'Od przygotowania podłoża do zamkniętej linii światła.',macro:s.detail==='sleeve'?(t.encapsulation==='coating'?'WCOB · półokrągła mleczna osłona 8 × 5 mm.':`${spec.sleeve?.name||t.ip} · taśma i koszulka PRESCOT, bez przesłony.`):s.detail==='seal'?'Przewód, silikon i zakończenia. Zobacz zamknięcie odcinka.':s.detail==='wiring'?`Pola podłączenia: ${spec.terminals.join(' / ')}.`:s.detail==='curve'?'S-shape. Elastyczne mostki pozwalają prowadzić taśmę po łuku.':t.shape==='s'?'Falujący laminat, wycięcia i pola miedziane. Zasilanie 12 V.':t.technology==='WCOB'?'Biała powierzchnia White COB, także przy wyłączonym świetle.':`Cienki laminat i ${t.type==='COB'?'ciągłe pasmo COB':'obudowy SMD '+(t.package||(t.type==='CCT'?'5050':'2835'))}.`,zone:site.description};
   $('stage-overline').textContent=titles[s.view][0];$('stage-heading').textContent=titles[s.view][1].replace(/(\d+)\s+K\b/g,'$1\u00a0K');$('detail-description').textContent=descriptions[s.view];
-  $('exploded').disabled=s.view!=='assembly'||spec.assemblyBlocked;$('animate').disabled=s.view!=='assembly'||spec.assemblyBlocked;document.querySelectorAll('[data-step]').forEach(b=>b.disabled=spec.assemblyBlocked&&b.dataset.step!=='100');filterStrips();
+  $('mobile-assembly-play').hidden=s.view!=='assembly';$('mobile-assembly-play').disabled=spec.assemblyBlocked;syncAssemblyButton();$('exploded').disabled=s.view!=='assembly'||spec.assemblyBlocked;$('animate').disabled=s.view!=='assembly'||spec.assemblyBlocked;document.querySelectorAll('[data-step]').forEach(b=>b.disabled=spec.assemblyBlocked&&b.dataset.step!=='100');filterStrips();
   try{localStorage.setItem('prescot-light-studio-v9',JSON.stringify(s));}catch{}
   studio?.update(s);
 }
@@ -138,8 +137,8 @@ document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{stopAnimation
 document.querySelectorAll('[data-mount-step]').forEach(b=>b.onclick=()=>{s.mountStep=Number(b.dataset.mountStep);update();});
 $('mount-prev').onclick=()=>{s.mountStep=Math.max(0,s.mountStep-1);update();};$('mount-next').onclick=()=>{s.mountStep=Math.min(4,s.mountStep+1);update();};
 for(const [id,k]of [['finishes','finish'],['materials','material']])$(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{s[k]=b.dataset.value;update();});
-document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{stopAnimation();s.view=b.dataset.view;if(s.view==='zone'&&innerWidth<=780)s.zoneDetail=true;update();showMobilePreview();});
-document.querySelectorAll('[data-light-study]').forEach(b=>b.onclick=()=>{s.lightStudy=!s.lightStudy;if(s.lightStudy){s.light=true;s.dimmer=100;}update();});
+document.querySelectorAll('button[data-view]').forEach(b=>b.onclick=()=>{stopAnimation();s.view=b.dataset.view;if(s.view==='zone'&&innerWidth<=780)s.zoneDetail=true;update();showMobilePreview();});
+document.querySelectorAll('button[data-light-study]').forEach(b=>b.onclick=()=>{s.lightStudy=!s.lightStudy;if(s.lightStudy){s.light=true;s.dimmer=100;}update();});
 $('inspect-tape').onclick=()=>{s.view='macro';update();showMobilePreview();};$('reset-camera').onclick=()=>studio?.frame();$('led-toggle').onclick=()=>{s.light=!s.light;update();};
 $('zone-mount').onclick=()=>{s.view='mounting';s.mountStep=0;update();};$('zone-cable').onclick=()=>{s.showCable=!s.showCable;if(s.showCable)s.zoneDetail=true;update();};
 document.querySelectorAll('[data-zone-detail]').forEach(b=>b.onclick=()=>{s.zoneDetail=b.dataset.zoneDetail==='true';update();});
@@ -148,14 +147,26 @@ $('zone-motion').onclick=()=>{
   if(!studio||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   studio.setOpening(from);const start=performance.now();const tick=t=>{const f=Math.min(1,(t-start)/800),ease=f*f*(3-2*f);studio.setOpening(from+(to-from)*ease);if(f<1)animation=requestAnimationFrame(tick);else animation=0;};animation=requestAnimationFrame(tick);
 };
-function stopAnimation(){cancelAnimationFrame(animation);animation=0;$('animate').textContent='▶';$('animate').setAttribute('aria-label','Odtwórz animację montażu');$('play-mount').textContent='Odtwórz montaż ↗';}
+function syncAssemblyButton(){
+  const target=assemblyTarget===null?(s.exploded>50?0:100):(assemblyTarget===0?100:0),label=target===0?'Złóż':'Rozłóż';
+  $('mobile-assembly-play').querySelector('span').textContent=label;
+  $('mobile-assembly-play').setAttribute('aria-label',label+' zestaw');
+  $('mobile-assembly-play').title=assemblyTarget===null?label+' zestaw':'Odwróć animację · '+label.toLowerCase()+' zestaw';
+  $('mobile-assembly-play').dataset.playing=String(assemblyTarget!==null);
+}
+function stopAnimation(){cancelAnimationFrame(animation);animation=0;assemblyTarget=null;$('animate').textContent='▶';$('animate').setAttribute('aria-label','Odtwórz animację montażu');$('play-mount').textContent='Odtwórz montaż ↗';$('play-mount').setAttribute('aria-label','Odtwórz montaż');syncAssemblyButton();}
+function playAssembly(to){
+  cancelAnimationFrame(animation);animation=0;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){s.exploded=to;assemblyTarget=null;update();return;}
+  const start=performance.now(),from=s.exploded,duration=Math.max(1,6200*Math.abs(to-from)/100);assemblyTarget=to;
+  $('animate').textContent='Ⅱ';$('animate').setAttribute('aria-label','Wstrzymaj animację montażu');$('play-mount').textContent='Ⅱ Wstrzymaj';$('play-mount').setAttribute('aria-label','Wstrzymaj montaż');syncAssemblyButton();
+  const tick=t=>{const f=Math.min(1,(t-start)/duration);s.exploded=from+(to-from)*f;$('exploded').value=s.exploded;studio?.setAssembly(s.exploded);if(f<1)animation=requestAnimationFrame(tick);else{stopAnimation();update();}};animation=requestAnimationFrame(tick);
+}
 $('play-mount').onclick=()=>$('animate').click();$('animate').onclick=()=>{
   if(animation){stopAnimation();update();return;}
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){s.exploded=s.exploded>0?0:100;update();return;}
-  const start=performance.now(),from=s.exploded,to=from>40?0:100,duration=6200*Math.abs(to-from)/100;
-  $('animate').textContent='Ⅱ';$('play-mount').textContent='Ⅱ Wstrzymaj';
-  const tick=t=>{const f=Math.min(1,(t-start)/duration);s.exploded=from+(to-from)*f;$('exploded').value=s.exploded;studio?.setAssembly(s.exploded);if(f<1)animation=requestAnimationFrame(tick);else{stopAnimation();update();}};animation=requestAnimationFrame(tick);
+  playAssembly(s.exploded>40?0:100);
 };
+$('mobile-assembly-play').onclick=()=>playAssembly(assemblyTarget===null?(s.exploded>50?0:100):(assemblyTarget===0?100:0));
 for(const [button,dialog]of [['export-open','export-dialog'],['about','about-dialog']])$(button).onclick=()=>$(dialog).showModal();document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}
 function project(){const spec=specification(s);return{schema:'prescot-light-studio/v9',configuration:s,displaySampleMm:displayLength(s),components:{finish:spec.finish,profile:spec.profile,strip:spec.strip,cover:spec.cover,sleeve:spec.sleeve,accessories:accessoryKit(spec.profile,s).filter(a=>a.selected)},calculation:{stripLengthMm:spec.stripLength,powerW:spec.power,currentA:spec.current,wattsPerMeter:spec.wattsPerMeter,selectedTerminal:spec.selectedTerminal,freeSpaceMm:spec.offcut,cutVerified:spec.cutVerified,envelopeFits:spec.envelopeFits,fitVerified:spec.fitVerified,fitStatus:spec.fitStatus,issues:spec.issues},mounting:{zone:s.zone,source:spec.profile.instruction,steps:mountingSteps(spec.profile,s.mounting==='recessed')},notes:['Product and installation illustration; not fabrication or electrical documentation.','Manufacturer profile section for MICRO-PLUS; other sections reconstructed from drawings with simplified details.','PCB and print are illustrative. CE/RoHS option is a print concept, not certification evidence.','Drill, groove, fastener and cable dimensions require project-specific selection.','Accessory references follow KLUŚ cards; fixing quantities are unspecified. Sleeve and sealing geometry is illustrative and does not establish IP compliance.','GLB contains full project length. Custom artwork is embedded only in GLB.','Release paper marked 3M is illustrative; adhesive grade is not specified. RGB light preview does not simulate spectral colour rendering; CRI is catalog data.']};}
@@ -177,16 +188,15 @@ $('artwork').onchange=async()=>{
 };
 $('artwork-clear').onclick=()=>{studio?.setArtwork(null);$('artwork-name').textContent='Obecnie: schemat poglądowy PCB.';toast('Przywrócono schemat PCB.');};
 
-let welcome,starting;
-const welcomeLoad=new AbortController();
+let starting;
 async function startConfigurator(){
   if(starting)return starting;
   starting=(async()=>{
     document.body.dataset.screen='studio';document.body.dataset.ready='loading';$('welcome').hidden=true;$('configurator').hidden=false;
-    welcomeLoad.abort();welcome?.dispose();$('start-configurator').disabled=true;
+    $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=e6079192090f');
+      const {createStudio}=await import('./scene.js?v=9e675244bed0');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';
@@ -202,5 +212,5 @@ update();
 if(location.hash.startsWith('#config='))startConfigurator();
 else{
   document.body.dataset.ready='welcome';
-  createWelcome($('welcome-logo'),{signal:welcomeLoad.signal}).then(result=>{if(!result)return;welcome=result;window.welcomeDebug=result;if(starting)result.dispose();}).catch(()=>{$('welcome-logo').dataset.logo='fallback';});
+  $('welcome-logo').dataset.logo='static';
 }

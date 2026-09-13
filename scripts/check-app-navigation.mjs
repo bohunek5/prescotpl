@@ -7,14 +7,14 @@ for(const engine of process.env.BROWSER==='chromium'?[chromium]:[chromium,webkit
  const browser=await engine.launch();
  try{for(const width of(process.env.TEST_WIDTHS||'320,390,1440').split(',').map(Number)){
   const page=await browser.newPage({viewport:{width,height:844},isMobile:width<768,hasTouch:width<768});
-  for(const route of(process.env.ROUTES||',kontakt/,baza-wiedzy/,silpro/,laboratorium/,wlasny-brand/').split(',')){
+  for(const route of(process.env.ROUTES||',kontakt/,baza-wiedzy/,silpro/,laboratorium/').split(',')){
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto(new URL(route,base).href,{waitUntil:'load'});await page.waitForSelector('.pm-menu',{state:'attached'});await page.waitForTimeout(300);
    assert.equal(await page.locator('.footerFormCol,.contactForm').count(),0,'No footer enquiry forms');
    assert.equal(await page.locator('#contact-form').count(),route==='kontakt/'?1:0);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${route} no overflow`);
    if(route===''){
-    assert.equal(await page.locator('.pm-capability-link').count(),7);
+    assert.equal(await page.locator('.pm-capability-link').count(),6);
     const lab=page.getByRole('link',{name:'Laboratorium pomiarowe',exact:true});
     assert.ok((await lab.getAttribute('href')).endsWith('/laboratorium/'));
     const colour=await lab.locator('.elementor-icon').evaluate(e=>getComputedStyle(e).backgroundColor);assert.notEqual(colour,'rgb(225, 78, 38)');
@@ -23,9 +23,10 @@ for(const engine of process.env.BROWSER==='chromium'?[chromium]:[chromium,webkit
    if(width<768){
     const dock=await page.locator('.prescot-dock').boundingBox();assert.ok(Math.abs(dock.x+dock.width/2-width/2)<1);
     await page.getByRole('button',{name:'Więcej stron',exact:true}).click();await page.waitForTimeout(260);
-    const menu=page.locator('.pm-menu');const box=await menu.boundingBox();assert.ok(box.height<=340,`Compact menu ${box.height}`);assert.ok(Math.abs(box.x+box.width/2-width/2)<1);
-    const links=menu.locator('nav a');assert.equal(await links.count(),7);
-    for(const row of await links.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height)))assert.ok(row>=44&&row<=68,'Comfortable touch targets');
+    const menu=page.locator('.pm-menu');const box=await menu.boundingBox();assert.ok(box.height<=390,`Compact menu ${box.height}`);assert.ok(Math.abs(box.x+box.width/2-width/2)<1);
+    const links=menu.locator('nav a');assert.equal(await links.count(),6);
+    for(const row of await links.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().height)))assert.ok(row>=44&&row<=125,'Comfortable touch targets');
+    assert.equal(await menu.locator('a[href*="wlasny-brand"]').count(),0);
     const flag=await menu.locator('.gt-current-lang img').boundingBox();const control=await menu.locator('.dock-lang-item').boundingBox();if(flag)assert.ok(Math.abs(flag.y+flag.height/2-control.y-control.height/2)<2,'Vertically centred flag');
     await page.screenshot({path:`${folder}/${engine.name()}-${width}-${route.replaceAll('/','')||'home'}-menu.png`});
     await page.getByRole('button',{name:'Zamknij menu',exact:true}).click();

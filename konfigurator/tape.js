@@ -1,11 +1,11 @@
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=e6079192090f';
-import {drawPcbBrand} from './brand-art.js?v=e6079192090f';
-import {tapeLayout} from './tape-layout.js?v=e6079192090f';
-import {buildSilicone} from './silicone.js?v=e6079192090f';
-import {glowMaterial} from './glow.js?v=e6079192090f';
-import {phosphorMap} from './light-textures.js?v=e6079192090f';
-import {buildReleaseLiner} from './release-liner.js?v=e6079192090f';
+import {rgbwChannels,colorCct} from './light-color.js?v=9e675244bed0';
+import {drawPcbBrand} from './brand-art.js?v=9e675244bed0';
+import {tapeLayout} from './tape-layout.js?v=9e675244bed0';
+import {buildSilicone} from './silicone.js?v=9e675244bed0';
+import {glowMaterial} from './glow.js?v=9e675244bed0';
+import {phosphorMap} from './light-textures.js?v=9e675244bed0';
+import {buildReleaseLiner} from './release-liner.js?v=9e675244bed0';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -27,7 +27,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   }
   const surfaceTexture=art?new T.CanvasTexture(art):pcbTexture(t,state.print);
   surfaceTexture.colorSpace=T.SRGBColorSpace;surfaceTexture.wrapS=T.RepeatWrapping;
-  surfaceTexture.repeat.set(stripLength/(art?state.repeat:t.cut),1);surfaceTexture.anisotropy=8;textures.push(surfaceTexture);
+  surfaceTexture.repeat.set(stripLength/(art?state.repeat:t.cut),1);surfaceTexture.anisotropy=16;textures.push(surfaceTexture);
   function ribbon(width,thickness,y,material,name){
     const g=new T.BoxGeometry(L,thickness,width,Math.max(32,Math.ceil(L*(serpentine?(overview?1500:6000):(overview?200:1200)))),1,1);
     // Top UVs need physical X along the length, -Z across the tape.
@@ -38,7 +38,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   }
   ribbon(W,.00008,.00004,mat('#d3bd88',.65),'Warstwa_kleju');
   ribbon(W,.00010,.00013,mat('#e6d4b3',.5),'Elastyczny_laminat');
-  ribbon(W,.00008,.00022,mat('#ffffff',.31,{map:surfaceTexture}),'PCB_z_nadrukiem');
+  ribbon(W,.00008,.00022,mat('#ffffff',.57,{map:surfaceTexture,envMapIntensity:.45}),'PCB_z_nadrukiem');
   const count=layout.leds.length;
   const bodies=[],emitters=[],coldEmitters=[],solders=[],resistors=[],resistorEnds=[],rgbPoints={R:[],G:[],B:[]},rgbMaterials={};
   if(rgbw)for(const [key,color]of Object.entries({R:'#ff1605',G:'#20ff08',B:'#143bff'}))rgbMaterials[key]=mat('#d8d7c3',.28,{emissive:color,emissiveMap:phosphor,emissiveIntensity:0});
@@ -74,7 +74,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     const style=glowMaterial(!continuous);materials.push(style.material);textures.push(style.texture);
     style.material.side=T.FrontSide;
     let mesh;if(continuous){const g=new T.PlaneGeometry(L,W*2.5,Math.max(32,Math.ceil(L*200)),1);g.rotateX(-Math.PI/2);geometries.push(g);mesh=new T.Mesh(g,style.material);mesh.name='Poswiata_pasmo';group.add(mesh);ribbons.push({g,original:g.attributes.position.array.slice(),y:whiteCOB?(t.envelopeHeight??5)/1000+.00012:.0017});}
-    else{const g=new T.PlaneGeometry(cct?.009:small?.005:.008,cct?.008:small?.004:.008);g.rotateX(-Math.PI/2);geometries.push(g);mesh=instances(g,style.material,points.map(([x,y,z])=>[x,y+.00022,z]),'Poswiata_'+channel);}
+    else{const g=new T.PlaneGeometry(cct?.012:small?.006:.011,cct?.010:small?.005:.010);g.rotateX(-Math.PI/2);geometries.push(g);mesh=instances(g,style.material,points.map(([x,y,z])=>[x,y+.00022,z]),'Poswiata_'+channel);}
     if(mesh){mesh.castShadow=false;mesh.receiveShadow=false;mesh.visible=false;halos.push({mesh,style,channel});}
   }
   if(!art){addHalo(emitters,'WW');if(cct&&!continuous)addHalo(coldEmitters,'CW');if(rgbw)for(const key of ['R','G','B'])addHalo(rgbPoints[key],key);}
@@ -117,10 +117,10 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);
     const level=s.light&&!s.compare?s.dimmer/100:0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
     warm.emissive.copy(rgbw?colorCct(t.cct):cct&&!continuous?colorCct(t.cctMin):color);cool.emissive.copy(colorCct(t.cctMax||6500));
-    const strength=level*(s.lightStudy?3.3:1.7)*(spec.wattsPerMeter/t.watts);
+    const strength=level*(s.lightStudy?13:7.5)*(spec.wattsPerMeter/t.watts);
     const channels=rgbw?rgbwChannels(s):null;
     warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=strength*channels[key];cool.emissiveIntensity=strength*mix;
-    for(const {mesh,style,channel}of halos){const fraction=rgbw?channels[channel==='WW'?'W':channel]:cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&['sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?(channel==='WW'?warm.emissive:rgbMaterials[channel].emissive):cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(s.lightStudy?1.1:.28);}
+    for(const {mesh,style,channel}of halos){const fraction=rgbw?channels[channel==='WW'?'W':channel]:cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&['sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?(channel==='WW'?warm.emissive:rgbMaterials[channel].emissive):cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(s.lightStudy?2.1:.95);}
     group.userData.light={on:level>0,warm:warm.emissiveIntensity,cool:cool.emissiveIntensity,color:color.getHexString(),pointHalos:!continuous,ledCount:count,channels};
     wireGroup.visible=!art&&(s.view==='macro'&&['wiring','seal'].includes(s.detail)||s.showCable&&s.view!=='macro'&&s.view!=='zone');
   },dispose(){liner.dispose();protection?.dispose();for(const m of materials)m.dispose();for(const g of geometries)g.dispose();for(const x of textures)x.dispose();}};
@@ -136,7 +136,7 @@ function pcbTexture(t,print){
     x.fillStyle='#42463e';x.textAlign='center';x.textBaseline='middle';
     const px=mm=>mm/t.cut*w;
     for(let i=0;i<3;i++){
-      const at=px(5+i*1000/t.density);drawPcbBrand(x,at,h*.88,px(3.85));
+      const at=px(5+i*1000/t.density);drawPcbBrand(x,at,h*.86,px(5.4));
       x.font=`${h*.078}px Arial`;x.fillText(i===1?t.ref:i===2&&print==='concept'?'CE  RoHS':'12V DC',at,h*.11,px(3.85));
     }
     x.font=`bold ${h*.06}px Arial`;for(const at of[px(1),w-px(1)]){x.fillText('+',at,h*.05);x.fillText('−',at,h*.95);}
@@ -146,7 +146,7 @@ function pcbTexture(t,print){
   x.strokeStyle='#ddd9c8';x.lineWidth=1.2;
   for(const y of [h*.11,h*.89,...(t.type==='RGBW'?[h*.28,h*.5,h*.72]:t.type==='CCT'?[h*.5]:t.type==='3IN1'?[h*.37,h*.63]:[])]){x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();}
   x.fillStyle='#292c29';x.textAlign='center';x.textBaseline='middle';
-  drawPcbBrand(x,w*.35,h*.86,h*.67);
+  drawPcbBrand(x,w*.35,h*.84,Math.min(h*1.45,w*.28));
   x.font=`${h*.080}px Arial`;x.fillText(t.ref,w*.68,h*.14);
   x.font=`bold ${h*.084}px Arial`;x.fillText(`${t.voltage}V DC${t.copperOz?' · '+t.copperOz+' oz':''}`,w*.34,h*.14);
   const terminals=t.markings||['+'+t.voltage+'V','−'];

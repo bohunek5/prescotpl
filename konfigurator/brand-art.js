@@ -3,5 +3,5 @@ const artwork=[{"d":"M185.5,324.5h12.4v-20h6.8c12.4,0,19.6-6.2,19.6-16.9c0-10.7-
 let paths;
 export function drawPcbBrand(ctx,x,y,width){
   paths??=artwork.map(p=>({...p,path:new Path2D(p.d)}));
-  const scale=width/488;ctx.save();ctx.translate(x-width/2,y-width*80/488/2);ctx.scale(scale,scale);ctx.translate(-178,-256);for(const p of paths){ctx.fillStyle=p.color;ctx.fill(p.path);}ctx.restore();
+  const scale=width/470.8;ctx.save();ctx.translate(x-width/2,y-55.5*scale/2);ctx.scale(scale,scale);ctx.translate(-185.5,-269.9);for(const p of paths){ctx.fillStyle=p.color;ctx.fill(p.path);}ctx.restore();
 }

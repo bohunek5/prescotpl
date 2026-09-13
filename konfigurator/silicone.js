@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=e6079192090f';
+import {diffuserMap} from './light-textures.js?v=9e675244bed0';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){
@@ -63,7 +63,7 @@ export function buildSilicone(t,sleeve,L){
     }
     caps.children.forEach(cap=>{const sign=cap.userData.sign,x=sign*(L/2+.0011+(macro&&!state.sealClosed?.009:0));cap.position.copy(point(x,0,0));cap.rotation.z=x*curvature;});
     opal.emissive.copy(color);opal.emissiveIntensity=state.light?state.dimmer/100*.4:0;
-    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*(coating?(state.lightStudy?5.8:2.1):(state.lightStudy?3.8:1.3)):0;
+    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*(coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
     root.userData={kind:coating?'coating':native?'factory-ip67':'pro-sleeve',shape:spec.shape,pcbOrientation:side?'vertical':'horizontal',outerWidthMm:spec.width,outerHeightMm:spec.height,milky:!spec.clear,shapeVerified:coating?!!t.envelopeVerified:!!sleeve?.verified,closed:!macro||state.sealClosed,dimensionsVerified:coating?!!t.envelopeVerified:!!sleeve?.verified};
   }
   return{root,update,dispose(){geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());emission.dispose();}};

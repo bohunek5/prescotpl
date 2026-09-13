@@ -1,6 +1,6 @@
-import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio1';
+import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio2';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio1';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio2';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -155,7 +155,6 @@ function initializeHeroLayout() {
     const icons = [
       ['Linia produkcyjna SMT', '<path d="M3 17h18v4H3zM6 17v-4h12v4M9 3h6v7H9zM12 10v3M6 5h3M15 5h3"/><circle cx="7" cy="19" r=".5"/><circle cx="17" cy="19" r=".5"/>'],
       ['Laboratorium pomiarowe', '<path d="M8 3h8M10 3v7l-6 9a1 1 0 0 0 1 2h14a1 1 0 0 0 1-2l-6-9V3M8 15h8M11 17h2"/>'],
-      ['Własny brand', '<path d="M3 3h8l10 10-8 8L3 11V3Z"/><circle cx="7.5" cy="7.5" r="1.5"/>']
     ];
     for (const [title, path] of icons) {
       const badge = element('div', 'elementor-widget-icon-box pm-capability');
@@ -181,7 +180,7 @@ function initializeHeroLayout() {
       icon.insertAdjacentHTML('beforeend', `<svg class="pm-capability-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${desktopIcons[index]}</svg>`);
       const label=badge.querySelector('.elementor-icon-box-title').textContent.trim();
       const link=element('a','pm-capability-link');
-      link.href=asset(['produkcja/','dystrybucja/','oferta/','wspolpraca-b2b/','produkcja/#kreci','laboratorium/','wlasny-brand/'][index]);
+      link.href=asset(['produkcja/','dystrybucja/','oferta/','wspolpraca-b2b/','produkcja/#kreci','laboratorium/'][index]);
       link.setAttribute('aria-label',label);
       // One real link per tile, with no nested legacy anchors or tap handlers.
       const mark=element('span','elementor-icon');mark.append(icon.querySelector('.pm-capability-outline').cloneNode(true));
@@ -289,13 +288,12 @@ function initializeMobileMenu() {
   nav.append(b2b);
   for(const [href,label,path] of [
     ['laboratorium/','Laboratorium','M8 3h8m-6 0v7l-6 9h16l-6-9V3M8 15h8'],
-    ['wlasny-brand/','Własny brand','M3 3h8l10 10-8 8L3 11V3Z']
   ]){
-    const link=element('a');link.href=asset(href);link.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="${path}"/></svg>`;link.append(element('span','',label));nav.append(link);
+    const link=element('a','pm-menu-feature pm-lab-link');link.href=asset(href);link.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="${path}"/></svg>`;const copy=element('span','pm-menu-copy');copy.append(element('strong','',label),element('small','','Pomiary światła'));link.append(copy,element('span','pm-configurator-arrow','↗'));nav.prepend(link);
   }
-  const configurator = element('a', 'pm-configurator-link');
+  const configurator = element('a', 'pm-configurator-link pm-menu-feature');
   configurator.href = asset('konfigurator/');
-  configurator.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M3 17l9 4 9-4"/></svg><span><strong>Konfigurator LED</strong><small>Profil, taśma i montaż w 3D</small></span><span class="pm-configurator-arrow" aria-hidden="true">↗</span>';
+  configurator.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M3 17l9 4 9-4"/></svg><span><strong>Konfigurator LED</strong><small>Taśma, profil i montaż</small></span><span class="pm-configurator-arrow" aria-hidden="true">↗</span>';
   configurator.addEventListener('click', () => dialog.close());
   nav.prepend(configurator);
   const desktopConfigurator = element('a', 'dock-item pm-configurator-dock');
@@ -305,7 +303,8 @@ function initializeMobileMenu() {
   desktopConfigurator.setAttribute('aria-label', 'Konfigurator LED');
   desktopConfigurator.append(configurator.querySelector('svg').cloneNode(true));
   dock.insertBefore(desktopConfigurator, dock.querySelector('.dock-lang-item'));
-  dialog.append(header, nav); document.body.append(dialog);
+  const languageRow=element('div','pm-menu-language');languageRow.append(element('span','','Język strony'));
+  dialog.append(header, nav, languageRow); document.body.append(dialog);
   more.onclick = () => { dialog.showModal(); more.setAttribute('aria-expanded', 'true'); };
   close.onclick = () => dialog.close();
   dialog.addEventListener('close', () => { more.setAttribute('aria-expanded', 'false'); more.focus({preventScroll:true}); });
@@ -318,7 +317,8 @@ function initializeMobileMenu() {
   const mobile = matchMedia('(max-width:767px)');
   const positionLanguage = () => {
     if (!language) return;
-    if (mobile.matches) header.insertBefore(language, close);
+    languageRow.hidden=!mobile.matches;
+    if (mobile.matches) languageRow.append(language);
     else dock.append(language);
   };
   mobile.addEventListener('change',positionLanguage); positionLanguage();

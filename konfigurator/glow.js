@@ -12,7 +12,7 @@ export function glowMaterial(radial=false){
   if(radial){
     c.globalCompositeOperation='source-over';c.clearRect(0,0,128,64);
     c.save();c.scale(2,1);const spot=c.createRadialGradient(32,32,0,32,32,32);
-    for(const [stop,a]of [[0,.55],[.10,.32],[.28,.12],[.55,.025],[1,0]])spot.addColorStop(stop,`rgba(255,255,255,${a})`);
+    for(const [stop,a]of [[0,.9],[.12,.52],[.32,.16],[.6,.028],[1,0]])spot.addColorStop(stop,`rgba(255,255,255,${a})`);
     c.fillStyle=spot;c.fillRect(0,0,64,64);c.restore();
   }
   const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;

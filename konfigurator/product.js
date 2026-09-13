@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=e6079192090f';
-import {buildPCB} from './tape.js?v=e6079192090f';
-import {sectionGeometry} from './section.js?v=e6079192090f';
-import {profileContour} from './profile-shapes.js?v=e6079192090f';
-import {coverSection} from './cover-shapes.js?v=e6079192090f';
-import {glowMaterial} from './glow.js?v=e6079192090f';
-import {diffuserMap} from './light-textures.js?v=e6079192090f';
-import {assemblyPose} from './assembly-motion.js?v=e6079192090f';
+import {buildAccessories} from './accessories.js?v=9e675244bed0';
+import {buildPCB} from './tape.js?v=9e675244bed0';
+import {sectionGeometry} from './section.js?v=9e675244bed0';
+import {profileContour} from './profile-shapes.js?v=9e675244bed0';
+import {coverSection} from './cover-shapes.js?v=9e675244bed0';
+import {glowMaterial} from './glow.js?v=9e675244bed0';
+import {diffuserMap} from './light-textures.js?v=9e675244bed0';
+import {assemblyPose} from './assembly-motion.js?v=9e675244bed0';
 
 // Display samples and full-length export share one physical model, in metres.
 export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,sourceCover=null,quality='auto'}={}){
@@ -65,9 +65,9 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   let lightColor=new T.Color('#fff4df');
   function updateCoverLight(amount){
     const level=state.light&&!state.compare?state.dimmer/100:0,pose=assemblyPose(amount),coupling=Math.exp(-pose.coverLift*coverTravel/.009)*Math.max(0,Math.cos(pose.coverTilt*.52));
-    lens.emissive.copy(lightColor);lens.emissiveIntensity=level*(state.lightStudy?7:3.8)*spec.cover.transmission*coupling*(isClear?.055:1);
-    halo.visible=level>0&&coupling>.15&&!isClear;haloStyle.material.color.copy(lightColor);haloStyle.material.opacity=level*spec.cover.transmission*coupling*(state.lightStudy?.8:.16);
-    bounce.color.copy(lightColor);bounce.intensity=['macro','zone'].includes(state.view)||pose.pcbLift>.001?0:level*(state.lightStudy?16:6);
+    lens.emissive.copy(lightColor);lens.emissiveIntensity=level*(state.lightStudy?10.5:6.5)*spec.cover.transmission*coupling*(isClear?.055:1);
+    halo.visible=level>0&&coupling>.15&&!isClear;haloStyle.material.color.copy(lightColor);haloStyle.material.opacity=level*spec.cover.transmission*coupling*(state.lightStudy?1.4:.65);
+    bounce.color.copy(lightColor);bounce.intensity=['macro','zone'].includes(state.view)||pose.pcbLift>.001?0:level*(state.lightStudy?25:14);
     cover.userData.light={intensity:lens.emissiveIntensity,coupling,clear:isClear,color:lightColor.getHexString(),transmission:spec.cover.transmission};
   }
   function update(s,color){
