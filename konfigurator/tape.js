@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=67a52340aabd';
-import {drawPcbBrand} from './brand-art.js?v=67a52340aabd';
-import {tapeLayout} from './tape-layout.js?v=67a52340aabd';
-import {tapeTerminals} from './tape-wiring.js?v=67a52340aabd';
-import {buildSilicone} from './silicone.js?v=67a52340aabd';
-import {glowMaterial} from './glow.js?v=67a52340aabd';
-import {phosphorMap} from './light-textures.js?v=67a52340aabd';
-import {buildReleaseLiner} from './release-liner.js?v=67a52340aabd';
+import {rgbwChannels,colorCct} from './light-color.js?v=9ef5bbe0605e';
+import {drawPcbBrand} from './brand-art.js?v=9ef5bbe0605e';
+import {tapeLayout} from './tape-layout.js?v=9ef5bbe0605e';
+import {tapeTerminals} from './tape-wiring.js?v=9ef5bbe0605e';
+import {buildSilicone} from './silicone.js?v=9ef5bbe0605e';
+import {glowMaterial} from './glow.js?v=9ef5bbe0605e';
+import {phosphorMap} from './light-textures.js?v=9ef5bbe0605e';
+import {buildReleaseLiner} from './release-liner.js?v=9ef5bbe0605e';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -122,7 +122,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     const strength=level*(s.lightStudy?13:7.5)*(spec.wattsPerMeter/t.watts);
     const channels=rgbw?rgbwChannels(s):null;
     warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=level*1.35*channels[key];cool.emissiveIntensity=strength*mix;
-    for(const {mesh,style,channel}of halos){const fraction=rgbw?Math.max(...Object.values(channels)):cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&['product','sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?color:cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(rgbw?(s.lightStudy?1.25:.75):(s.lightStudy?1.65:.8));}
+    for(const {mesh,style,channel}of halos){const fraction=rgbw?Math.max(...Object.values(channels)):cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&!spec.sleeve?.clear&&t.encapsulation!=='tube'&&['product','sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?color:cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(rgbw?(s.lightStudy?1.25:.75):(s.lightStudy?1.65:.8));}
     group.userData.light={on:level>0,warm:warm.emissiveIntensity,cool:cool.emissiveIntensity,color:color.getHexString(),pointHalos:!continuous,ledCount:count,package:continuous?t.technology||t.type:t.package||(wide?'5050':'2835'),channels};
     wireGroup.visible=!art&&(s.view==='macro'&&['wiring','seal'].includes(s.detail)||s.showCable&&s.view!=='macro'&&s.view!=='zone');
   },dispose(){liner.dispose();protection?.dispose();for(const m of materials)m.dispose();for(const g of geometries)g.dispose();for(const x of textures)x.dispose();}};

@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=67a52340aabd';
-import {buildMount,seatingHeight} from './mounting.js?v=67a52340aabd';
+import {buildProduct} from './product.js?v=9ef5bbe0605e';
+import {buildMount,seatingHeight} from './mounting.js?v=9ef5bbe0605e';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},

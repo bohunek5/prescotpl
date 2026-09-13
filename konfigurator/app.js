@@ -1,12 +1,12 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=67a52340aabd';
-import {accessoryKit} from './accessory-data.js?v=67a52340aabd';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=67a52340aabd';
-import {zones} from './zones.js?v=67a52340aabd';
-import {mountingSteps} from './mounting.js?v=67a52340aabd';
-import {coverIcon} from './cover-shapes.js?v=67a52340aabd';
-import {profileIcon} from './profile-shapes.js?v=67a52340aabd';
-import {projectSheet} from './sheet.js?v=67a52340aabd';
-import {uiIcon,actionLabel} from './ui-icons.js?v=67a52340aabd';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=9ef5bbe0605e';
+import {accessoryKit} from './accessory-data.js?v=9ef5bbe0605e';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=9ef5bbe0605e';
+import {zones} from './zones.js?v=9ef5bbe0605e';
+import {mountingSteps} from './mounting.js?v=9ef5bbe0605e';
+import {coverIcon} from './cover-shapes.js?v=9ef5bbe0605e';
+import {profileIcon} from './profile-shapes.js?v=9ef5bbe0605e';
+import {projectSheet} from './sheet.js?v=9ef5bbe0605e';
+import {uiIcon,actionLabel} from './ui-icons.js?v=9ef5bbe0605e';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -207,7 +207,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=67a52340aabd');
+      const {createStudio}=await import('./scene.js?v=9ef5bbe0605e');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

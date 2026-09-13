@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=67a52340aabd';
+import {diffuserMap} from './light-textures.js?v=9ef5bbe0605e';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){
@@ -8,7 +8,7 @@ export function buildSilicone(t,sleeve,L){
   const native=t.encapsulation==='tube',coating=t.encapsulation==='coating',spec=sleeve||(native?{width:t.width+2,height:4,clear:true,shape:'basic'}:{width:t.envelopeWidth??t.width,height:t.envelopeHeight??5,clear:false,shape:'coating'});
   const W=spec.width/1000,H=spec.height/1000,side=spec.shape==='side',offset=coating||side?0:(spec.pcbLift??.8)/1000,geos=[],mats=[];
   const material=opts=>{const m=new T.MeshStandardMaterial(opts);mats.push(m);return m;};
-  const silicone=material({color:spec.clear?'#c8d3d3':'#f7f8f3',roughness:coating?.4:.18,metalness:0,transparent:!!spec.clear,opacity:spec.clear?.42:1,depthWrite:!spec.clear,side:T.DoubleSide});
+  const silicone=material({color:spec.clear?'#c8d3d3':'#f7f8f3',roughness:coating?.4:.18,metalness:0,transparent:!!spec.clear,opacity:spec.clear?.18:1,depthWrite:!spec.clear,side:T.DoubleSide});
   const opal=material({color:'#f5f5f0',roughness:.29,transparent:true,opacity:.72,depthWrite:false,side:T.DoubleSide});
   const plug=material({color:'#e7efeb',roughness:.27,transparent:true,opacity:.73,side:T.DoubleSide});
   const emission=diffuserMap({strip:t,profile:{height:spec.height,ledBase:offset*1000,channelDepth:spec.height-offset*1000},cover:{id:'silicone'}},L*1000);silicone.emissiveMap=emission;
