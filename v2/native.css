@@ -1,0 +1,8 @@
+/* Layout and animation come from the customer's SILPRO template. */
+body[data-prescot-template="silpro"] .pn-model-actions { display:flex; flex-direction:column; align-items:center; gap:12px; position:relative; z-index:2; }
+body[data-prescot-template="silpro"] .pn-film-link { color:#ccd4df; font-size:13px; min-height:44px; display:inline-flex; align-items:center; }
+body[data-prescot-template="silpro"] .elementor-element-19d3d39b .elementor-widget-heading h2 { text-wrap:balance; }
+@media(min-width:768px){
+ body[data-prescot-template="silpro"] .pn-model-actions { margin-top:18px; }
+ body[data-prescot-template="silpro"] .mdw-card-portfolio .elementor-widget-text-editor p { max-width:600px; margin-inline:auto; }
+}

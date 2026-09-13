@@ -1,7 +1,7 @@
 /* Desktop hero: six light outline marks, without solid orange hover discs. */
 html body .pm-capabilities .pm-capability-outline { display: none !important; }
 @media (min-width: 768px) {
-  html body .elementor-element-216d8696 .pm-capabilities { top: 27%; width: min(1100px,90%) !important; gap: clamp(14px,2vw,30px) !important; }
+  html body .elementor-element-216d8696 .pm-capabilities { top: 50%; transform: translate(-50%,-50%); width: min(1100px,90%) !important; gap: clamp(14px,2vw,30px) !important; }
   html body .elementor-element-216d8696 .pm-capabilities .elementor-icon-box-wrapper { gap: 15px !important; cursor: default; }
   html body .elementor-element-216d8696 .pm-capabilities .elementor-icon {
     box-sizing: border-box; width: 68px !important; height: 68px !important; padding: 15px !important;

@@ -25,7 +25,7 @@ export const pages = [
   models:[36,60,100,150,200,300].map((w,i)=>({key:`w${w}`,label:`${w} W`,title:`PR-MAD${w}-1224`,
     description:['Kompaktowy model do mebli, gablot i krótkich odcinków LED.','Do podświetlenia szafek, garderób i wnęk.','Do oświetlenia liniowego wnętrz i profili architektonicznych.','Do rozbudowanych stref światła i sufitów podwieszanych.','Do większych instalacji oświetlenia wnętrz.','Największa moc w rodzinie PR-MAD.'][i],
     image:`assets/prmad/pr-mad-${w}w.webp`,detail:'assets/prmad/pr-mad-autodetect-detail.webp',
-    facts:[['Moc',`${w} W`],['Napięcie wyjściowe','Autodetekcja 12/24 V DC'],['Wymiary',[110,143,175,199,224,224][i]+' × '+[47,47,47,52,52,62][i]+' × 29 mm'],['Obudowa','IP20']]})),
+    facts:[['Moc',`${w} W`],['Napięcie wyjściowe','Autodetekcja 12/24 V DC'],['Wymiary',[145,145,176,199,218,240][i]+' × 50 × 29 mm'],['Obudowa','IP20']],pdf:`assets/showcase/pr-mad-${w}w.pdf`})),
   storyTitle:'Ukryty w zabudowie. Widoczny w efekcie.',story:'Wysokość 29 mm ułatwia zaplanowanie miejsca na zasilacz. Przed montażem sprawdź warunki chłodzenia, obciążenie i dostęp serwisowy.',
   storyImage:'assets/prmad/pr-mad-kitchen-hero.webp',storyAlt:'Oświetlenie LED w zabudowie kuchennej',
   guide:[['Zapotrzebowanie na moc','Przygotuj długości taśm i moc na metr. Dobór potwierdzimy dla konkretnej instalacji.'],['Napięcie i sterowanie','Uwzględnij taśmy, sterowniki i sposób podłączenia.'],['Warunki montażu','Zaplanuj wentylację oraz dostęp do zasilacza. IP20 jest przeznaczone do wnętrz.']]},
