@@ -1,4 +1,4 @@
-import {tracedContours} from './profile-contours.js?v=e73dfe9cfd6f';
+import {tracedContours} from './profile-contours.js?v=e6079192090f';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){

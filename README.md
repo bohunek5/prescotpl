@@ -166,6 +166,11 @@ oraz akcesoriów; nie zmieniono docelowych linków na V2.
 
 Podstrona `konfigurator/` zawiera samodzielne PRESCOT Light Studio 09. Na telefonie prowadzi do niej pozycja z ikoną w „Więcej”; na desktopie osobna ikona w docku. Konfigurator nie ładuje docka, stopki ani skryptów WordPressa. Nagłówek ma logo po lewej i bezpośredni powrót do `https://www.prescot.pl/` po prawej. Eksport projektu i „O modelach” znajdują się przy ustawieniach zestawu.
 
-Źródło aplikacji pozostaje w sąsiednim `../prescot-led-studio`. Po zmianie źródła wykonaj `npm run sync:configurator`, następnie `npm run test:configurator`. Synchronizacja kopiuje kod aplikacji, dokumentację produktów i wyłącznie potrzebne moduły Three.js z licencją. Pomija QA, skrypty robocze, logi i pełne node_modules. Wygenerowane pliki są częścią repozytorium, więc GitHub Pages nie wymaga dodatkowego procesu budowania. `konfigurator/build.json` identyfikuje wersję i pliki; wersja importów zmienia się przy zmianie kodu.
+Źródło aplikacji pozostaje w sąsiednim `../prescot-led-studio`. Po zmianie źródła wykonaj `npm run sync:configurator`, następnie `npm run test:configurator` i `npm run test:configurator-studio`. Synchronizacja kopiuje kod aplikacji, dokumentację produktów i wyłącznie potrzebne moduły Three.js z licencją. Pomija QA, skrypty robocze, logi i pełne node_modules. Wygenerowane pliki są częścią repozytorium, więc GitHub Pages nie wymaga dodatkowego procesu budowania. `konfigurator/build.json` identyfikuje wersję i pliki; wersja importów zmienia się przy zmianie kodu.
 
 Test sprawdza wejście z menu, nagłówek 320/390/1440 px, model WebGL, zachowanie kamery, okna eksportu i JSON oraz ścieżki źródeł pod prefiksem `/prescotpl/konfigurator/`. Raport i obrazy: `output/configurator/`.
+
+
+Konfigurator wita przestrzennym logo PRESCOT z oryginalnego SVG oraz hasłem „Skomponuj swój zestaw.”. Renderowanie logo zatrzymuje się po krótkiej animacji i zwalnia zasoby po wejściu. Zapisane linki `#config=` pomijają ekran wejściowy. Na szerokich ekranach sterowanie znajduje się po prawej stronie nazwy produktu, dzięki czemu model otrzymuje więcej wysokości; parametry techniczne pozostają pod modelem.
+
+`npm run test:configurator-studio` sprawdza siedem szerokości ekranu, brak nakładania przycisków na model, logo 3D i jego zatrzymywanie, wejście z klawiatury, zapisane linki, szybkie wejście przed pobraniem logo, fallback SVG, kadry animacji oraz WebKit z ograniczonym ruchem. Raport: `output/configurator/studio-layout-report.json`.

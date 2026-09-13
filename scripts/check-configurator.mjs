@@ -22,7 +22,15 @@ try{
       const dock=await page.locator('.prescot-dock').boundingBox();assert.ok(dock.x>=0&&dock.x+dock.width<=width+1);
       await page.screenshot({path:path.join(folder,'dock-desktop.png')});await page.locator('.pm-configurator-dock').click();
     }
-    await page.waitForURL('**/konfigurator/');await page.waitForFunction(()=>document.body.dataset.ready==='true');
+    await page.waitForURL('**/konfigurator/');
+    await page.waitForFunction(()=>document.querySelector('#welcome-logo').dataset.logo==='ready');
+    assert.equal(await page.locator('#viewport canvas').count(),0);
+    assert.ok(await page.evaluate(()=>welcomeDebug.inspect().meshes>0));
+    await page.waitForTimeout(1700);
+    await page.screenshot({path:path.join(folder,`welcome-${width}.png`)});
+    await page.locator('#start-configurator').click();await page.waitForFunction(()=>document.body.dataset.ready==='true');
+    assert.equal(await page.locator('#welcome canvas').count(),0);
+    assert.equal(await page.evaluate(()=>welcomeDebug.inspect().active),false);
     await page.waitForTimeout(600);
     assert.equal(await page.locator('.prescot-dock,.pm-menu,iframe').count(),0);
     assert.equal(await page.locator('header.header button').count(),0);
@@ -39,7 +47,7 @@ try{
     const pending=page.waitForEvent('download');await page.locator('#export-json').click();const download=await pending;const file=path.join(folder,`project-${width}.json`);await download.saveAs(file);
     assert.equal(JSON.parse(await fs.readFile(file,'utf8')).schema,'prescot-light-studio/v9');
     await page.locator('#export-dialog .close').click();await page.locator('#about').click();await page.locator('#about-dialog').waitFor({state:'visible'});await page.locator('#about-dialog .close').click();
-    assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);report.push({width,menu:true,model:true,return:true,exports:true,errors,missing});await page.close();
+    assert.deepEqual(errors,[]);assert.deepEqual(missing,[]);report.push({width,menu:true,welcome3D:true,model:true,return:true,exports:true,errors,missing});await page.close();
   }
   // GitHub Pages uses a /prescotpl/ prefix. Serve the reviewed files under that
   // origin to check imports and source links before publishing.
@@ -52,7 +60,8 @@ try{
     try{await route.fulfill({body:await fs.readFile(file),contentType:mime[path.extname(file)]||'application/octet-stream'});requests.push({relative,status:200});}
     catch(e){if(e.code!=='ENOENT')throw e;requests.push({relative,status:404});await route.fulfill({status:404,body:'Missing'});}
   });
-  await page.goto('https://bohunek5.github.io/prescotpl/konfigurator/');await page.waitForFunction(()=>document.body.dataset.ready==='true');
+  await page.goto('https://bohunek5.github.io/prescotpl/konfigurator/#config=%7B%7D');await page.waitForFunction(()=>document.body.dataset.ready==='true');
+  assert.equal(await page.locator('#welcome').isVisible(),false);
   const links=await page.evaluate(async()=>{const {profiles,strips,covers,sleeves}=await import('./catalog.js');return [...new Set([...profiles,...strips,...covers,...sleeves].flatMap(x=>[x.source,x.instruction,x.image,x.model]).filter(x=>x?.startsWith('assets/')))];});
   for(const link of links)assert.equal(await page.evaluate(async href=>(await fetch(href)).status,link),200,link);
   assert.deepEqual(requests.filter(x=>x.status!==200),[]);assert.deepEqual(errors,[]);

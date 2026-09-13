@@ -1,12 +1,12 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=e73dfe9cfd6f';
-import {accessoryKit} from './accessory-data.js?v=e73dfe9cfd6f';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=e73dfe9cfd6f';
-import {createStudio} from './scene.js?v=e73dfe9cfd6f';
-import {zones} from './zones.js?v=e73dfe9cfd6f';
-import {mountingSteps} from './mounting.js?v=e73dfe9cfd6f';
-import {coverIcon} from './cover-shapes.js?v=e73dfe9cfd6f';
-import {profileIcon} from './profile-shapes.js?v=e73dfe9cfd6f';
-import {projectSheet} from './sheet.js?v=e73dfe9cfd6f';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=e6079192090f';
+import {accessoryKit} from './accessory-data.js?v=e6079192090f';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=e6079192090f';
+import {createWelcome} from './welcome.js?v=e6079192090f';
+import {zones} from './zones.js?v=e6079192090f';
+import {mountingSteps} from './mounting.js?v=e6079192090f';
+import {coverIcon} from './cover-shapes.js?v=e6079192090f';
+import {profileIcon} from './profile-shapes.js?v=e6079192090f';
+import {projectSheet} from './sheet.js?v=e6079192090f';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults);
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -177,6 +177,30 @@ $('artwork').onchange=async()=>{
 };
 $('artwork-clear').onclick=()=>{studio?.setArtwork(null);$('artwork-name').textContent='Obecnie: schemat poglądowy PCB.';toast('Przywrócono schemat PCB.');};
 
-window.addEventListener('hashchange',()=>{try{if(location.hash.startsWith('#config=')){s=normalize(JSON.parse(decodeURIComponent(location.hash.slice(8))));stopAnimation();update();}}catch{toast('Link nie zawiera prawidłowej konfiguracji.');}});
+let welcome,starting;
+const welcomeLoad=new AbortController();
+async function startConfigurator(){
+  if(starting)return starting;
+  starting=(async()=>{
+    document.body.dataset.screen='studio';document.body.dataset.ready='loading';$('welcome').hidden=true;$('configurator').hidden=false;
+    welcomeLoad.abort();welcome?.dispose();$('start-configurator').disabled=true;
+    await new Promise(resolve=>requestAnimationFrame(resolve));
+    try{
+      const {createStudio}=await import('./scene.js?v=e6079192090f');
+      const initial=s;studio=await createStudio($('viewport'),initial);
+      if(s!==initial){studio.update(s);studio.frame();}
+      $('loading').remove();document.body.dataset.ready='true';
+      window.studioDebug={get state(){return{...s};},spec:()=>specification(s),inspect:()=>studio.inspect(),project};
+      $('stage-heading').focus({preventScroll:true});
+    }catch(e){console.error(e);$('loading').textContent='Nie udało się uruchomić 3D. Sprawdź obsługę WebGL i odśwież stronę.';document.body.dataset.ready='error';}
+  })();
+  return starting;
+}
+$('start-configurator').onclick=startConfigurator;
+window.addEventListener('hashchange',()=>{try{if(location.hash.startsWith('#config=')){s=normalize(JSON.parse(decodeURIComponent(location.hash.slice(8))));stopAnimation();update();startConfigurator();}}catch{toast('Link nie zawiera prawidłowej konfiguracji.');}});
 update();
-try{studio=await createStudio($('viewport'),s);$('loading').remove();document.body.dataset.ready='true';window.studioDebug={get state(){return{...s};},spec:()=>specification(s),inspect:()=>studio.inspect(),project};}catch(e){console.error(e);$('loading').textContent='Nie udało się uruchomić 3D. Sprawdź obsługę WebGL i odśwież stronę.';document.body.dataset.ready='error';}
+if(location.hash.startsWith('#config='))startConfigurator();
+else{
+  document.body.dataset.ready='welcome';
+  createWelcome($('welcome-logo'),{signal:welcomeLoad.signal}).then(result=>{if(!result)return;welcome=result;window.welcomeDebug=result;if(starting)result.dispose();}).catch(()=>{$('welcome-logo').dataset.logo='fallback';});
+}

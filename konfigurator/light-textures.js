@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {tapeLayout} from './tape-layout.js?v=e73dfe9cfd6f';
+import {tapeLayout} from './tape-layout.js?v=e6079192090f';
 
 // Presentation maps, not measured photometry. Point spacing follows the real
 // tape; depth and diffuser transmission control how much the points merge.

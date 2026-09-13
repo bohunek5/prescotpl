@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "e73dfe9cfd6f",
+  "revision": "e6079192090f",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -126,14 +126,17 @@
     "vendor/three/build/three.core.min.js",
     "vendor/three/build/three.module.min.js",
     "vendor/three/examples/jsm/controls/OrbitControls.js",
+    "vendor/three/examples/jsm/environments/RoomEnvironment.js",
     "vendor/three/examples/jsm/exporters/GLTFExporter.js",
     "vendor/three/examples/jsm/geometries/RoundedBoxGeometry.js",
     "vendor/three/examples/jsm/lights/RectAreaLightTexturesLib.js",
     "vendor/three/examples/jsm/lights/RectAreaLightUniformsLib.js",
+    "vendor/three/examples/jsm/loaders/SVGLoader.js",
     "vendor/three/examples/jsm/loaders/TDSLoader.js",
     "vendor/three/examples/jsm/shaders/HorizontalBlurShader.js",
     "vendor/three/examples/jsm/shaders/VerticalBlurShader.js",
     "vendor/three/examples/jsm/utils/BufferGeometryUtils.js",
+    "welcome.js",
     "zones.js"
   ]
 }

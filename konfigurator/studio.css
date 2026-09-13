@@ -208,3 +208,50 @@ body[data-light-study=true] #studio-stage .mount-explanation p{color:#c0bcb3}
 .project-actions .dark span{margin-left:12px}
 @media(max-width:780px){.website-return{font-size:11px;gap:8px}.website-return svg{width:19px;height:19px}.return-label{display:none}.project-actions{justify-content:flex-start;gap:22px;margin-top:16px}}
 @media(prefers-reduced-motion:reduce){.website-return svg{transition:none}}
+
+/* V10: the title and tools share the top band; the model owns the main area. */
+#studio-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(230px,1fr) auto}
+.stage-summary{min-width:0}
+#stage-heading:focus{outline:none}
+@media(min-width:1300px){
+ .layout{min-height:760px}
+ #studio-stage{grid-template-columns:minmax(270px,.31fr) minmax(0,.69fr);grid-template-rows:auto minmax(300px,1fr) auto;column-gap:28px;padding-top:23px}
+ #studio-stage .stage-summary{grid-column:1;grid-row:1;padding-top:1px}
+ #studio-stage .views{gap:14px;margin-bottom:24px;flex-wrap:nowrap;justify-content:flex-start}
+ #studio-stage .views button{font-size:11px;white-space:nowrap;min-height:40px}
+ #studio-stage .stage-title{margin:0 0 10px}
+ #studio-stage .stage-title h2{font-size:clamp(27px,2.25vw,43px);overflow-wrap:anywhere;letter-spacing:-1.1px}
+ #studio-stage .stage-title p{font-size:11px;line-height:1.55;max-width:370px}
+ #studio-stage .stage-controls{grid-column:2;grid-row:1;border:0;padding:0 0 14px;gap:8px;align-self:start}
+ #studio-stage .stage-controls .framing-picker button{padding:9px 11px;font-size:11px}
+ #studio-stage .stage-controls .assembly-steps{gap:3px}
+ #studio-stage .stage-controls .assembly-steps button{padding:8px 11px;font-size:11px}
+ #studio-stage .stage-controls .assembly-steps #play-mount{margin-left:4px}
+ #studio-stage .stage-light-controls{gap:8px 10px}
+ #studio-stage .light-range{width:115px;min-width:100px;flex:1 1 110px;max-width:160px}
+ #studio-stage #cct-note{font-size:9px;max-width:125px}
+ #studio-stage .led-toggle{font-size:11px;padding:9px 11px;gap:7px}
+ #studio-stage .camera-reset{font-size:11px;padding:8px;min-width:44px}
+ #studio-stage .stage-controls .zone-action{font-size:11px;padding:9px 11px}
+ #studio-stage #viewport{grid-column:1/-1;grid-row:2;margin-top:12px;border-top:1px solid #d4d0c9}
+ #studio-stage .technical-footer{grid-column:1/-1;grid-row:3}
+ body[data-light-study=true] #studio-stage #viewport{border-top-color:#55575b}
+}
+@media(max-width:780px){body[data-view] #studio-stage{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(300px,1fr) auto}}
+
+.welcome{position:relative;min-height:calc(100svh - 76px);display:grid;place-items:center;padding:32px 28px 100px;background:radial-gradient(ellipse at 50% 36%,#fff 0,#faf9f6 54%,#f0efec 100%);overflow:hidden}
+.welcome-content{width:min(100%,1160px);text-align:center;margin-top:-22px}
+#welcome-logo{height:clamp(180px,20vw,285px);width:100%;position:relative;margin:0 auto 12px}
+#welcome-logo canvas{width:100%;height:100%;display:block;position:absolute;inset:0;opacity:0;transition:opacity .5s}
+#welcome-logo[data-logo=ready] canvas{opacity:1}
+.welcome-logo-fallback{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88%;max-width:1040px;transition:opacity .25s}
+#welcome-logo[data-logo=ready] .welcome-logo-fallback{opacity:0}
+.welcome h1{font-size:clamp(32px,4vw,58px);line-height:1.08;font-weight:500;letter-spacing:-2px;color:#232c34;text-wrap:balance}
+.welcome p{font-size:clamp(13px,1.3vw,17px);color:#73787b;margin:19px 0 30px;line-height:1.55}
+.start-configurator{display:inline-flex;align-items:center;justify-content:center;gap:25px;min-height:52px;padding:15px 25px;border-radius:999px;background:#233747;color:#fff;font-size:13px;box-shadow:0 4px 12px #17324d14;transition:background .18s,transform .18s}
+.start-configurator svg{width:20px;height:20px}.start-configurator:hover{background:#132a3d;transform:translateY(-1px)}
+.welcome-signature{position:absolute;bottom:30px;color:#8b8e8d;font-size:8px;letter-spacing:2px}
+body[data-screen=studio] .layout{animation:studio-arrive .4s ease-out}
+@keyframes studio-arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){.welcome{min-height:calc(100svh - 62px);padding:24px 18px 78px}.welcome-content{margin-top:-35px}#welcome-logo{height:170px;margin-bottom:0;width:calc(100% + 12px);margin-left:-6px}.welcome h1{font-size:34px;letter-spacing:-1.3px}.welcome p{font-size:13px;margin:17px 0 25px}.start-configurator{font-size:12px;gap:18px;min-height:50px;padding:14px 22px}.welcome-signature{bottom:25px;font-size:7px}}
+@media(prefers-reduced-motion:reduce){#welcome-logo canvas,.welcome-logo-fallback,.start-configurator{transition:none}body[data-screen=studio] .layout{animation:none}.start-configurator:hover{transform:none}}

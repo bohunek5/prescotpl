@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=e73dfe9cfd6f';
-import {buildPCB} from './tape.js?v=e73dfe9cfd6f';
-import {sectionGeometry} from './section.js?v=e73dfe9cfd6f';
-import {profileContour} from './profile-shapes.js?v=e73dfe9cfd6f';
-import {coverSection} from './cover-shapes.js?v=e73dfe9cfd6f';
-import {glowMaterial} from './glow.js?v=e73dfe9cfd6f';
-import {diffuserMap} from './light-textures.js?v=e73dfe9cfd6f';
-import {assemblyPose} from './assembly-motion.js?v=e73dfe9cfd6f';
+import {buildAccessories} from './accessories.js?v=e6079192090f';
+import {buildPCB} from './tape.js?v=e6079192090f';
+import {sectionGeometry} from './section.js?v=e6079192090f';
+import {profileContour} from './profile-shapes.js?v=e6079192090f';
+import {coverSection} from './cover-shapes.js?v=e6079192090f';
+import {glowMaterial} from './glow.js?v=e6079192090f';
+import {diffuserMap} from './light-textures.js?v=e6079192090f';
+import {assemblyPose} from './assembly-motion.js?v=e6079192090f';
 
 // Display samples and full-length export share one physical model, in metres.
 export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,sourceCover=null,quality='auto'}={}){
