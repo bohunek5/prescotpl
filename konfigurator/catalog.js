@@ -1,5 +1,5 @@
-import {finishVariants} from './finish-data.js?v=a71cff26a3ca';
-import {tapeTerminals} from './tape-wiring.js?v=a71cff26a3ca';
+import {finishVariants} from './finish-data.js?v=67a52340aabd';
+import {tapeTerminals} from './tape-wiring.js?v=67a52340aabd';
 export const profiles = [
   { bodyWidth:16, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Niski profil pod szafkę', instruction:'assets/sources/micro-installation.pdf', id: 'micro', name: 'MICRO-PLUS', brand: 'KLUŚ', ref: 'A02966', width: 16, height: 6, channel: 11.2, model: 'assets/sources/micro-plus.3ds', geometry: 'Model producenta 3DS', source: 'assets/sources/micro-plus.pdf', covers: ['hs-opal', 'hs-clear', 'liger-black', "liger-opal", "kapro-opal", "kapro-clear"] },
   { bodyWidth:16.2, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Głębszy kanał światła', instruction:'assets/sources/pds-installation.pdf', id: 'pds', name: 'PDS-4-PLUS', brand: 'KLUŚ', ref: 'A01263', width: 16.2, height: 12, channel: 14, geometry: 'Model uproszczony · wymiary z arkusza KLUŚ', source: 'assets/sources/pds-4-plus.pdf', covers: ['hs11-opal', 'hs11-clear', 'liger11-black', "liger11-satin", "kat11-opal", "kat11-clear", "lenso11"] },  {"id": "microk", "name": "MICRO-K", "brand": "KLUŚ", "ref": "MICRO-K-ALU-2M", "width": 22, "height": 6, "bodyWidth": 15.2, "channel": 11.2, "ledBase": 1.1, "mount": "recessed", "family": "Wpust", "application": "Półka z frezem · model archiwalny", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/micro-k-section.jpg", "instruction": "assets/sources/micro-k-section.jpg", "covers": ["hs-opal", "hs-clear", "liger-black"]},
@@ -25,6 +25,9 @@ export const profiles = [
   {"id": "tost", "name": "TOST", "brand": "KLUŚ", "ref": "A05393", "width": 25.9, "height": 9.1, "bodyWidth": 25.9, "channel": 13.0, "ledBase": 4.5, "mount": "surface", "family": "Meblowe", "application": "Zaokrąglone boki · mocowanie do płyty", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/tost.pdf", "instruction": "assets/sources/tost-installation.pdf", "url": "https://klusdesign.pl/produkt/profil-tost-2246", "finishes": ["silver"], "covers": ["t13-clear"], "universal": true, "catalogEdition": "2026-09-01"},
   {"id": "pac", "name": "PAC-ALU", "brand": "KLUŚ", "ref": "A04370", "width": 30.4, "height": 10.5, "bodyWidth": 30.4, "channel": 13.1, "ledBase": 4.8, "mount": "surface", "family": "Meblowe", "application": "Szersze skrzydełka montażowe", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/pac-alu.pdf", "instruction": "assets/sources/pac-alu-installation.pdf", "url": "https://klusdesign.pl/produkt/profil-pac-alu-2413", "finishes": ["silver"], "covers": ["hs12-opal", "hs12-clear", "ka13-opal", "ka13-clear"], "universal": true, "catalogEdition": "2026-09-01"},
   {"id": "stos", "name": "STOS-ALU", "brand": "KLUŚ", "ref": "A04369", "width": 31.0, "height": 7.0, "bodyWidth": 31, "channel": 13.1, "ledBase": 2.1, "mount": "surface", "family": "Meblowe", "application": "Niski korpus z bocznymi skrzydełkami", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/stos-alu.pdf", "instruction": "assets/sources/stos-alu-installation.pdf", "url": "https://klusdesign.pl/produkt/profil-stos-alu-2240", "finishes": ["silver"], "covers": ["hs12-opal", "hs12-clear", "ka13-opal", "ka13-clear"], "universal": true, "catalogEdition": "2026-09-01"},
+  {"brand": "KLUŚ", "channel": 14, "geometry": "Przekrój z karty KLUŚ · detale zatrzasków poglądowe", "covers": ["hs11-opal", "hs11-clear", "liger11-satin", "liger11-black", "ka11-opal", "ka11-clear", "kat11-opal", "kat11-clear", "lenso11"], "id": "pdst", "name": "PDS-T", "ref": "A02057", "source": "assets/sources/pds-t.pdf", "instruction": "assets/sources/pds-t-installation.pdf", "height": 15, "width": 52.2, "bodyWidth": 16.2, "ledBase": 5, "mount": "drywall", "family": "Regips", "application": "Płyta g-k 12,5 mm · skrzydła pod płytą", "channelDepth": 10, "boardThickness": 12.5, "seatDepth": 13.5, "screwDrywall": true},
+  {"brand": "KLUŚ", "channel": 14, "geometry": "Przekrój z karty KLUŚ · detale zatrzasków poglądowe", "covers": ["hs11-opal", "hs11-clear", "liger11-satin", "liger11-black", "ka11-opal", "ka11-clear", "kat11-opal", "kat11-clear", "lenso11"], "id": "pdsust", "name": "PDS-UST", "ref": "A02725", "source": "assets/sources/pds-ust.pdf", "instruction": "assets/sources/pds-ust-installation.pdf", "height": 19, "width": 52.2, "bodyWidth": 16.2, "ledBase": 9, "mount": "drywall", "family": "Regips", "application": "Płyta g-k 16 mm · skrzydła pod płytą", "channelDepth": 10, "boardThickness": 16, "seatDepth": 17, "screwDrywall": true},
+  {"brand": "KLUŚ", "channel": 14, "geometry": "Przekrój z karty KLUŚ · detale zatrzasków poglądowe", "covers": ["hs11-opal", "hs11-clear", "liger11-satin", "liger11-black", "ka11-opal", "ka11-clear", "kat11-opal", "kat11-clear"], "id": "pdszmg", "name": "PDS-ZMG", "ref": "A01418", "source": "assets/sources/pds-zmg.pdf", "instruction": "assets/sources/pds-zmg-installation.pdf", "height": 22, "width": 16.6, "bodyWidth": 16.6, "ledBase": 4.4, "mount": "surface", "family": "Meblowe", "application": "Cofnięta osłona · ograniczenie olśnienia", "channelDepth": 11, "coverY": 15.4},
 ];
 export const strips = [
   {"id": "premium-rgbw", "name": "Premium RGBW + 3000 K", "ref": "24E033-100-RGBWW50", "type": "RGBW", "package": "5050", "width": 10, "watts": 19.6, "lumens": 1400, "voltage": 24, "cct": 3000, "cri": 80, "density": 60, "cut": 100, "copperOz": 3, "source": "assets/sources/premium-rgbw.pdf", "markings": ["W", "R", "G", "B", "+24V"], "whiteWatts": 4.6, "whiteLumens": 500, "powerNote": "19,6 W/m według karty PDF; strona podaje 19,7 W/m. CRI dotyczy bieli."},
@@ -100,7 +103,7 @@ export const sleeves = [
 ];
 export function finishesFor(p){return Object.keys(finishVariants[p.ref]||{silver:{}});}
 export function finishFor(p,value){return finishVariants[p.ref]?.[value]||{name:'Srebrny · wariant archiwalny',ref:p.ref,source:p.source};}
-export function displayLength(s){return s.view==='zone'?300:s.view==='assembly'&&s.productScale==='length'&&!['end','entry'].includes(s.assemblyAngle)?Math.min(s.length,1000):100;}
+export function displayLength(s){return s.view==='zone'?300:s.productScale==='length'&&(s.view==='assembly'&&!['end','entry'].includes(s.assemblyAngle)||s.housing==='sleeve'&&s.detail==='product')?Math.min(s.length,1000):100;}
 export const defaults = {profile:'micro',strip:'delux',cover:'hs-opal',length:1000,finish:'silver',material:'white',mounting:'surface',view:'assembly',exploded:100,dimmer:65,cct:3000,light:true,repeat:50,print:'brand',powerMode:'high',detail:'segment',assemblyAngle:'perspective',zone:'under',zoneDetail:false,zoneOpen:true,showCable:false,mountStep:0,sleeve:'none',endcaps:false,showFixings:false,sealClosed:false,zonePosition:'front',zoneTrigger:'manual',lightStudy:false,productScale:'detail',backing:'200mp',rgbMode:'white',rgbColor:'#ff6424'};
 export function normalize(raw = {}) {
   const s={...defaults};
@@ -114,13 +117,23 @@ export function normalize(raw = {}) {
   if(!p.covers.includes(s.cover))s.cover=p.covers[0];
   if(!finishesFor(p).includes(s.finish))s.finish=finishesFor(p)[0];
   if(p.mount!=='surface')s.mounting='recessed';
-  if(['kozus','larko'].includes(p.id))s.zone='drywall';else if(s.zone==='drywall')s.zone='under';
+  if((p.mount==='drywall'||p.id==='larko'))s.zone='drywall';else if(s.zone==='drywall')s.zone='under';
   if(t.type==='CCT')s.cct=Math.max(t.cctMin,Math.min(t.cctMax,s.cct));else s.cct=t.cct;
   if(s.detail==='curve'&&t.shape!=='s')s.detail='segment';
   if(['drywall','under','shelf','plinth'].includes(s.zone))s.zoneTrigger='manual';
   if(s.zone!=='cabinet'&&s.zonePosition==='shelf')s.zonePosition='front';
   if(t.encapsulation)s.sleeve='none';
   if(s.sleeve!=='none'&&(t.shape==='s'||t.width> sleeves.find(x=>x.id===s.sleeve).pcbMax))s.sleeve='none';
+  s.housing=raw.housing==='sleeve'||raw.housing!=='profile'&&s.sleeve!=='none'?'sleeve':'profile';
+  if(s.housing==='sleeve'&&t.shape==='s')s.housing='profile';
+  if(s.housing==='profile')s.sleeve='none';
+  else {
+    if(!t.encapsulation&&s.sleeve==='none')s.sleeve=sleeves.find(x=>x.pcbMax>=t.width)?.id||'none';
+    s.view='macro';s.endcaps=false;s.showFixings=false;
+    if(!['product','sleeve','seal','segment','wiring'].includes(raw.detail))s.detail='product';
+    else s.detail=raw.detail;
+    if(t.encapsulation==='coating'&&s.detail==='seal')s.detail='product';
+  }
   if(['sleeve','seal'].includes(s.detail)&&s.sleeve==='none'&&!t.encapsulation)s.detail='segment';
   // Legacy room links and saved configurations reopen as a product study.
   return s;
@@ -130,20 +143,23 @@ export function specification(s) {
   const segments=Math.floor((s.length+1e-7)/strip.cut), stripLength=segments*strip.cut;
   const mode=strip.modes?.[s.powerMode||'high'],wattsPerMeter=mode?.watts??strip.watts,lumensPerMeter=mode?.lumens??strip.lumens,power=wattsPerMeter*stripLength/1000;
   const sleeve=sleeves.find(x=>x.id===s.sleeve)||null,envelope=sleeve|| (strip.encapsulation==='tube'?{width:strip.width+2,height:4}:strip.encapsulation==='coating'?{width:strip.envelopeWidth??strip.width,height:strip.envelopeHeight??5}:null);
-  const envelopeFits=!envelope||(envelope.width<=profile.channel&&envelope.height<=(profile.channelDepth??(profile.height-profile.ledBase))-1);
+  const isSleeve=s.housing==='sleeve';
+  const envelopeFits=isSleeve?!!envelope&&(!sleeve||strip.width<=sleeve.pcbMax):!envelope||(envelope.width<=profile.channel&&envelope.height<=(profile.channelDepth??(profile.height-profile.ledBase))-1);
   const fitVerified=(!sleeve||sleeve.verified)&&strip.envelopeVerified!==false;
   const availableHeight=Math.round(((profile.channelDepth??(profile.height-profile.ledBase))-1)*100)/100;
   const issues=[],issue=(code,message,severity='blocked')=>issues.push({code,message,severity});
-  if(strip.width>profile.channel)issue('pcb-width',`PCB ${strip.width} mm przekracza kanał ${profile.channel} mm w ${profile.name}.`);
+  if(!isSleeve&&strip.width>profile.channel)issue('pcb-width',`PCB ${strip.width} mm przekracza kanał ${profile.channel} mm w ${profile.name}.`);
   if(sleeve&&(strip.width>sleeve.pcbMax||strip.shape==='s'||strip.encapsulation))issue('sleeve-pcb','Taśma nie jest zgodna z wybraną koszulką.');
-  if(envelope&&envelope.width>profile.channel)issue('envelope-width',`Obrys ${envelope.width} mm jest szerszy niż kanał ${profile.channel} mm.`,fitVerified?'blocked':'pending');
-  if(envelope&&envelope.height>availableHeight)issue('envelope-height',`Obrys ma ${envelope.height} mm wysokości; pod przesłoną pozostaje ok. ${availableHeight} mm.`,fitVerified?'blocked':'pending');
-  if(!profile.covers.includes(cover.id))issue('cover-family',`${cover.name} nie jest przypisana do profilu ${profile.name}.`);
-  if(cover.maxWatts&&wattsPerMeter>cover.maxWatts)issue('cover-power',`${cover.name}: maks. ${cover.maxWatts} W/m według KLUŚ. Taśma w tym wariancie ma ${wattsPerMeter} W/m; ściemniacz nie zmienia doboru.`);
-  if(!finishesFor(profile).includes(s.finish))issue('finish','Brak tego wykończenia dla wybranego profilu w katalogu.');
+  if(!isSleeve){
+    if(envelope&&envelope.width>profile.channel)issue('envelope-width',`Obrys ${envelope.width} mm jest szerszy niż kanał ${profile.channel} mm.`,fitVerified?'blocked':'pending');
+    if(envelope&&envelope.height>availableHeight)issue('envelope-height',`Obrys ma ${envelope.height} mm wysokości; pod przesłoną pozostaje ok. ${availableHeight} mm.`,fitVerified?'blocked':'pending');
+    if(!profile.covers.includes(cover.id))issue('cover-family',`${cover.name} nie jest przypisana do profilu ${profile.name}.`);
+    if(cover.maxWatts&&wattsPerMeter>cover.maxWatts)issue('cover-power',`${cover.name}: maks. ${cover.maxWatts} W/m według KLUŚ. Taśma w tym wariancie ma ${wattsPerMeter} W/m; ściemniacz nie zmienia doboru.`);
+    if(!finishesFor(profile).includes(s.finish))issue('finish','Brak tego wykończenia dla wybranego profilu w katalogu.');
+  }else if(!envelope)issue('sleeve-required','Wybierz koszulkę zgodną z szerokością PCB.');
   if(!fitVerified)issue('unverified-envelope','Gabaryt ochrony lub jej wnętrza wymaga potwierdzenia. Dopasowanie nie jest zatwierdzone.','pending');
-  if(s.endcaps&&cover.capNote)issue('cover-endcap',cover.capNote,'pending');
+  if(!isSleeve&&s.endcaps&&cover.capNote)issue('cover-endcap',cover.capNote,'pending');
   const fitStatus=issues.some(x=>x.severity==='blocked')?'blocked':issues.length?'pending':'compatible';
-  const assemblyBlocked=issues.some(x=>['pcb-width','envelope-width','envelope-height','cover-family','sleeve-pcb'].includes(x.code));
-  return {profile,strip,cover,sleeve,envelope,envelopeFits,fitVerified,availableHeight,issues,fitStatus,assemblyBlocked,finish:finishFor(profile,s.finish),cutVerified:strip.cutVerified!==false,stripLength,segments,offcut:s.length-stripLength,power,wattsPerMeter,lumensPerMeter,current:power/strip.voltage,terminals:tapeTerminals(strip,s).map(p=>p.label),connections:tapeTerminals(strip,s).filter(p=>p.connected),selectedTerminal:mode?.terminal, fits:strip.width<=profile.channel, coverFits:profile.covers.includes(cover.id),previewCct:strip.type==='CCT'?(s.cct<strip.cctMin||s.cct>strip.cctMax):s.cct!==strip.cct};
+  const assemblyBlocked=issues.some(x=>['pcb-width','envelope-width','envelope-height','cover-family','sleeve-pcb','sleeve-required'].includes(x.code));
+  return {isSleeve,profile,strip,cover,sleeve,envelope,envelopeFits,fitVerified,availableHeight,issues,fitStatus,assemblyBlocked,finish:finishFor(profile,s.finish),cutVerified:strip.cutVerified!==false,stripLength,segments,offcut:s.length-stripLength,power,wattsPerMeter,lumensPerMeter,current:power/strip.voltage,terminals:tapeTerminals(strip,s).map(p=>p.label),connections:tapeTerminals(strip,s).filter(p=>p.connected),selectedTerminal:mode?.terminal, fits:isSleeve?envelopeFits:strip.width<=profile.channel, coverFits:!isSleeve&&profile.covers.includes(cover.id),previewCct:strip.type==='CCT'?(s.cct<strip.cctMin||s.cct>strip.cctMax):s.cct!==strip.cct};
 }

@@ -1,12 +1,12 @@
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=a71cff26a3ca';
-import {drawPcbBrand} from './brand-art.js?v=a71cff26a3ca';
-import {tapeLayout} from './tape-layout.js?v=a71cff26a3ca';
-import {tapeTerminals} from './tape-wiring.js?v=a71cff26a3ca';
-import {buildSilicone} from './silicone.js?v=a71cff26a3ca';
-import {glowMaterial} from './glow.js?v=a71cff26a3ca';
-import {phosphorMap} from './light-textures.js?v=a71cff26a3ca';
-import {buildReleaseLiner} from './release-liner.js?v=a71cff26a3ca';
+import {rgbwChannels,colorCct} from './light-color.js?v=67a52340aabd';
+import {drawPcbBrand} from './brand-art.js?v=67a52340aabd';
+import {tapeLayout} from './tape-layout.js?v=67a52340aabd';
+import {tapeTerminals} from './tape-wiring.js?v=67a52340aabd';
+import {buildSilicone} from './silicone.js?v=67a52340aabd';
+import {glowMaterial} from './glow.js?v=67a52340aabd';
+import {phosphorMap} from './light-textures.js?v=67a52340aabd';
+import {buildReleaseLiner} from './release-liner.js?v=67a52340aabd';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -42,26 +42,26 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   ribbon(W,.00008,.00022,mat('#ffffff',.57,{map:surfaceTexture,envMapIntensity:.45}),'PCB_z_nadrukiem');
   const count=layout.leds.length;
   const bodies=[],emitters=[],coldEmitters=[],solders=[],resistors=[],resistorEnds=[],rgbPoints={R:[],G:[],B:[]},rgbMaterials={};
-  if(rgbw)for(const [key,color]of Object.entries({R:'#ff1605',G:'#20ff08',B:'#143bff'}))rgbMaterials[key]=mat('#d8d7c3',.28,{emissive:color,emissiveMap:phosphor,emissiveIntensity:0});
+  if(rgbw)for(const [key,color]of Object.entries({R:'#ff0000',G:'#00ff00',B:'#0000ff'}))rgbMaterials[key]=mat('#171b20',.3,{emissive:color,emissiveMap:phosphor,emissiveIntensity:0,toneMapped:false});
   if(!continuous&&!art){
     for(let i=0;i<count;i++){
-      const x=layout.leds[i];bodies.push([x,.00056,0]);
-      if(rgbw){emitters.push([x-.00105,.0009,-.00105]);rgbPoints.R.push([x+.00105,.0009,-.00105]);rgbPoints.G.push([x-.00105,.0009,.00105]);rgbPoints.B.push([x+.00105,.0009,.00105]);}
-      else if(cct){emitters.push([x,.00090,-.00113]);coldEmitters.push([x,.00090,.00113]);}
+      const x=layout.leds[i];bodies.push([x,wide?.00076:.00056,0]);
+      if(rgbw){emitters.push([x-.00085,.00159,-.00085]);rgbPoints.R.push([x+.00085,.00159,-.00085]);rgbPoints.G.push([x-.00085,.00159,.00085]);rgbPoints.B.push([x+.00085,.00159,.00085]);}
+      else if(cct){emitters.push([x,.00159,-.00095]);coldEmitters.push([x,.00159,.00095]);}
       else emitters.push([x,.00090,0]);
       for(const sign of [-1,1])solders.push([x+sign*(wide?.00254:small?.00116:.00147),.00032,0]);
     }
-    instances(geometry(wide?.005:small?.0022:.0028,.00065,wide?.005:small?.0016:Math.min(.0035,W*.85),.00014),body,bodies,'SMD_obudowy');
+    instances(geometry(wide?.005:small?.0022:.0028,wide?.001:.00065,wide?.005:small?.0016:Math.min(.0035,W*.85),.00014),body,bodies,'SMD_obudowy');
     // A raised ceramic rim leaves the phosphor recessed inside the package.
     const outerX=wide?.005:small?.0022:.0028,outerZ=wide?.005:small?.0016:Math.min(.0035,W*.85);
     const rim=new T.Shape();rim.moveTo(-outerX/2,-outerZ/2);rim.lineTo(outerX/2,-outerZ/2);rim.lineTo(outerX/2,outerZ/2);rim.lineTo(-outerX/2,outerZ/2);rim.closePath();
     const hole=new T.Path(),hx=(wide?.0041:small?.0017:.00212)/2,hz=(wide?.0043:small?.0012:Math.min(.00286,W*.7))/2;
-    hole.moveTo(-hx,-hz);hole.lineTo(-hx,hz);hole.lineTo(hx,hz);hole.lineTo(hx,-hz);hole.closePath();rim.holes.push(hole);
-    const rimGeo=new T.ExtrudeGeometry(rim,{depth:.00018,bevelEnabled:true,bevelSize:.000025,bevelThickness:.00002,bevelSegments:1,steps:1});rimGeo.rotateX(-Math.PI/2);rimGeo.translate(0,.00029,0);geometries.push(rimGeo);
+    if(wide)hole.absellipse(0,0,.00208,.00208,0,Math.PI*2,true);else{hole.moveTo(-hx,-hz);hole.lineTo(-hx,hz);hole.lineTo(hx,hz);hole.lineTo(hx,-hz);hole.closePath();}rim.holes.push(hole);
+    const rimGeo=new T.ExtrudeGeometry(rim,{depth:wide?.0005:.00018,bevelEnabled:true,bevelSize:.000025,bevelThickness:.00002,bevelSegments:1,steps:1});rimGeo.rotateX(-Math.PI/2);rimGeo.translate(0,wide?.00047:.00029,0);geometries.push(rimGeo);
     instances(rimGeo,body,bodies,'SMD_ceramiczna_krawedz');
-    instances(geometry(rgbw?.0016:cct?.00375:small?.0015:.00188,.00010,rgbw?.0016:cct?.00175:small?.00105:Math.min(.00262,W*.63),.000045),warm,emitters,cct?'Diody_WW':'Luminofor_SMD');
-    if(rgbw)for(const key of ['R','G','B'])instances(geometry(.0016,.0001,.0016,.000045),rgbMaterials[key],rgbPoints[key],'Diody_'+key);
-    if(cct)instances(geometry(.00375,.00010,.00175,.000045),cool,coldEmitters,'Diody_CW');
+    instances(geometry(rgbw?.0012:cct?.0029:small?.0015:.00188,.00010,rgbw?.0012:cct?.0014:small?.00105:Math.min(.00262,W*.63),.000045),warm,emitters,cct?'Diody_WW':'Luminofor_SMD');
+    if(rgbw)for(const key of ['R','G','B'])instances(geometry(.0012,.0001,.0012,.000045),rgbMaterials[key],rgbPoints[key],'Diody_'+key);
+    if(cct)instances(geometry(.0029,.00010,.0014,.000045),cool,coldEmitters,'Diody_CW');
     instances(geometry(.00055,.00022,wide?.0037:small?.00125:.0025,.00009),silver,solders,'Spoiny_lutownicze');
     for(const x of layout.resistors){resistors.push([x,.00048,0]);resistorEnds.push([x-.00065,.00046,0],[x+.00065,.00046,0]);}
     instances(geometry(.00105,.00040,.00165),black,resistors,'Rezystory');
@@ -75,10 +75,10 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     const style=glowMaterial(!continuous);materials.push(style.material);textures.push(style.texture);
     style.material.side=T.FrontSide;
     let mesh;if(continuous){const g=new T.PlaneGeometry(L,W*2.5,Math.max(32,Math.ceil(L*200)),1);g.rotateX(-Math.PI/2);geometries.push(g);mesh=new T.Mesh(g,style.material);mesh.name='Poswiata_pasmo';group.add(mesh);ribbons.push({g,original:g.attributes.position.array.slice(),y:whiteCOB?(t.envelopeHeight??5)/1000+.00012:.0017});}
-    else{const g=new T.PlaneGeometry(cct?.012:small?.006:.011,cct?.010:small?.005:.010);g.rotateX(-Math.PI/2);geometries.push(g);mesh=instances(g,style.material,points.map(([x,y,z])=>[x,y+.00022,z]),'Poswiata_'+channel);}
+    else{const g=new T.PlaneGeometry(rgbw?.008:cct?.008:small?.0045:.006,rgbw?.008:cct?.008:small?.0045:.006);g.rotateX(-Math.PI/2);geometries.push(g);mesh=instances(g,style.material,points.map(([x,y,z])=>[x,y+.00022,z]),'Poswiata_'+channel);}
     if(mesh){mesh.castShadow=false;mesh.receiveShadow=false;mesh.visible=false;halos.push({mesh,style,channel});}
   }
-  if(!art){addHalo(emitters,'WW');if(cct&&!continuous)addHalo(coldEmitters,'CW');if(rgbw)for(const key of ['R','G','B'])addHalo(rgbPoints[key],key);}
+  if(!art){if(rgbw)addHalo(layout.leds.map(x=>[x,.0016,0]),'RGBW');else{addHalo(emitters,'WW');if(cct&&!continuous)addHalo(coldEmitters,'CW');}}
   const terminals=tapeTerminals(t,state),pads=[],endPads=[],zs=terminals.map(p=>p.z);
   for(let i=0;i<=spec.segments;i++){
     const x=layout.contacts[i];
@@ -115,15 +115,15 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   }
   bend(0);
   return{group,bend,peel,liner:liner.mesh,update(s,color){
-    const side=verticalPCB&&(s.view!=='macro'||['sleeve','seal'].includes(s.detail));core.rotation.x=side?Math.PI/2:0;core.position.set(0,side?spec.sleeve.height/2000:whiteCOB?.00008:0,side?-spec.sleeve.width/2000+.001:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';
+    const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail));core.rotation.x=side?Math.PI/2:0;core.position.set(0,side?spec.sleeve.height/2000:whiteCOB?.00008:0,side?-spec.sleeve.width/2000+.001:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);
     const level=s.light&&!s.compare?s.dimmer/100:0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
     warm.emissive.copy(rgbw?colorCct(t.cct):cct&&!continuous?colorCct(t.cctMin):color);cool.emissive.copy(colorCct(t.cctMax||6500));
     const strength=level*(s.lightStudy?13:7.5)*(spec.wattsPerMeter/t.watts);
     const channels=rgbw?rgbwChannels(s):null;
-    warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=strength*channels[key];cool.emissiveIntensity=strength*mix;
-    for(const {mesh,style,channel}of halos){const fraction=rgbw?channels[channel==='WW'?'W':channel]:cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&['sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?(channel==='WW'?warm.emissive:rgbMaterials[channel].emissive):cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(s.lightStudy?2.1:.95);}
-    group.userData.light={on:level>0,warm:warm.emissiveIntensity,cool:cool.emissiveIntensity,color:color.getHexString(),pointHalos:!continuous,ledCount:count,channels};
+    warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=level*1.35*channels[key];cool.emissiveIntensity=strength*mix;
+    for(const {mesh,style,channel}of halos){const fraction=rgbw?Math.max(...Object.values(channels)):cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&['product','sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?color:cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(rgbw?(s.lightStudy?1.25:.75):(s.lightStudy?1.65:.8));}
+    group.userData.light={on:level>0,warm:warm.emissiveIntensity,cool:cool.emissiveIntensity,color:color.getHexString(),pointHalos:!continuous,ledCount:count,package:continuous?t.technology||t.type:t.package||(wide?'5050':'2835'),channels};
     wireGroup.visible=!art&&(s.view==='macro'&&['wiring','seal'].includes(s.detail)||s.showCable&&s.view!=='macro'&&s.view!=='zone');
   },dispose(){liner.dispose();protection?.dispose();for(const m of materials)m.dispose();for(const g of geometries)g.dispose();for(const x of textures)x.dispose();}};
 }

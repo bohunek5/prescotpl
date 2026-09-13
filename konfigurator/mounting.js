@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=a71cff26a3ca';
-import {accessoryKit} from './accessory-data.js?v=a71cff26a3ca';
+import {buildAccessories} from './accessories.js?v=67a52340aabd';
+import {accessoryKit} from './accessory-data.js?v=67a52340aabd';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 export function seatingHeight(p,recessed){
@@ -8,6 +8,13 @@ export function seatingHeight(p,recessed){
   return -(p.seatDepth??(p.id==='microk'?4.9:p.id==='larko'?22.8:p.id==='kozus'?15:p.height-1))/1000;
 }
 export function mountingSteps(p,recessed){
+  if(p.screwDrywall)return[
+    ['Profil między płytami',`Przygotuj krawędzie płyty ${String(p.boardThickness).replace('.',',')} mm i wyjście przewodu. Skrzydła profilu opierają się o tylną stronę płyty.`],
+    ['Przykręcenie skrzydeł','Przewierć płytę i skrzydła, następnie osadź wkręty. Instrukcja KLUŚ podaje maksymalny rozstaw 400 mm.'],
+    ['Przewód i wkładka ochronna','Wyprowadź przewód i zabezpiecz kanał wkładką. Dołącz drugą płytę i zamocuj drugie skrzydło.'],
+    ['Wykończenie powierzchni','Zaszpachluj połączenie, wyrównaj i pomaluj. Wkładka pozostaje w kanale podczas prac.'],
+    ['Taśma i przesłona','Natnij wykończenie przy wkładce i wyjmij ją. Oczyść kanał, wklej taśmę i osadź dobraną przesłonę.']
+  ];
   if(p.id==='kozus')return[
     ['Przepust na przewód','Przygotuj wyjście przewodu w profilu i otwór w zabudowie. Ten wariant KOZUS jest przeznaczony do płyty 16 mm.'],
     ['Taśma i wkładka ochronna','Wklej taśmę, wyprowadź przewód i włóż TECH-22. Wkładka chroni kanał i utrzymuje jego szerokość podczas prac.'],
@@ -53,7 +60,7 @@ export function buildMount(p,state,wood){
   const steel=material({color:'#b7bcc0',metalness:.83,roughness:.25}),dark=material({color:'#383a39',roughness:.6}),paper=material({color:'#dbca9f',roughness:.7}),plaster=material({color:'#efece5',roughness:.88}),gypsum=material({color:'#d5d0c5',roughness:1});
   const add=(g,m,parent,x=0,y=0,z=0)=>{geos.push(g);const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;};
   const box=(parent,w,h,d,m,x=0,y=0,z=0,round=.00018)=>add(new RoundedBoxGeometry(w,h,d,2,Math.min(round,h*.2)),m,parent,x,y,z);
-  const recessed=state.mounting==='recessed',dry=p.id==='kozus',H=p.height/1000,W=p.bodyWidth/1000,depth=dry?.016:Math.max(.018,H+.007),span=Math.max(.064,p.width/1000+.030),gap=W+.001,seat=seatingHeight(p,recessed);
+  const recessed=state.mounting==='recessed',dry=p.mount==='drywall',H=p.height/1000,W=p.bodyWidth/1000,depth=dry?(p.boardThickness??16)/1000:Math.max(.018,H+.007),span=Math.max(.064,p.width/1000+.030),gap=W+.001,seat=seatingHeight(p,recessed);
   if(recessed){
     for(const sign of [-1,1])box(parts,.100,depth,(span-gap)/2,dry?gypsum:wood,0,-depth/2,sign*(gap/2+(span-gap)/4));
     if(!dry&&p.id!=='larko')box(parts,.1,depth+seat,gap,wood,0,(-depth+seat)/2);
@@ -76,9 +83,16 @@ export function buildMount(p,state,wood){
     const points=[[x,seat+.003,sign*(W/2)],[x,seat+.010,sign*(W/2+.007)],[x,seat+.022,sign*(W/2+.013)]];
     const curve=new T.CatmullRomCurve3(points.map(v=>new T.Vector3(...v)));add(new T.TubeGeometry(curve,16,.00065,6,false),steel,fixings);
   }
-  if(dry)for(const sign of [-1,1])box(fixings,.091,.00045,.014,paper,0,-.0001,sign*.024);
-  const shield=box(root,.1,.001,.0217,material({color:'#547d80',roughness:.45}),0,seat+H-.00025);shield.name='Wkladka_ochronna_TECH_22';
-  if(dry)for(const sign of [-1,1])box(finish,.1,.0025,(span-.022)/2,plaster,0,.00125,sign*(.011+(span-.022)/4));
+  if(dry&&!p.screwDrywall)for(const sign of [-1,1])box(fixings,.091,.00045,.014,paper,0,-.0001,sign*.024);
+  if(p.screwDrywall)for(const x of[-.031,.031])for(const sign of[-1,1]){
+    const z=sign*.018,fastener=new T.Group();fastener.name='Wkret_plyty_GK';fixings.add(fastener);
+    add(new T.CylinderGeometry(.001,.0007,depth+.004,14),steel,fastener,x,-depth/2,z);
+    add(new T.CylinderGeometry(.0023,.001,.001,20),steel,fastener,x,-.0005,z);
+    box(fastener,.0027,.00010,.00045,dark,x,.00006,z);
+  }
+  const opening=p.screwDrywall?.0112:.022;
+  const shield=box(root,.1,.001,opening-.0003,material({color:'#547d80',roughness:.45}),0,seat+H-.00025);shield.name=p.screwDrywall?'Wkladka_ochronna_TECH_11':'Wkladka_ochronna_TECH_22';
+  if(dry)for(const sign of [-1,1])box(finish,.1,seat+H,(span-opening)/2,plaster,0,(seat+H)/2,sign*(opening/2+(span-opening)/4));
   const route=new T.CatmullRomCurve3([new T.Vector3(-.048,seat+.0015,0),new T.Vector3(-.051,seat+.002,0),new T.Vector3(-.053,-.009,0),new T.Vector3(-.053,-.015,-span*.33),new T.Vector3(-.035,-.015,-span*.4)]);
   add(new T.TubeGeometry(route,36,.0011,10,false),dark,cable);cable.name='Trasa_przewodu';
   function update(s,sample){
@@ -88,7 +102,8 @@ export function buildMount(p,state,wood){
     if(dry)cable.visible=walk&&step>=1;
     sample.group.position.y=seat;sample.profile.visible=true;sample.pcb.visible=true;sample.cover.visible=true;sample.group.visible=true;
     if(walk){
-      if(dry){sample.assemble(step===0?100:0);sample.group.position.y=step<2?seat+.018:seat;sample.cover.visible=step===4;sample.pcb.visible=step>0;shield.position.y=sample.group.position.y+H-.00025;}
+      if(p.screwDrywall){sample.group.visible=step>0;sample.assemble(0);sample.group.position.y=seat;sample.cover.visible=step===4;sample.pcb.visible=step===4;shield.visible=step>=2&&step<4;shield.position.y=seat+H-.00025;}
+      else if(dry){sample.assemble(step===0?100:0);sample.group.position.y=step<2?seat+.018:seat;sample.cover.visible=step===4;sample.pcb.visible=step>0;shield.position.y=sample.group.position.y+H-.00025;}
       else if(['piko','tami','tost','pac','stos','larko'].includes(p.id)){sample.group.visible=step>0;sample.assemble(step===1?100:0);sample.group.position.y=seat+(step>0&&step<4?.012:0);}
       else{sample.group.visible=step>=2;sample.assemble(step===2?100:step===3?50:0);sample.group.position.y=seat+(step>=2&&step<4?.011:0);}
     }

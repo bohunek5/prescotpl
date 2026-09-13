@@ -5,9 +5,9 @@ import * as T from 'three';
 export function coverSection(c){
   const w=c.width||14.2,lip=c.lipDepth??3.2,wall=.65,r=c.rise??(c.shape==='round'?3.4:c.shape==='shallow'?1.1:.8),s=new T.Shape();
   if(c.shape==='dome'){
-    s.moveTo(-w/2,-lip);s.lineTo(-w/2,r-w/2);s.quadraticCurveTo(-w/2,r,0,r);s.quadraticCurveTo(w/2,r,w/2,r-w/2);s.lineTo(w/2,-lip);s.lineTo(w/2-wall,-lip);s.lineTo(w/2-wall,r-w/2);s.quadraticCurveTo(w/2-wall,r-wall,0,r-wall);s.quadraticCurveTo(-w/2+wall,r-wall,-w/2+wall,r-w/2);s.lineTo(-w/2+wall,-lip);
+    s.moveTo(-w/2,-lip);s.lineTo(-w/2,r-w/2);s.absarc(0,r-w/2,w/2,Math.PI,0,true);s.lineTo(w/2,-lip);s.lineTo(w/2-wall,-lip);s.lineTo(w/2-wall,r-w/2);s.absarc(0,r-w/2,w/2-wall,0,Math.PI,false);s.lineTo(-w/2+wall,-lip);
   }else if(c.shape==='square'){
-    s.moveTo(-w/2,-lip);s.lineTo(-w/2,r);s.lineTo(w/2,r);s.lineTo(w/2,-lip);s.lineTo(w/2-wall,-lip);s.lineTo(w/2-wall,r-wall);s.lineTo(-w/2+wall,r-wall);s.lineTo(-w/2+wall,-lip);
+    s.moveTo(-w/2+.3,-lip);s.lineTo(-w/2+.3,0);s.lineTo(-w/2,0);s.lineTo(-w/2,r);s.lineTo(w/2,r);s.lineTo(w/2,0);s.lineTo(w/2-.3,0);s.lineTo(w/2-.3,-lip);s.lineTo(w/2-wall,-lip);s.lineTo(w/2-wall,r-wall);s.lineTo(-w/2+wall,r-wall);s.lineTo(-w/2+wall,-lip);
   }else if(c.shape==='lens'){
     s.moveTo(-w/2,-lip);s.lineTo(-w/2,r);s.lineTo(w/2,r);s.lineTo(w/2,-lip);s.lineTo(w/2-wall,-lip);s.lineTo(w/2-wall,r-wall);s.quadraticCurveTo(0,-1.4,-w/2+wall,r-wall);s.lineTo(-w/2+wall,-lip);
   }else if(['round','shallow','arch'].includes(c.shape)){

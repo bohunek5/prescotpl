@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=a71cff26a3ca';
-import {buildProduct} from './product.js?v=a71cff26a3ca';
-import {buildMount} from './mounting.js?v=a71cff26a3ca';
-import {buildZone} from './zones.js?v=a71cff26a3ca';
-import {sectionGeometry} from './section.js?v=a71cff26a3ca';
-import {lightColor} from './light-color.js?v=a71cff26a3ca';
-import {assemblyClip} from './assembly-export.js?v=a71cff26a3ca';
-import {createSoftShadow} from './soft-shadow.js?v=a71cff26a3ca';
+import {specification,displayLength} from './catalog.js?v=67a52340aabd';
+import {buildProduct} from './product.js?v=67a52340aabd';
+import {buildMount} from './mounting.js?v=67a52340aabd';
+import {buildZone} from './zones.js?v=67a52340aabd';
+import {sectionGeometry} from './section.js?v=67a52340aabd';
+import {lightColor} from './light-color.js?v=67a52340aabd';
+import {assemblyClip} from './assembly-export.js?v=67a52340aabd';
+import {createSoftShadow} from './soft-shadow.js?v=67a52340aabd';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -53,10 +53,11 @@ export async function createStudio(host,initial){
 
   function clear(group){for(const child of [...group.children]){group.remove(child);child.traverse(o=>o.geometry?.dispose());}}
   function ensureSample(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcaps,s.showCable,displayLength(s)].join('|');if(next===sampleKey&&sample)return;
+    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcaps,s.showCable,s.housing,displayLength(s)].join('|');if(next===sampleKey&&sample)return;
     if(sample){detailRoot.remove(sample.group);sample.dispose();}if(fixture){mount.remove(fixture.root);fixture.dispose();}clear(cut);
     const spec=specification(s),H=spec.profile.height/1000;
     sample=buildProduct(geometry,sourceSize,spec,s,{length:displayLength(s),art,sourceCover});detailRoot.add(sample.group);
+    if(spec.isSleeve){fixture=null;sampleKey=next;return;}
     fixture=buildMount(spec.profile,s,wood);mount.add(fixture.root);sampleKey=next;
     const cutGeo=sectionGeometry(s.profile==='micro'?geometry:sample.profile.children.map(o=>{const g=o.geometry.clone();g.translate(...o.position.toArray());return g;}),s.profile==='micro'?H/2:0);
     const face=new T.Mesh(cutGeo,cutMat);face.rotation.y=Math.PI/2;face.position.set(.05004,fixture.seat,0);cut.add(face);
@@ -155,24 +156,24 @@ export async function createStudio(host,initial){
   const visibility=()=>requestDraw();document.addEventListener('visibilitychange',visibility);
   function update(next){
     const previous=s;s={...next};if(s.view==='zone')ensureZone();else ensureSample();appearance();
-    const explicitView=['view','detail','assemblyAngle','productScale','zone','zoneDetail','mountStep','zonePosition'].some(k=>previous[k]!==s[k]);
+    const explicitView=['housing','view','detail','assemblyAngle','productScale','zone','zoneDetail','mountStep','zonePosition'].some(k=>previous[k]!==s[k]);
     if((explicitView&&previous.profile===s.profile&&previous.strip===s.strip)||previous.view!==s.view)frame(true);
     else if(previous.length!==s.length&&displayLength(s)>100)frame(true,true);
   }
   if(s.view==='zone')ensureZone();else ensureSample();appearance();resize();await renderer.compileAsync(scene,camera);ready=true;renderer.shadowMap.needsUpdate=true;draw();const ro=new ResizeObserver(resize);ro.observe(host);
   async function exportGLB(){
     const spec=specification(s),exportState={...s,view:'assembly',assemblyAngle:'perspective',exporting:true},full=buildProduct(geometry,sourceSize,spec,exportState,{length:s.length,art,sourceCover,quality:'detail'});full.update(exportState,lightColor(s,spec.strip));full.assemble(0);const out=full.group,H=spec.profile.height/1000;out.traverse(o=>{if(o.name.startsWith('Poswiata_')||o.isLight)o.visible=false;});
-    const clip=assemblyClip(full,{linerAllowed:!spec.sleeve&&!spec.strip.encapsulation});
+    const clip=spec.isSleeve?null:assemblyClip(full,{linerAllowed:!spec.sleeve&&!spec.strip.encapsulation});
     // Expand instancing for importers that do not support EXT_mesh_gpu_instancing.
     const instances=[];out.traverse(o=>{if(o.isInstancedMesh)instances.push(o);});for(const o of instances){const g=new T.Group();g.name=o.name;g.position.copy(o.position);g.quaternion.copy(o.quaternion);g.scale.copy(o.scale);for(let i=0;i<o.count;i++){const mesh=new T.Mesh(o.geometry,o.material),m=new T.Matrix4();o.getMatrixAt(i,m);m.decompose(mesh.position,mesh.quaternion,mesh.scale);g.add(mesh);}o.parent.add(g);o.parent.remove(o);}
-    out.userData={units:'meters',configuration:s,profileLengthMm:s.length,stripLengthMm:spec.stripLength,fitStatus:spec.fitStatus,fitIssues:spec.issues,finishVariant:spec.finish,modelNotes:'MICRO-PLUS and HS cover: sections from manufacturer 3DS, with presentation chamfers. Other profile sections reconstructed from manufacturer drawings; retaining details, covers, PCB and print: illustrative. Exported tape is straight. Release-paper morphs precede PCB seating. Not fabrication geometry.',printNotes:'CE/RoHS option is a proposed print, not certification evidence.'};
-    try{return await new GLTFExporter().parseAsync(out,{binary:true,animations:[clip],onlyVisible:true});}finally{full.dispose();}
+    out.userData={units:'meters',configuration:s,profileLengthMm:spec.isSleeve?null:s.length,stripLengthMm:spec.stripLength,fitStatus:spec.fitStatus,fitIssues:spec.issues,finishVariant:spec.isSleeve?null:spec.finish,modelNotes:spec.isSleeve?'PRESCOT tape and silicone sleeve, illustrative section and sealing details; no aluminum profile or cover. Exported tape is straight. Not fabrication geometry.':'MICRO-PLUS and HS cover: sections from manufacturer 3DS, with presentation chamfers. Other profile sections reconstructed from manufacturer drawings; retaining details, covers, PCB and print: illustrative. Exported tape is straight. Release-paper morphs precede PCB seating. Not fabrication geometry.',printNotes:'CE/RoHS option is a proposed print, not certification evidence.'};
+    try{return await new GLTFExporter().parseAsync(out,{binary:true,animations:clip?[clip]:[],onlyVisible:true});}finally{full.dispose();}
   }
 
   async function capture(){
     cancelAnimationFrame(cameraTween);cameraTween=0;
     const saved={state:{...s},position:camera.position.clone(),target:controls.target.clone(),zoom:camera.zoom,left:camera.left,right:camera.right,top:camera.top,bottom:camera.bottom};
-    try{finishInteraction();update({...s,view:'assembly',assemblyAngle:'perspective',productScale:'detail'});mount.visible=false;ground.visible=false;frame(false);finishInteraction();renderer.render(scene,camera);return await new Promise((resolve,reject)=>renderer.domElement.toBlob(blob=>blob?resolve(blob):reject(Error('Nie można zapisać obrazu.')),'image/png'));}
+    try{finishInteraction();update({...s,view:s.housing==='sleeve'?'macro':'assembly',detail:s.housing==='sleeve'?'product':s.detail,assemblyAngle:'perspective',productScale:'detail'});mount.visible=false;ground.visible=false;frame(false);finishInteraction();renderer.render(scene,camera);return await new Promise((resolve,reject)=>renderer.domElement.toBlob(blob=>blob?resolve(blob):reject(Error('Nie można zapisać obrazu.')),'image/png'));}
     finally{update(saved.state);frame();camera.position.copy(saved.position);for(const k of ['zoom','left','right','top','bottom'])camera[k]=saved[k];camera.updateProjectionMatrix();controls.target.copy(saved.target);camera.lookAt(saved.target);requestDraw();}
   }
   function projectedCover(){

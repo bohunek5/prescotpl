@@ -1,7 +1,12 @@
-import {tracedContours} from './profile-contours.js?v=a71cff26a3ca';
+import {tracedContours} from './profile-contours.js?v=67a52340aabd';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
+  if(['pdst','pdsust'].includes(p.id)){
+    const base=p.ledBase,H=p.height;
+    return [[-26.1,0],[-6.7,0],[-6.7,base-1.2],[-4.5,base-1.2],[-4.5,0],[-1.6,0],[-1.6,base-1.2],[1.6,base-1.2],[1.6,0],[4.5,0],[4.5,base-1.2],[6.7,base-1.2],[6.7,0],[26.1,0],[26.1,1],[8.1,1],[8.1,H],[5.6,H],[5.6,H-1],[7,H-1],[7,base],[-7,base],[-7,H-1],[-5.6,H-1],[-5.6,H],[-8.1,H],[-8.1,1],[-26.1,1]];
+  }
+  if(p.id==='pdszmg')return [[-8.3,0],[-6.5,0],[-6.5,2.8],[-4,2.8],[-4,0],[-1.3,0],[-1.3,2.8],[1.3,2.8],[1.3,0],[4,0],[4,2.8],[6.5,2.8],[6.5,0],[8.3,0],[8.3,22],[7,22],[7,15.7],[5.6,15.7],[5.6,14.7],[7,14.7],[7,4.4],[-7,4.4],[-7,14.7],[-5.6,14.7],[-5.6,15.7],[-7,15.7],[-7,22],[-8.3,22]];
   if(tracedContours[p.id])return tracedContours[p.id];
   const a=p.bodyWidth/2,b=p.channel/2,H=p.height,base=p.ledBase;
   if(p.id==='pdsnk')return[[-8.1,0],[8.1,0],[8.1,11],[11.1,11],[11.1,12],[5.7,12],[5.7,10.9],[7,10.9],[7,1.1],[-7,1.1],[-7,10.9],[-5.7,10.9],[-5.7,12],[-11.1,12],[-11.1,11],[-8.1,11]];

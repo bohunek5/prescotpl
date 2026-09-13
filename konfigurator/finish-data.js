@@ -479,3 +479,38 @@ export const finishVariants = {
     }
   }
 };
+
+// Additional profiles: finish symbols from their official product cards.
+Object.assign(finishVariants, {
+  "A02057": {
+    "raw": {
+      "name": "Aluminium surowe",
+      "ref": "A02057N",
+      "source": "assets/sources/pds-t.pdf"
+    }
+  },
+  "A02725": {
+    "raw": {
+      "name": "Aluminium surowe",
+      "ref": "A02725N",
+      "source": "assets/sources/pds-ust.pdf"
+    }
+  },
+  "A01418": {
+    "silver": {
+      "name": "Srebrne anodowane",
+      "ref": "A01418A",
+      "source": "assets/sources/pds-zmg.pdf"
+    },
+    "black": {
+      "name": "Czarne anodowane",
+      "ref": "A01418A07",
+      "source": "assets/sources/pds-zmg.pdf"
+    },
+    "white": {
+      "name": "Białe lakierowane",
+      "ref": "A01418L10",
+      "source": "assets/sources/pds-zmg.pdf"
+    }
+  }
+});

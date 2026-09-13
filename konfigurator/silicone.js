@@ -1,6 +1,6 @@
 import * as T from 'three';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=a71cff26a3ca';
+import {diffuserMap} from './light-textures.js?v=67a52340aabd';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){
@@ -49,7 +49,7 @@ export function buildSilicone(t,sleeve,L){
     const bead=new T.Mesh(new T.TorusGeometry(Math.min(W,H)*.33,.00018,6,20),opal);bead.rotation.y=Math.PI/2;bead.position.set(-sign*.001,.0012,0);cap.add(bead);geos.push(bead.geometry);
   }
   function update(state,point,curvature,color){
-    const macro=state.view==='macro',inspect=macro&&state.detail==='sleeve';root.visible=coating||!macro||['sleeve','seal'].includes(state.detail);caps.visible=!coating&&(!macro||state.detail==='seal');
+    const macro=state.view==='macro',inspect=macro&&state.detail==='sleeve';root.visible=coating||!macro||['product','sleeve','seal'].includes(state.detail);caps.visible=!coating&&(!macro||['product','seal'].includes(state.detail));
     const nextKey=[inspect,curvature].join('|');
     if(nextKey!==geometryKey){
       geometryKey=nextKey;const p=geo.attributes.position,n=geo.attributes.normal;
@@ -61,9 +61,12 @@ export function buildSilicone(t,sleeve,L){
       }
       p.needsUpdate=true;n.needsUpdate=true;geo.computeBoundingSphere();
     }
-    caps.children.forEach(cap=>{const sign=cap.userData.sign,x=sign*(L/2+.0011+(macro&&!state.sealClosed?.009:0));cap.position.copy(point(x,0,0));cap.rotation.z=x*curvature;});
+    caps.children.forEach(cap=>{const sign=cap.userData.sign,x=sign*(L/2+.0011+(macro&&state.detail==='seal'&&!state.sealClosed?.009:0));cap.position.copy(point(x,0,0));cap.rotation.z=x*curvature;});
     opal.emissive.copy(color);opal.emissiveIntensity=state.light?state.dimmer/100*.4:0;
-    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*(coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
+    const rgb=t.type==='RGBW'&&state.rgbMode!=='white';
+    if(silicone.toneMapped===rgb){silicone.toneMapped=!rgb;silicone.needsUpdate=true;}
+    silicone.color.set(spec.clear?'#c8d3d3':'#f7f8f3');if(rgb&&!spec.clear)silicone.color.copy(color).multiplyScalar(.12);
+    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*(rgb?1.65:coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
     root.userData={kind:coating?'coating':native?'factory-ip67':'pro-sleeve',shape:spec.shape,pcbOrientation:side?'vertical':'horizontal',outerWidthMm:spec.width,outerHeightMm:spec.height,milky:!spec.clear,shapeVerified:coating?!!t.envelopeVerified:!!sleeve?.verified,closed:!macro||state.sealClosed,dimensionsVerified:coating?!!t.envelopeVerified:!!sleeve?.verified};
   }
   return{root,update,dispose(){geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());emission.dispose();}};

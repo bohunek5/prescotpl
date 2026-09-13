@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "a71cff26a3ca",
+  "revision": "67a52340aabd",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -61,8 +61,14 @@
     "assets/sources/pds-nk-installation.pdf",
     "assets/sources/pds-nk.pdf",
     "assets/sources/pds-stn.pdf",
+    "assets/sources/pds-t-installation.pdf",
+    "assets/sources/pds-t.pdf",
+    "assets/sources/pds-ust-installation.pdf",
+    "assets/sources/pds-ust.pdf",
     "assets/sources/pds-zm-plus-installation.pdf",
     "assets/sources/pds-zm-plus.pdf",
+    "assets/sources/pds-zmg-installation.pdf",
+    "assets/sources/pds-zmg.pdf",
     "assets/sources/piko-cover.pdf",
     "assets/sources/piko-installation.pdf",
     "assets/sources/piko-o-installation.pdf",

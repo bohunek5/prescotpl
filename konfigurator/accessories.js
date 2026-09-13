@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {accessoryKit} from './accessory-data.js?v=a71cff26a3ca';
-import {profileContour} from './profile-shapes.js?v=a71cff26a3ca';
+import {accessoryKit} from './accessory-data.js?v=67a52340aabd';
+import {profileContour} from './profile-shapes.js?v=67a52340aabd';
 // Exterior study of the matched parts; snap fits are not machining geometry.
 export function buildAccessories(p,state,L){
   const root=new T.Group(),caps=new T.Group(),fixings=new T.Group();root.name='Akcesoria_KLUS';root.add(caps,fixings);
@@ -20,7 +20,7 @@ export function buildAccessories(p,state,L){
     }
     if(p.id==='pikoo'){sh.absarc(0,.00525,.00525,0,Math.PI*2,false);return sh;}
     if(p.id==='alu45'){sh.moveTo(-.0095,0);sh.lineTo(.0085,0);sh.lineTo(.0095,.001);sh.lineTo(.0095,.019);sh.lineTo(.002,.019);sh.lineTo(-.0095,.0075);sh.closePath();return sh;}
-    const w=['kozus','larko'].includes(p.id)?p.bodyWidth/1000:W,r=.0005;sh.moveTo(-w/2+r,0);sh.lineTo(w/2-r,0);sh.quadraticCurveTo(w/2,0,w/2,r);sh.lineTo(w/2,H-r);sh.quadraticCurveTo(w/2,H,w/2-r,H);sh.lineTo(-w/2+r,H);sh.quadraticCurveTo(-w/2,H,-w/2,H-r);sh.lineTo(-w/2,r);sh.quadraticCurveTo(-w/2,0,-w/2+r,0);return sh;
+    const w=(p.mount==='drywall'||p.id==='larko')?p.bodyWidth/1000:W,r=.0005;sh.moveTo(-w/2+r,0);sh.lineTo(w/2-r,0);sh.quadraticCurveTo(w/2,0,w/2,r);sh.lineTo(w/2,H-r);sh.quadraticCurveTo(w/2,H,w/2-r,H);sh.lineTo(-w/2+r,H);sh.quadraticCurveTo(-w/2,H,-w/2,H-r);sh.lineTo(-w/2,r);sh.quadraticCurveTo(-w/2,0,-w/2+r,0);return sh;
   }
   if(capInfo)for(const sign of [-1,1]){
     const end=new T.Group();end.userData.sign=sign;caps.add(end);

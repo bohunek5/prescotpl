@@ -359,3 +359,18 @@ body[data-light-study=true] #profiles .card[aria-pressed=true] .profile-section-
 
 /* A neutral studio sweep separates pale aluminium/white paint from the page. */
 body:not([data-light-study=true]) #studio-stage #viewport{background:radial-gradient(ellipse at 48% 42%,#e7e9ed 0%,#d6dae0 65%,#ccd2da 100%);border-radius:12px}
+
+/* Two independent housing systems, with calm separators between decisions. */
+.housing-switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 20px;padding:18px 0;border-block:1px solid var(--line)}
+.housing-switch button{display:flex;align-items:center;gap:12px;min-height:68px;padding:12px;border:1px solid var(--line);border-radius:10px;text-align:left;background:transparent;color:inherit}
+.housing-switch button[aria-pressed=true]{background:color-mix(in srgb,currentColor 6%,transparent);border-color:color-mix(in srgb,currentColor 32%,transparent)}
+.housing-switch svg{width:31px;height:26px;flex:none}.housing-switch span{font-size:14px;line-height:1.4}.housing-switch small{display:block;font-size:10px;letter-spacing:.06em;opacity:.62}.housing-switch button:disabled{opacity:.4;cursor:not-allowed}
+.component-picker>summary{border-color:color-mix(in srgb,currentColor 14%,transparent)}
+.technical-component+.technical-component{border-left:1px solid var(--line);padding-left:24px}
+.stage-controls>.stage-light-controls{padding-top:16px;border-top:1px solid var(--line)}
+.sleeve-view-label{font-size:12px;letter-spacing:.14em;opacity:.6;margin:0 0 22px}
+.project-length{padding:0 0 20px;margin:0 0 20px;border-bottom:1px solid var(--line)}
+#choose-sleeve .sleeve-picker{border:0;padding:0;margin:0}
+#choose-sleeve select{min-height:48px;width:100%}
+body[data-housing=sleeve] #macro-spec{max-width:100%;line-height:1.6}
+@media(max-width:780px){.technical-component+.technical-component{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:22px}.housing-switch{margin-block:4px 8px}.stage-controls>.stage-light-controls{padding-top:12px}.sleeve-view-label{font-size:11px;margin-bottom:18px}}
