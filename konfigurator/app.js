@@ -1,11 +1,11 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=d63062560f35';
-import {accessoryKit} from './accessory-data.js?v=d63062560f35';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=d63062560f35';
-import {zones} from './zones.js?v=d63062560f35';
-import {mountingSteps} from './mounting.js?v=d63062560f35';
-import {coverIcon} from './cover-shapes.js?v=d63062560f35';
-import {profileIcon} from './profile-shapes.js?v=d63062560f35';
-import {projectSheet} from './sheet.js?v=d63062560f35';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=feb910542c79';
+import {accessoryKit} from './accessory-data.js?v=feb910542c79';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=feb910542c79';
+import {zones} from './zones.js?v=feb910542c79';
+import {mountingSteps} from './mounting.js?v=feb910542c79';
+import {coverIcon} from './cover-shapes.js?v=feb910542c79';
+import {profileIcon} from './profile-shapes.js?v=feb910542c79';
+import {projectSheet} from './sheet.js?v=feb910542c79';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -75,6 +75,10 @@ function update(){
   for(const [i,label]of(sleeveDetail?['Szerokość','Wysokość','PCB','Materiał']:['Szerokość','Wysokość','Kanał na taśmę','Wykończenie']).entries())$('profile-metric-label-'+i).textContent=label;
   if(sleeveDetail){$('detail-width').textContent=num(housing.width,1)+' mm';$('detail-height').textContent=num(housing.height,1)+' mm';$('detail-channel').textContent=(spec.sleeve?.pcbMax??t.width)+' mm';$('detail-finish').textContent=spec.sleeve?.clear||t.encapsulation==='tube'?'Silikon przezroczysty':'Silikon mleczny';$('technical-profile').textContent=spec.sleeve?.ref||t.ip;}
   $('led-toggle').innerHTML='<i></i>'+(s.light?'LED włączone':'LED wyłączone');
+  const logoSource=s.lightStudy?'assets/logo-white.svg':'assets/logo.svg';
+  document.querySelectorAll('.brand img,.welcome-logo-fallback').forEach(img=>{
+    if(img.getAttribute('src')!==logoSource)img.setAttribute('src',logoSource);
+  });
   $('product-wire').setAttribute('aria-pressed',String(s.showCable));$('led-toggle').setAttribute('aria-pressed',String(s.light));document.body.dataset.view=s.view;document.body.dataset.lightStudy=String(s.lightStudy);document.querySelectorAll('button[data-light-study]').forEach(b=>{b.setAttribute('aria-pressed',String(s.lightStudy));b.textContent=s.lightStudy?'Tryb dzienny':'Tryb nocny';});document.querySelector('meta[name=theme-color]').content=s.lightStudy?'#1c1f24':'#f7f7f2';document.querySelector('.canvas-help').textContent=z?'Obrót w obrębie strefy · kółko: zbliżenie':'Obrót 360° · kółko: zbliżenie · prawy przycisk: przesunięcie';
   document.querySelector('.installation-toolbar').hidden=!installed;document.querySelector('.assembly-toolbar').hidden=s.view!=='assembly';document.querySelector('.macro-toolbar').hidden=s.view!=='macro';document.querySelector('.zone-toolbar').hidden=!z;document.querySelector('.assembly-steps').hidden=s.view!=='assembly';document.querySelector('.mount-guide').hidden=!walk;document.querySelector('.detail-metrics').hidden=false;$('zone-settings').hidden=!z;
   $('rgbw-controls').hidden=t.type!=='RGBW';$('rgb-color').value=s.rgbColor;document.querySelectorAll('[data-rgb-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rgbMode===s.rgbMode)));
@@ -196,7 +200,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=d63062560f35');
+      const {createStudio}=await import('./scene.js?v=feb910542c79');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

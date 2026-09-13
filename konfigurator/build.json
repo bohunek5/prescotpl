@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "d63062560f35",
+  "revision": "feb910542c79",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -9,6 +9,7 @@
     "assembly-export.js",
     "assembly-motion.js",
     "assets/klus.svg",
+    "assets/logo-white.svg",
     "assets/logo.svg",
     "assets/sources/45-16-installation.pdf",
     "assets/sources/45-16.pdf",

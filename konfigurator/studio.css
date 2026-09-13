@@ -243,6 +243,7 @@ body[data-light-study=true] #studio-stage .mount-explanation p{color:#c0bcb3}
 .welcome-content{width:min(100%,1160px);text-align:center;margin-top:-22px}
 #welcome-logo{height:clamp(180px,20vw,285px);width:100%;position:relative;margin:0 auto 12px}
 .welcome-logo-fallback{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:82%;max-width:920px}
+.brand img,.welcome-logo-fallback{aspect-ratio:488/80;object-fit:contain}
 .welcome h1{font-size:clamp(32px,4vw,58px);line-height:1.08;font-weight:500;letter-spacing:-2px;color:#232c34;text-wrap:balance}
 .welcome p{font-size:clamp(13px,1.3vw,17px);color:#73787b;margin:19px 0 30px;line-height:1.55}
 .start-configurator{display:inline-flex;align-items:center;justify-content:center;gap:25px;min-height:52px;padding:15px 25px;border-radius:999px;background:#233747;color:#fff;font-size:13px;box-shadow:0 4px 12px #17324d14;transition:background .18s,transform .18s}
@@ -324,10 +325,8 @@ body[data-light-study=true] :is(.pcb-tools,.import-details,.bom,.fit-report,.con
 body[data-light-study=true] :is(.strip-filters button,.profile-filters button,#seal-close){background:#2d3239;color:#cbc7be;border-color:#50565f}
 body[data-light-study=true] :is(.strip-filters button[aria-pressed=true],.profile-filters button[aria-pressed=true]){background:#46433c;color:#fff2dc;border-color:#b79b76}
 body[data-light-study=true] .project-actions .dark{background:#e9e1d3;color:#202730}
-body[data-light-study=true] .header .brand{background:#faf9f6;padding:8px 10px;border-radius:5px}
 body[data-light-study=true] dialog::backdrop{background:#090c12b3}
 body[data-light-study=true] .welcome{background:radial-gradient(ellipse at 50% 36%,#2d333c,#1c1f24 80%)}
-body[data-light-study=true] #welcome-logo{background:#faf9f6;border-radius:14px;max-width:1050px}
 body[data-light-study=true] .welcome h1{color:#f4eee4}
 body[data-light-study=true] .welcome p{color:#babbbd}
 body[data-light-study=true] .start-configurator{background:#e8e1d5;color:#243441}
