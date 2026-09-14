@@ -1,12 +1,12 @@
-import {stripOutputScale} from './light-state.js?v=05d60c0cb577';
-import {sleeveInsertionPose} from './sleeve-motion.js?v=05d60c0cb577';
-import {factorySilicone} from './strip-protection.js?v=05d60c0cb577';
+import {stripOutputScale} from './light-state.js?v=e64a20d5c820';
+import {sleeveInsertionPose} from './sleeve-motion.js?v=e64a20d5c820';
+import {factorySilicone} from './strip-protection.js?v=e64a20d5c820';
 import * as T from 'three';
 import {toCreasedNormals,mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=05d60c0cb577';
-import {sleeveDrawing,sectionShapes,coatingSection} from './sleeve-shapes.js?v=05d60c0cb577';
-import {createLightVolume} from './light-volume.js?v=05d60c0cb577';
-import {buildSleeveAccessories} from './sleeve-accessories.js?v=05d60c0cb577';
+import {diffuserMap} from './light-textures.js?v=e64a20d5c820';
+import {sleeveDrawing,sectionShapes,coatingSection} from './sleeve-shapes.js?v=e64a20d5c820';
+import {createLightVolume} from './light-volume.js?v=e64a20d5c820';
+import {buildSleeveAccessories} from './sleeve-accessories.js?v=e64a20d5c820';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){

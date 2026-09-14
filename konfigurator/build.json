@@ -1,6 +1,6 @@
 {
   "version": "0.9.0",
-  "revision": "05d60c0cb577",
+  "revision": "e64a20d5c820",
   "three": "0.180.0",
   "files": [
     "accessories.js",
@@ -414,6 +414,7 @@
     "vendor/three/examples/jsm/utils/BufferGeometryUtils.js",
     "welcome-film.js",
     "welcome-motion.js",
+    "welcome-profile.js",
     "zone-playback.js",
     "zones.js"
   ]

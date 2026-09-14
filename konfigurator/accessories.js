@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {accessoryKit} from './accessory-data.js?v=05d60c0cb577';
-import {profileContour} from './profile-shapes.js?v=05d60c0cb577';
+import {accessoryKit} from './accessory-data.js?v=e64a20d5c820';
+import {profileContour} from './profile-shapes.js?v=e64a20d5c820';
 // Exterior study of the matched parts; snap fits are not machining geometry.
 export function buildAccessories(p,state,L){
   const root=new T.Group(),caps=new T.Group(),fixings=new T.Group();root.name='Akcesoria_KLUS';root.add(caps,fixings);

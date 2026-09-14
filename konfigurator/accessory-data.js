@@ -1,4 +1,4 @@
-import {salesRegistry} from './profile-library.js?v=05d60c0cb577';
+import {salesRegistry} from './profile-library.js?v=e64a20d5c820';
 // Matching references from KLUŚ product cards and the supplied 2026 workbook.
 // Quantities of fixings depend on support spacing; never infer them from length.
 const ends={micro:['MICRO-PLUS','C24392C02','C24392C07','C24392C10'],pds:['PDS-4-PLUS','C24337C02','C24337C07','C24337C10'],microk:['MICRO-K','C20126C02'],piko:['PIKO','C24202C02','C24202C07'],larko:['LARKO','C24006C02',null,'C24006C10'],kozus:['KOZUS','C24148C02'],pdszm:['PDS-ZM-PLUS','C24364C02','C24364C07','C24364C10'],alu45:['45-ALU','C20124C02','C20124C07','C20124C10'],pikozm:['PIKO-ZM','C24307C02','C24307C07','C24307C10'],pikoo:['PIKO-O','C24321C02','C24321C07','C24321C10'],giza:['GIZA','C24539C02','C24539C07','C24539C10'],lipod:['LIPOD','C24004C02','C24004C07','C24004C10']};

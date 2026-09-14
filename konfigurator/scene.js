@@ -1,19 +1,19 @@
-import {makeStudioEnvironment} from './studio-environment.js?v=05d60c0cb577';
-import {hasAdhesiveBacking} from './strip-protection.js?v=05d60c0cb577';
+import {makeStudioEnvironment} from './studio-environment.js?v=e64a20d5c820';
+import {hasAdhesiveBacking} from './strip-protection.js?v=e64a20d5c820';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=05d60c0cb577';
-import {buildProduct} from './product.js?v=05d60c0cb577';
-import {buildMount} from './mounting.js?v=05d60c0cb577';
-import {buildZone} from './zones.js?v=05d60c0cb577';
-import {sectionGeometry} from './section.js?v=05d60c0cb577';
-import {lightColor} from './light-color.js?v=05d60c0cb577';
-import {assemblyClip} from './assembly-export.js?v=05d60c0cb577';
-import {createSoftShadow} from './soft-shadow.js?v=05d60c0cb577';
-import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=05d60c0cb577';
+import {specification,displayLength} from './catalog.js?v=e64a20d5c820';
+import {buildProduct} from './product.js?v=e64a20d5c820';
+import {buildMount} from './mounting.js?v=e64a20d5c820';
+import {buildZone} from './zones.js?v=e64a20d5c820';
+import {sectionGeometry} from './section.js?v=e64a20d5c820';
+import {lightColor} from './light-color.js?v=e64a20d5c820';
+import {assemblyClip} from './assembly-export.js?v=e64a20d5c820';
+import {createSoftShadow} from './soft-shadow.js?v=e64a20d5c820';
+import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=e64a20d5c820';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();

@@ -2,7 +2,7 @@ import * as T from 'three';
 
 // One continuous route from the selected strip's actual pad positions to the
 // hidden supply run. All coordinates are local to the installed product.
-export function buildInstallationCable(product,profile){
+export function buildInstallationCable(product,profile,{tailSpread=0}={}){
   const root=new T.Group();root.name='Przewod_od_pol_PCB';product.group.add(root);let key='';
   function clear(){for(const o of [...root.children]){o.geometry.dispose();o.material.dispose();root.remove(o);}}
   function update(state,tail,visible){
@@ -15,7 +15,7 @@ export function buildInstallationCable(product,profile){
       const angle=i*2*Math.PI/pads.length,dy=pads.length===2?0:Math.cos(angle)*.0006,dz=pads.length===2?(i-.5)*.0008:Math.sin(angle)*.0006;
       const start=pad.point.clone(),solder=start.clone().add(new T.Vector3(-.0008,.00015,0));
       const port=new T.Vector3(end-.0008,portY+dy,portZ+dz);
-      const points=[solder,new T.Vector3(end+.002,port.y,port.z),port,port.clone().add(new T.Vector3(-.003,0,0)),...tail.map(p=>p.clone().add(new T.Vector3(0,dy,dz)))];
+      const points=[solder,new T.Vector3(end+.002,port.y,port.z),port,port.clone().add(new T.Vector3(-.003,0,0)),...tail.map((p,n)=>p.clone().add(new T.Vector3(0,dy,dz+(i-(pads.length-1)/2)*tailSpread*(n+1)/tail.length)))];
       if(product.strip.technology==='WCOB'){
         const x=-product.stripLength/2000,h=product.ledBase+.0021;
         points.splice(1,1,new T.Vector3(x-.0009,h+dy,product.ledZ+dz),new T.Vector3(x-.0048,h+dy,product.ledZ+dz));

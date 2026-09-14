@@ -1,6 +1,6 @@
-import {profileIcon} from './profile-shapes.js?v=05d60c0cb577';
-import {previewLight} from './light-state.js?v=05d60c0cb577';
-import {uiIcon} from './ui-icons.js?v=05d60c0cb577';
+import {profileIcon} from './profile-shapes.js?v=e64a20d5c820';
+import {previewLight} from './light-state.js?v=e64a20d5c820';
+import {uiIcon} from './ui-icons.js?v=e64a20d5c820';
 
 export function createPreviewPolish(){
  const viewport=document.getElementById('viewport'),actions=document.createElement('div');actions.className='viewport-actions';

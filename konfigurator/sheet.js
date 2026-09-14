@@ -1,5 +1,5 @@
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=05d60c0cb577';
-import {accessoryKit} from './accessory-data.js?v=05d60c0cb577';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=e64a20d5c820';
+import {accessoryKit} from './accessory-data.js?v=e64a20d5c820';
 // A self-contained client handout. The browser print dialog supplies PDF export.
 export function projectSheet(s,spec,image){
   const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

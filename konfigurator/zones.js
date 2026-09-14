@@ -1,12 +1,12 @@
-import {buildStairZone} from './stair-zone.js?v=05d60c0cb577';
-import {isStairZone} from './stair-layout.js?v=05d60c0cb577';
-import {previewLight} from './light-state.js?v=05d60c0cb577';
+import {buildStairZone} from './stair-zone.js?v=e64a20d5c820';
+import {isStairZone} from './stair-layout.js?v=e64a20d5c820';
+import {previewLight} from './light-state.js?v=e64a20d5c820';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=05d60c0cb577';
-import {buildMount,seatingHeight} from './mounting.js?v=05d60c0cb577';
-import {surfaceFinish} from './surface-finishes.js?v=05d60c0cb577';
-import {buildInstallationCable} from './installation-wiring.js?v=05d60c0cb577';
+import {buildProduct} from './product.js?v=e64a20d5c820';
+import {buildMount,seatingHeight} from './mounting.js?v=e64a20d5c820';
+import {surfaceFinish} from './surface-finishes.js?v=e64a20d5c820';
+import {buildInstallationCable} from './installation-wiring.js?v=e64a20d5c820';
 
 export const zones=[
   {id:'stair-under',name:'Pod stopniem',subtitle:'Profil pod noskiem',icon:'M3 27h8V19h9V11h9V4 M12 22h6 M21 14h6',description:'Trzy stopnie z widocznym noskiem i frezem. Światło spod środkowego stopnia pada na podstopnicę i niższy stopień.'},

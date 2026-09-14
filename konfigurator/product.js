@@ -1,16 +1,16 @@
-import {prepareCoverFlex} from './cover-flex.js?v=05d60c0cb577';
-import {stripOutputScale} from './light-state.js?v=05d60c0cb577';
-import {hasAdhesiveBacking} from './strip-protection.js?v=05d60c0cb577';
+import {prepareCoverFlex} from './cover-flex.js?v=e64a20d5c820';
+import {stripOutputScale} from './light-state.js?v=e64a20d5c820';
+import {hasAdhesiveBacking} from './strip-protection.js?v=e64a20d5c820';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=05d60c0cb577';
-import {buildPCB} from './tape.js?v=05d60c0cb577';
-import {sectionGeometry} from './section.js?v=05d60c0cb577';
-import {profileContour} from './profile-shapes.js?v=05d60c0cb577';
-import {coverSection} from './cover-shapes.js?v=05d60c0cb577';
-import {glowMaterial} from './glow.js?v=05d60c0cb577';
-import {diffuserMap} from './light-textures.js?v=05d60c0cb577';
-import {assemblyPose} from './assembly-motion.js?v=05d60c0cb577';
-import {createLightVolume} from './light-volume.js?v=05d60c0cb577';
+import {buildAccessories} from './accessories.js?v=e64a20d5c820';
+import {buildPCB} from './tape.js?v=e64a20d5c820';
+import {sectionGeometry} from './section.js?v=e64a20d5c820';
+import {profileContour} from './profile-shapes.js?v=e64a20d5c820';
+import {coverSection} from './cover-shapes.js?v=e64a20d5c820';
+import {glowMaterial} from './glow.js?v=e64a20d5c820';
+import {diffuserMap} from './light-textures.js?v=e64a20d5c820';
+import {assemblyPose} from './assembly-motion.js?v=e64a20d5c820';
+import {createLightVolume} from './light-volume.js?v=e64a20d5c820';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -110,7 +110,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   }
   function dispose(){beam.dispose();accessories.dispose();details.dispose();group.traverse(o=>o.geometry?.dispose());for(const m of materials)m.dispose();for(const x of textures)x.dispose();}
   assemble(state.exploded);
-  return{group,profile,pcb,cover,liner:details.liner,peel:details.peel,accessories:accessories.root,wiring:details.wiring,
+  return{group,profile,pcb,cover,liner:details.liner,peel:details.peel,bend:details.bend,accessories:accessories.root,wiring:details.wiring,
     connectionPads(){group.updateWorldMatrix(true,true);return details.connectionPads().map(t=>({...t,point:group.worldToLocal(t.point)}));},
     strip:t,assemble,update,dispose,length,stripLength,ledBase:p.ledBase/1000+sleeveLift*Math.cos((p.ledAngle||0)*Math.PI/180),ledZ:(p.ledZ||0)/1000+sleeveLift*Math.sin((p.ledAngle||0)*Math.PI/180)};
 }

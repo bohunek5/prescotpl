@@ -1,4 +1,4 @@
-import {isStairZone,stairLayout} from './stair-layout.js?v=05d60c0cb577';
+import {isStairZone,stairLayout} from './stair-layout.js?v=e64a20d5c820';
 
 export function createStairControls({host,getState,onUpdate,format}){
  const root=document.createElement('div');root.id='stair-controls';root.hidden=true;
