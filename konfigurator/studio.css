@@ -374,3 +374,17 @@ body:not([data-light-study=true]) #studio-stage #viewport{background:radial-grad
 #choose-sleeve select{min-height:48px;width:100%}
 body[data-housing=sleeve] #macro-spec{max-width:100%;line-height:1.6}
 @media(max-width:780px){.technical-component+.technical-component{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:22px}.housing-switch{margin-block:4px 8px}.stage-controls>.stage-light-controls{padding-top:12px}.sleeve-view-label{font-size:11px;margin-bottom:18px}}
+/* Optical sections share a scale; material and transmission remain legible. */
+#covers .card{gap:12px;min-height:78px}
+#covers .cover-section-icon{width:60px;height:46px;fill:none;stroke:none;overflow:visible}
+.cover-optic{fill:#f6f4ed}.cover-edge{fill:none;stroke:#858e94;stroke-width:.2;stroke-linejoin:round}
+.cover-section-icon.clear .cover-optic{fill:#b6cbd6;fill-opacity:.24}.cover-section-icon.black .cover-optic{fill:#3a3b3d}
+.cover-section-icon.clear .cover-edge{stroke:#94a9b5}.cover-dimension{fill:none;stroke:#959b9c;stroke-width:.13}
+.cover-transmission{display:flex;align-items:center;gap:7px;margin-top:5px;font-size:11px}
+.cover-transmission i{display:block;width:38px;height:3px;border-radius:3px;background:linear-gradient(to right,#bf9b69 var(--transmission),#90939735 var(--transmission))}
+#sleeve-detail{display:grid;grid-template-columns:72px 1fr;column-gap:14px;align-items:center;min-height:86px}
+#sleeve-detail .sleeve-drawing{grid-row:1/3}.sleeve-section-icon{display:block;width:72px;height:76px}
+.sleeve-opaque{fill:#879092}.sleeve-optical{fill:#f3dca9}.sleeve-optical.clear{fill:#c7d5dd}
+#sleeve-detail>span:last-child{line-height:1.5}
+
+.sleeve-accessories{margin-top:18px;border-top:1px solid var(--line)}.sleeve-accessories .accessory-row{padding-block:14px}.sleeve-accessories label{min-width:0}.sleeve-accessories small{overflow-wrap:anywhere}.sleeve-accessories input{flex-shrink:0}

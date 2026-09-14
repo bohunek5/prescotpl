@@ -1,12 +1,14 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=9ef5bbe0605e';
-import {buildPCB} from './tape.js?v=9ef5bbe0605e';
-import {sectionGeometry} from './section.js?v=9ef5bbe0605e';
-import {profileContour} from './profile-shapes.js?v=9ef5bbe0605e';
-import {coverSection} from './cover-shapes.js?v=9ef5bbe0605e';
-import {glowMaterial} from './glow.js?v=9ef5bbe0605e';
-import {diffuserMap} from './light-textures.js?v=9ef5bbe0605e';
-import {assemblyPose} from './assembly-motion.js?v=9ef5bbe0605e';
+import {buildAccessories} from './accessories.js?v=1ac5a90e7b0f';
+import {buildPCB} from './tape.js?v=1ac5a90e7b0f';
+import {sectionGeometry} from './section.js?v=1ac5a90e7b0f';
+import {profileContour} from './profile-shapes.js?v=1ac5a90e7b0f';
+import {coverSection} from './cover-shapes.js?v=1ac5a90e7b0f';
+import {glowMaterial} from './glow.js?v=1ac5a90e7b0f';
+import {diffuserMap} from './light-textures.js?v=1ac5a90e7b0f';
+import {assemblyPose} from './assembly-motion.js?v=1ac5a90e7b0f';
+import {createLightVolume} from './light-volume.js?v=1ac5a90e7b0f';
+import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
 export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,sourceCover=null,quality='auto'}={}){
@@ -29,7 +31,9 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     add(g,metal,profile,p.name);
   }else{
     const shape=new T.Shape();profileContour(p).forEach(([x,y],i)=>shape[i?'lineTo':'moveTo'](x/1000,y/1000));shape.closePath();
-    const g=new T.ExtrudeGeometry(shape,{depth:L-.00007,bevelEnabled:true,bevelSize:.000035,bevelThickness:.000035,bevelSegments:2,steps:1});g.rotateY(Math.PI/2);g.translate(-L/2+.000035,0,0);add(g,metal,profile,p.name);
+    const g=new T.ExtrudeGeometry(shape,{depth:L-.00007,bevelEnabled:true,bevelSize:.000035,bevelThickness:.000035,bevelSegments:2,steps:1});g.rotateY(Math.PI/2);g.translate(-L/2+.000035,0,0);
+    if(p.id==='stos'){g.scale(1000,1000,1000);toCreasedNormals(g,Math.PI/6);g.scale(.001,.001,.001);}
+    add(g,metal,profile,p.name);
   }
   }
   const accessories=buildAccessories(p,state,L);accessories.root.visible=!spec.isSleeve;group.add(accessories.root);
@@ -54,8 +58,10 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     g.setIndex(faces.flat());g.clearGroups();let start=0;faces.forEach((indices,materialIndex)=>{if(indices.length)g.addGroup(start,indices.length,materialIndex);start+=indices.length;});o.material=[lens,coverBase];
   });
   // Longitudinal finish gives the light something to describe on the extrusion.
-  const haloStyle=glowMaterial();materials.push(haloStyle.material);textures.push(haloStyle.texture);
+  const haloStyle=glowMaterial();haloStyle.material.side=T.FrontSide;materials.push(haloStyle.material);textures.push(haloStyle.texture);
   const halo=add(new T.PlaneGeometry(L,(spec.cover.width||14)/1000*3),haloStyle.material,cover,'Poswiata_oslony_prezentacyjna');halo.rotation.x=-Math.PI/2;halo.position.y=(spec.cover.rise??(spec.cover.shape==='round'?3.4:spec.cover.shape==='shallow'?1.1:.8))/1000+.0002;halo.castShadow=false;halo.receiveShadow=false;halo.visible=false;
+  const beam=createLightVolume(L,p.channel/1000,{slope:spec.cover.beamAngle?Math.tan(spec.cover.beamAngle*Math.PI/360):isClear?.85:1.25});
+  cover.add(beam.mesh);beam.mesh.position.y=halo.position.y+.00015;
   profile.traverse(o=>{if(!o.isMesh)return;const g=o.geometry,a=g.attributes.position,n=g.attributes.normal,uv=g.attributes.uv;
     for(let i=0;i<a.count;i++)uv.setXY(i,(a.getX(i)+L/2)/L,(Math.abs(n.getY(i))>.5?a.getZ(i):a.getY(i))*600);
   });
@@ -81,8 +87,10 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     if(rgb)lens.color.copy(lightColor).multiplyScalar(.12);
     lens.emissive.copy(lightColor);lens.emissiveIntensity=level*(rgb?1.65:state.lightStudy?10.5:6.5)*spec.cover.transmission*coupling*(isClear?.018:1);
     halo.visible=level>0&&coupling>.15&&!isClear;haloStyle.material.color.copy(lightColor);haloStyle.material.opacity=level*spec.cover.transmission*coupling*(state.lightStudy?1.4:.65);
+    beam.update(lightColor,level,{night:state.lightStudy,power:spec.wattsPerMeter,transmission:spec.cover.transmission,coupling:coupling*Math.exp(-pose.pcbLift*8)});
+    if(spec.isSleeve||state.view==='macro'||state.view==='zone')beam.mesh.visible=false;
     bounce.color.copy(lightColor);bounce.intensity=['macro','zone'].includes(state.view)||spec.isSleeve||pose.pcbLift>.001?0:level*(rgb?1.4:state.lightStudy?25:14);
-    cover.userData.light={intensity:lens.emissiveIntensity,coupling,clear:isClear,color:lightColor.getHexString(),transmission:spec.cover.transmission};
+    cover.userData.light={intensity:lens.emissiveIntensity,coupling,clear:isClear,color:lightColor.getHexString(),transmission:spec.cover.transmission,beam:{...beam.mesh.userData,visible:beam.mesh.visible}};
   }
   function update(s,color){
     state=s;metal.color.set({silver:'#e0e3e4',black:'#373a3b',white:'#efefeb',raw:'#bfc2c2'}[s.finish]);metal.metalness=s.finish==='white'?.05:.88;metal.roughness=s.finish==='raw'?.44:s.finish==='silver'?.24:.43;
@@ -91,7 +99,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     coverBase.color.copy(lens.color);
     lightColor.copy(color);updateCoverLight(s.exploded);details.update(s,color);
   }
-  function dispose(){accessories.dispose();details.dispose();group.traverse(o=>o.geometry?.dispose());for(const m of materials)m.dispose();for(const x of textures)x.dispose();}
+  function dispose(){beam.dispose();accessories.dispose();details.dispose();group.traverse(o=>o.geometry?.dispose());for(const m of materials)m.dispose();for(const x of textures)x.dispose();}
   assemble(state.exploded);
   return{group,profile,pcb,cover,liner:details.liner,peel:details.peel,accessories:accessories.root,assemble,update,dispose,length,stripLength,ledBase:p.ledBase/1000+sleeveLift*Math.cos((p.ledAngle||0)*Math.PI/180),ledZ:(p.ledZ||0)/1000+sleeveLift*Math.sin((p.ledAngle||0)*Math.PI/180)};
 }

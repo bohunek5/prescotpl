@@ -3,14 +3,14 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=9ef5bbe0605e';
-import {buildProduct} from './product.js?v=9ef5bbe0605e';
-import {buildMount} from './mounting.js?v=9ef5bbe0605e';
-import {buildZone} from './zones.js?v=9ef5bbe0605e';
-import {sectionGeometry} from './section.js?v=9ef5bbe0605e';
-import {lightColor} from './light-color.js?v=9ef5bbe0605e';
-import {assemblyClip} from './assembly-export.js?v=9ef5bbe0605e';
-import {createSoftShadow} from './soft-shadow.js?v=9ef5bbe0605e';
+import {specification,displayLength} from './catalog.js?v=1ac5a90e7b0f';
+import {buildProduct} from './product.js?v=1ac5a90e7b0f';
+import {buildMount} from './mounting.js?v=1ac5a90e7b0f';
+import {buildZone} from './zones.js?v=1ac5a90e7b0f';
+import {sectionGeometry} from './section.js?v=1ac5a90e7b0f';
+import {lightColor} from './light-color.js?v=1ac5a90e7b0f';
+import {assemblyClip} from './assembly-export.js?v=1ac5a90e7b0f';
+import {createSoftShadow} from './soft-shadow.js?v=1ac5a90e7b0f';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -20,7 +20,7 @@ export async function createStudio(host,initial){
   const scene=new T.Scene(),camera=new T.OrthographicCamera(-.1,.1,.06,-.06,.001,10);
   let s={...initial},sample=null,fixture=null,zone=null,art=null,sampleKey='',zoneKey='',ready=false,disposed=false,framePending=0,shadowDirty=true;
   let cameraTween=0;
-  let interactive=false,basePixelRatio=1,settleTimer,interactionFrames=0,lastFrameMs=0,renderCount=0;
+  let interactive=false,basePixelRatio=1,motionPixelRatio=1,viewportAspect=1,settleTimer,interactionFrames=0,lastFrameMs=0,renderCount=0;
   const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=false;controls.enablePan=false;controls.rotateSpeed=.45;controls.zoomSpeed=.65;
   const pmrem=new T.PMREMGenerator(renderer),env=makeStudioEnvironment(),environment=pmrem.fromScene(env,.02);scene.environment=environment.texture;
   env.traverse(o=>{o.geometry?.dispose();o.material?.dispose();});pmrem.dispose();
@@ -86,9 +86,22 @@ export async function createStudio(host,initial){
     renderer.shadowMap.needsUpdate=!interactive;shadowDirty=true;requestDraw();
   }
   function assemble(value){
-    s.exploded=value;if(sample){sample.group.visible=true;sample.pcb.visible=true;sample.assemble(s.view==='assembly'?value:0);sample.profile.visible=s.view!=='macro';sample.cover.visible=s.view!=='macro';sample.group.position.y=0;
+    s.exploded=value;if(sample){sample.group.visible=true;sample.pcb.visible=true;sample.assemble(s.view==='assembly'?value:0);sample.profile.visible=s.view!=='macro'&&!specification(s).isSleeve;sample.cover.visible=s.view!=='macro'&&!specification(s).isSleeve;centerPresentation();
       if(['installation','section','mounting'].includes(s.view))fixture.update(s,sample);
     }renderer.shadowMap.needsUpdate=!interactive;shadowDirty=true;requestDraw();
+  }
+  function centerPresentation(){
+    // Move the presentation, never the user's camera. Its orbit remains around
+    // the product as the stack closes; release paper and glow are not anchors.
+    sample.group.position.y=sample.group.position.z=0;
+    ground.position.y=-.008;
+    if(s.view!=='assembly')return;
+    sample.group.updateMatrixWorld(true);const bounds=new T.Box3();
+    for(const root of[sample.profile,sample.cover,sample.pcb])for(const b of worldBoxes(root,true))bounds.union(b);
+    if(!bounds.isEmpty()){
+      const c=bounds.getCenter(new T.Vector3());sample.group.position.y=-c.y;sample.group.position.z=-c.z;ground.position.y=sample.group.position.y-.004;
+    }
+    sample.group.updateMatrixWorld(true);
   }
   function frame(animate=false,preserveDirection=false){
     cancelAnimationFrame(cameraTween);cameraTween=0;const before={position:camera.position.clone(),target:controls.target.clone(),left:camera.left,right:camera.right,top:camera.top,bottom:camera.bottom,zoom:camera.zoom};
@@ -114,12 +127,12 @@ export async function createStudio(host,initial){
       if(s.zoneDetail){const c=zone.focus.clone();c.x=s.showCable?-.12:.09;bounds=new T.Box3(c.clone().add(new T.Vector3(-.07,-.02,-.025)),c.clone().add(new T.Vector3(.07,.025,.025)));framingBoxes=[bounds];}
       else{const saved=zone.opening;zone.setOpening(1);bounds=visibleBounds(zone.root);framingBoxes=worldBoxes(zone.root);zone.setOpening(saved);}
     }else{
-      bounds=visibleBounds(sample.group);framingBoxes=worldBoxes(sample.group);
+      framingBoxes=worldBoxes(sample.group,true);bounds=new T.Box3();for(const b of framingBoxes)bounds.union(b);
       // Frame the motion envelope once. Closing/opening the cover must never
       // hide it or chase it with the camera halfway through the animation.
       if(s.view==='assembly'){
-        for(const amount of [0,25,50,62,68,75,85,95,100]){sample.assemble(amount);sample.group.updateMatrixWorld(true);const boxes=worldBoxes(sample.group);framingBoxes.push(...boxes);for(const b of boxes)bounds.union(b);}
-        sample.assemble(s.exploded);sample.group.updateMatrixWorld(true);
+        for(const amount of [0,25,50,62,68,75,85,95,100]){sample.assemble(amount);centerPresentation();const boxes=worldBoxes(sample.group,true);framingBoxes.push(...boxes);for(const b of boxes)bounds.union(b);}
+        sample.assemble(s.exploded);centerPresentation();
       }
       if(['installation','section','mounting'].includes(s.view)){bounds.union(visibleBounds(mount));framingBoxes.push(...worldBoxes(mount));}
       if(section)bounds.min.x=.026;
@@ -129,7 +142,7 @@ export async function createStudio(host,initial){
       framingBoxes=framingBoxes.map(b=>b.intersect(bounds)).filter(b=>!b.isEmpty());
     }
     if(bounds.isEmpty())return;
-    const center=bounds.getCenter(new T.Vector3()),dir=new T.Vector3(...direction).normalize();controls.target.copy(center);camera.position.copy(center).addScaledVector(dir,z?1.3:Math.max(.4,bounds.getSize(new T.Vector3()).length()/2+.2));camera.lookAt(center);
+    const center=bounds.getCenter(new T.Vector3()),dir=new T.Vector3(...direction).normalize();if(s.view==='assembly')center.y=center.z=0;controls.target.copy(center);camera.position.copy(center).addScaledVector(dir,z?1.3:Math.max(.4,bounds.getSize(new T.Vector3()).length()/2+.2));camera.lookAt(center);
     camera.left=-aspect;camera.right=aspect;camera.top=1;camera.bottom=-1;camera.zoom=1;camera.updateProjectionMatrix();camera.updateMatrixWorld();
     let half=0;for(const box of framingBoxes)for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const v=new T.Vector3(x,y,z).project(camera);half=Math.max(half,Math.abs(v.x)/.84,Math.abs(v.y)/.8);}
     camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();controls.update();
@@ -145,12 +158,16 @@ export async function createStudio(host,initial){
     framePending=0;if(!ready||disposed||document.hidden)return;
     if(shadowDirty&&ground.visible&&!interactive){softShadow.update(scene,s.view==='assembly'&&s.assemblyAngle==='end'?[endPlane]:s.view==='assembly'&&s.assemblyAngle==='entry'?[entryPlane]:s.view==='macro'&&s.detail==='wiring'?[wiringPlane]:[]);shadowDirty=false;}
     const start=performance.now();renderer.render(scene,camera);lastFrameMs=performance.now()-start;renderCount++;
-    if(interactive&&++interactionFrames===6&&lastFrameMs>28)renderer.setPixelRatio(basePixelRatio*.55);
+    if(interactive&&++interactionFrames===6&&lastFrameMs>28)renderer.setPixelRatio(Math.max(.75,motionPixelRatio*.8));
   }
-  function beginInteraction(){if(!ready)return;clearTimeout(settleTimer);if(!interactive){interactive=true;interactionFrames=0;renderer.setPixelRatio(basePixelRatio*.65);}settleTimer=setTimeout(finishInteraction,350);}
+  function beginInteraction(){if(!ready)return;clearTimeout(settleTimer);if(!interactive){interactive=true;interactionFrames=0;renderer.setPixelRatio(motionPixelRatio);}settleTimer=setTimeout(finishInteraction,350);}
   function finishInteraction(){clearTimeout(settleTimer);if(interactive){interactive=false;renderer.setPixelRatio(basePixelRatio);renderer.shadowMap.needsUpdate=true;shadowDirty=true;requestDraw();}}
-  function resize(){const {width,height}=host.getBoundingClientRect();basePixelRatio=Math.min(devicePixelRatio,1.5,Math.sqrt(1400000/Math.max(1,width*height)));renderer.setPixelRatio(interactive?basePixelRatio*.65:basePixelRatio);renderer.setSize(width,height,false);
-    if(!ready)frame();else{const aspect=width/Math.max(1,height),half=Math.max(camera.top,camera.right/aspect);camera.top=half;camera.bottom=-half;camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();}
+  function resize(){const {width,height}=host.getBoundingClientRect(),pixels=Math.max(1,width*height),aspect=width/Math.max(1,height);
+    // Full resolution after the gesture, a smaller budget only while moving.
+    basePixelRatio=Math.min(devicePixelRatio,2,Math.max(1,Math.sqrt(8000000/pixels)),renderer.capabilities.maxTextureSize/Math.max(width,height));
+    motionPixelRatio=Math.min(basePixelRatio,Math.max(.85,Math.sqrt(1600000/pixels)));
+    renderer.setPixelRatio(interactive?motionPixelRatio:basePixelRatio);renderer.setSize(width,height,false);
+    if(!ready)frame();else{const half=camera.top*Math.min(1,viewportAspect)/Math.min(1,aspect);camera.top=half;camera.bottom=-half;camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();}viewportAspect=aspect;
     requestDraw();}
   controls.addEventListener('start',()=>{cancelAnimationFrame(cameraTween);cameraTween=0;beginInteraction();});controls.addEventListener('change',()=>{beginInteraction();requestDraw();});
   const visibility=()=>requestDraw();document.addEventListener('visibilitychange',visibility);
@@ -176,9 +193,9 @@ export async function createStudio(host,initial){
     try{finishInteraction();update({...s,view:s.housing==='sleeve'?'macro':'assembly',detail:s.housing==='sleeve'?'product':s.detail,assemblyAngle:'perspective',productScale:'detail'});mount.visible=false;ground.visible=false;frame(false);finishInteraction();renderer.render(scene,camera);return await new Promise((resolve,reject)=>renderer.domElement.toBlob(blob=>blob?resolve(blob):reject(Error('Nie można zapisać obrazu.')),'image/png'));}
     finally{update(saved.state);frame();camera.position.copy(saved.position);for(const k of ['zoom','left','right','top','bottom'])camera[k]=saved[k];camera.updateProjectionMatrix();controls.target.copy(saved.target);camera.lookAt(saved.target);requestDraw();}
   }
-  function projectedCover(){
+  function projectedCover(root=sample.cover){
     scene.updateMatrixWorld(true);camera.updateMatrixWorld();const points=[];
-    for(const b of worldBoxes(sample.cover)){
+    for(const b of worldBoxes(root,true)){
       if(s.view==='assembly'&&s.assemblyAngle==='end')b.min.x=Math.max(b.min.x,detailCut());
       if(s.view==='assembly'&&s.assemblyAngle==='entry')b.max.x=Math.min(b.max.x,-detailCut());
       if(b.isEmpty())continue;
@@ -187,7 +204,7 @@ export async function createStudio(host,initial){
     return points;
   }
   return{update,frame,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
-    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
+    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
     dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();woodMap.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }
@@ -212,6 +229,6 @@ function visibleBounds(root){
   });return result;
 }
 
-function worldBoxes(root){
-  const boxes=[];root.traverseVisible(o=>{if(!o.isMesh||o.name.startsWith('Poswiata_'))return;if(o.isInstancedMesh){o.computeBoundingBox();boxes.push(o.boundingBox.clone().applyMatrix4(o.matrixWorld));}else{o.geometry.computeBoundingBox();boxes.push(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld));}});return boxes;
+function worldBoxes(root,anchor=false){
+  const boxes=[];root.traverseVisible(o=>{if(!o.isMesh||o.name.startsWith('Poswiata_')||anchor&&(o.name==='Podklad_od_srodka'||o.name.includes('Papier')||o.name.includes('Przewod')||o.name.includes('3M')))return;if(o.isInstancedMesh){o.computeBoundingBox();boxes.push(o.boundingBox.clone().applyMatrix4(o.matrixWorld));}else{o.geometry.computeBoundingBox();boxes.push(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld));}});return boxes;
 }

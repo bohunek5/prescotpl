@@ -15,6 +15,7 @@ export function createSoftShadow(renderer){
   const horizontal=new T.ShaderMaterial(HorizontalBlurShader),vertical=new T.ShaderMaterial(VerticalBlurShader),quad=new T.Mesh(new T.PlaneGeometry(2,2),horizontal);blurScene.add(quad);
   function update(scene,clippingPlanes=[]){
     depth.clippingPlanes=clippingPlanes;
+    const effects=[];scene.traverseVisible(o=>{if(o.name.startsWith('Poswiata_')){effects.push(o);o.visible=false;}});
     const old={target:renderer.getRenderTarget(),background:scene.background,override:scene.overrideMaterial,visible:plane.visible,shadow:renderer.shadowMap.enabled,color:renderer.getClearColor(new T.Color()),alpha:renderer.getClearAlpha()};
     try{
       plane.visible=false;scene.background=null;scene.overrideMaterial=depth;renderer.shadowMap.enabled=false;renderer.setClearColor(0,0);renderer.setRenderTarget(target);renderer.clear();renderer.render(scene,camera);
@@ -23,7 +24,7 @@ export function createSoftShadow(renderer){
         quad.material=horizontal;horizontal.uniforms.tDiffuse.value=target.texture;horizontal.uniforms.h.value=amount/size;renderer.setRenderTarget(scratch);renderer.render(blurScene,blurCamera);
         quad.material=vertical;vertical.uniforms.tDiffuse.value=scratch.texture;vertical.uniforms.v.value=amount/size;renderer.setRenderTarget(target);renderer.render(blurScene,blurCamera);
       }
-    }finally{scene.background=old.background;scene.overrideMaterial=old.override;plane.visible=old.visible;renderer.shadowMap.enabled=old.shadow;renderer.setRenderTarget(old.target);renderer.setClearColor(old.color,old.alpha);}
+    }finally{effects.forEach(o=>o.visible=true);scene.background=old.background;scene.overrideMaterial=old.override;plane.visible=old.visible;renderer.shadowMap.enabled=old.shadow;renderer.setRenderTarget(old.target);renderer.setClearColor(old.color,old.alpha);}
   }
   return{plane,update,dispose(){plane.geometry.dispose();material.dispose();depth.dispose();horizontal.dispose();vertical.dispose();quad.geometry.dispose();target.dispose();scratch.dispose();}};
 }

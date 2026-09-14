@@ -54,5 +54,68 @@
     "https://www.3m.com/3M/en_US/p/dc/v000142870/",
     "https://www.3m.com/3M/en_US/p/dc/v000296190/"
   ],
-  "release_liner_note": "Wygląd rodziny kleju, nie zadeklarowany klej fabryczny produktu. Rozdzielenie papieru od środka to animacja prezentacyjna."
+  "release_liner_note": "Wygląd rodziny kleju, nie zadeklarowany klej fabryczny produktu. Rozdzielenie papieru od środka to animacja prezentacyjna.",
+  "detailUpdate": {
+    "checked": "2026-09-14",
+    "packages": [
+      {
+        "type": "2835",
+        "source": "https://lumileds.com/wp-content/uploads/files/DS383-luxeon-2835-commercial-datasheet.pdf",
+        "page": 28,
+        "use": "Package outline reference only; does not identify the LED supplier for PRESCOT."
+      },
+      {
+        "type": "5050",
+        "source": "https://www.kingbrightusa.com/images/catalog/SPEC/AAAF5050-MC-K12.pdf",
+        "use": "External dimensions only. Internal RGBW and CCT layout follows PRESCOT photos, not the addressable reference circuit."
+      }
+    ],
+    "photos": [
+      {
+        "productId": "13451",
+        "url": "https://prescot.com.pl/pl/p/Tasma-LED-Delux-slim-24V-160ledm-SMD2835-6.8Wm-3000K-IP20-1100lmm-4mm-CRI80-PL7Y-10m/13451",
+        "image": "https://prescot.com.pl/userdata/gfx/47680.jpg"
+      },
+      {
+        "productId": "9717",
+        "url": "https://prescot.com.pl/pl/p/Tasma-LED-PL-Delux-Low-Brightness-Ciepla-biala-3000K-24V-160-LEDm-320lmm-SMD4014-Rolka-10m-7-lat-gwarancji/9717",
+        "image": "https://prescot.com.pl/userdata/gfx/40646.jpg"
+      },
+      {
+        "productId": "9404",
+        "url": "https://prescot.com.pl/pl/p/Tasma-Premium-24V-60led-CCT-2in1-SMD5050-5-Tunable-White/9404",
+        "image": "https://prescot.com.pl/userdata/gfx/46962.jpg"
+      },
+      {
+        "productId": "16591",
+        "url": "https://prescot.com.pl/pl/p/Tasma-LED-Premium-24V-60ledm-SMD5050-19.7Wm-RGB-3000K-IP20-1400lmm-10mm-CRI80-PL5Y-50m/16591",
+        "image": "https://prescot.com.pl/userdata/gfx/56187.jpg"
+      }
+    ],
+    "covers": [
+      {
+        "file": "cover-hs12.pdf",
+        "url": "https://lunares.pl/files/karta-produktu_oslona-profilu-led-hs-12-przezroczysta-3m_2011.pdf",
+        "widthMm": 13.1,
+        "heightMm": 4,
+        "transmission": [
+          0.73,
+          0.94
+        ]
+      },
+      {
+        "file": "cover-ka13.pdf",
+        "url": "https://www.luxifer.pl/user/related_files/karta_produktu_ka_pl_%281%29-1.pdf",
+        "widthMm": 14.8,
+        "heightMm": 4,
+        "transmission": [
+          0.72,
+          0.91
+        ]
+      }
+    ],
+    "sleeves": "reference-13133-0.jpg through reference-13138-0.jpg; optical yellow / opaque gray, exact outer size; traced interior details illustrative.",
+    "accessories": "sleeve-accessory-data.js: verified product references and photo URLs, quantities of holders unspecified.",
+    "optics": "Spatial beams are illustrative, not IES/LDT photometry."
+  }
 }

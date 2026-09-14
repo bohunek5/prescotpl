@@ -17,7 +17,7 @@ for(const [engine,width]of[[chromium,1440],[chromium,320],[webkit,390]]){
  await p.locator('#choose-sleeve>summary').click();await p.locator('#sleeve').selectOption('milk10');
  await p.locator('#viewport').screenshot({path:`${out}/housing-${engine.name()}-${width}-sleeve.png`});
  await p.locator('#choose-sleeve>summary').click();
- const project=await p.evaluate(()=>studioDebug.project());assert.equal(project.components.profile,null);assert.equal(project.components.cover,null);assert.deepEqual(project.components.accessories,[]);assert.equal(project.components.sleeve.ref,'KSM-10MM');
+ const project=await p.evaluate(()=>studioDebug.project());assert.equal(project.components.profile,null);assert.equal(project.components.cover,null);assert.deepEqual(project.components.accessories.map(a=>a.ref),['KSC-10MM','KSC-10MM-O']);assert.equal(project.components.sleeve.ref,'KSM-10MM');
  for(const detail of['sleeve','seal','segment','wiring','product']){await p.locator(`button[data-detail=${detail}]`).click();await p.waitForTimeout(200);assert.equal(await p.evaluate(()=>studioDebug.state.housing),'sleeve');}
  assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
  await p.screenshot({path:`${out}/housing-${engine.name()}-${width}-ui.png`,fullPage:width<781});

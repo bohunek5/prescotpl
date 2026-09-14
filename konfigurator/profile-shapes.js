@@ -1,7 +1,14 @@
-import {tracedContours} from './profile-contours.js?v=9ef5bbe0605e';
+import {tracedContours} from './profile-contours.js?v=1ac5a90e7b0f';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
+  if(p.id==='stos'){
+    // Smooth flanges from the STOS card, without raster stair-steps extruded into
+    // bright longitudinal seams. Continuous floor and 13.1 mm LED channel.
+    const wing=[];for(let i=0;i<=28;i++){const t=i/28;wing.push([-15.5+6.3*t,.45+8.9*t-2.35*t*t]);}
+    const left=[...wing,[-6.55,7],[-6.55,2.1],[6.55,2.1],[6.55,7],[9.2,7]];
+    return [...left,...wing.slice(0,-1).reverse().map(([x,y])=>[-x,y]),[15.5,0],[14.7,0],[8.65,5.55],[8.65,0],[-8.65,0],[-8.65,5.55],[-14.7,0],[-15.5,0]];
+  }
   if(['pdst','pdsust'].includes(p.id)){
     const base=p.ledBase,H=p.height;
     return [[-26.1,0],[-6.7,0],[-6.7,base-1.2],[-4.5,base-1.2],[-4.5,0],[-1.6,0],[-1.6,base-1.2],[1.6,base-1.2],[1.6,0],[4.5,0],[4.5,base-1.2],[6.7,base-1.2],[6.7,0],[26.1,0],[26.1,1],[8.1,1],[8.1,H],[5.6,H],[5.6,H-1],[7,H-1],[7,base],[-7,base],[-7,H-1],[-5.6,H-1],[-5.6,H],[-8.1,H],[-8.1,1],[-26.1,1]];

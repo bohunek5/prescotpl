@@ -1,12 +1,14 @@
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=9ef5bbe0605e';
-import {accessoryKit} from './accessory-data.js?v=9ef5bbe0605e';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=9ef5bbe0605e';
-import {zones} from './zones.js?v=9ef5bbe0605e';
-import {mountingSteps} from './mounting.js?v=9ef5bbe0605e';
-import {coverIcon} from './cover-shapes.js?v=9ef5bbe0605e';
-import {profileIcon} from './profile-shapes.js?v=9ef5bbe0605e';
-import {projectSheet} from './sheet.js?v=9ef5bbe0605e';
-import {uiIcon,actionLabel} from './ui-icons.js?v=9ef5bbe0605e';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=1ac5a90e7b0f';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=1ac5a90e7b0f';
+import {accessoryKit} from './accessory-data.js?v=1ac5a90e7b0f';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=1ac5a90e7b0f';
+import {zones} from './zones.js?v=1ac5a90e7b0f';
+import {mountingSteps} from './mounting.js?v=1ac5a90e7b0f';
+import {coverIcon} from './cover-shapes.js?v=1ac5a90e7b0f';
+import {profileIcon} from './profile-shapes.js?v=1ac5a90e7b0f';
+import {sleeveIcon} from './sleeve-shapes.js?v=1ac5a90e7b0f';
+import {projectSheet} from './sheet.js?v=1ac5a90e7b0f';
+import {uiIcon,actionLabel} from './ui-icons.js?v=1ac5a90e7b0f';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -23,10 +25,21 @@ function filterProfiles(){
   $('profile-count').textContent=count?`${count} z ${profiles.length} profili · przekroje i dokumentacja`:'Brak profili dla tego wyszukiwania.';
 }
 function updateSleeves(spec){
+  const sleeveKit=sleeveAccessoryKit(spec.sleeve,s);
+  const capPair=sleeveKit.filter(a=>a.kind==='cap');
+  const sleeveRows=sleeveKit.flatMap(a=>a.kind==='cap'&&capPair.length>1?(a===capPair[0]?[{...a,ref:capPair.map(c=>c.ref).join(' · '),pair:true}]:[]):[a]);
+  $('sleeve-accessories').replaceChildren(...sleeveRows.map(a=>{
+    const row=document.createElement('div');row.className='accessory-row';
+    const label=document.createElement('label'),input=document.createElement('input'),copy=document.createElement('span');
+    input.type='checkbox';input.checked=a.selected;input.onchange=()=>{s[a.kind==='holder'?'sleeveFixings':'sleeveCaps']=input.checked;update();};
+    copy.innerHTML=`<strong>${a.kind==='holder'?'Uchwyt '+(a.material==='metal'?'metalowy':'z tworzywa'):'Białe zaślepki silikonowe'+(a.kit?' · komplet':a.pair?' · pełna i z otworem':'')}</strong><small>${a.ref}</small>`;
+    label.append(input,copy);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';actionLabel(link,'Dane','external');row.append(label,link);return row;
+  }));
+  $('sleeve-accessories').hidden=!sleeveKit.length;
   const t=spec.strip,selected=s.sleeve;
   $('sleeve').replaceChildren(...[{id:'none',name:t.encapsulation?'Fabryczna ochrona '+t.ip:'Bez dodatkowej koszulki'},...sleeves].map(x=>{const o=document.createElement('option');o.value=x.id;o.disabled=!!x.pcbMax&&(t.width>x.pcbMax||t.shape==='s');o.hidden=x.id==='none'&&s.housing==='sleeve'&&!t.encapsulation;o.textContent=x.name+(x.width?' · '+x.width+' × '+x.height+' mm':'');return o;}));$('sleeve').value=selected;$('sleeve').disabled=!!t.encapsulation;
   $('sleeve-note').textContent=t.encapsulation==='tube'?'COB IP67. Detal silikonowej osłony i zakończenia jest poglądowy. Cięcie wymaga ponownego uszczelnienia.':t.encapsulation==='coating'?'WCOB IP62 · mleczny przekrój 8 × 5 mm i cięcie co 25 mm według karty. Diody są schowane pod zaokrągloną osłoną.':selected!=='none'?'Zobacz wsunięcie PCB i zamknięcie końców. Szczelność zależy od wykonania całego zestawu.':'Wybierz koszulkę, aby obejrzeć jej przekrój i zakończenia.';
-  $('sleeve-detail').hidden=!spec.sleeve;if(spec.sleeve){const x=spec.sleeve;const title=document.createElement('strong'),size=document.createElement('span');title.textContent=x.ref;size.textContent=`${x.width} × ${x.height} mm · ${x.shape==='side'?'PCB w pionie':x.clear?'silikon przezroczysty':'silikon mleczny'}`;$('sleeve-detail').replaceChildren(title,size);if(x.fitNote)$('sleeve-note').textContent=x.fitNote;}
+  $('sleeve-detail').hidden=!spec.sleeve;if(spec.sleeve){const x=spec.sleeve;const title=document.createElement('strong'),size=document.createElement('span'),drawing=document.createElement('span');drawing.className='sleeve-drawing';drawing.innerHTML=sleeveIcon(x);title.textContent=x.ref;size.textContent=`${x.width} × ${x.height} mm · ${x.shape==='side'?'PCB w pionie · światło górą':x.clear?'przezroczysta powierzchnia światła':'mleczna powierzchnia światła'}`;$('sleeve-detail').replaceChildren(drawing,title,size);if(x.fitNote)$('sleeve-note').textContent=x.fitNote;}
   $('sleeve-source').hidden=!spec.sleeve;$('sleeve-source').href=spec.sleeve?.source||'#';
   for(const key of ['sleeve','seal']){const b=document.querySelector(`[data-detail=${key}]`);b.hidden=selected==='none'&&!t.encapsulation;b.textContent=key==='sleeve'?(t.encapsulation==='coating'?'Przekrój WCOB':'Koszulka'):'Zakończenie';if(t.encapsulation==='coating'&&key==='seal')b.hidden=true;}
   document.querySelector('#cct-channels p').textContent=t.technology==='WCOB'?'Dwa kanały barwy pod białą powłoką WCOB. Wspólny plus.':'Dwa kanały barwy. Wspólny plus. Model obudowy 5050 z ciepłą i zimną diodą.';
@@ -40,7 +53,7 @@ function updateAccessories(p){
 }
 cards('profiles',profiles,'profile',p=>profileIcon(p,covers.find(c=>c.id===p.covers[0])),p=>`${num(p.width,1)} × ${num(p.height,1)} mm · ${p.application}`);
 cards('strips',strips,'strip',t=>`<span class="strip-icon ${t.technology==='WCOB'?'wcob':t.type==='COB'?'cob':t.shape==='s'?'serpentine':t.width<=5?'slim':''}"></span>`,t=>`${t.width} mm · ${t.type==='3IN1'?'3 / 6 / 11':num(t.watts,1)} W/m · ${t.voltage} V · ${t.type==='CCT'?t.cctMin+'–'+t.cctMax:t.cct} K`);
-cards('covers',covers,'cover',coverIcon,c=>`${c.ref} · ${Math.round(c.transmission*100)}% przepuszczalności${c.maxWatts?' · maks. '+c.maxWatts+' W/m':''}`);
+cards('covers',covers,'cover',coverIcon,c=>`${c.ref}${c.width?' · '+num(c.width,1)+' mm':''}<span class="cover-transmission"><i style="--transmission:${c.transmission*100}%"></i>${Math.round(c.transmission*100)}% światła</span>${c.maxWatts?'maks. '+c.maxWatts+' W/m':''}`);
 $('zones').replaceChildren(...zones.map(z=>{const b=document.createElement('button');b.dataset.zone=z.id;b.innerHTML=`<svg viewBox="0 0 32 34" aria-hidden="true"><path d="${z.icon}"/></svg><span><strong>${z.name}</strong><small>${z.subtitle}</small></span>`;b.onclick=()=>{stopAnimation();if(z.id==='drywall'&&!(profiles.find(p=>p.id===s.profile).mount==='drywall'||s.profile==='larko'))chooseProfile(profiles.find(p=>p.id==='kozus'));else if(z.id!=='drywall'&&(profiles.find(p=>p.id===s.profile).mount==='drywall'||s.profile==='larko'))chooseProfile(profiles[0]);s.zone=z.id;s.zoneOpen=true;s.zoneDetail=false;update();showMobilePreview();};return b;}));
 function filterStrips(){
   const query=$('strip-search').value.trim().toLocaleLowerCase('pl'),p=profiles.find(p=>p.id===s.profile);let visible=0;
@@ -180,7 +193,7 @@ $('play-mount').onclick=()=>$('animate').click();$('animate').onclick=()=>{
 $('mobile-assembly-play').onclick=()=>playAssembly(assemblyTarget===null?(s.exploded>50?0:100):(assemblyTarget===0?100:0));
 for(const [button,dialog]of [['export-open','export-dialog'],['about','about-dialog']])$(button).onclick=()=>$(dialog).showModal();document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}
-function project(){const spec=specification(s);return{schema:'prescot-light-studio/v9',configuration:s,displaySampleMm:displayLength(s),components:{housing:s.housing,finish:spec.isSleeve?null:spec.finish,profile:spec.isSleeve?null:spec.profile,strip:spec.strip,cover:spec.isSleeve?null:spec.cover,sleeve:spec.sleeve,accessories:spec.isSleeve?[]:accessoryKit(spec.profile,s).filter(a=>a.selected)},calculation:{stripLengthMm:spec.stripLength,powerW:spec.power,currentA:spec.current,wattsPerMeter:spec.wattsPerMeter,selectedTerminal:spec.selectedTerminal,freeSpaceMm:spec.offcut,cutVerified:spec.cutVerified,envelopeFits:spec.envelopeFits,fitVerified:spec.fitVerified,fitStatus:spec.fitStatus,issues:spec.issues},mounting:spec.isSleeve?null:{zone:s.zone,source:spec.profile.instruction,steps:mountingSteps(spec.profile,s.mounting==='recessed')},notes:['Product and installation illustration; not fabrication or electrical documentation.','Manufacturer profile section for MICRO-PLUS; other sections reconstructed from drawings with simplified details.','PCB and print are illustrative. CE/RoHS option is a print concept, not certification evidence.','Drill, groove, fastener and cable dimensions require project-specific selection.','Accessory references follow KLUŚ cards; fixing quantities are unspecified. Sleeve and sealing geometry is illustrative and does not establish IP compliance.','GLB contains full project length. Custom artwork is embedded only in GLB.','Release paper marked 3M is illustrative; adhesive grade is not specified. RGB light preview does not simulate spectral colour rendering; CRI is catalog data.']};}
+function project(){const spec=specification(s);return{schema:'prescot-light-studio/v9',configuration:s,displaySampleMm:displayLength(s),components:{housing:s.housing,finish:spec.isSleeve?null:spec.finish,profile:spec.isSleeve?null:spec.profile,strip:spec.strip,cover:spec.isSleeve?null:spec.cover,sleeve:spec.sleeve,accessories:(spec.isSleeve?sleeveAccessoryKit(spec.sleeve,s):accessoryKit(spec.profile,s)).filter(a=>a.selected)},calculation:{stripLengthMm:spec.stripLength,powerW:spec.power,currentA:spec.current,wattsPerMeter:spec.wattsPerMeter,selectedTerminal:spec.selectedTerminal,freeSpaceMm:spec.offcut,cutVerified:spec.cutVerified,envelopeFits:spec.envelopeFits,fitVerified:spec.fitVerified,fitStatus:spec.fitStatus,issues:spec.issues},mounting:spec.isSleeve?null:{zone:s.zone,source:spec.profile.instruction,steps:mountingSteps(spec.profile,s.mounting==='recessed')},notes:['Product and installation illustration; not fabrication or electrical documentation.','Manufacturer profile section for MICRO-PLUS; other sections reconstructed from drawings with simplified details.','PCB and print are illustrative. CE/RoHS option is a print concept, not certification evidence.','Drill, groove, fastener and cable dimensions require project-specific selection.','Accessory references follow KLUŚ cards; fixing quantities are unspecified. Sleeve and sealing geometry is illustrative and does not establish IP compliance.','GLB contains full project length. Custom artwork is embedded only in GLB.','Release paper marked 3M is illustrative; adhesive grade is not specified. RGB light preview does not simulate spectral colour rendering; CRI is catalog data.']};}
 async function busy(id,fn){const b=$(id);b.disabled=true;try{await fn();}catch(e){console.error(e);toast(`Eksport nie powiódł się: ${e.message}`);}finally{b.disabled=false;}}
 $('export-json').onclick=()=>download(new Blob([JSON.stringify(project(),null,2)],{type:'application/json'}),'prescot-projekt.json');
 $('export-glb').onclick=()=>busy('export-glb',async()=>{if(!studio)throw Error('Model jeszcze się wczytuje.');if(specification(s).fitStatus==='blocked'||specification(s).assemblyBlocked)throw Error('Najpierw rozwiąż wykluczenia w sekcji Dopasowanie.');toast('Przygotowuję model 3D…');download(new Blob([await studio.exportGLB()],{type:'model/gltf-binary'}),'prescot-zestaw.glb');toast(s.housing==='sleeve'?'Zapisano model taśmy z koszulką.':'Zapisano model GLB z animacją montażu.');});
@@ -207,7 +220,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=9ef5bbe0605e');
+      const {createStudio}=await import('./scene.js?v=1ac5a90e7b0f');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';
@@ -237,7 +250,7 @@ function applyHousingUI(spec){
  document.querySelectorAll('button[data-housing]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.housing===s.housing));b.disabled=b.dataset.housing==='sleeve'&&t.shape==='s';b.title=b.disabled?'S-shape wymaga prowadzenia bez koszulki.':'';});
  document.querySelector('[data-detail=product]').hidden=!sleeveMode;
  $('mounting').closest('label').hidden=sleeveMode;$('materials').closest('.field-row').hidden=sleeveMode;
- $('bom-transmission').parentElement.hidden=sleeveMode;$('bom-accessories').hidden=sleeveMode;
+ $('bom-transmission').parentElement.hidden=sleeveMode;$('bom-accessories').hidden=false;if(sleeveMode)$('bom-accessories').textContent=sleeveAccessoryKit(spec.sleeve,s).filter(a=>a.selected).map(a=>a.ref).join(' · ');
  if(!sleeveMode)return;
  const name=spec.sleeve?.name||(t.encapsulation==='coating'?'WCOB · powłoka fabryczna':'COB · koszulka fabryczna');
  $('selected-sleeve').textContent=name;

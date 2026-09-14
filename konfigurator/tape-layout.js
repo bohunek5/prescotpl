@@ -1,3 +1,4 @@
+import {smdDimensions} from './smd-package.js?v=1ac5a90e7b0f';
 // Presentation layout in metres. S-shape follows type 23 in the PRESCOT
 // Premium catalogue (p.19): contact islands, three LEDs per 50 mm and S bridges.
 // Package positions and bridge radii are illustrative, not fabrication artwork.
@@ -16,4 +17,15 @@ export function tapeLayout(t,length){
     return{center:.00135*Math.sin(2*Math.PI*f)*blend,scale:1-(1-.0022/width)*blend};
   }
   return{leds,contacts,resistors,section,islands};
+}
+
+// Transverse print uses a genuinely free gap, including solder and resistor
+// clearance. Coordinates/extent are millimetres within one repeated cut section.
+export function pcbBrandPlacement(t){
+  if(t.width>5||t.type==='COB'||t.technology==='WCOB')return null;
+  const L=t.cut,layout=tapeLayout(t,L/1000),d=smdDimensions(t),margin=.22;
+  const occupied=[...layout.leds.map(x=>[x*1000-d.x/2-.18,x*1000+d.x/2+.18]),...layout.resistors.map(x=>[x*1000-.85,x*1000+.85]),...layout.contacts.map(x=>[x*1000-1.1,x*1000+1.1])].sort((a,b)=>a[0]-b[0]);
+  let end=-L/2,best=null;const width=t.width*.82,height=width*55.5/470.8;
+  for(const [a,b]of [...occupied,[L/2,L/2]]){const gap=a-end-2*margin;if(gap>=height&&(!best||gap>best.gap)){best={x:(end+a)/2,width,height,gap,rotation:90};}end=Math.max(end,b);}
+  return best;
 }
