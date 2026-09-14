@@ -1,21 +1,21 @@
-import {previewLight,hasDoorSwitch} from './light-state.js?v=a9d8f23925dd';
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=a9d8f23925dd';
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=a9d8f23925dd';
-import {accessoryKit,accessoryOptions,accessoryCapOptions} from './accessory-data.js?v=a9d8f23925dd';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=a9d8f23925dd';
-import {zones} from './zones.js?v=a9d8f23925dd';
-import {mountingSteps} from './mounting.js?v=a9d8f23925dd';
-import {coverIcon} from './cover-shapes.js?v=a9d8f23925dd';
-import {profileIcon} from './profile-shapes.js?v=a9d8f23925dd';
-import {sleeveIcon} from './sleeve-shapes.js?v=a9d8f23925dd';
-import {projectSheet} from './sheet.js?v=a9d8f23925dd';
-import {uiIcon,actionLabel} from './ui-icons.js?v=a9d8f23925dd';
-import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=a9d8f23925dd';
-import {createZonePlayback} from './zone-playback.js?v=a9d8f23925dd';
-import {isStairZone,stairLayout} from './stair-layout.js?v=a9d8f23925dd';
-import {createStairControls} from './stair-controls.js?v=a9d8f23925dd';
-import {createPreviewPolish} from './preview-polish.js?v=a9d8f23925dd';
-import {createStudioFeedback} from './studio-feedback.js?v=a9d8f23925dd';
+import {previewLight,hasDoorSwitch} from './light-state.js?v=1deadf165ec6';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=1deadf165ec6';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=1deadf165ec6';
+import {accessoryKit,accessoryOptions,accessoryCapOptions} from './accessory-data.js?v=1deadf165ec6';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=1deadf165ec6';
+import {zones} from './zones.js?v=1deadf165ec6';
+import {mountingSteps} from './mounting.js?v=1deadf165ec6';
+import {coverIcon} from './cover-shapes.js?v=1deadf165ec6';
+import {profileIcon} from './profile-shapes.js?v=1deadf165ec6';
+import {sleeveIcon} from './sleeve-shapes.js?v=1deadf165ec6';
+import {projectSheet} from './sheet.js?v=1deadf165ec6';
+import {uiIcon,actionLabel} from './ui-icons.js?v=1deadf165ec6';
+import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=1deadf165ec6';
+import {createZonePlayback} from './zone-playback.js?v=1deadf165ec6';
+import {isStairZone,stairLayout} from './stair-layout.js?v=1deadf165ec6';
+import {createStairControls} from './stair-controls.js?v=1deadf165ec6';
+import {createPreviewPolish} from './preview-polish.js?v=1deadf165ec6';
+import {createStudioFeedback} from './studio-feedback.js?v=1deadf165ec6';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -307,7 +307,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=a9d8f23925dd');
+      const {createStudio}=await import('./scene.js?v=1deadf165ec6');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       feedback.hide();document.body.dataset.ready='true';
@@ -328,10 +328,10 @@ else{
 
 async function startWelcomeFilm(){
  const host=$('welcome-film'),placeholder=host.querySelector('.welcome-film-placeholder'),button=$('welcome-replay');
- const captions={tape:'3 moce · 4 przewody',turn:'Profil KLUŚ MICRO-PLUS',profile:'Wybierz profil MICRO-PLUS',peel:'Odklej podkład 3M',seat:'Wklej taśmę w profil',cover:'Zatrzaśnij osłonę',caps:'Zaślepki i cztery przewody',low:'LOW · 3 W/m',medium:'MEDIUM · 6 W/m',high:'HIGH · 11 W/m',complete:'3 / 6 / 11 W/m · DELUX 3 w 1'};
+ const captions={tape:'Taśma LED · cztery przewody',turn:'Przygotuj profil',profile:'Profil KLUŚ MICRO-PLUS',peel:'Odklej podkład 3M',seat:'Wklej taśmę w profil',cover:'Zatrzaśnij osłonę',caps:'Zaślepki i cztery przewody',light:'Włącz światło',complete:'Zestaw gotowy'};
  let captionPhase='';
  try{
-  const {createWelcomeFilm}=await import('./welcome-film.js?v=a9d8f23925dd');if(welcomeCancelled)return;
+  const {createWelcomeFilm}=await import('./welcome-film.js?v=1deadf165ec6');if(welcomeCancelled)return;
   const film=await createWelcomeFilm(host,{onPhase:phase=>{if(phase!==captionPhase){captionPhase=phase;$('welcome-phase').textContent=captions[phase]||captions.tape;}},onComplete:()=>{$('welcome-title').textContent='Zobacz, jakie to proste!';},onPlaying:playing=>{actionLabel(button,playing?'Pauza':'Odtwórz pokaz',playing?'pause':'play');button.setAttribute('aria-pressed',String(playing));}});
   if(welcomeCancelled){film.dispose();return;}
   welcomeFilm=film;placeholder.hidden=true;button.hidden=false;

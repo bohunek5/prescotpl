@@ -461,6 +461,7 @@ body[data-light-study=true] .bom{background:#292e35;color:#f3efe7}
 #live-section small{display:block;font-size:9px;color:var(--muted);margin-bottom:3px}
 #live-section strong{display:block;font-size:11px;font-weight:500;line-height:1.4;overflow-wrap:anywhere}
 #studio-stage .viewport-actions :is(.mobile-assembly-play,.sleeve-play){position:static;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:var(--preview-height);padding:11px 17px;flex:none;border:1px solid var(--preview-border);border-radius:var(--preview-radius);background:var(--preview-surface);backdrop-filter:blur(10px);color:var(--preview-ink);font-size:12px;box-shadow:var(--preview-shadow);touch-action:manipulation}
+#studio-stage .viewport-actions #mobile-assembly-play{width:100px;min-width:100px;height:var(--preview-height);gap:6px;padding:6px;font-size:14px;line-height:1.2;white-space:nowrap}
 #studio-stage .viewport-actions .sleeve-play{margin-left:auto}
 #studio-stage .viewport-actions .mobile-assembly-play svg{width:17px;height:17px}
 body[data-light-study=true] .viewport-actions{--preview-surface:#323840b8;--preview-border:#a7b0ba30;--preview-ink:#f0e8dc;--preview-shadow:0 4px 18px #0b11150a}

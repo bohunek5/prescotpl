@@ -1,13 +1,12 @@
 import * as T from 'three';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import {normalize,specification} from './catalog.js?v=a9d8f23925dd';
-import {buildProduct} from './product.js?v=a9d8f23925dd';
-import {buildInstallationCable} from './installation-wiring.js?v=a9d8f23925dd';
-import {makeStudioEnvironment} from './studio-environment.js?v=a9d8f23925dd';
-import {lightColor} from './light-color.js?v=a9d8f23925dd';
-import {stripOutputScale} from './light-state.js?v=a9d8f23925dd';
-import {welcomePose,welcomeDuration} from './welcome-motion.js?v=a9d8f23925dd';
-import {welcomeProfile} from './welcome-profile.js?v=a9d8f23925dd';
+import {normalize,specification} from './catalog.js?v=1deadf165ec6';
+import {buildProduct} from './product.js?v=1deadf165ec6';
+import {buildInstallationCable} from './installation-wiring.js?v=1deadf165ec6';
+import {makeStudioEnvironment} from './studio-environment.js?v=1deadf165ec6';
+import {lightColor} from './light-color.js?v=1deadf165ec6';
+import {welcomePose,welcomeDuration} from './welcome-motion.js?v=1deadf165ec6';
+import {welcomeProfile} from './welcome-profile.js?v=1deadf165ec6';
 
 export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{},onPhase=()=>{}}={}){
  RectAreaLightUniformsLib.init();
@@ -22,25 +21,17 @@ export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{}
  spec.profile=welcomeProfile(spec.profile);
  // One real 50 mm cutting segment keeps the PCB and its four pads legible on a phone.
  const product=buildProduct(null,null,spec,state,{length:50,quality:'detail'});scene.add(product.group);
- const powerLabels=document.createElement('div');powerLabels.className='welcome-power-levels';powerLabels.setAttribute('role','group');powerLabels.setAttribute('aria-label','Trzy poziomy mocy DELUX 3 w 1');
- const powerStyle=document.createElement('style');powerStyle.textContent=`.welcome-power-levels{position:absolute;left:50%;bottom:12px;z-index:2;transform:translateX(-50%);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;width:286px;max-width:calc(100% - 24px);font-family:inherit;opacity:0;pointer-events:none;transition:opacity .15s}.welcome-power-levels[data-visible=true]{opacity:1}.welcome-power-levels>span{display:grid;gap:3px;justify-items:center;align-content:center;min-height:45px;box-sizing:border-box;padding:6px 9px;border:1px solid #c0c6c441;border-radius:9px;background:#f8f8f399;color:#858d8d;font-size:9px;letter-spacing:.45px;line-height:1.1}.welcome-power-levels strong{font-size:15px;letter-spacing:-.3px;font-weight:500;white-space:nowrap}.welcome-power-levels small{font-size:9px;letter-spacing:0;font-weight:400}.welcome-power-levels>[aria-current=true]{background:#263b46;color:#fff9ee;border-color:#263b46;box-shadow:0 4px 16px #263b4615}@media(prefers-reduced-motion:reduce){.welcome-power-levels{transition:none}}`;
- powerLabels.append(powerStyle);
- const powerItems=Object.entries(spec.strip.modes).map(([mode,{watts}])=>{const item=document.createElement('span');item.dataset.mode=mode;item.innerHTML=`${mode.toUpperCase()}<strong>${watts} <small>W/m</small></strong>`;powerLabels.append(item);return item;});host.append(powerLabels);
- let cableMode=state.powerMode;
- // The film reuses one PCB across the three modes. Its four physical pads stay
- // fixed while the energized return follows the manufacturer's L/M/H terminal.
- const cableProduct={...product,connectionPads:()=>product.connectionPads().map(pad=>({...pad,active:pad.polarity==='+'||pad.label===spec.strip.modes[cableMode].terminal}))};
- const cable=buildInstallationCable(cableProduct,spec.profile,{tailSpread:.002});
+ const cable=buildInstallationCable(product,spec.profile,{tailSpread:.002});
  // Build the final connection once, using the four actual terminal positions.
  const cableTail=[new T.Vector3(-.034,.003,.001),new T.Vector3(-.041,.002,-.001),new T.Vector3(-.048,.004,-.001)];
  product.assemble(0);product.group.updateMatrixWorld(true);cable.update(state,cableTail,true);cable.root.visible=false;
  const front=new T.Quaternion().setFromEuler(new T.Euler(Math.PI/2,0,-.06)),angled=new T.Quaternion().setFromEuler(new T.Euler(.7,.35,-.6));
  const anchor=new T.Vector3();
- let frame=0,elapsed=0,start=0,disposed=false,playing=false,renderCount=0,previousTime=0,resumeAfterVisibility=false,aspect=1,connectedMode='';
+ let frame=0,elapsed=0,start=0,disposed=false,playing=false,renderCount=0,previousTime=0,resumeAfterVisibility=false,aspect=1;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  function render(time){
   if(disposed)return;const p=welcomePose(time),on=p.light>.002;elapsed=p.time;
-  const frameState={...state,light:on,dimmer:p.light*64,exploded:p.amount,powerMode:p.powerMode};
+  const frameState={...state,light:on,dimmer:p.light*64,exploded:p.amount};
   product.update(frameState,color);product.assemble(p.amount);
   product.bend(.32*p.turn*(1-p.seat));
   product.peel(p.peel,p.linerExit,p.phase==='peel');
@@ -50,15 +41,13 @@ export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{}
   product.profile.visible=p.profile>0;product.profile.position.y=-.028*(1-p.profile);
   // Controlled lowering makes contact with the actual channel floor explicit.
   product.pcb.position.y=product.ledBase+.021*(1-p.seat);
-  product.cover.visible=p.time>=2.1;
+  product.cover.visible=p.time>=3.45;
   product.cover.position.y=(spec.profile.coverY/1000-.00045)+.024*(1-p.cover);
-  product.accessories.visible=p.time>=2.55;
-  if(p.seat===1&&connectedMode!==p.powerMode){cableMode=p.powerMode;cable.update(frameState,cableTail,true);connectedMode=p.powerMode;}
-  product.wiring.visible=p.time<2.1;cable.root.visible=p.time>=2.1;
+  product.accessories.visible=p.time>=4.15;
+  product.wiring.visible=p.time<3.45;cable.root.visible=p.time>=3.45;
   const half=Math.max(.026,.042/aspect)*(1+.3*p.turn*(1-p.seat));
   camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();
-  host.dataset.phase=p.phase;host.dataset.power=on?p.powerMode:'';host.style.setProperty('--film-progress',String(p.time/welcomeDuration));
-  powerLabels.dataset.visible=String(p.time>=2.9);powerLabels.setAttribute('aria-hidden',String(p.time<2.9));for(const item of powerItems)item.setAttribute('aria-current',String(p.time>=2.9&&item.dataset.mode===p.powerMode));onPhase(p.phase,p);
+  host.dataset.phase=p.phase;host.style.setProperty('--film-progress',String(p.time/welcomeDuration));onPhase(p.phase,p);
   renderer.render(scene,camera);renderCount++;if(p.complete)onComplete();
  }
  function stop(){cancelAnimationFrame(frame);frame=0;playing=false;onPlaying(false);}
@@ -78,5 +67,5 @@ export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{}
  product.wiring.visible=true;product.liner.visible=true;cable.root.visible=true;
  await renderer.compileAsync(scene,camera);resize();
  const observer=new ResizeObserver(resize);observer.observe(host);document.addEventListener('visibilitychange',hidden);reduced.addEventListener('change',motion);
- return{play,pause(){resumeAfterVisibility=false;stop();},seek(time){stop();render(time)},inspect:()=>{const p=welcomePose(elapsed),mode=spec.strip.modes[p.powerMode];return{time:elapsed,duration:welcomeDuration,phase:host.dataset.phase,playing,renderCount,connections:cable.root.userData.connections,visibleWireCount:(cable.root.visible?cable.root:product.wiring).children.filter(o=>o.userData.terminal&&o.name.indexOf('Koncowka')!==0).length,throughCap:cable.root.userData.throughCap,sampleLength:product.length,pcbLiftMm:(product.pcb.position.y-product.ledBase)*1000,liner:{...product.liner.userData,visible:product.liner.visible},profileVisible:product.profile.visible,coverVisible:product.cover.visible,light:p.light,powerMode:p.powerMode,wattsPerMeter:mode.watts,lumensPerMeter:mode.lumens,outputRatio:stripOutputScale(spec.strip,{powerMode:p.powerMode}),emission:{pcb:product.pcb.children[0].userData.light.warm,cover:product.cover.userData.light.intensity,beam:product.cover.userData.light.beam.level,bounce:product.pcb.children.find(o=>o.isRectAreaLight).intensity}};},dispose(){if(disposed)return;stop();disposed=true;observer.disconnect();document.removeEventListener('visibilitychange',hidden);reduced.removeEventListener('change',motion);cable.dispose();product.dispose();key.shadow.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();powerLabels.remove();}};
+ return{play,pause(){resumeAfterVisibility=false;stop();},seek(time){stop();render(time)},inspect:()=>{const p=welcomePose(elapsed);return{time:elapsed,duration:welcomeDuration,phase:host.dataset.phase,playing,renderCount,connections:cable.root.userData.connections,visibleWireCount:(cable.root.visible?cable.root:product.wiring).children.filter(o=>o.userData.terminal&&o.name.indexOf('Koncowka')!==0).length,throughCap:cable.root.userData.throughCap,sampleLength:product.length,pcbLiftMm:(product.pcb.position.y-product.ledBase)*1000,liner:{...product.liner.userData,visible:product.liner.visible},profileVisible:product.profile.visible,coverVisible:product.cover.visible,light:p.light,powerMode:state.powerMode,emission:{pcb:product.pcb.children[0].userData.light.warm,cover:product.cover.userData.light.intensity,beam:product.cover.userData.light.beam.level,bounce:product.pcb.children.find(o=>o.isRectAreaLight).intensity}};},dispose(){if(disposed)return;stop();disposed=true;observer.disconnect();document.removeEventListener('visibilitychange',hidden);reduced.removeEventListener('change',motion);cable.dispose();product.dispose();key.shadow.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();}};
 }

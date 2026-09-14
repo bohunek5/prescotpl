@@ -1,16 +1,16 @@
-import {stripOutputScale} from './light-state.js?v=a9d8f23925dd';
-import {sleeveInsertionPose} from './sleeve-motion.js?v=a9d8f23925dd';
-import {factorySilicone} from './strip-protection.js?v=a9d8f23925dd';
+import {stripOutputScale} from './light-state.js?v=1deadf165ec6';
+import {sleeveInsertionPose} from './sleeve-motion.js?v=1deadf165ec6';
+import {factorySilicone} from './strip-protection.js?v=1deadf165ec6';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=a9d8f23925dd';
-import {drawPcbBrand} from './brand-art.js?v=a9d8f23925dd';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=a9d8f23925dd';
-import {smdPackage} from './smd-package.js?v=a9d8f23925dd';
-import {tapeTerminals} from './tape-wiring.js?v=a9d8f23925dd';
-import {buildSilicone} from './silicone.js?v=a9d8f23925dd';
-import {glowMaterial} from './glow.js?v=a9d8f23925dd';
-import {phosphorMap} from './light-textures.js?v=a9d8f23925dd';
-import {buildReleaseLiner} from './release-liner.js?v=a9d8f23925dd';
+import {rgbwChannels,colorCct} from './light-color.js?v=1deadf165ec6';
+import {drawPcbBrand} from './brand-art.js?v=1deadf165ec6';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=1deadf165ec6';
+import {smdPackage} from './smd-package.js?v=1deadf165ec6';
+import {tapeTerminals} from './tape-wiring.js?v=1deadf165ec6';
+import {buildSilicone} from './silicone.js?v=1deadf165ec6';
+import {glowMaterial} from './glow.js?v=1deadf165ec6';
+import {phosphorMap} from './light-textures.js?v=1deadf165ec6';
+import {buildReleaseLiner} from './release-liner.js?v=1deadf165ec6';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow

@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {stairLayout} from './stair-layout.js?v=a9d8f23925dd';
+import {stairLayout} from './stair-layout.js?v=1deadf165ec6';
 
 export function buildStairZone({root,product,profile,state,box,wood,plaster,edge}){
  const q=stairLayout(profile,state),receivers=[],geometries=[],parts=new T.Group();parts.name='Trzy_stopnie_przekroj';root.add(parts);
