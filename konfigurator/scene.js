@@ -1,19 +1,19 @@
-import {makeStudioEnvironment} from './studio-environment.js?v=e64a20d5c820';
-import {hasAdhesiveBacking} from './strip-protection.js?v=e64a20d5c820';
+import {makeStudioEnvironment} from './studio-environment.js?v=a9d8f23925dd';
+import {hasAdhesiveBacking} from './strip-protection.js?v=a9d8f23925dd';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=e64a20d5c820';
-import {buildProduct} from './product.js?v=e64a20d5c820';
-import {buildMount} from './mounting.js?v=e64a20d5c820';
-import {buildZone} from './zones.js?v=e64a20d5c820';
-import {sectionGeometry} from './section.js?v=e64a20d5c820';
-import {lightColor} from './light-color.js?v=e64a20d5c820';
-import {assemblyClip} from './assembly-export.js?v=e64a20d5c820';
-import {createSoftShadow} from './soft-shadow.js?v=e64a20d5c820';
-import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=e64a20d5c820';
+import {specification,displayLength} from './catalog.js?v=a9d8f23925dd';
+import {buildProduct} from './product.js?v=a9d8f23925dd';
+import {buildMount} from './mounting.js?v=a9d8f23925dd';
+import {buildZone} from './zones.js?v=a9d8f23925dd';
+import {sectionGeometry} from './section.js?v=a9d8f23925dd';
+import {lightColor} from './light-color.js?v=a9d8f23925dd';
+import {assemblyClip} from './assembly-export.js?v=a9d8f23925dd';
+import {createSoftShadow} from './soft-shadow.js?v=a9d8f23925dd';
+import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=a9d8f23925dd';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -88,7 +88,7 @@ export async function createStudio(host,initial){
     if(s.lightStudy){fill.intensity*=.25;hemi.intensity=.12;key.intensity=.30;}
     key.position.set(...(z?[-.35,.55,.55]:[.04,.24,.12]));key.target.position.set(0,z?.1:0,0);
     Object.assign(key.shadow.camera,z?{left:-.5,right:.5,top:.5,bottom:-.5,near:.01,far:3}:{left:-.14,right:.14,top:.14,bottom:-.14,near:.01,far:2});key.shadow.camera.updateProjectionMatrix();
-    renderer.toneMappingExposure=1.08;scene.background=null;
+    renderer.toneMappingExposure=s.lightStudy?1.08:.98;scene.background=null;
     if(sample&&!z){sample.update({...s,showCable:s.showCable||s.view==='mounting'},color);assemble(s.exploded);}
     renderer.shadowMap.needsUpdate=!interactive;shadowDirty=true;requestDraw();
   }

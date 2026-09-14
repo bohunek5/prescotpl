@@ -1,8 +1,8 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=e64a20d5c820';
-import {accessoryKit} from './accessory-data.js?v=e64a20d5c820';
+import {buildAccessories} from './accessories.js?v=a9d8f23925dd';
+import {accessoryKit} from './accessory-data.js?v=a9d8f23925dd';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildInstallationCable} from './installation-wiring.js?v=e64a20d5c820';
+import {buildInstallationCable} from './installation-wiring.js?v=a9d8f23925dd';
 
 export function seatingHeight(p,recessed){
   if(!recessed)return .0008;

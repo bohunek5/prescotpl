@@ -1,16 +1,16 @@
-import {prepareCoverFlex} from './cover-flex.js?v=e64a20d5c820';
-import {stripOutputScale} from './light-state.js?v=e64a20d5c820';
-import {hasAdhesiveBacking} from './strip-protection.js?v=e64a20d5c820';
+import {prepareCoverFlex} from './cover-flex.js?v=a9d8f23925dd';
+import {stripOutputScale} from './light-state.js?v=a9d8f23925dd';
+import {hasAdhesiveBacking} from './strip-protection.js?v=a9d8f23925dd';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=e64a20d5c820';
-import {buildPCB} from './tape.js?v=e64a20d5c820';
-import {sectionGeometry} from './section.js?v=e64a20d5c820';
-import {profileContour} from './profile-shapes.js?v=e64a20d5c820';
-import {coverSection} from './cover-shapes.js?v=e64a20d5c820';
-import {glowMaterial} from './glow.js?v=e64a20d5c820';
-import {diffuserMap} from './light-textures.js?v=e64a20d5c820';
-import {assemblyPose} from './assembly-motion.js?v=e64a20d5c820';
-import {createLightVolume} from './light-volume.js?v=e64a20d5c820';
+import {buildAccessories} from './accessories.js?v=a9d8f23925dd';
+import {buildPCB} from './tape.js?v=a9d8f23925dd';
+import {sectionGeometry} from './section.js?v=a9d8f23925dd';
+import {profileContour} from './profile-shapes.js?v=a9d8f23925dd';
+import {coverSection} from './cover-shapes.js?v=a9d8f23925dd';
+import {glowMaterial} from './glow.js?v=a9d8f23925dd';
+import {diffuserMap} from './light-textures.js?v=a9d8f23925dd';
+import {assemblyPose} from './assembly-motion.js?v=a9d8f23925dd';
+import {createLightVolume} from './light-volume.js?v=a9d8f23925dd';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -22,7 +22,9 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   const materials=[],textures=[];
   const mat=options=>{const m=new T.MeshStandardMaterial(options);materials.push(m);return m;};
   const brushed=brushedTexture();textures.push(brushed);
-  const metal=mat({color:'#e0e3e4',metalness:.88,roughness:.24,envMapIntensity:2.3,roughnessMap:brushed});
+  // Keep a soft reflection on anodised aluminium; broad white studio cards
+  // must not flatten the retaining lips and the end of the extrusion.
+  const metal=mat({color:'#c3cbcf',metalness:.88,roughness:.44,envMapIntensity:.85,roughnessMap:brushed});
   const isClear=spec.cover.id.endsWith('-clear')||!!spec.cover.beamAngle;
   const emission=diffuserMap(spec,length);textures.push(emission);
   const lens=mat({color:spec.cover.color,roughness:isClear?.14:.38,metalness:0,transparent:isClear,opacity:spec.cover.beamAngle?.48:isClear?.22:1,depthWrite:!isClear,side:T.DoubleSide,emissiveMap:emission});
@@ -102,8 +104,8 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     cover.userData.light={intensity:lens.emissiveIntensity,coupling,clear:isClear,color:lightColor.getHexString(),transmission:spec.cover.transmission,beam:{...beam.mesh.userData,visible:beam.mesh.visible}};
   }
   function update(s,color){
-    state=s;metal.color.set({silver:'#e0e3e4',black:'#373a3b',white:'#efefeb',raw:'#bfc2c2'}[s.finish]);metal.metalness=s.finish==='white'?.05:.88;metal.roughness=s.finish==='raw'?.44:s.finish==='silver'?.24:.43;
-    metal.envMapIntensity=s.finish==='raw'?1.6:s.finish==='silver'?2.3:s.finish==='white'?.6:1;
+    state=s;metal.color.set({silver:'#c3cbcf',black:'#373a3b',white:'#efefeb',raw:'#bfc2c2'}[s.finish]);metal.metalness=s.finish==='white'?.05:.88;metal.roughness=s.finish==='raw'?.48:s.finish==='silver'?.44:.43;
+    metal.envMapIntensity=s.finish==='raw'?1:s.finish==='silver'?.85:s.finish==='white'?.6:1;
     lens.color.set(s.cover.includes('black')?'#292b2c':s.cover.endsWith('-clear')?'#edf0f1':'#f5f4ef');
     coverBase.color.copy(lens.color);
     lightColor.copy(color);updateCoverLight(s.exploded);details.update(s,color);

@@ -1,12 +1,12 @@
-import {smooth} from './assembly-motion.js?v=e64a20d5c820';
+import {smooth} from './assembly-motion.js?v=a9d8f23925dd';
 export const welcomeDuration=5;
-// Distinct beats for peeling and seating. The cover arrives after the PCB.
+// Assembly has distinct peel/seat beats, then each real wiring mode gets 0.7 s.
 export function welcomePose(time){
  const t=Math.max(0,Math.min(welcomeDuration,Number.isFinite(time)?time:0));
- const phase=t<.55?'tape':t<1.1?'turn':t<1.7?'profile':t<2.45?'peel':t<3.2?'seat':t<3.85?'cover':t<4.25?'caps':t<5?'light':'complete';
- return{time:t,phase,turn:smooth((t-.55)/.55),profile:smooth((t-1.1)/.6),
-  peel:smooth((t-1.7)/.45),linerExit:smooth((t-2.15)/.3),seat:smooth((t-2.45)/.75),
-  cover:smooth((t-3.2)/.65),caps:smooth((t-3.85)/.4),
-  amount:t<2.45?72:t<3.2?72-22*smooth((t-2.45)/.75):t<3.85?50-42*smooth((t-3.2)/.65):8*(1-smooth((t-3.85)/.4)),
-  light:smooth((t-4.25)/.55),complete:t>=welcomeDuration};
+ const phase=t<.35?'tape':t<.65?'turn':t<1.05?'profile':t<1.55?'peel':t<2.1?'seat':t<2.55?'cover':t<2.9?'caps':t<3.6?'low':t<4.3?'medium':t<5?'high':'complete';
+ return{time:t,phase,turn:smooth((t-.35)/.3),profile:smooth((t-.65)/.4),
+  peel:smooth((t-1.05)/.3),linerExit:smooth((t-1.35)/.2),seat:smooth((t-1.55)/.55),
+  cover:smooth((t-2.1)/.45),caps:smooth((t-2.55)/.35),
+  amount:t<1.55?72:t<2.1?72-22*smooth((t-1.55)/.55):t<2.55?50-42*smooth((t-2.1)/.45):8*(1-smooth((t-2.55)/.35)),
+  light:smooth((t-2.9)/.16),powerMode:t<3.6?'low':t<4.3?'medium':'high',complete:t>=welcomeDuration};
 }
