@@ -19,9 +19,9 @@ for(const key of ['mono','cct','rgb','rgbw','rgbcct']){
 for(const w of [36,60,100,150,200,300])await write(`assets/showcase/pr-mad-${w}-scene.svg`,svg(image(await uri(`assets/showcase/pr-mad-${w}w.webp`),230,80,1160,920)));
 await write('assets/showcase/pr-mad-terminals-scene.svg',svg(image(await uri('assets/showcase/pr-mad-terminals.webp'),170,-80,1280,1180)));
 const modelsFor=p=>p.models.map((m,i)=>{
- if(p.slug==='sterowniki-led')return {...m,left:`assets/showcase/${m.key}-scene-left.svg`,right:`assets/showcase/${m.key}-scene-right.svg`,description:m.description+' Pilot RF, odbiornik i uchwyt magnetyczny w zestawie.'};
+ if(p.slug==='sterowniki-led')return {...m,left:`assets/showcase/${m.key}-scene-left.svg`,right:`assets/controllers/${m.key}-main.webp`,description:m.description+' Pilot RF, odbiornik i uchwyt magnetyczny w zestawie.'};
  if(p.slug==='zasilacze-led'){
-  const w=[36,60,100,150,200,300][i];return {...m,left:`assets/showcase/pr-mad-${w}-scene.svg`,right:'assets/showcase/pr-mad-terminals-scene.svg',pdf:`assets/showcase/pr-mad-${w}w.pdf`,description:`${m.description} Autodetekcja 12/24 V DC. Moc ${w} W, IP20. Wymiary ${[145,145,176,199,218,240][i]} × 50 × 29 mm.`};
+  const w=[36,60,100,150,200,300][i];return {...m,left:`assets/showcase/pr-mad-${w}-scene.svg`,right:`assets/prmad/pr-mad-${w}w.webp`,pdf:`assets/showcase/pr-mad-${w}w.pdf`,description:`${m.description} Autodetekcja 12/24 V DC. Moc ${w} W, IP20. Wymiary ${[145,145,176,199,218,240][i]} × 50 × 29 mm.`};
  }
  return {...m,left:m.image,right:['assets/offer/klus-profile.webp','assets/prmad/pr-mad-kitchen-hero.webp','assets/controllers/controller-living-room-hero-v2.webp'][i]};
 });
@@ -38,7 +38,8 @@ try{
    d.querySelectorAll('link[type*="oembed"]').forEach(e=>e.remove());
    d.querySelectorAll('[data-gt-orig-url]').forEach(e=>e.dataset.gtOrigUrl='/v2/'+p.slug+'/');
    const css=d.createElement('link');css.rel='stylesheet';css.href='v2/native.css?v=20260913-native10';d.head.append(css);
-   const hero=d.querySelector('.elementor-element-19d3d39b');hero.style.setProperty('background-image',`linear-gradient(0deg,#030508aa,#03050822),url("${p.hero}")`,'important');
+   if(['sterowniki-led','zasilacze-led'].includes(p.slug))d.body.dataset.pmProductPhoto='true';
+   const hero=d.querySelector('.elementor-element-19d3d39b');hero.style.setProperty('background-image',`url("${p.hero}")`,'important');
    hero.querySelectorAll('.elementor-widget-heading h2').forEach(e=>e.textContent=p.label);
    hero.querySelectorAll('.mdw-gradient').forEach(e=>['#e14e26','#ed724a','#f3ab8c','#f4d8cb','#fff'].forEach((tone,n)=>e.style.setProperty('--sun-'+(n+1),tone)));
    hero.querySelectorAll('.elementor-widget-text-editor p').forEach(e=>e.textContent=p.intro);

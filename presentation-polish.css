@@ -1,0 +1,50 @@
+/* Softer film shading, readable captions and white glass catalogue cards. */
+html body #content .elementor-element.elementor-element-216d8696::before{background:linear-gradient(180deg,#0f172a24 0%,#0f172a38 50%,#0f172a70 100%)!important;opacity:1!important}
+html body #content .elementor-element-216d8696 .pm-entrance-caption .elementor-divider__text{font-size:clamp(28px,2.4vw,40px)!important;line-height:1.2!important;letter-spacing:-.02em!important;text-shadow:0 2px 12px #0004}
+html body #content .pm-entrance-caption .pm-closer{color:#e55933!important}
+html body #content :is(.dm-card-slider,.as-side-slider) .swiper-slide::before{background:linear-gradient(0deg,#14233420,transparent 60%)!important}
+html body #content :is(.dm-card-slider,.as-side-slider) .elementor-testimonial__cite{background:#ffffffd9!important;border:1px solid #ffffffe6!important;backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);color:#172b45!important;padding:16px!important;box-shadow:inset 0 1px #fff,0 6px 20px #172b4510!important}
+html body #content :is(.dm-card-slider,.as-side-slider) .elementor-testimonial__name{color:#172b45!important;font-size:clamp(16px,1vw,22px)!important;line-height:1.2!important;margin-bottom:7px!important;font-weight:700!important}
+html body #content :is(.dm-card-slider,.as-side-slider) .elementor-testimonial__title{color:#42566e!important;font-size:13px!important;line-height:1.45!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+html body #content :is(.dm-card-slider,.as-side-slider,.pm-feature) img:is([src*="assets/controllers/"],[src*="assets/prmad/"]){object-fit:contain!important;background:#fff!important}
+html body .as-changing-widget h2{font-size:clamp(36px,3.1vw,64px)!important;line-height:1.12!important}
+html body .as-changing-widget p{font-size:clamp(16px,1.1vw,20px)!important;line-height:1.55!important;max-width:540px}
+html body .pm-white-set,html body #content .pm-product-artwork .pm-white-set{background:#fff!important;border:1px solid #e5e9ee!important;box-shadow:none!important}
+html body .pm-white-set::before{display:none!important}
+html body #content .pm-white-set .pm-set-photo{position:absolute!important;inset:5% 4% 11%!important;width:92%!important;height:84%!important;max-width:none!important;object-fit:contain!important;filter:none!important;border-radius:0!important}
+html body .pm-white-set .pm-photo-caption{color:#42566e!important;z-index:2}
+html body[data-pm-product-photo] .mdw-card-portfolio-image-right .elementor-widget-container{background:#fff!important;border-radius:22px!important;overflow:hidden}
+html body[data-pm-product-photo] .mdw-card-portfolio-image-right img{object-fit:contain!important;background:#fff!important;padding:16px!important}
+html body[data-pm-product-photo] #content .elementor-element-19d3d39b{background-color:#fff!important;background-size:58% auto!important;background-repeat:no-repeat!important;background-position:98% center!important}
+html body[data-pm-product-photo] #content .elementor-element-19d3d39b::before{display:none!important}
+html body[data-pm-product-photo] #content .elementor-element-19d3d39b :is(h2,.mdw-gradient,.mdw-gradient span,p){color:#172b45!important;-webkit-text-fill-color:#172b45!important;background-image:none!important;text-shadow:none!important;opacity:1!important}
+html body[data-pm-product-photo] #content .elementor-element-19d3d39b .elementor-widget-text-editor{opacity:1!important}
+html body[data-pm-product-photo] img[src$="biale-z-kolorem.svg"],html body:has(.apple-calc-card) img[src$="biale-z-kolorem.svg"]{content:url('wp-content/uploads/2025/12/PRESCOT_logo-podstawowe.svg');filter:none!important}
+html body[data-pm-product-photo] #prescotScrollDown,html body[data-pm-product-photo] #prescotScrollDown :is(svg,path){color:#172b45!important;fill:#172b45!important}
+@media(min-width:768px){
+ html body[data-pm-product-photo] #content .elementor-element-19d3d39b>.e-con-inner{max-width:none!important;padding-inline:7%!important}
+ html body[data-pm-product-photo] #content .elementor-element-19d3d39b>.e-con-inner>:is(.elementor-widget-heading,.elementor-widget-text-editor){max-width:36%!important}
+ html body[data-pm-product-photo] #content .elementor-element-19d3d39b .elementor-widget-text-editor .elementor-widget-text-editor{max-width:none!important;width:100%!important}
+}
+/* Calculator uses the same quiet white glass and navy controls as the dock. */
+html body .apple-calc-card{border-radius:24px!important;background:#ffffffdf!important;border:1px solid #e2e8f0!important;box-shadow:0 12px 40px #172b4509!important}
+html body .apple-calc-header{background:#f8fafcd9!important}
+html body .apple-calc-badge{background:#eaf0f7!important;color:#172b45!important;border-color:#dce4ef!important}
+html body .metric-card.hero-metric{border:1px solid #b8c8dc!important;box-shadow:0 4px 16px #172b4508!important;background:#f3f6fa!important}
+html body .metric-card.hero-metric .metric-label{color:#42566e!important}
+html body .apple-calc-card input[type=range]::-webkit-slider-thumb{background:#172b45!important}
+html body .apple-calc-card input[type=range]::-moz-range-thumb{background:#172b45!important}
+html body .calc-rec-card{background:#ffffffc9!important;border:1px solid #dce4ef!important;box-shadow:0 8px 28px #172b450c!important;backdrop-filter:blur(18px);color:#172b45!important}
+html body .calc-rec-title,html body .calc-rec-tag{color:#172b45!important}
+html body .calc-rec-desc,html body .calc-rec-brand{color:#536780!important}
+html body .calc-rec-btn{background:#172b45!important;color:#fff!important;border-color:#172b45!important;border-radius:14px!important}
+html body .calc-field-val-display,html body .apple-chip-btn.active{color:#172b45!important}
+html body .apple-chip-btn.active{background:#eaf0f7!important;border-color:#526a88!important}
+html body .apple-range-slider{accent-color:#172b45!important}
+@media(max-width:767px){
+ html body #content .elementor-element-216d8696 .pm-entrance-caption .elementor-divider__text{font-size:28px!important}
+ html body .pm-feature h2{font-size:30px!important}
+ html body .pm-feature-summary{font-size:14px!important;line-height:1.5!important}
+ html body[data-pm-product-photo] #content .elementor-element-19d3d39b{background-position:center 35%!important;background-size:100% auto!important}
+ html body[data-pm-product-photo] #content .elementor-element-19d3d39b>.e-con-inner{justify-content:flex-end!important;padding-bottom:135px!important}
+}

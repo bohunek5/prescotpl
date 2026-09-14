@@ -29,20 +29,18 @@ function improveProductArtwork(cards) {
       left.replaceChildren(picture(`assets/showcase/${mode}-remote.webp`, `Pilot ${mode.toUpperCase()} — widok z przodu`, 'pm-remote'));
       const room = picture('assets/controllers/controller-living-room-hero-v2.webp', '', 'pm-room');
       room.setAttribute('aria-hidden', 'true'); left.prepend(room);
-      right.replaceChildren(picture(`assets/showcase/${mode}-receiver.webp`, `Odbiornik ${mode.toUpperCase()} — widok złączy`, 'pm-receiver'));
-      // A viewport onto the original transparent PNG: no invented product geometry.
-      const holder = node('div', 'pm-magnet');
-      holder.innerHTML = `<svg viewBox="375 438 193 450" role="img" aria-label="Uchwyt magnetyczny pilota"><defs><clipPath id="pm-holder-${mode}"><path d="M430 443 Q504 442 525 459 Q543 492 563 503 L563 834 Q559 882 507 883 L423 883 Q379 878 379 833 L379 492 Q380 444 430 443Z"/></clipPath></defs><image href="${asset('assets/showcase/magnetic-holder-source.webp')}" width="1024" height="1024" clip-path="url(#pm-holder-${mode})"/></svg>`;
-      right.append(holder);
+      right.replaceChildren(picture(`assets/controllers/${mode}-main.webp`, `Zestaw ${mode.toUpperCase()} — pilot, odbiornik i opakowanie`, 'pm-set-photo'));
+      right.classList.add('pm-white-set');
       const label = node('span', `pm-mode pm-mode-${mode}`, mode === 'rgbcct' ? 'RGB + CCT' : mode.toUpperCase());
       left.append(label, node('span', 'pm-photo-caption', 'Pilot RF'));
-      right.append(node('span', 'pm-photo-caption', 'Odbiornik + uchwyt magnetyczny'));
+      right.append(node('span', 'pm-photo-caption', 'Pilot · odbiornik · opakowanie'));
     } else {
       card.dataset.mode = 'power';
       left.replaceChildren(picture(`assets/showcase/pr-mad-${watts}w.webp`, `Zasilacz PR-MAD ${watts} W`, 'pm-power'));
-      right.replaceChildren(picture('assets/showcase/pr-mad-terminals.webp', 'PR-MAD — zaciski przyłączeniowe', 'pm-power-detail'));
+      right.replaceChildren(picture(`assets/prmad/pr-mad-${watts}w.webp`, `PR-MAD ${watts} W — produkt i opakowanie`, 'pm-set-photo'));
+      right.classList.add('pm-white-set');
       left.append(node('span', 'pm-mode', `${watts} W`), node('span', 'pm-photo-caption', `PR-MAD${watts}-1224`));
-      right.append(node('span', 'pm-photo-caption', 'Zaciski przyłączeniowe'));
+      right.append(node('span', 'pm-photo-caption', `PR-MAD ${watts} W`));
       const copy = card.querySelector('.pm-series-copy');
       const paragraph = copy?.querySelector('.elementor-widget-text-editor p');
       if (paragraph) {

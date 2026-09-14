@@ -1,7 +1,7 @@
-import {initializeMobileMenu} from './mobile-navigation.mjs?v=20260913-studio4';
+import {initializeMobileMenu} from './mobile-navigation.mjs?v=20260914-polish2';
 import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio4';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260914-firstpaint1';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260914-polish2';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -237,9 +237,9 @@ function initializeSeries() {
   document.body.classList.add('prescot-series-page');
   // The original absolute /assets URL broke the GitHub Pages subdirectory.
   const hero = document.querySelector('.elementor-element-19d3d39b');
-  const folder = document.body.dataset.prescotPage === 'powers' ? 'assets/prmad/pr-mad-kitchen-hero.webp' : 'assets/controllers/controller-living-room-hero-v2.webp';
+  const folder = document.body.dataset.prescotPage === 'powers' ? 'assets/prmad/pr-mad-family.webp' : 'assets/controllers/mono-main.webp';
   if (hero) {
-    hero.style.setProperty('background-image', `linear-gradient(0deg, #070b13cf, #070b1333), url("${asset(folder)}")`, 'important');
+    hero.style.setProperty('background-image', `url("${asset(folder)}")`, 'important');
   }
   const cards = [...document.querySelectorAll('.mdw-card-portfolio')];
   cards.forEach(card => {

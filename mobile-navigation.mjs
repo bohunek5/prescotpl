@@ -25,7 +25,7 @@ export function initializeMobileMenu(){
  nav.append(feature('konfigurator/','Konfigurator LED','Skomponuj zestaw','layers'),feature('laboratorium/','Laboratorium','Pomiary światła','lab'));
  for(const i of[3,4,7,5,6]){
   const original=originals[i];if(!original)continue;const a=node('a');a.href=original.href;const svg=original.querySelector('svg');if(svg)a.append(svg.cloneNode(true));a.append(node('span','',original.dataset.tooltip||original.getAttribute('aria-label')));
-  a.onclick=event=>{event.preventDefault();menu.hidePopover();original.click();};nav.append(a);
+  a.onclick=event=>{menu.hidePopover();if(i===6){event.preventDefault();original.click();}};nav.append(a);
  }
  const b2b=node('a');b2b.href='https://prescot.abstore.pl/';const cart=originals[6]?.querySelector('svg');if(cart)b2b.append(cart.cloneNode(true));b2b.append(node('span','','Sklep B2B'));b2b.onclick=()=>menu.hidePopover();nav.append(b2b);menu.append(nav);
 

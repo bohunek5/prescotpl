@@ -7,7 +7,7 @@ const media = 'wp-content/uploads/2026/03/';
 export const pages = [
  {slug:'sterowniki-led',label:'Sterowniki LED',short:'Sterowniki',original:'sterowniki-led/',number:'01',
   headline:'Światło w Twoim rytmie.',intro:'Od spokojnej bieli po pełen kolor. Wybierz sterownik Prescot PR do swojej taśmy i zmieniaj światło jednym ruchem.',
-  hero:'assets/controllers/controller-living-room-hero-v2.webp',heroAlt:'Aranżacja salonu z oświetleniem LED',
+  hero:'assets/controllers/mono-main.webp',heroAlt:'Zestaw MONO: pilot, odbiornik i opakowanie',
   object:'assets/controllers/rgbcct-main.webp',objectAlt:'Sterownik Prescot PR z pilotem',
   tags:['5 wariantów','12 / 24 V DC','Pilot RF 2,4 GHz'],section:'Jaki efekt chcesz uzyskać?',sectionIntro:'Typ taśmy wyznacza sposób sterowania. Zobacz pięć wariantów tej samej rodziny.',
   models:controllers.map((key,i)=>({key,label:labels[i],title:`Prescot PR-${key.toUpperCase()}-12A`,description:functions[i],
@@ -19,7 +19,7 @@ export const pages = [
   guide:[['Rodzaj taśmy','Sprawdź liczbę kanałów i sposób sterowania barwą.'],['Parametry instalacji','Porównaj napięcie i obciążenie kanałów z kartą modelu.'],['Miejsce montażu','Seria PR ma klasę IP20. Zaplanuj montaż wewnątrz.']]},
  {slug:'zasilacze-led',label:'Zasilacze LED',short:'Zasilacze',original:'zasilacze-led/',number:'02',
   headline:'Moc za każdym światłem.',intro:'Sześć modeli Prescot PR-MAD. Dobierz moc do instalacji, zachowując tę samą niską obudowę i autodetekcję 12/24 V.',
-  hero:'assets/prmad/pr-mad-kitchen-hero.webp',heroAlt:'Aranżacja kuchni z liniowym oświetleniem blatu',
+  hero:'assets/prmad/pr-mad-family.webp',heroAlt:'Rodzina zasilaczy PR-MAD z opakowaniami',
   object:'assets/prmad/pr-mad-family.webp',objectAlt:'Rodzina zasilaczy Prescot PR-MAD',
   tags:['36–300 W','Autodetekcja 12/24 V','29 mm wysokości'],section:'Wybierz moc. Zobacz model.',sectionIntro:'Od podświetlenia mebla do większej instalacji. Porównaj gabaryty i parametry sześciu zasilaczy.',
   models:[36,60,100,150,200,300].map((w,i)=>({key:`w${w}`,label:`${w} W`,title:`PR-MAD${w}-1224`,

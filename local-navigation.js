@@ -1,7 +1,22 @@
 // Prescot LED — Global Navigation, Active Indicator, Dock, Hero Logo & Scroll-To-Top Controller
 const prescotNavigationSource = document.currentScript?.src || document.baseURI;
 document.addEventListener("DOMContentLoaded", () => {
-  import(new URL('site-experience.mjs?v=20260914-firstpaint1', prescotNavigationSource).href)
+  // A root <base> must not turn section links into navigation to the home page.
+  const siteRoot = new URL('./', prescotNavigationSource);
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link || event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const raw = link.getAttribute('href');
+    if (raw.startsWith('#') && raw.length > 1) {
+      let id; try { id = decodeURIComponent(raw.slice(1)); } catch { return; }
+      const target = document.getElementById(id);
+      if (target) {event.preventDefault();event.stopImmediatePropagation();history.pushState(null,'',location.pathname+location.search+raw);target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});}
+    } else if (siteRoot.pathname !== '/' && raw.startsWith('/') && !raw.startsWith('//') && !raw.startsWith(siteRoot.pathname)) {
+      // Old exported carousel links omit the GitHub Pages repository prefix.
+      link.href = new URL(raw.slice(1),siteRoot).href;
+    }
+  },true);
+  import(new URL('site-experience.mjs?v=20260914-polish2', prescotNavigationSource).href)
     .then(({initializeExperience}) => initializeExperience());
   import(new URL('shop-assistant/panel.mjs?v=20260914-firstpaint1', prescotNavigationSource).href)
     .then(({initializeAssistant}) => initializeAssistant())
