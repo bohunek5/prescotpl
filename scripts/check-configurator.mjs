@@ -25,8 +25,8 @@ try{
     await page.waitForURL('**/konfigurator/');
     await page.waitForFunction(()=>document.body.dataset.ready==='welcome');
     assert.equal(await page.locator('#viewport canvas').count(),0);
-    assert.ok(await page.locator('#welcome-logo img').evaluate(e=>e.complete&&e.naturalWidth>0));
-    assert.equal(await page.locator('#welcome-logo canvas').count(),0);
+    await page.waitForFunction(()=>window.welcomeDebug);
+    assert.equal(await page.locator('#welcome-film canvas').count(),1);
     await page.waitForTimeout(1700);
     await page.screenshot({path:path.join(folder,`welcome-${width}.png`)});
     await page.locator('#start-configurator').click();await page.waitForFunction(()=>document.body.dataset.ready==='true');

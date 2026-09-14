@@ -1,9 +1,10 @@
-import {surfaceFinishes} from './surface-finishes.js?v=c3acda4e66c0';
-import {additionalProfiles,additionalCovers,salesRegistry} from './profile-library.js?v=c3acda4e66c0';
-import {accessoryFitIssues} from './accessory-data.js?v=c3acda4e66c0';
-import {hasDoorSwitch} from './light-state.js?v=c3acda4e66c0';
-import {finishVariants} from './finish-data.js?v=c3acda4e66c0';
-import {tapeTerminals} from './tape-wiring.js?v=c3acda4e66c0';
+import {isStairZone,stairLayout} from './stair-layout.js?v=05d60c0cb577';
+import {surfaceFinishes} from './surface-finishes.js?v=05d60c0cb577';
+import {additionalProfiles,additionalCovers,salesRegistry} from './profile-library.js?v=05d60c0cb577';
+import {accessoryFitIssues} from './accessory-data.js?v=05d60c0cb577';
+import {hasDoorSwitch} from './light-state.js?v=05d60c0cb577';
+import {finishVariants} from './finish-data.js?v=05d60c0cb577';
+import {tapeTerminals} from './tape-wiring.js?v=05d60c0cb577';
 export const profiles = [
   { bodyWidth:16, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Niski profil pod szafkę', instruction:'assets/sources/micro-installation.pdf', id: 'micro', name: 'MICRO-PLUS', brand: 'KLUŚ', ref: 'A02966', width: 16, height: 6, channel: 11.2, model: 'assets/sources/micro-plus.3ds', geometry: 'Model producenta 3DS', source: 'assets/sources/micro-plus.pdf', covers: ['hs-opal', 'hs-clear', 'liger-black', "liger-opal", "kapro-opal", "kapro-clear"] },
   { bodyWidth:16.2, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Głębszy kanał światła', instruction:'assets/sources/pds-installation.pdf', id: 'pds', name: 'PDS-4-PLUS', brand: 'KLUŚ', ref: 'A01263', width: 16.2, height: 12, channel: 14, geometry: 'Model uproszczony · wymiary z arkusza KLUŚ', source: 'assets/sources/pds-4-plus.pdf', covers: ['hs11-opal', 'hs11-clear', 'liger11-black', "liger11-satin", "kat11-opal", "kat11-clear", "lenso11"] },  {"id": "microk", "name": "MICRO-K", "brand": "KLUŚ", "ref": "MICRO-K-ALU-2M", "width": 22, "height": 6, "bodyWidth": 15.2, "channel": 11.2, "ledBase": 1.1, "mount": "recessed", "family": "Wpust", "application": "Półka z frezem · model archiwalny", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/micro-k-section.jpg", "instruction": "assets/sources/micro-k-section.jpg", "covers": ["hs-opal", "hs-clear", "liger-black"]},
@@ -122,17 +123,17 @@ export const sleeves = [
 export function finishesFor(p){return Object.keys(salesRegistry[p.ref]?.finishes||finishVariants[p.ref]||{});}
 export function finishFor(p,value){return salesRegistry[p.ref]?.finishes[value]||finishVariants[p.ref]?.[value]||{name:'Wykończenie do potwierdzenia',ref:null,source:p.source};}
 export function displayLength(s){return s.view==='zone'?300:s.productScale==='length'&&(s.view==='assembly'&&!['end','entry'].includes(s.assemblyAngle)||s.housing==='sleeve'&&s.detail==='product')?Math.min(s.length,1000):100;}
-export const defaults = {profile:'micro',strip:'delux',cover:'hs11-opal',length:1000,finish:'silver',material:'white',mounting:'surface',view:'assembly',exploded:100,dimmer:65,cct:3000,light:true,repeat:50,print:'brand',powerMode:'high',detail:'segment',assemblyAngle:'perspective',zone:'under',zoneDetail:false,zoneOpen:true,showCable:false,mountStep:0,sleeve:'none',endcaps:false,showFixings:false,sealClosed:false,sleeveCaps:true,sleeveFixings:false,zonePosition:'front',zoneTrigger:'manual',lightStudy:false,productScale:'detail',backing:'200mp',rgbMode:'white',rgbColor:'#ff6424'};
+export const defaults = {sleeveInsertion:0,stairThickness:32,stairInset:25,stairSideHeight:65,stairRiser:true,profile:'micro',strip:'delux',cover:'hs11-opal',length:1000,finish:'silver',material:'white',mounting:'surface',view:'assembly',exploded:100,dimmer:65,cct:3000,light:true,repeat:50,print:'brand',powerMode:'high',detail:'segment',assemblyAngle:'perspective',zone:'under',zoneDetail:false,zoneOpen:true,showCable:false,mountStep:0,sleeve:'none',endcaps:false,showFixings:false,sealClosed:false,sleeveCaps:true,sleeveFixings:false,zonePosition:'front',zoneTrigger:'manual',lightStudy:false,productScale:'detail',backing:'200mp',rgbMode:'white',rgbColor:'#ff6424'};
 export function normalize(raw = {}) {
   if(raw.profile==='microk')raw={...raw,profile:'micronk',catalogMigration:'microk'};
   if(coverAliases[raw.cover])raw={...raw,cover:coverAliases[raw.cover]};
   const s={...defaults,catalogMigration:raw.catalogMigration==='microk'?'microk':null};
-  const choices={backing:['factory','200mp','300lse','wcob-3m'],rgbMode:['white','rgb','mixed'],profile:profiles.map(p=>p.id),strip:strips.map(t=>t.id),cover:covers.map(c=>c.id),finish:['silver','black','white','raw'],material:surfaceFinishes.map(f=>f.id),mounting:['surface','recessed'],view:['assembly','installation','section','mounting','macro','zone'],assemblyAngle:['perspective','side','end','entry'],zonePosition:['front','back','shelf'],zoneTrigger:['manual','door'],detail:['segment','wiring','curve','sleeve','seal'],sleeve:['none',...sleeves.map(x=>x.id)],print:['brand','concept'],powerMode:['low','medium','high'],zone:['under','cabinet','drawer','drywall','shelf','plinth'],productScale:['detail','length']};
+  const choices={backing:['factory','200mp','300lse','wcob-3m'],rgbMode:['white','rgb','mixed'],profile:profiles.map(p=>p.id),strip:strips.map(t=>t.id),cover:covers.map(c=>c.id),finish:['silver','black','white','raw'],material:surfaceFinishes.map(f=>f.id),mounting:['surface','recessed'],view:['assembly','installation','section','mounting','macro','zone'],assemblyAngle:['perspective','side','end','entry'],zonePosition:['front','back','shelf'],zoneTrigger:['manual','door'],detail:['segment','wiring','curve','sleeve','seal'],sleeve:['none',...sleeves.map(x=>x.id)],print:['brand','concept'],powerMode:['low','medium','high'],zone:['under','cabinet','drawer','drywall','shelf','plinth','stair-under','stair-side'],productScale:['detail','length']};
   for(const [key,values] of Object.entries(choices))if(values.includes(raw[key]))s[key]=raw[key];
-  for(const [key,min,max] of [['length',100,3000],['exploded',0,100],['dimmer',0,100],['cct',2600,6500],['repeat',5,1000],['mountStep',0,4]])if(typeof raw[key]==='number'&&Number.isFinite(raw[key]))s[key]=Math.max(min,Math.min(max,raw[key]));
+  for(const [key,min,max] of [['sleeveInsertion',0,1],['stairThickness',24,50],['stairInset',8,90],['stairSideHeight',35,110],['length',100,3000],['exploded',0,100],['dimmer',0,100],['cct',2600,6500],['repeat',5,1000],['mountStep',0,4]])if(typeof raw[key]==='number'&&Number.isFinite(raw[key]))s[key]=Math.max(min,Math.min(max,raw[key]));
   if(typeof raw.rgbColor==='string'&&/^#[0-9a-f]{6}$/i.test(raw.rgbColor))s.rgbColor=raw.rgbColor;
   s.mountStep=Math.round(s.mountStep);
-  for(const key of ['light','lightStudy','zoneDetail','zoneOpen','showCable','endcaps','showFixings','sealClosed','sleeveCaps','sleeveFixings'])if(typeof raw[key]==='boolean')s[key]=raw[key];
+  for(const key of ['stairRiser','light','lightStudy','zoneDetail','zoneOpen','showCable','endcaps','showFixings','sealClosed','sleeveCaps','sleeveFixings'])if(typeof raw[key]==='boolean')s[key]=raw[key];
   const p=profiles.find(p=>p.id===s.profile),t=strips.find(t=>t.id===s.strip);
   const accessories=salesRegistry[p.ref]?.accessories||[];
   for(const [key,kind] of [['endcapRef','endcap'],['bracketRef','bracket']])s[key]=accessories.some(a=>a.kind===kind&&a.ref===raw[key])?raw[key]:null;
@@ -144,6 +145,7 @@ export function normalize(raw = {}) {
   if((p.mount==='drywall'||p.id==='larko'))s.zone='drywall';else if(s.zone==='drywall')s.zone='under';
   if(p.mount==='special'&&['installation','mounting','zone'].includes(s.view))s.view='assembly';
   if(p.mount==='special')s.mountStep=0;
+  if(isStairZone(s.zone)&&p.mount!=='special'){const q=stairLayout(p,s);s.stairInset=Math.max(Math.ceil(q.minInset*1000),Math.min(Math.floor(q.maxInset*1000),Math.round(q.inset*1000)));s.stairThickness=Math.max(s.stairThickness,Math.ceil(q.recess*1000+6));}
   if(t.type==='CCT')s.cct=Math.max(t.cctMin,Math.min(t.cctMax,s.cct));else s.cct=t.cct;
   if(s.detail==='curve'&&t.shape!=='s')s.detail='segment';
   if(!hasDoorSwitch(s.zone))s.zoneTrigger='manual';else if(raw.zoneTrigger===undefined)s.zoneTrigger='door';

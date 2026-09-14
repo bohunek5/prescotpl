@@ -1,4 +1,4 @@
-import {tracedContours} from './profile-contours.js?v=c3acda4e66c0';
+import {tracedContours} from './profile-contours.js?v=05d60c0cb577';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
@@ -34,7 +34,7 @@ export function profileContour(p){
   if(p.id==='larko')return[[-a,0],[a,0],[a,3],[a-1,3],[a-1,4.4],[a,4.4],[a,22.8],[23.1,22.8],[23.1,23.7],[a,24.5],[10.9,24.5],[10.9,23.4],[12,22.7],[12,base],[-12,base],[-12,22.7],[-10.9,23.4],[-10.9,24.5],[-a,24.5],[-23.1,23.7],[-23.1,22.8],[-a,22.8],[-a,4.4],[-a+1,4.4],[-a+1,3],[-a,3]];
   return[[-a,0],[a,0],[a,H],[b-.5,H],[b-.5,H-1],[b,H-1],[b,base],[-b,base],[-b,H-1],[-b+.5,H-1],[-b+.5,H],[-a,H]];
 }
-export function profileIcon(p,cover=null){
+export function profileIcon(p,cover=null,instance=''){
   const points=profileContour(p),W=p.width,H=p.height;
   // Match the model's cover plane: section X = -world Z, screen Y = H - world Y.
   const angle=(p.ledAngle||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
@@ -51,7 +51,7 @@ export function profileIcon(p,cover=null){
   const bounds=[...points.map(([x,y])=>[x,H-y]),...envelope.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
   const minX=Math.min(...bounds.map(p=>p[0]))-1.5,minY=Math.min(...bounds.map(p=>p[1]))-1.5;
   const width=Math.max(...bounds.map(p=>p[0]))-minX+1.5,height=Math.max(...bounds.map(p=>p[1]))-minY+1.5;
-  const gradient=`profile-light-${p.id}`,edge=`${gradient}-edge`,mask=`${gradient}-mask`;
+  const gradient=`profile-light-${p.id}${instance?'-'+instance:''}`,edge=`${gradient}-edge`,mask=`${gradient}-mask`;
   return `<svg class="profile-section-icon" data-cover="${cover?.id||''}" data-beam-angle="${cover?.beamAngle||''}" viewBox="${minX} ${minY} ${width} ${height}" aria-hidden="true">
     <defs><linearGradient id="${gradient}" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="${-reach}">
       <stop offset="0" stop-color="var(--profile-light)" stop-opacity=".82"/><stop offset=".3" stop-color="var(--profile-light)" stop-opacity=".6"/><stop offset=".65" stop-color="var(--profile-light)" stop-opacity=".25"/><stop offset="1" stop-color="var(--profile-light)" stop-opacity="0"/>

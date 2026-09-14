@@ -1,12 +1,16 @@
-import {previewLight} from './light-state.js?v=c3acda4e66c0';
+import {buildStairZone} from './stair-zone.js?v=05d60c0cb577';
+import {isStairZone} from './stair-layout.js?v=05d60c0cb577';
+import {previewLight} from './light-state.js?v=05d60c0cb577';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=c3acda4e66c0';
-import {buildMount,seatingHeight} from './mounting.js?v=c3acda4e66c0';
-import {surfaceFinish} from './surface-finishes.js?v=c3acda4e66c0';
-import {buildInstallationCable} from './installation-wiring.js?v=c3acda4e66c0';
+import {buildProduct} from './product.js?v=05d60c0cb577';
+import {buildMount,seatingHeight} from './mounting.js?v=05d60c0cb577';
+import {surfaceFinish} from './surface-finishes.js?v=05d60c0cb577';
+import {buildInstallationCable} from './installation-wiring.js?v=05d60c0cb577';
 
 export const zones=[
+  {id:'stair-under',name:'Pod stopniem',subtitle:'Profil pod noskiem',icon:'M3 27h8V19h9V11h9V4 M12 22h6 M21 14h6',description:'Trzy stopnie z widocznym noskiem i frezem. Światło spod środkowego stopnia pada na podstopnicę i niższy stopień.'},
+  {id:'stair-side',name:'Z boku schodów',subtitle:'Linia w bocznej zabudowie',icon:'M3 27h8V19h9V11h9V4 M4 5v16 M7 6v12',description:'Profil w bocznej zabudowie oświetla powierzchnie stopni. Zmień wysokość linii i porównaj cień przy podstopnicy.'},
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
   {id:'cabinet',name:'Za frontem',subtitle:'Otwierana szafka',icon:'M5 4h20v24H5z M5 4l12 4v24L5 28 M21 13v5',description:'Otwórz front, aby zobaczyć światło pod górną płytą i przewód poprowadzony przy korpusie.'},
   {id:'drawer',name:'Szuflada',subtitle:'Wysuwany moduł',icon:'M5 5h22v10H5z M3 17h22v12H3z M10 22h8 M25 17l4-7',description:'Profil pozostaje na korpusie. Szuflada wysuwa się pod nim, a przewód omija ruchome prowadnice.'},
@@ -20,13 +24,15 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   const mats=[],geos=[];const material=options=>{const m=new T.MeshStandardMaterial(options);mats.push(m);return m;};
   const ivory=material({color:'#eae7df',roughness:.48}),edge=material({color:'#c7bdab',roughness:.7}),steel=material({color:'#aab0b4',metalness:.8,roughness:.24}),black=material({color:'#444441',roughness:.55});
   const add=(g,m,parent,x=0,y=0,z=0)=>{geos.push(g);const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;};
-  const box=(parent,w,h,d,m,x=0,y=0,z=0,r=.0006)=>add(new RoundedBoxGeometry(w,h,d,3,Math.min(r,h*.2)),m,parent,x,y,z);
+  const box=(parent,w,h,d,m,x=0,y=0,z=0,r=.0006)=>add(r?new RoundedBoxGeometry(w,h,d,3,Math.min(r,h*.2)):new T.BoxGeometry(w,h,d),m,parent,x,y,z);
   const product=buildProduct(source,sourceSize,spec,{...state,view:'zone',exploded:0},{length:300,art,sourceCover});root.add(product.group);
   const wire=new T.Group();wire.name='Ukryty_przewod_niskiego_napiecia';root.add(wire);
   let door=null,drawer=null,fixture=null,sensor=null,plunger=null,cableTail=[];
   const p=spec.profile,zone=state.zone,H=p.height/1000,seat=seatingHeight(p,state.mounting==='recessed');
-  let focus,normal;
-  if(zone==='drywall'){
+  let focus,normal,stair=null;
+  if(isStairZone(zone)){
+    stair=buildStairZone({root,product,profile:p,state,box,wood,plaster:ivory,edge});cableTail=stair.cableTail;focus=new T.Vector3();normal=new T.Vector3();
+  }else if(zone==='drywall'){
     fixture=buildMount(p,{...state,mounting:'recessed'},wood);fixture.root.scale.x=3.2;fixture.root.rotation.x=Math.PI;root.add(fixture.root);
     product.group.rotation.x=Math.PI;product.group.position.y=-seat;
     focus=new T.Vector3(0,-(seat+H),0);normal=new T.Vector3(0,-1,0);
@@ -105,19 +111,39 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   normal.set(0,1,0).applyQuaternion(product.cover.getWorldQuaternion(new T.Quaternion())).normalize();
   const lightFace=new T.Vector3(0,lensBounds.max.y+.00035,(lensBounds.min.z+lensBounds.max.z)/2);
   focus.copy(product.cover.localToWorld(lightFace.clone()));
-  const lights=[-.105,0,.105].map(x=>{
+  const emitterPositions=stair?Array.from({length:9},(_,i)=>(i-4)*.03):[-.105,0,.105];
+  const lights=emitterPositions.map(x=>{
     const light=new T.SpotLight(0xffd4a3,0,.8,Math.min(Math.PI/3,(spec.cover.beamAngle||120)*Math.PI/360),.8,2);
     light.name='Swiatlo_strefy';light.position.copy(product.cover.localToWorld(lightFace.clone().add(new T.Vector3(x,0,0))));
     light.target.position.copy(light.position).addScaledVector(normal,.3);light.castShadow=true;
-    light.shadow.mapSize.set(512,512);light.shadow.camera.near=.0005;light.shadow.camera.far=.8;light.shadow.bias=-.000005;light.shadow.normalBias=.00002;
+    light.shadow.mapSize.set(stair?256:512,stair?256:512);light.shadow.camera.near=.0005;light.shadow.camera.far=.8;light.shadow.bias=-.000005;light.shadow.normalBias=.00002;
     root.add(light,light.target);return light;
   });
   root.userData.lighting={type:'shadowed-strip',normal:normal.toArray(),origin:focus.toArray(),emitters:lights.length};
+  // A small reflected contribution starts on an actual receiving surface.
+  // This is a presentation approximation, not a calibrated radiosity solution.
+  let bounce=null,bounceSurface=null;
+  if(stair){
+    const ray=normal.clone();if(zone==='stair-side')ray.y-=.65;ray.normalize();
+    const hit=new T.Raycaster(focus,ray,.001,.65).intersectObjects(stair.receivers,false)[0];
+    if(hit){
+      const outward=hit.face.normal.clone().transformDirection(hit.object.matrixWorld);
+      bounce=new T.SpotLight(0xffffff,0,.5,Math.PI*.46,1,2);bounce.name='Odbicie_od_stopnia';
+      bounce.position.copy(hit.point).addScaledVector(outward,.003);bounce.target.position.copy(bounce.position).add(outward);
+      bounce.castShadow=true;bounce.shadow.mapSize.set(256,256);bounce.shadow.camera.near=.001;bounce.shadow.camera.far=.5;bounce.shadow.bias=-.000005;bounce.shadow.normalBias=.00005;
+      root.add(bounce,bounce.target);bounceSurface=hit.object.material;
+      root.userData.lighting.bounce={surface:hit.object.name,point:hit.point.toArray(),normal:outward.toArray(),approximate:true};
+    }
+    // Keep the nearby atmospheric glow on the open side of the riser and floor.
+    const planes=zone==='stair-under'?[new T.Plane(new T.Vector3(0,1,0),0),...(stair.layout.showRiser?[new T.Plane(new T.Vector3(0,0,1),-stair.layout.run/2-.001)]:[])]:[new T.Plane(new T.Vector3(-1,0,0),stair.layout.wallInner)];
+    product.group.traverse(o=>{if(o.name.startsWith('Poswiata_przestrzenna_'))o.material.clippingPlanes=planes;});
+  }
   const connection=cableTail.length?buildInstallationCable(product,p):null;
   let opening=state.zoneOpen?1:0,currentState=state,currentColor=new T.Color('#fff4df'),lastLight=null;
   function applyLight(){
     const output=previewLight({...currentState,view:'zone'},opening),on=output.on;
-    for(const light of lights){light.color.copy(currentColor);light.visible=on;light.intensity=on?output.brightness/100*.30*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
+    for(const light of lights){light.color.copy(currentColor);light.visible=on;light.intensity=on?output.brightness/100*(.9/lights.length)*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
+    if(bounce){const reflected=bounceSurface===wood?new T.Color(surfaceFinish(currentState.material).color):bounceSurface.color;bounce.color.copy(currentColor).multiply(reflected);bounce.visible=on;bounce.intensity=on?output.brightness/100*.012*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
     if(lastLight!==on){product.update({...currentState,view:'zone',exploded:0,light:on,dimmer:output.brightness},currentColor);lastLight=on;}
     if(sensor){sensor.visible=currentState.zoneTrigger==='door';plunger.position.z=.006+Math.min(1,opening*8)*.003;}
     root.userData.lightOn=on;root.userData.lightOutput=output;
@@ -135,5 +161,5 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
       root.userData.connection=s.showCable?connection.root.userData:null;
     }else root.userData.connection=fixture?.root.userData.connection??null;
   }
-  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){connection?.dispose();product.dispose();fixture?.dispose();for(const light of lights)light.shadow.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
+  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){connection?.dispose();product.dispose();fixture?.dispose();for(const light of lights)light.shadow.dispose();bounce?.shadow.dispose();stair?.geometries.forEach(g=>g.dispose());for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
 }

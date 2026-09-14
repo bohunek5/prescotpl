@@ -1,4 +1,4 @@
-import {smdDimensions} from './smd-package.js?v=c3acda4e66c0';
+import {smdDimensions} from './smd-package.js?v=05d60c0cb577';
 // Presentation layout in metres. S-shape follows type 23 in the PRESCOT
 // Premium catalogue (p.19): contact islands, three LEDs per 50 mm and S bridges.
 // Package positions and bridge radii are illustrative, not fabrication artwork.

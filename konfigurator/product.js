@@ -1,16 +1,16 @@
-import {prepareCoverFlex} from './cover-flex.js?v=c3acda4e66c0';
-import {stripOutputScale} from './light-state.js?v=c3acda4e66c0';
-import {hasAdhesiveBacking} from './strip-protection.js?v=c3acda4e66c0';
+import {prepareCoverFlex} from './cover-flex.js?v=05d60c0cb577';
+import {stripOutputScale} from './light-state.js?v=05d60c0cb577';
+import {hasAdhesiveBacking} from './strip-protection.js?v=05d60c0cb577';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=c3acda4e66c0';
-import {buildPCB} from './tape.js?v=c3acda4e66c0';
-import {sectionGeometry} from './section.js?v=c3acda4e66c0';
-import {profileContour} from './profile-shapes.js?v=c3acda4e66c0';
-import {coverSection} from './cover-shapes.js?v=c3acda4e66c0';
-import {glowMaterial} from './glow.js?v=c3acda4e66c0';
-import {diffuserMap} from './light-textures.js?v=c3acda4e66c0';
-import {assemblyPose} from './assembly-motion.js?v=c3acda4e66c0';
-import {createLightVolume} from './light-volume.js?v=c3acda4e66c0';
+import {buildAccessories} from './accessories.js?v=05d60c0cb577';
+import {buildPCB} from './tape.js?v=05d60c0cb577';
+import {sectionGeometry} from './section.js?v=05d60c0cb577';
+import {profileContour} from './profile-shapes.js?v=05d60c0cb577';
+import {coverSection} from './cover-shapes.js?v=05d60c0cb577';
+import {glowMaterial} from './glow.js?v=05d60c0cb577';
+import {diffuserMap} from './light-textures.js?v=05d60c0cb577';
+import {assemblyPose} from './assembly-motion.js?v=05d60c0cb577';
+import {createLightVolume} from './light-volume.js?v=05d60c0cb577';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -81,7 +81,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     cover.position.set(0,(p.coverY??p.height)/1000-.00045,(p.coverZ||0)/1000);cover.position.addScaledVector(normal,pose.coverLift*coverTravel);cover.rotation.x=angle-.52*pose.coverTilt;
     coverFlex.forEach(bend=>bend(macro||spec.cover.rigid?0:pose.coverBend));
     const protectedDetail=macro&&['sleeve','seal'].includes(state.detail);
-    details.bend(state.exporting||spec.sleeve?.shape==='side'?0:spec.isSleeve?.12:protectedDetail?.12:macro&&state.detail!=='curve'?1:pose.pcbBend*.8*Math.min(1,.15/L),macro&&state.detail==='curve'?1:0);
+    details.bend(state.exporting||spec.sleeve?.shape==='side'||spec.isSleeve&&state.detail==='sleeve'?0:spec.isSleeve?.12:protectedDetail?.12:macro&&state.detail!=='curve'?1:pose.pcbBend*.8*Math.min(1,.15/L),macro&&state.detail==='curve'?1:0);
     accessories.update(state,pose.capGap*100);
     updateCoverLight(amount);
     const canPeel=hasAdhesiveBacking(t,spec.sleeve);
@@ -96,8 +96,8 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     if(rgb)lens.color.copy(lightColor).multiplyScalar(.12);
     lens.emissive.copy(lightColor);lens.emissiveIntensity=level*(rgb?1.65:state.lightStudy?10.5:6.5)*spec.cover.transmission*coupling*(isClear?.018:1);
     halo.visible=level>0&&coupling>.15&&!isClear&&pose.coverBend<.025;haloStyle.material.color.copy(lightColor);haloStyle.material.opacity=level*spec.cover.transmission*coupling*(state.lightStudy?1.4:.65);
-    beam.update(lightColor,level,{night:state.lightStudy,power:spec.wattsPerMeter,transmission:spec.cover.transmission,coupling:coupling*Math.exp(-pose.pcbLift*8)});
-    if(spec.isSleeve||state.view==='macro'||state.view==='zone'||pose.coverBend>.025)beam.mesh.visible=false;
+    beam.update(lightColor,level,{night:state.lightStudy,power:spec.wattsPerMeter,transmission:spec.cover.transmission,coupling:coupling*Math.exp(-pose.pcbLift*8)*(state.view==='zone'?.32:1)});
+    if(spec.isSleeve||state.view==='macro'||state.view==='zone'&&!state.zone?.startsWith('stair-')||pose.coverBend>.025)beam.mesh.visible=false;
     bounce.color.copy(lightColor);bounce.intensity=['macro','zone'].includes(state.view)||spec.isSleeve||pose.pcbLift>.001?0:level*(rgb?1.4:state.lightStudy?25:14);
     cover.userData.light={intensity:lens.emissiveIntensity,coupling,clear:isClear,color:lightColor.getHexString(),transmission:spec.cover.transmission,beam:{...beam.mesh.userData,visible:beam.mesh.visible}};
   }

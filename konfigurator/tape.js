@@ -1,15 +1,16 @@
-import {stripOutputScale} from './light-state.js?v=c3acda4e66c0';
-import {factorySilicone} from './strip-protection.js?v=c3acda4e66c0';
+import {stripOutputScale} from './light-state.js?v=05d60c0cb577';
+import {sleeveInsertionPose} from './sleeve-motion.js?v=05d60c0cb577';
+import {factorySilicone} from './strip-protection.js?v=05d60c0cb577';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=c3acda4e66c0';
-import {drawPcbBrand} from './brand-art.js?v=c3acda4e66c0';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=c3acda4e66c0';
-import {smdPackage} from './smd-package.js?v=c3acda4e66c0';
-import {tapeTerminals} from './tape-wiring.js?v=c3acda4e66c0';
-import {buildSilicone} from './silicone.js?v=c3acda4e66c0';
-import {glowMaterial} from './glow.js?v=c3acda4e66c0';
-import {phosphorMap} from './light-textures.js?v=c3acda4e66c0';
-import {buildReleaseLiner} from './release-liner.js?v=c3acda4e66c0';
+import {rgbwChannels,colorCct} from './light-color.js?v=05d60c0cb577';
+import {drawPcbBrand} from './brand-art.js?v=05d60c0cb577';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=05d60c0cb577';
+import {smdPackage} from './smd-package.js?v=05d60c0cb577';
+import {tapeTerminals} from './tape-wiring.js?v=05d60c0cb577';
+import {buildSilicone} from './silicone.js?v=05d60c0cb577';
+import {glowMaterial} from './glow.js?v=05d60c0cb577';
+import {phosphorMap} from './light-textures.js?v=05d60c0cb577';
+import {buildReleaseLiner} from './release-liner.js?v=05d60c0cb577';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -125,7 +126,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   return{group,bend,peel,liner:liner.mesh,wiring:wireGroup,
     connectionPads(){core.updateWorldMatrix(true,false);return terminals.filter(t=>t.connected).map(t=>({...t,point:core.localToWorld(lastPoint(layout.contacts[0],.0004,t.z))}));},
     update(s,color){
-    const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail));core.rotation.x=side?-Math.PI/2:0;core.position.set(0,side?spec.sleeve.height*.45/1000:whiteCOB?.00008:0,side?spec.sleeve.width/2000-.0011:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';
+    const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail)),insertion=sleeveInsertionPose(s,L);core.rotation.x=side?-Math.PI/2:0;core.position.set(insertion.offset,side?spec.sleeve.height*.45/1000:whiteCOB?.00008:0,side?spec.sleeve.width/2000-.0011:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';group.userData.insertion=insertion;
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);if(spec.sleeve||whiteCOB)routeSleeveWires(s,lastPoint,lastCurvature);
     const level=s.light&&!s.compare?s.dimmer/100*stripOutputScale(t,s):0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
     warm.emissive.copy(rgbw?colorCct(t.cct):cct&&!continuous?colorCct(t.cctMin):color);cool.emissive.copy(colorCct(t.cctMax||6500));

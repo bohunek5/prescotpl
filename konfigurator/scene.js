@@ -1,18 +1,19 @@
-import {hasAdhesiveBacking} from './strip-protection.js?v=c3acda4e66c0';
+import {makeStudioEnvironment} from './studio-environment.js?v=05d60c0cb577';
+import {hasAdhesiveBacking} from './strip-protection.js?v=05d60c0cb577';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=c3acda4e66c0';
-import {buildProduct} from './product.js?v=c3acda4e66c0';
-import {buildMount} from './mounting.js?v=c3acda4e66c0';
-import {buildZone} from './zones.js?v=c3acda4e66c0';
-import {sectionGeometry} from './section.js?v=c3acda4e66c0';
-import {lightColor} from './light-color.js?v=c3acda4e66c0';
-import {assemblyClip} from './assembly-export.js?v=c3acda4e66c0';
-import {createSoftShadow} from './soft-shadow.js?v=c3acda4e66c0';
-import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=c3acda4e66c0';
+import {specification,displayLength} from './catalog.js?v=05d60c0cb577';
+import {buildProduct} from './product.js?v=05d60c0cb577';
+import {buildMount} from './mounting.js?v=05d60c0cb577';
+import {buildZone} from './zones.js?v=05d60c0cb577';
+import {sectionGeometry} from './section.js?v=05d60c0cb577';
+import {lightColor} from './light-color.js?v=05d60c0cb577';
+import {assemblyClip} from './assembly-export.js?v=05d60c0cb577';
+import {createSoftShadow} from './soft-shadow.js?v=05d60c0cb577';
+import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=05d60c0cb577';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -54,8 +55,9 @@ export async function createStudio(host,initial){
   source.traverse(o=>{o.geometry?.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats)m?.dispose();});
 
   function clear(group){for(const child of [...group.children]){group.remove(child);child.traverse(o=>o.geometry?.dispose());}}
+  const sampleCacheKey=s=>[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable,s.housing,s.view==='mounting',['installation','section','mounting'].includes(s.view),displayLength(s)].join('|');
   function ensureSample(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable,s.housing,s.view==='mounting',['installation','section','mounting'].includes(s.view),displayLength(s)].join('|');if(next===sampleKey&&sample)return;
+    const next=sampleCacheKey(s);if(next===sampleKey&&sample)return;
     if(sample){detailRoot.remove(sample.group);sample.dispose();}if(fixture){mount.remove(fixture.root);fixture.dispose();}clear(cut);
     const spec=specification(s),H=spec.profile.height/1000;
     sample=buildProduct(geometry,sourceSize,spec,{...s,showCable:s.showCable||s.view==='mounting'},{length:displayLength(s),art,sourceCover});detailRoot.add(sample.group);
@@ -64,8 +66,9 @@ export async function createStudio(host,initial){
     const cutGeo=sectionGeometry(s.profile==='micro'&&!spec.profile.section?geometry:sample.profile.children.map(o=>{const g=o.geometry.clone();g.translate(...o.position.toArray());return g;}),s.profile==='micro'&&!spec.profile.section?H/2:0);
     const face=new T.Mesh(cutGeo,cutMat);face.rotation.y=Math.PI/2;face.position.set(.05004,fixture.seat,0);cut.add(face);
   }
+  const zoneCacheKey=s=>[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.zone,s.sleeve,s.zonePosition,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable,s.stairThickness,s.stairInset,s.stairSideHeight,s.stairRiser].join('|');
   function ensureZone(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.zone,s.sleeve,s.zonePosition,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable].join('|');if(next===zoneKey&&zone)return;
+    const next=zoneCacheKey(s);if(next===zoneKey&&zone)return;
     if(zone){scene.remove(zone.root);zone.dispose();}zone=buildZone(geometry,sourceSize,specification(s),s,{sourceCover,art,wood});scene.add(zone.root);zoneKey=next;
   }
   function appearance(){
@@ -112,7 +115,7 @@ export async function createStudio(host,initial){
     if(!sample&&!zone)return;
     const aspect=host.clientWidth/Math.max(1,host.clientHeight),z=s.view==='zone',section=s.view==='section',side=s.view==='assembly'&&s.assemblyAngle==='side';
     let direction;
-    if(z)direction=s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,.16,.50]:s.zone==='drawer'?[.34,.28,.60]:s.zone==='under'?[.35,.14,.48]:[.34,.015,.60];
+    if(z)direction=s.zone.startsWith('stair-')?(s.zoneDetail?[-.20,-.08,.24]:[-.52,.32,.67]):s.zone==='drywall'?[.18,-.11,.15]:s.zoneDetail?[.13,-.07,.19]:s.zone==='shelf'?[.24,-.22,.40]:s.zone==='plinth'?[.28,.16,.50]:s.zone==='drawer'?[.34,.28,.60]:s.zone==='under'?[.35,.14,.48]:[.34,.015,.60];
     else if(s.view==='assembly'&&s.assemblyAngle==='entry')direction=[-.065,.038,.11];
     else if(s.view==='assembly'&&s.assemblyAngle==='end')direction=[.045,.035,.12];
     else if(section)direction=[.068,-.030,.029];
@@ -128,7 +131,7 @@ export async function createStudio(host,initial){
     controls.enableRotate=true;controls.enablePan=!z;controls.screenSpacePanning=true;controls.minZoom=.5;controls.maxZoom=z?4:8;controls.minDistance=.07;controls.maxDistance=3;
     scene.updateMatrixWorld(true);let bounds,framingBoxes=[];
     if(z){
-      if(s.zoneDetail){const c=zone.focus.clone();c.x=s.showCable?-.12:.09;bounds=new T.Box3(c.clone().add(new T.Vector3(-.07,-.02,-.025)),c.clone().add(new T.Vector3(.07,.025,.025)));framingBoxes=[bounds];}
+      if(s.zoneDetail){const c=zone.focus.clone(),stairs=s.zone.startsWith('stair-'),side=s.zone==='stair-side';if(!stairs)c.x=s.showCable?-.12:.09;else if(s.showCable){if(side)c.z=-.11;else c.x=-.11;}const extent=stairs?new T.Vector3(side?.065:.10,.055,side?.10:.065):new T.Vector3(.07,.025,.025);bounds=new T.Box3(c.clone().sub(extent),c.clone().add(extent));framingBoxes=[bounds];}
       else{const saved=zone.opening;zone.setOpening(1);bounds=visibleBounds(zone.root);framingBoxes=worldBoxes(zone.root);zone.setOpening(saved);}
     }else{
       framingBoxes=worldBoxes(sample.group,true);bounds=new T.Box3();for(const b of framingBoxes)bounds.union(b);
@@ -143,13 +146,14 @@ export async function createStudio(host,initial){
       if(s.view==='assembly'&&s.assemblyAngle==='entry')bounds.max.x=-detailCut();
       if(s.view==='assembly'&&s.assemblyAngle==='end')bounds.min.x=detailCut();
       if(s.view==='macro'&&s.detail==='wiring')bounds.max.x=-detailCut();
+      if(s.housing==='sleeve'&&s.detail==='sleeve'){const end=new T.Box3(new T.Vector3(-.155,-.01,-.02),new T.Vector3(.055,.035,.02));bounds.union(end);framingBoxes.push(end);}
       framingBoxes=framingBoxes.map(b=>b.intersect(bounds)).filter(b=>!b.isEmpty());
     }
     if(bounds.isEmpty())return;
     const center=bounds.getCenter(new T.Vector3()),dir=new T.Vector3(...direction).normalize();if(s.view==='assembly')center.y=center.z=0;controls.target.copy(center);camera.position.copy(center).addScaledVector(dir,z?1.3:Math.max(.4,bounds.getSize(new T.Vector3()).length()/2+.2));camera.lookAt(center);
     camera.left=-aspect;camera.right=aspect;camera.top=1;camera.bottom=-1;camera.zoom=1;camera.updateProjectionMatrix();camera.updateMatrixWorld();
     let half=0;for(const box of framingBoxes)for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const v=new T.Vector3(x,y,z).project(camera);half=Math.max(half,Math.abs(v.x)/.84,Math.abs(v.y)/.8);}
-    camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();controls.update();
+    const lift=s.view==='assembly'||s.housing==='sleeve'?.10:0;camera.left=-half*aspect;camera.right=half*aspect;camera.top=half*(1-lift);camera.bottom=-half*(1+lift);camera.updateProjectionMatrix();controls.update();
     if(z){const a=controls.getAzimuthalAngle();controls.minAzimuthAngle=a-1.15;controls.maxAzimuthAngle=a+1.15;controls.minPolarAngle=.25;controls.maxPolarAngle=Math.PI-.25;}
     if(animate&&ready&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
       const after={position:camera.position.clone(),target:controls.target.clone(),left:camera.left,right:camera.right,top:camera.top,bottom:camera.bottom,zoom:camera.zoom},start=performance.now();
@@ -171,7 +175,7 @@ export async function createStudio(host,initial){
     basePixelRatio=Math.min(devicePixelRatio,2,Math.max(1,Math.sqrt(8000000/pixels)),renderer.capabilities.maxTextureSize/Math.max(width,height));
     motionPixelRatio=Math.min(basePixelRatio,Math.max(.85,Math.sqrt(1600000/pixels)));
     renderer.setPixelRatio(interactive?motionPixelRatio:basePixelRatio);renderer.setSize(width,height,false);
-    if(!ready)frame();else{const half=camera.top*Math.min(1,viewportAspect)/Math.min(1,aspect);camera.top=half;camera.bottom=-half;camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();}viewportAspect=aspect;
+    if(!ready)frame();else{const oldHalf=(camera.top-camera.bottom)/2,offset=(camera.top+camera.bottom)/2/oldHalf,half=oldHalf*Math.min(1,viewportAspect)/Math.min(1,aspect);camera.top=half*(1+offset);camera.bottom=half*(-1+offset);camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();}viewportAspect=aspect;
     requestDraw();}
   controls.addEventListener('start',()=>{cancelAnimationFrame(cameraTween);cameraTween=0;beginInteraction();});controls.addEventListener('change',()=>{beginInteraction();requestDraw();});
   const visibility=()=>requestDraw();document.addEventListener('visibilitychange',visibility);
@@ -187,7 +191,7 @@ export async function createStudio(host,initial){
     const clip=spec.isSleeve?null:assemblyClip(full,{linerAllowed:hasAdhesiveBacking(spec.strip,spec.sleeve)});
     // Expand instancing for importers that do not support EXT_mesh_gpu_instancing.
     const instances=[];out.traverse(o=>{if(o.isInstancedMesh)instances.push(o);});for(const o of instances){const g=new T.Group();g.name=o.name;g.position.copy(o.position);g.quaternion.copy(o.quaternion);g.scale.copy(o.scale);for(let i=0;i<o.count;i++){const mesh=new T.Mesh(o.geometry,o.material),m=new T.Matrix4();o.getMatrixAt(i,m);m.decompose(mesh.position,mesh.quaternion,mesh.scale);g.add(mesh);}o.parent.add(g);o.parent.remove(o);}
-    out.userData={units:'meters',configuration:s,profileLengthMm:spec.isSleeve?null:s.length,stripLengthMm:spec.stripLength,fitStatus:spec.fitStatus,fitIssues:spec.issues,finishVariant:spec.isSleeve?null:spec.finish,modelNotes:spec.isSleeve?'PRESCOT tape and silicone sleeve, illustrative section and sealing details; no aluminum profile or cover. Exported tape is straight. Not fabrication geometry.':'MICRO-PLUS and HS cover: sections from manufacturer 3DS, with presentation chamfers. Other profile sections reconstructed from manufacturer drawings; retaining details, covers, PCB and print: illustrative. Exported tape is straight. Release-paper morphs precede PCB seating. Not fabrication geometry.',printNotes:'CE/RoHS option is a proposed print, not certification evidence.'};
+    out.userData={units:'meters',configuration:s,profileLengthMm:spec.isSleeve?null:s.length,stripLengthMm:spec.stripLength,fitStatus:spec.fitStatus,fitIssues:spec.issues,finishVariant:spec.isSleeve?null:spec.finish,modelNotes:spec.isSleeve?'PRESCOT tape and silicone sleeve, illustrative section and sealing details; no aluminum profile or cover. Exported tape is straight. Not fabrication geometry.':'Profile sections reconstructed from current manufacturer drawings; retaining details, covers, PCB and print: illustrative. Exported tape is straight. Release-paper morphs precede PCB seating. Not fabrication geometry.',printNotes:'CE/RoHS option is a proposed print, not certification evidence.'};
     try{return await new GLTFExporter().parseAsync(out,{binary:true,animations:clip?[clip]:[],onlyVisible:true});}finally{full.dispose();}
   }
 
@@ -207,22 +211,12 @@ export async function createStudio(host,initial){
     }
     return points;
   }
-  return{update,frame,getOpening:()=>zone?.opening,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
-    inspect(){return{surface:{id:s.material,mapped:!!wood.map,textureId:wood.map?.uuid},wires:sample?.wiring.children.filter(o=>o.userData.polarity).map(o=>({...o.userData,visible:o.visible&&sample.wiring.visible,color:o.material.color.getHexString()})),assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{wiring:zone.root.userData.connection,id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,lightOutput:zone.root.userData.lightOutput,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{stepParts:fixture.root.userData.step,wiring:fixture.root.userData.connection,depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
+  return{update,frame,needsBuild:next=>next.view==='zone'?zoneCacheKey(next)!==zoneKey:sampleCacheKey(next)!==sampleKey,prepare:()=>renderer.compileAsync(scene,camera),setSleeveInsertion(value){s.sleeveInsertion=value;sample?.update(s,lightColor(s,specification(s).strip));beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},getOpening:()=>zone?.opening,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
+    inspect(){return{surface:{id:s.material,mapped:!!wood.map,textureId:wood.map?.uuid},wires:sample?.wiring.children.filter(o=>o.userData.polarity).map(o=>({...o.userData,visible:o.visible&&sample.wiring.visible,color:o.material.color.getHexString()})),assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{wiring:zone.root.userData.connection,id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,lightOutput:zone.root.userData.lightOutput,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting,stair:zone.root.userData.stair}:null,mount:fixture?{stepParts:fixture.root.userData.step,wiring:fixture.root.userData.connection,depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
     dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();for(const map of woodMaps.values())map.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }
 
-function makeStudioEnvironment(){
-  const env=new T.Scene();env.background=new T.Color('#77797a');
-  const card=(w,h,p,target,intensity)=>{const m=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({color:new T.Color().setScalar(intensity),side:T.DoubleSide}));m.position.set(...p);m.lookAt(...target);env.add(m);};
-  card(6,3,[0,4,0],[0,0,0],3);
-  card(1.8,5,[-3,1.3,2],[0,0,0],5);
-  card(1,6,[3,0,1],[0,0,0],3);
-  card(6,.6,[0,-1,-3],[0,0,0],.25);
-  card(6,3,[0,0,4],[0,0,0],.85);
-  return env;
-}
 
 function visibleBounds(root){
   const result=new T.Box3();

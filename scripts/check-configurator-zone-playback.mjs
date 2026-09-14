@@ -6,7 +6,7 @@ const set=async(p,c)=>{await p.evaluate(c=>location.hash='config='+encodeURIComp
 for(const [engine,width]of [[chromium,1440],[webkit,390],[chromium,320]].filter(([,width])=>!process.env.TEST_WIDTH||width===Number(process.env.TEST_WIDTH))){
  const browser=await engine.launch();try{
  const p=await browser.newPage({viewport:{width,height:1000},deviceScaleFactor:2}),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(new URL('konfigurator/',base).href);await p.locator('#start-configurator').click();await p.waitForFunction(()=>document.body.dataset.ready==='true');
- await set(p,{housing:'profile',profile:'micro',cover:'hs-opal',strip:'delux',view:'zone',zone:'drawer',zoneDetail:false,zoneOpen:true,zoneTrigger:'door',light:true,dimmer:73,lightStudy:false});
+ await set(p,{housing:'profile',profile:'micro',cover:'hs11-opal',strip:'delux',view:'zone',zone:'drawer',zoneDetail:false,zoneOpen:true,zoneTrigger:'door',light:true,dimmer:73,lightStudy:false});
  const camera=await p.evaluate(()=>[studioDebug.inspect().camera,studioDebug.inspect().cameraTarget]),textures=[];
  for(const material of ['white','black','graphite','sand','oak','oak-white','walnut','ash']){
   await p.locator(`#zone-materials [data-value="${material}"]`).click();const d=await p.evaluate(()=>studioDebug.inspect());assert.equal(d.surface.id,material);assert.equal(await p.locator(`#zone-materials [data-value="${material}"]`).getAttribute('aria-pressed'),'true');assert.deepEqual([d.camera,d.cameraTarget],camera);if(d.surface.mapped)textures.push(d.surface.textureId);

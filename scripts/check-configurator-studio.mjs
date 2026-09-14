@@ -13,15 +13,15 @@ async function checkLayout(p,width){
  assert.equal(l.overflow,false);assert.ok(l.view.h>=230);assert.ok(l.footer.y>=l.view.bottom-1);
  for(const b of l.buttons){assert.ok(b.bottom<=l.view.y+1,b.id+' overlaps model');assert.ok(b.x>=l.tools.x-1&&b.right<=l.tools.right+1,b.id+' overflows tools');}
  for(const v of l.values){assert.ok(v.textRight<=v.right+1,v.id+' text overflows');if(v.id!=='detail-finish'){assert.equal(v.lines,1,v.id+' wraps');if(width<781)assert.ok(v.font<=14);}}
- if(l.float){assert.ok(width<=780);assert.ok(l.float.x>l.view.x+l.view.w*.5);assert.ok(l.float.bottom<=l.view.bottom-8);assert.ok(l.float.h>=48);}
+ if(l.float){assert.ok(l.float.x>l.view.x+l.view.w*.5);assert.ok(l.float.bottom<=l.view.bottom-8);assert.ok(l.float.h>=48);}
  return{modelHeight:l.view.h,controlsHeight:l.tools.h};
 }
 for(const engine of[chromium,webkit]){
  const browser=await engine.launch();
  try{for(const width of engine===chromium?[320,390,834,1440]:[390]){
   const p=await browser.newPage({viewport:{width,height:1000},hasTouch:width<781}),errors=[];p.on('pageerror',e=>errors.push(e.message));
-  await p.goto(url);await p.waitForFunction(()=>document.body.dataset.ready==='welcome');await p.locator('#welcome-logo img').evaluate(e=>e.decode());
-  assert.equal(await p.locator('canvas').count(),0);assert.equal(await p.locator('#welcome-logo img').getAttribute('src'),'assets/logo.svg');
+  await p.goto(url);await p.waitForFunction(()=>document.body.dataset.ready==='welcome');await p.waitForFunction(()=>window.welcomeDebug);
+  assert.equal(await p.locator('#welcome-film canvas').count(),1);assert.equal((await p.evaluate(()=>welcomeDebug.inspect().connections)).length,4);
   await p.screenshot({path:`${out}/v11-welcome-${engine.name()}-${width}.png`});await p.locator('#start-configurator').click();await ready(p);await settle(p);
   const measurements=await checkLayout(p,width);
   await p.screenshot({path:`${out}/v11-product-${engine.name()}-${width}.png`,fullPage:width<781});
@@ -37,7 +37,7 @@ for(const engine of[chromium,webkit]){
   await p.locator('#choose-strip>summary').click();await p.locator('#export-open').click();await p.locator('#export-dialog').waitFor({state:'visible'});const dialog=await p.locator('#export-dialog').evaluate(e=>getComputedStyle(e).backgroundColor);assert.equal(dialog,'rgb(36, 40, 46)');await p.locator('#export-dialog .close').click();await p.locator('#choose-strip>summary').click();
   await p.screenshot({path:`${out}/v11-night-${engine.name()}-${width}.png`,fullPage:width<781});await p.waitForTimeout(1300);const n=(await inspect(p)).renderCount;await p.waitForTimeout(800);assert.equal((await inspect(p)).renderCount,n);
   if(engine===webkit){await p.emulateMedia({reducedMotion:'reduce'});await set(p,{view:'assembly',exploded:100});await p.locator('#mobile-assembly-play').click();assert.equal(await p.evaluate(()=>studioDebug.state.exploded),0);await p.locator('#mobile-assembly-play').click();assert.equal(await p.evaluate(()=>studioDebug.state.exploded),100);}
-  assert.deepEqual(errors,[]);report.push({engine:engine.name(),width,...measurements,staticLogo:true,nightMode:true,noIdleFrames:true,errors});await p.close();console.log('PASS studio',engine.name(),width);
+  assert.deepEqual(errors,[]);report.push({engine:engine.name(),width,...measurements,welcomeFilm:true,nightMode:true,noIdleFrames:true,errors});await p.close();console.log('PASS studio',engine.name(),width);
  }}finally{await browser.close()}
 }
 await fs.writeFile(`${out}/v11-studio-report.json`,JSON.stringify({status:'PASS',report},null,2));

@@ -17,7 +17,7 @@ for(const [engine,width]of [[chromium,1440],[chromium,320],[webkit,390]]){
   if(mode!=='medium')await p.locator('#studio-stage').screenshot({path:`${out}/power-${width}-${mode}.png`});
  }
  assert.deepEqual(modes.map(m=>m.watts),[3,6,11]);assert.deepEqual(modes.map(m=>m.lm),[460,930,1750]);assert.ok(modes[2].cover>modes[1].cover&&modes[1].cover>modes[0].cover);assert.ok(modes[2].led>modes[1].led&&modes[1].led>modes[0].led);
- await set(p,{housing:'sleeve',sleeve:'milk10',strip:'threeinone',detail:'product'});const silicone=[];for(const mode of ['low','high']){await p.locator(`[data-power=${mode}]`).click();silicone.push(await p.evaluate(()=>studioDebug.inspect().silicone.beams[0].level));}assert.ok(silicone[1]>silicone[0]*3);
+ await set(p,{housing:'sleeve',sleeve:'milk10',strip:'threeinone',detail:'product'});const silicone=[];for(const mode of ['low','high']){await p.locator(`[data-power=${mode}]`).click();await p.waitForFunction(()=>!studioDebug.inspect().building);silicone.push(await p.evaluate(()=>studioDebug.inspect().silicone.beams[0].level));}assert.ok(silicone[1]>silicone[0]*3);
  await set(p,{housing:'profile',view:'zone',zone:'under',profile:'pds',strip:'delux',cover:'hs11-opal',dimmer:73,light:true});
  for(const zone of ['drawer','cabinet']){
   await p.locator(`[data-zone=${zone}]`).click();assert.equal(await p.evaluate(()=>studioDebug.state.zoneTrigger),'door');
