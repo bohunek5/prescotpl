@@ -481,8 +481,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Bind to all B2C Cart links in dock and page
     document.querySelectorAll('a[href*="prescot.com.pl"], .dock-b2c-btn, [data-tooltip="Sklep B2C"]').forEach(btn => {
+      // Product/search links already identify their destination; never replace it with the shop home.
+      if (btn.closest('#prescotB2CDialog') || btn.dataset.b2cBound) return;
+      btn.dataset.b2cBound = 'true';
       btn.addEventListener("click", (e) => {
+        if (btn.id === 'rec-psu-link') return;
+        const destination = new URL(btn.getAttribute('href') || 'https://prescot.com.pl/', location.href);
+        if (!['prescot.com.pl', 'www.prescot.com.pl'].includes(destination.hostname)) return;
         e.preventDefault();
+        dialog.querySelector('#b2cConfirmBtn').href = destination.href;
         dialog.showModal();
       });
     });

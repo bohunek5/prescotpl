@@ -1,0 +1,18 @@
+/* A small cloth-like Polish flag, independent of the old background artwork. */
+html body .elementor-element-455940b2 .elementor-element-31f5b62 { visibility:visible!important; opacity:1!important; animation:none!important; }
+html body .elementor-element-455940b2 .pm-origin-copy { width:fit-content; max-width:100%; margin-inline:auto; text-align:center; }
+html body .pm-origin-flag { display:block; position:relative; width:30%; aspect-ratio:8/5; margin:0 auto 12px; background:linear-gradient(#fff 0 50%,#dc143c 50%); border:1px solid #dce1e7; border-radius:2px 8px 5px 2px; box-shadow:0 8px 18px #172b4518; transform-origin:left center; animation:pm-flag-wave 4.5s ease-in-out infinite; overflow:hidden; }
+html body .pm-origin-flag::after { content:''; position:absolute; inset:-30%; background:linear-gradient(105deg,transparent 15%,#172b451a 33%,#ffffffaa 48%,transparent 63%,#172b4512 82%); background-size:160% 100%; animation:pm-flag-light 4.5s ease-in-out infinite; }
+html body .pm-origin-label { display:block; margin-bottom:22px; color:#64748b; font:500 11px/1.5 var(--prescot-font-body,Arial,sans-serif); letter-spacing:.14em; }
+html body .pm-origin-copy h2 { margin:0; }
+@keyframes pm-flag-wave { 0%,100% { transform:perspective(500px) rotateY(-9deg) skewY(-1deg); } 50% { transform:perspective(500px) rotateY(10deg) skewY(1.5deg); } }
+@keyframes pm-flag-light { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+@media(max-width:767px){
+ html body .elementor-element-455940b2{background-size:100% auto!important;background-position:center top!important;background-repeat:no-repeat!important;min-height:0!important;padding:calc(100vw * 2 / 3) 22px 40px!important}
+ html body .elementor-element-455940b2>.e-con-inner{padding:0!important}
+ html body .elementor-element-455940b2 .elementor-element-31f5b62{padding:0!important}
+ html body .pm-origin-copy h2{font-size:clamp(25px,7vw,32px)!important;line-height:1.2!important}
+ html body .pm-origin-copy{width:100%!important}
+ html body .pm-origin-label{font-size:10px;margin-bottom:18px}
+}
+@media(prefers-reduced-motion:reduce){html body .pm-origin-flag,html body .pm-origin-flag::after{animation:none!important;transform:none!important}}
