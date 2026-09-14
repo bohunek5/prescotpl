@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {tapeLayout} from './tape-layout.js?v=1ac5a90e7b0f';
+import {tapeLayout} from './tape-layout.js?v=c5bc01a3b1d1';
 
 // Presentation maps, not measured photometry. Point spacing follows the real
 // Grayscale maps contain linear emission weights, not display-encoded colors.

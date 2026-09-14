@@ -1,13 +1,14 @@
+import {hasAdhesiveBacking} from './strip-protection.js?v=c5bc01a3b1d1';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=1ac5a90e7b0f';
-import {buildPCB} from './tape.js?v=1ac5a90e7b0f';
-import {sectionGeometry} from './section.js?v=1ac5a90e7b0f';
-import {profileContour} from './profile-shapes.js?v=1ac5a90e7b0f';
-import {coverSection} from './cover-shapes.js?v=1ac5a90e7b0f';
-import {glowMaterial} from './glow.js?v=1ac5a90e7b0f';
-import {diffuserMap} from './light-textures.js?v=1ac5a90e7b0f';
-import {assemblyPose} from './assembly-motion.js?v=1ac5a90e7b0f';
-import {createLightVolume} from './light-volume.js?v=1ac5a90e7b0f';
+import {buildAccessories} from './accessories.js?v=c5bc01a3b1d1';
+import {buildPCB} from './tape.js?v=c5bc01a3b1d1';
+import {sectionGeometry} from './section.js?v=c5bc01a3b1d1';
+import {profileContour} from './profile-shapes.js?v=c5bc01a3b1d1';
+import {coverSection} from './cover-shapes.js?v=c5bc01a3b1d1';
+import {glowMaterial} from './glow.js?v=c5bc01a3b1d1';
+import {diffuserMap} from './light-textures.js?v=c5bc01a3b1d1';
+import {assemblyPose} from './assembly-motion.js?v=c5bc01a3b1d1';
+import {createLightVolume} from './light-volume.js?v=c5bc01a3b1d1';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -75,7 +76,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     details.bend(state.exporting||spec.sleeve?.shape==='side'?0:spec.isSleeve?.12:protectedDetail?.12:macro&&state.detail!=='curve'?1:pose.pcbBend*.8*Math.min(1,.15/L),macro&&state.detail==='curve'?1:0);
     accessories.update(state,amount);
     updateCoverLight(amount);
-    const canPeel=!spec.sleeve&&!t.encapsulation;
+    const canPeel=hasAdhesiveBacking(t,spec.sleeve);
     details.peel(macro?0:pose.peel,macro?0:pose.linerExit,canPeel&&(macro||state.view==='assembly'&&amount>62));
     group.userData.assembly={...pose,pcbLiftMm:macro?0:pose.pcbLift*pcbTravel*1000,coverLiftMm:pose.coverLift*coverTravel*1000};
   }

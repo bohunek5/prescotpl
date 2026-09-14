@@ -8,7 +8,7 @@ export function buildReleaseLiner(length,width,section,backing='factory'){
   const halves=[-1,1].map(sign=>{const geo=new T.PlaneGeometry(half,width,steps,1);geo.rotateX(-Math.PI/2);geo.translate(sign*half/2,0,0);return geo;});
   const halfCount=halves[0].attributes.position.count,g=mergeGeometries(halves);halves.forEach(g=>g.dispose());
   const original=g.attributes.position.array.slice(),texture=linerTexture(backing);texture.repeat.set(half/.024,1);
-  const m=new T.MeshStandardMaterial({color:'#fff5de',map:texture,roughness:.76,side:T.DoubleSide,transparent:true,opacity:1,depthWrite:true});
+  const m=new T.MeshStandardMaterial({color:backing==='wcob-3m'?'#ffffff':'#fff5de',map:texture,roughness:.76,side:T.DoubleSide,transparent:true,opacity:1,depthWrite:true});
   const mesh=new T.Mesh(g,m);mesh.name='Podklad_od_srodka';mesh.castShadow=true;mesh.receiveShadow=true;mesh.visible=false;
   let previous='';
   function update(progress,exit=0,enabled=true,point=(x,y,z)=>new T.Vector3(x,y,z),bendKey=''){
@@ -26,8 +26,9 @@ export function buildReleaseLiner(length,width,section,backing='factory'){
   return{mesh,update,dispose(){g.dispose();m.dispose();texture.dispose();}};
 }
 function linerTexture(backing){
-  const c=document.createElement('canvas');c.width=1024;c.height=256;const x=c.getContext('2d');x.fillStyle=backing==='factory'?'#f2e7c9':'#dcca9c';x.fillRect(0,0,1024,256);
+  const c=document.createElement('canvas');c.width=1024;c.height=256;const x=c.getContext('2d');x.fillStyle=backing==='wcob-3m'?'#f5f5edb3':backing==='factory'?'#f2e7c9':'#dcca9c';x.fillRect(0,0,1024,256);
   let seed=93;for(let i=0;i<3500;i++){seed=seed*16807%2147483647;const a=seed/2147483647;seed=seed*16807%2147483647;x.fillStyle='rgba(121,91,42,.035)';x.fillRect(a*1024,seed/2147483647*256,1,1);}
-  if(backing!=='factory'){x.translate(512,128);x.rotate(-.12);x.textAlign='center';x.textBaseline='middle';x.fillStyle=backing==='200mp'?'#547057':'#4c6957';x.font='bold 86px Arial';x.fillText('3M',-180,0);x.font='66px Arial';x.fillText(backing==='200mp'?'200MP':'300LSE',110,0);}
+  if(backing==='wcob-3m'){x.translate(512,128);x.rotate(-.35);x.textAlign='center';x.textBaseline='middle';x.fillStyle='#c52d27';x.font='bold 116px Arial';x.fillText('3M',-180,0);x.fillText('3M',230,0);}
+  else if(backing!=='factory'){x.translate(512,128);x.rotate(-.12);x.textAlign='center';x.textBaseline='middle';x.fillStyle=backing==='200mp'?'#547057':'#4c6957';x.font='bold 86px Arial';x.fillText('3M',-180,0);x.font='66px Arial';x.fillText(backing==='200mp'?'200MP':'300LSE',110,0);}
   const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;tex.wrapS=T.RepeatWrapping;tex.anisotropy=8;return tex;
 }

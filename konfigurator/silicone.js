@@ -1,14 +1,15 @@
+import {factorySilicone} from './strip-protection.js?v=c5bc01a3b1d1';
 import * as T from 'three';
 import {toCreasedNormals,mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=1ac5a90e7b0f';
-import {sleeveDrawing,sectionShapes} from './sleeve-shapes.js?v=1ac5a90e7b0f';
-import {createLightVolume} from './light-volume.js?v=1ac5a90e7b0f';
-import {buildSleeveAccessories} from './sleeve-accessories.js?v=1ac5a90e7b0f';
+import {diffuserMap} from './light-textures.js?v=c5bc01a3b1d1';
+import {sleeveDrawing,sectionShapes,coatingSection} from './sleeve-shapes.js?v=c5bc01a3b1d1';
+import {createLightVolume} from './light-volume.js?v=c5bc01a3b1d1';
+import {buildSleeveAccessories} from './sleeve-accessories.js?v=c5bc01a3b1d1';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){
   const root=new T.Group();root.name='Ochrona_silikonowa';const shell=new T.Group();root.add(shell);
-  const native=t.encapsulation==='tube',coating=t.encapsulation==='coating',spec=sleeve||(native?{width:t.width+2,height:4,clear:true,shape:'basic'}:{width:t.envelopeWidth??t.width,height:t.envelopeHeight??5,clear:false,shape:'coating'});
+  const native=t.encapsulation==='tube',coating=t.encapsulation==='coating',spec=sleeve||factorySilicone(t);
   const W=spec.width/1000,H=spec.height/1000,side=spec.shape==='side',offset=coating||side?0:(spec.pcbLift??.8)/1000,geos=[],mats=[],drawing=sleeveDrawing(spec);
   const material=opts=>{const m=new T.MeshStandardMaterial(opts);mats.push(m);return m;};
   const silicone=material({color:spec.clear?'#c8d3d3':'#f7f8f3',roughness:coating?.4:.18,metalness:0,transparent:!!spec.clear,opacity:spec.clear?.18:1,depthWrite:!spec.clear,side:T.DoubleSide});
@@ -16,11 +17,10 @@ export function buildSilicone(t,sleeve,L){
   const emission=diffuserMap({strip:t,profile:{height:spec.height,ledBase:offset*1000,channelDepth:spec.height-offset*1000},cover:{id:'silicone'}},L*1000);silicone.emissiveMap=emission;
   const cutMaterial=material({color:'#e3e5df',roughness:.42});
   const baseMaterial=material({color:'#f1f2ec',roughness:.43,side:T.DoubleSide});
-  const outer=new T.Shape();
-  if(coating){outer.moveTo(-W/2,0);outer.lineTo(W/2,0);outer.lineTo(W/2,.00055);outer.bezierCurveTo(W/2,H*.72,W*.28,H,0,H);outer.bezierCurveTo(-W*.28,H,-W/2,H*.72,-W/2,.00055);outer.closePath();}
-  else if(spec.shape==='oval'){outer.moveTo(-W*.27,0);outer.lineTo(W*.27,0);outer.bezierCurveTo(W*.60,H*.18,W*.64,H*.71,W*.29,H*.91);outer.bezierCurveTo(W*.12,H*1.03,-W*.12,H*1.03,-W*.29,H*.91);outer.bezierCurveTo(-W*.64,H*.71,-W*.60,H*.18,-W*.27,0);outer.closePath();}
-  else if(spec.shape==='top'){outer.moveTo(-W/2,0);outer.lineTo(W/2,0);outer.lineTo(W/2,H*.25);outer.bezierCurveTo(W/2,H*1.25,-W/2,H*1.25,-W/2,H*.25);outer.closePath();}
-  else {const r=coating?.00035:.0006;outer.moveTo(-W/2+r,0);outer.lineTo(W/2-r,0);outer.quadraticCurveTo(W/2,0,W/2,r);outer.lineTo(W/2,H-r);outer.quadraticCurveTo(W/2,H,W/2-r,H);outer.lineTo(-W/2+r,H);outer.quadraticCurveTo(-W/2,H,-W/2,H-r);outer.lineTo(-W/2,r);outer.quadraticCurveTo(-W/2,0,-W/2+r,0);}
+  const outer=coating?coatingSection(W,H):new T.Shape();
+  if(!coating&&spec.shape==='oval'){outer.moveTo(-W*.27,0);outer.lineTo(W*.27,0);outer.bezierCurveTo(W*.60,H*.18,W*.64,H*.71,W*.29,H*.91);outer.bezierCurveTo(W*.12,H*1.03,-W*.12,H*1.03,-W*.29,H*.91);outer.bezierCurveTo(-W*.64,H*.71,-W*.60,H*.18,-W*.27,0);outer.closePath();}
+  else if(!coating&&spec.shape==='top'){outer.moveTo(-W/2,0);outer.lineTo(W/2,0);outer.lineTo(W/2,H*.25);outer.bezierCurveTo(W/2,H*1.25,-W/2,H*1.25,-W/2,H*.25);outer.closePath();}
+  else if(!coating){const r=.0006;outer.moveTo(-W/2+r,0);outer.lineTo(W/2-r,0);outer.quadraticCurveTo(W/2,0,W/2,r);outer.lineTo(W/2,H-r);outer.quadraticCurveTo(W/2,H,W/2-r,H);outer.lineTo(-W/2+r,H);outer.quadraticCurveTo(-W/2,H,-W/2,H-r);outer.lineTo(-W/2,r);outer.quadraticCurveTo(-W/2,0,-W/2+r,0);}
   if(coating){
     const hole=new T.Path();hole.moveTo(-.00145,.00026);hole.lineTo(-.00145,.00135);hole.quadraticCurveTo(-.00145,.0018,-.001,.0018);hole.lineTo(.001,.0018);hole.quadraticCurveTo(.00145,.0018,.00145,.00135);hole.lineTo(.00145,.00026);hole.closePath();outer.holes.push(hole);
   }else{
@@ -61,7 +61,7 @@ export function buildSilicone(t,sleeve,L){
     geo.setIndex(byMaterial.flat());geo.clearGroups();let start=0;byMaterial.forEach((indices,index)=>{if(indices.length)geo.addGroup(start,indices.length,index);start+=indices.length;});
   }
   const tube=new T.Mesh(geo,[silicone,baseMaterial,cutMaterial]);tube.name=sleeve?'Koszulka_'+sleeve.ref:native?'COB_IP67_oslona_pogladowa':'WCOB_powloka_IP62';tube.castShadow=!spec.clear;tube.receiveShadow=true;shell.add(tube);const original=geo.attributes.position.array.slice(),originalNormals=geo.attributes.normal.array.slice();let geometryKey='';
-  const accessories=buildSleeveAccessories(spec,offset);root.add(accessories.caps,accessories.holders);
+  const accessories=buildSleeveAccessories(spec,offset,{emission});root.add(accessories.caps,accessories.holders);
   const volumes=[];
   function outgoing(y,z,angle,width,gain=1){const v=createLightVolume(L,width,{reach:.048,name:spec.shape+'_'+volumes.length});v.mesh.position.set(0,y-offset,z);v.mesh.rotation.x=angle;root.add(v.mesh);volumes.push({v,y:y-offset,z,gain});}
   if(spec.shape==='oval'){
@@ -88,15 +88,15 @@ export function buildSilicone(t,sleeve,L){
       }
       p.needsUpdate=true;n.needsUpdate=true;geo.computeBoundingSphere();
     }
-    accessories.update(state,point,curvature,L);
     const rgb=t.type==='RGBW'&&state.rgbMode!=='white';
     if(silicone.toneMapped===rgb){silicone.toneMapped=!rgb;silicone.needsUpdate=true;}
     silicone.color.set(spec.clear?'#c8d3d3':'#f7f8f3');if(rgb&&!spec.clear)silicone.color.copy(color).multiplyScalar(.12);
     silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*(rgb?1.65:coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
+    accessories.update(state,point,curvature,L,color,silicone.emissiveIntensity);
     cutMaterial.emissive.copy(color);cutMaterial.emissiveIntensity=silicone.emissiveIntensity*.09;
     const level=state.light&&!state.compare?state.dimmer/100:0;
     for(const {v,y,z,gain}of volumes){v.mesh.position.set(inspect&&!coating?Math.min(.042,L*.42):0,y,z);v.update(color,level,{night:state.lightStudy,power:t.watts,coupling:gain,curvature});if(!['product','sleeve','seal'].includes(state.detail)||state.housing!=='sleeve')v.mesh.visible=false;}
-    root.userData={kind:coating?'coating':native?'factory-ip67':'pro-sleeve',shape:spec.shape,pcbOrientation:side?'vertical':'horizontal',outerWidthMm:spec.width,outerHeightMm:spec.height,milky:!spec.clear,shapeVerified:!!drawing||coating&&!!t.envelopeVerified,sectionSource:drawing?.source,accessories:[...accessories.caps.children,...accessories.holders.children].filter(o=>o.parent.visible).map(o=>({...o.userData})),opticalRegions:drawing?.optical.length,opaqueRegions:drawing?.opaque.length,emissionDirection:side?'top':spec.shape==='oval'?'circumference':spec.shape==='top'?'dome':'top-and-optical-sides',closed:!macro||state.sealClosed,dimensionsVerified:coating?!!t.envelopeVerified:!!sleeve?.verified,beams:volumes.map(({v})=>({...v.mesh.userData,position:v.mesh.position.toArray(),direction:new T.Vector3(0,1,0).applyQuaternion(v.mesh.quaternion).toArray(),visible:v.mesh.visible}))};
+    root.userData={kind:coating?'coating':native?'factory-ip67':'pro-sleeve',shape:spec.shape,pcbOrientation:side?'vertical':'horizontal',outerWidthMm:spec.width,outerHeightMm:spec.height,milky:!spec.clear,shapeVerified:!!drawing||coating&&!!t.envelopeVerified,sectionSource:drawing?.source,accessories:[...accessories.caps.children,...accessories.holders.children].filter(o=>o.parent.visible).map(o=>({...o.userData})),opticalRegions:drawing?.optical.length,opaqueRegions:drawing?.opaque.length,emissionDirection:side?'top':spec.shape==='oval'?'circumference':spec.shape==='top'?'dome':'top-and-optical-sides',closed:state.view!=='macro'||state.detail!=='seal'||state.sealClosed,capLight:accessories.caps.userData,dimensionsVerified:coating?!!t.envelopeVerified:!!sleeve?.verified,beams:volumes.map(({v})=>({...v.mesh.userData,position:v.mesh.position.toArray(),direction:new T.Vector3(0,1,0).applyQuaternion(v.mesh.quaternion).toArray(),visible:v.mesh.visible}))};
   }
   return{root,update,dispose(){accessories.dispose();volumes.forEach(({v})=>v.dispose());geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());emission.dispose();}};
 }

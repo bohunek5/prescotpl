@@ -241,4 +241,10 @@ export const sleeveAccessoryData={
     }
   ]
 };
-export function sleeveAccessoryKit(sleeve,state={}){return (sleeveAccessoryData[sleeve?.id]||[]).map(a=>({...a,selected:a.kind==='cap'?state.sleeveCaps!==false:!!state.sleeveFixings}));}
+// Fittings confirmed by PRESCOT in the project feedback. No invented order code
+// or cross-reference to the unrelated KSC / PRO end-cap families.
+export function sleeveAccessoryKit(sleeve,state={},strip=null){
+ const wcob=sleeve?.technology==='WCOB'||!sleeve&&strip?.technology==='WCOB';
+ const entries=wcob?[{name:'Zakończenia WCOB · nasadka z przewodami i zaślepka',ref:null,kind:'cap',quantity:1,unit:'kpl.',kit:true,material:'silicone',source:null,sourceNote:'Zakończenia WCOB potwierdzone przez PRESCOT; symbol zamówieniowy do potwierdzenia.'}]:sleeveAccessoryData[sleeve?.id]||[];
+ return entries.map(a=>({...a,selected:a.kind==='cap'?state.sleeveCaps!==false:!!state.sleeveFixings}));
+}

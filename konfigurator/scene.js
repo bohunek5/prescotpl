@@ -1,16 +1,17 @@
+import {hasAdhesiveBacking} from './strip-protection.js?v=c5bc01a3b1d1';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=1ac5a90e7b0f';
-import {buildProduct} from './product.js?v=1ac5a90e7b0f';
-import {buildMount} from './mounting.js?v=1ac5a90e7b0f';
-import {buildZone} from './zones.js?v=1ac5a90e7b0f';
-import {sectionGeometry} from './section.js?v=1ac5a90e7b0f';
-import {lightColor} from './light-color.js?v=1ac5a90e7b0f';
-import {assemblyClip} from './assembly-export.js?v=1ac5a90e7b0f';
-import {createSoftShadow} from './soft-shadow.js?v=1ac5a90e7b0f';
+import {specification,displayLength} from './catalog.js?v=c5bc01a3b1d1';
+import {buildProduct} from './product.js?v=c5bc01a3b1d1';
+import {buildMount} from './mounting.js?v=c5bc01a3b1d1';
+import {buildZone} from './zones.js?v=c5bc01a3b1d1';
+import {sectionGeometry} from './section.js?v=c5bc01a3b1d1';
+import {lightColor} from './light-color.js?v=c5bc01a3b1d1';
+import {assemblyClip} from './assembly-export.js?v=c5bc01a3b1d1';
+import {createSoftShadow} from './soft-shadow.js?v=c5bc01a3b1d1';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -180,7 +181,7 @@ export async function createStudio(host,initial){
   if(s.view==='zone')ensureZone();else ensureSample();appearance();resize();await renderer.compileAsync(scene,camera);ready=true;renderer.shadowMap.needsUpdate=true;draw();const ro=new ResizeObserver(resize);ro.observe(host);
   async function exportGLB(){
     const spec=specification(s),exportState={...s,view:'assembly',assemblyAngle:'perspective',exporting:true},full=buildProduct(geometry,sourceSize,spec,exportState,{length:s.length,art,sourceCover,quality:'detail'});full.update(exportState,lightColor(s,spec.strip));full.assemble(0);const out=full.group,H=spec.profile.height/1000;out.traverse(o=>{if(o.name.startsWith('Poswiata_')||o.isLight)o.visible=false;});
-    const clip=spec.isSleeve?null:assemblyClip(full,{linerAllowed:!spec.sleeve&&!spec.strip.encapsulation});
+    const clip=spec.isSleeve?null:assemblyClip(full,{linerAllowed:hasAdhesiveBacking(spec.strip,spec.sleeve)});
     // Expand instancing for importers that do not support EXT_mesh_gpu_instancing.
     const instances=[];out.traverse(o=>{if(o.isInstancedMesh)instances.push(o);});for(const o of instances){const g=new T.Group();g.name=o.name;g.position.copy(o.position);g.quaternion.copy(o.quaternion);g.scale.copy(o.scale);for(let i=0;i<o.count;i++){const mesh=new T.Mesh(o.geometry,o.material),m=new T.Matrix4();o.getMatrixAt(i,m);m.decompose(mesh.position,mesh.quaternion,mesh.scale);g.add(mesh);}o.parent.add(g);o.parent.remove(o);}
     out.userData={units:'meters',configuration:s,profileLengthMm:spec.isSleeve?null:s.length,stripLengthMm:spec.stripLength,fitStatus:spec.fitStatus,fitIssues:spec.issues,finishVariant:spec.isSleeve?null:spec.finish,modelNotes:spec.isSleeve?'PRESCOT tape and silicone sleeve, illustrative section and sealing details; no aluminum profile or cover. Exported tape is straight. Not fabrication geometry.':'MICRO-PLUS and HS cover: sections from manufacturer 3DS, with presentation chamfers. Other profile sections reconstructed from manufacturer drawings; retaining details, covers, PCB and print: illustrative. Exported tape is straight. Release-paper morphs precede PCB seating. Not fabrication geometry.',printNotes:'CE/RoHS option is a proposed print, not certification evidence.'};

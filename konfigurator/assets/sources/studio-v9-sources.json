@@ -117,5 +117,19 @@
     "sleeves": "reference-13133-0.jpg through reference-13138-0.jpg; optical yellow / opaque gray, exact outer size; traced interior details illustrative.",
     "accessories": "sleeve-accessory-data.js: verified product references and photo URLs, quantities of holders unspecified.",
     "optics": "Spatial beams are illustrative, not IES/LDT photometry."
+  },
+  "wcobUpdate": {
+    "checked": "2026-09-14",
+    "backing": {
+      "file": "reference-19377-1.jpg",
+      "observed": "Jasny podkład z czerwonym nadrukiem 3M; seria kleju nieustalona."
+    },
+    "endFittings": {
+      "source": "Potwierdzenie właściciela PRESCOT w rozmowie 14.09.2026",
+      "observed": "Biała silikonowa nasadka przewodowa i pełna zaślepka WCOB.",
+      "ref": null,
+      "geometry": "Kształt poglądowy dopasowany do przekroju 8 × 5 mm; detale nasadek nie są wymiarami produkcyjnymi."
+    },
+    "assembly": "Podział podkładu na dwie połowy jest zabiegiem prezentacyjnym. Podkład znika przed osadzeniem WCOB; bez emitującego spodu."
   }
 }
