@@ -8,7 +8,7 @@ export function buildInstallationCable(product,profile){
   function update(state,tail,visible){
     root.visible=visible;if(!visible)return;
     product.wiring.visible=false;
-    const pads=product.connectionPads(),signature=JSON.stringify([pads.map(p=>[p.label,...p.point]),tail.map(p=>p.toArray()),state.endcaps]);
+    const pads=product.connectionPads(),signature=JSON.stringify([pads.map(p=>[p.label,p.active,...p.point]),tail.map(p=>p.toArray()),state.endcaps]);
     if(signature===key)return;key=signature;clear();
     const end=-product.length/2000,portY=profile.ledBase/1000+.0018,portZ=(profile.ledZ||0)/1000,connections=[];
     for(const [i,pad]of pads.entries()){
@@ -21,8 +21,8 @@ export function buildInstallationCable(product,profile){
         points.splice(1,1,new T.Vector3(x-.0009,h+dy,product.ledZ+dz),new T.Vector3(x-.0048,h+dy,product.ledZ+dz));
       }
       const tip=new T.Mesh(new T.TubeGeometry(new T.LineCurve3(start,solder),1,.0002,8,false),new T.MeshStandardMaterial({color:'#b8babb',metalness:.85,roughness:.28}));tip.name='Lut_'+pad.channel;
-      const wire=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points,false,'centripetal'),48,.00032,8,false),new T.MeshStandardMaterial({color:pad.color,roughness:.52}));wire.name='Przewod_'+pad.channel;wire.castShadow=true;wire.userData={terminal:pad.label,polarity:pad.polarity,padIndex:pad.index};root.add(tip,wire);
-      connections.push({terminal:pad.label,color:pad.color,start:start.toArray(),port:port.toArray(),end:points.at(-1).toArray()});
+      const wire=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points,false,'centripetal'),48,.00032,8,false),new T.MeshStandardMaterial({color:pad.color,roughness:.52}));wire.name='Przewod_'+pad.channel;wire.castShadow=true;wire.userData={terminal:pad.label,polarity:pad.polarity,padIndex:pad.index,active:pad.active};root.add(tip,wire);
+      connections.push({terminal:pad.label,color:pad.color,active:pad.active,start:start.toArray(),port:port.toArray(),end:points.at(-1).toArray()});
     }
     root.userData={connections,throughCap:!!state.endcaps};
   }

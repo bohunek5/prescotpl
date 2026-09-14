@@ -1,16 +1,16 @@
-import {prepareCoverFlex} from './cover-flex.js?v=797082b8b9d7';
-import {stripOutputScale} from './light-state.js?v=797082b8b9d7';
-import {hasAdhesiveBacking} from './strip-protection.js?v=797082b8b9d7';
+import {prepareCoverFlex} from './cover-flex.js?v=14af8cccb08e';
+import {stripOutputScale} from './light-state.js?v=14af8cccb08e';
+import {hasAdhesiveBacking} from './strip-protection.js?v=14af8cccb08e';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=797082b8b9d7';
-import {buildPCB} from './tape.js?v=797082b8b9d7';
-import {sectionGeometry} from './section.js?v=797082b8b9d7';
-import {profileContour} from './profile-shapes.js?v=797082b8b9d7';
-import {coverSection} from './cover-shapes.js?v=797082b8b9d7';
-import {glowMaterial} from './glow.js?v=797082b8b9d7';
-import {diffuserMap} from './light-textures.js?v=797082b8b9d7';
-import {assemblyPose} from './assembly-motion.js?v=797082b8b9d7';
-import {createLightVolume} from './light-volume.js?v=797082b8b9d7';
+import {buildAccessories} from './accessories.js?v=14af8cccb08e';
+import {buildPCB} from './tape.js?v=14af8cccb08e';
+import {sectionGeometry} from './section.js?v=14af8cccb08e';
+import {profileContour} from './profile-shapes.js?v=14af8cccb08e';
+import {coverSection} from './cover-shapes.js?v=14af8cccb08e';
+import {glowMaterial} from './glow.js?v=14af8cccb08e';
+import {diffuserMap} from './light-textures.js?v=14af8cccb08e';
+import {assemblyPose} from './assembly-motion.js?v=14af8cccb08e';
+import {createLightVolume} from './light-volume.js?v=14af8cccb08e';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.

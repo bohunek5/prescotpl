@@ -1,17 +1,17 @@
-import {previewLight,hasDoorSwitch} from './light-state.js?v=797082b8b9d7';
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=797082b8b9d7';
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=797082b8b9d7';
-import {accessoryKit} from './accessory-data.js?v=797082b8b9d7';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=797082b8b9d7';
-import {zones} from './zones.js?v=797082b8b9d7';
-import {mountingSteps} from './mounting.js?v=797082b8b9d7';
-import {coverIcon} from './cover-shapes.js?v=797082b8b9d7';
-import {profileIcon} from './profile-shapes.js?v=797082b8b9d7';
-import {sleeveIcon} from './sleeve-shapes.js?v=797082b8b9d7';
-import {projectSheet} from './sheet.js?v=797082b8b9d7';
-import {uiIcon,actionLabel} from './ui-icons.js?v=797082b8b9d7';
-import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=797082b8b9d7';
-import {createZonePlayback} from './zone-playback.js?v=797082b8b9d7';
+import {previewLight,hasDoorSwitch} from './light-state.js?v=14af8cccb08e';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=14af8cccb08e';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=14af8cccb08e';
+import {accessoryKit} from './accessory-data.js?v=14af8cccb08e';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=14af8cccb08e';
+import {zones} from './zones.js?v=14af8cccb08e';
+import {mountingSteps} from './mounting.js?v=14af8cccb08e';
+import {coverIcon} from './cover-shapes.js?v=14af8cccb08e';
+import {profileIcon} from './profile-shapes.js?v=14af8cccb08e';
+import {sleeveIcon} from './sleeve-shapes.js?v=14af8cccb08e';
+import {projectSheet} from './sheet.js?v=14af8cccb08e';
+import {uiIcon,actionLabel} from './ui-icons.js?v=14af8cccb08e';
+import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=14af8cccb08e';
+import {createZonePlayback} from './zone-playback.js?v=14af8cccb08e';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -154,7 +154,7 @@ function update(){
   $('mounting').disabled=p.mount!=='surface';document.querySelectorAll('[data-mount=surface]').forEach(b=>b.disabled=p.mount!=='surface');
   $('seal-close').hidden=s.view!=='macro'||s.detail!=='seal';$('seal-close').textContent=s.sealClosed?'Rozsuń końcówki':'Zamknij końcówki';$('seal-close').setAttribute('aria-pressed',String(s.sealClosed));
   $('macro-spec').textContent=`${t.width} mm · ${t.technology|| (t.type==='COB'?'COB':'SMD '+(t.package|| (t.type==='CCT'?'5050':'2835')))} · ${spec.terminals.join(' / ')}${t.copperOz?' · PCB '+t.copperOz+' oz':''}`;
-  $('power-modes').hidden=t.type!=='3IN1';$('power-details').hidden=t.type!=='3IN1';$('power-mode-value').textContent=t.type==='3IN1'?num(spec.lumensPerMeter)+' lm/m':'';$('power-wiring').textContent=`+24V i ${spec.selectedTerminal||'−'} · ${num(spec.current,2)} A dla ${num(spec.stripLength/1000,2)} m. Moc wybierana podłączeniem L / M / H.`;
+  $('power-modes').hidden=t.type!=='3IN1';$('power-details').hidden=t.type!=='3IN1';$('power-mode-value').textContent=t.type==='3IN1'?num(spec.lumensPerMeter)+' lm/m':'';$('power-wiring').textContent=`Cztery żyły: +24V / L / M / H. Aktywne: +24V i ${spec.selectedTerminal||'−'} · ${num(spec.current,2)} A dla ${num(spec.stripLength/1000,2)} m.`;
   $('print').value=s.print;$('print-note').textContent=s.print==='concept'?'Projekt nadruku CE / RoHS — wymaga potwierdzenia dla produktu.':'Układ nadruku i ścieżek poglądowy.';$('cct-channels').hidden=t.type!=='CCT';
   const availableFinishes=finishesFor(p);$('finishes').querySelectorAll('button').forEach(b=>b.hidden=!availableFinishes.includes(b.dataset.value));
   $('covers').querySelectorAll('button').forEach(b=>{b.hidden=!p.covers.includes(b.dataset.value);const c=covers.find(c=>c.id===b.dataset.value);b.disabled=!!c.maxWatts&&spec.wattsPerMeter>c.maxWatts;b.title=b.disabled?`Maks. ${c.maxWatts} W/m. Wybrana taśma: ${spec.wattsPerMeter} W/m.`:c.name;});
@@ -168,7 +168,7 @@ function update(){
   $('envelope-note').textContent=spec.envelope?`${spec.sleeve?spec.sleeve.name:t.ip}: ${spec.fitVerified?'obrys '+spec.envelope.width+' × '+spec.envelope.height+' mm':'gabaryt osłony lub jej wnętrza do potwierdzenia'}. ${spec.fitVerified&&!spec.envelopeFits?'Wybierz szerszy lub głębszy profil.':''}`:'';
   $('cut-note').textContent=spec.cutVerified?`${spec.segments} segmentów × ${num(t.cut,2)} mm${spec.offcut>.01?` · ${num(spec.offcut,2)} mm wolnego profilu`:''}. Potwierdź skok cięcia na PCB.`:`Podgląd ${num(spec.stripLength/1000,2)} m. ${t.cutNote} Obliczenia długości i mocy są orientacyjne.`;
   const titles={assembly:['KLUŚ × PRESCOT',p.name],installation:['DETAL MONTAŻU','Od spodu.'],section:['OSADZENIE / PRZEKRÓJ',p.name],mounting:['MONTAŻ / '+p.name,'Krok po kroku.'],macro:['PRESCOT LED / DETAL',t.name],zone:['STREFA MONTAŻU',site.name+'.']};
-  const descriptions={assembly:`${t.name} · ${spec.cover.name} · ${p.application}.`,installation:s.mounting==='recessed'?'Profil we wpuście. Zobacz, jak wykańcza powierzchnię.':'Linia światła, mocowanie i styk z powierzchnią.',section:`${p.name} · kanał ${num(p.channel,1)} mm · ${p.id==='kozus'?'płyta 16 mm i warstwa wykończenia':'podłoże i osadzenie przesłony'}.`,mounting:'Od przygotowania podłoża do zamkniętej linii światła.',macro:s.detail==='sleeve'?(t.encapsulation==='coating'?'WCOB · półokrągła mleczna osłona 8 × 5 mm.':`${spec.sleeve?.name||t.ip} · taśma i koszulka PRESCOT, bez przesłony.`):s.detail==='seal'?'Przewód, silikon i zakończenia. Zobacz zamknięcie odcinka.':s.detail==='wiring'?`Przewody: ${spec.connections.map(p=>p.label).join(' / ')}.${t.type==='3IN1'?' Czerwony plus · czarny minus przy wybranym L/M/H.':''}`:s.detail==='curve'?'S-shape. Elastyczne mostki pozwalają prowadzić taśmę po łuku.':t.shape==='s'?'Falujący laminat, wycięcia i pola miedziane. Zasilanie 12 V.':t.technology==='WCOB'?'Biała powierzchnia White COB, także przy wyłączonym świetle.':`Cienki laminat i ${t.type==='COB'?'ciągłe pasmo COB':'obudowy SMD '+(t.package||(t.type==='CCT'?'5050':'2835'))}.`,zone:site.description};
+  const descriptions={assembly:`${t.name} · ${spec.cover.name} · ${p.application}.`,installation:s.mounting==='recessed'?'Profil we wpuście. Zobacz, jak wykańcza powierzchnię.':'Linia światła, mocowanie i styk z powierzchnią.',section:`${p.name} · kanał ${num(p.channel,1)} mm · ${p.id==='kozus'?'płyta 16 mm i warstwa wykończenia':'podłoże i osadzenie przesłony'}.`,mounting:'Od przygotowania podłoża do zamkniętej linii światła.',macro:s.detail==='sleeve'?(t.encapsulation==='coating'?'WCOB · półokrągła mleczna osłona 8 × 5 mm.':`${spec.sleeve?.name||t.ip} · taśma i koszulka PRESCOT, bez przesłony.`):s.detail==='seal'?'Przewód, silikon i zakończenia. Zobacz zamknięcie odcinka.':s.detail==='wiring'?`Przewody: ${spec.connections.map(p=>p.label).join(' / ')}.${t.type==='3IN1'?' Czerwony plus · trzy czarne żyły L / M / H.':''}`:s.detail==='curve'?'S-shape. Elastyczne mostki pozwalają prowadzić taśmę po łuku.':t.shape==='s'?'Falujący laminat, wycięcia i pola miedziane. Zasilanie 12 V.':t.technology==='WCOB'?'Biała powierzchnia White COB, także przy wyłączonym świetle.':`Cienki laminat i ${t.type==='COB'?'ciągłe pasmo COB':'obudowy SMD '+(t.package||(t.type==='CCT'?'5050':'2835'))}.`,zone:site.description};
   $('stage-overline').textContent=titles[s.view][0];$('stage-heading').textContent=titles[s.view][1].replace(/(\d+)\s+K\b/g,'$1\u00a0K');$('detail-description').textContent=descriptions[s.view];
   $('mobile-assembly-play').hidden=s.view!=='assembly';$('mobile-assembly-play').disabled=spec.assemblyBlocked;syncAssemblyButton();$('exploded').disabled=s.view!=='assembly'||spec.assemblyBlocked;$('animate').disabled=s.view!=='assembly'||spec.assemblyBlocked;document.querySelectorAll('[data-step]').forEach(b=>b.disabled=spec.assemblyBlocked&&b.dataset.step!=='100');filterStrips();
   try{localStorage.setItem('prescot-light-studio-v9',JSON.stringify(s));}catch{}
@@ -195,7 +195,7 @@ $('backing').onchange=()=>{stopAnimation();s.backing=$('backing').value;update()
 $('seal-close').onclick=()=>{s.sealClosed=!s.sealClosed;update();};
 $('inspect-endcap').onclick=()=>{s.view='assembly';s.assemblyAngle='end';s.exploded=50;s.endcaps=true;s.showCable=true;update();showMobilePreview();};
 $('zone-position').onchange=()=>{s.zonePosition=$('zone-position').value;update();};$('zone-trigger').onchange=()=>{s.zoneTrigger=$('zone-trigger').value;update();};document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{stripFilter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));filterStrips();});
-for(const [attr,key]of [['angle','assemblyAngle'],['power','powerMode'],['detail','detail'],['mount','mounting']])document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.onclick=()=>{stopAnimation();s[key]=b.dataset[attr];if(key==='assemblyAngle'&&s.assemblyAngle==='end'){s.endcaps=true;s.exploded=50};s.mountStep=0;update();});
+for(const [attr,key]of [['angle','assemblyAngle'],['power','powerMode'],['detail','detail'],['mount','mounting']])document.querySelectorAll(`[data-${attr}]`).forEach(b=>b.onclick=()=>{stopAnimation();s[key]=b.dataset[attr];if(key==='assemblyAngle'&&s.assemblyAngle==='end'){s.endcaps=true;s.exploded=50};if(key!=='powerMode')s.mountStep=0;update();});
 document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{stopAnimation();s.exploded=Number(b.dataset.step);update();});
 document.querySelectorAll('[data-mount-step]').forEach(b=>b.onclick=()=>{s.mountStep=Number(b.dataset.mountStep);update();});
 $('mount-prev').onclick=()=>{s.mountStep=Math.max(0,s.mountStep-1);update();};$('mount-next').onclick=()=>{s.mountStep=Math.min(4,s.mountStep+1);update();};
@@ -262,7 +262,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=797082b8b9d7');
+      const {createStudio}=await import('./scene.js?v=14af8cccb08e');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

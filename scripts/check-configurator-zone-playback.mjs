@@ -27,7 +27,7 @@ for(const [engine,width]of [[chromium,1440],[webkit,390],[chromium,320]].filter(
  await set(p,{view:'mounting',mounting:'recessed',mountStep:0,profile:'micro',strip:'delux',endcaps:true,showCable:false});
  await p.locator('[data-mount-step="0"]').click();assert.equal(await p.evaluate(()=>studioDebug.inspect().mount.stepParts.profile),false);
  await p.locator('[data-mount-step="1"]').click();assert.deepEqual(await p.evaluate(()=>studioDebug.inspect().mount.stepParts),{profile:true,pcb:false,cover:false,accessories:false});await p.locator('#viewport').screenshot({path:`${out}/mount-fitting-${width}.png`});
- const strips=width===1440?[['delux',2],['cct',3],['premium-rgbw',5],['threeinone',2]]:[['delux',2]];
+ const strips=width===1440?[['delux',2],['cct',3],['premium-rgbw',5],['threeinone',4]]:[['delux',2]];
  for(const [strip,count]of strips){
   await set(p,{strip,mountStep:3});const d=await p.evaluate(()=>studioDebug.inspect().mount);assert.equal(d.stepParts.pcb,true);assert.equal(d.stepParts.cover,false);assert.equal(d.wiring.connections.length,count);assert.equal(d.wiring.throughCap,true);assert.ok(d.wiring.connections.every(c=>c.start.every(Number.isFinite)&&c.port[0]<c.start[0]));
   if(width===1440||strip==='delux')await p.locator('#viewport').screenshot({path:`${out}/mount-wiring-${width}-${strip}.png`});

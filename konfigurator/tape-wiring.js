@@ -14,6 +14,8 @@ export function tapeTerminals(strip,state={}){
   return labels.map((label,index)=>{
     const plus=label.includes('+'),channel=plus?'V_plus':label.replace(/[−\-]/g,'').trim()||'V_minus';
     const color=plus?(['RGBW','RGBCCT','RGB+CCT'].includes(strip.type)?'#33383d':'#d52f27'):({R:'#bc3025',G:'#288b51',B:'#356dae',W:'#e1bd55',CW:'#d8dfe4',WW:'#b59444'}[channel]||'#292d31');
-    return{index,label,channel,polarity:plus?'+':'−',color,z:(index/(labels.length-1)*2-1)*span*strip.width/1000,connected:strip.type!=='3IN1'||plus||label===selected};
+    // Every terminal retains its physical lead. Selecting L/M/H changes the
+    // energized pair, never the number or position of wires in the model.
+    return{index,label,channel,polarity:plus?'+':'−',color,z:(index/(labels.length-1)*2-1)*span*strip.width/1000,connected:true,active:strip.type!=='3IN1'||plus||label===selected};
   });
 }

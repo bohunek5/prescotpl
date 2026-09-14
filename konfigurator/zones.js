@@ -1,9 +1,10 @@
-import {previewLight} from './light-state.js?v=797082b8b9d7';
+import {previewLight} from './light-state.js?v=14af8cccb08e';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=797082b8b9d7';
-import {buildMount,seatingHeight} from './mounting.js?v=797082b8b9d7';
-import {surfaceFinish} from './surface-finishes.js?v=797082b8b9d7';
+import {buildProduct} from './product.js?v=14af8cccb08e';
+import {buildMount,seatingHeight} from './mounting.js?v=14af8cccb08e';
+import {surfaceFinish} from './surface-finishes.js?v=14af8cccb08e';
+import {buildInstallationCable} from './installation-wiring.js?v=14af8cccb08e';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -22,7 +23,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   const box=(parent,w,h,d,m,x=0,y=0,z=0,r=.0006)=>add(new RoundedBoxGeometry(w,h,d,3,Math.min(r,h*.2)),m,parent,x,y,z);
   const product=buildProduct(source,sourceSize,spec,{...state,view:'zone',exploded:0},{length:300,art,sourceCover});root.add(product.group);
   const wire=new T.Group();wire.name='Ukryty_przewod_niskiego_napiecia';root.add(wire);
-  let door=null,drawer=null,fixture=null,sensor=null,plunger=null;
+  let door=null,drawer=null,fixture=null,sensor=null,plunger=null,cableTail=[];
   const p=spec.profile,zone=state.zone,H=p.height/1000,seat=seatingHeight(p,state.mounting==='recessed');
   let focus,normal;
   if(zone==='drywall'){
@@ -44,8 +45,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
       const kick=box(root,.38,.116,.014,wood,0,.058,-.038);kick.name='Cokol_cofniety';
       for(const x of[-.135,.135])add(new T.CylinderGeometry(.009,.012,.10,24),black,root,x,.066,-.059);
     }
-    const route=new T.CatmullRomCurve3([new T.Vector3(-.148,baseY-seat-.002,z),new T.Vector3(-.158,baseY+.003,z),new T.Vector3(-.164,baseY+thickness+.004,z-.008),new T.Vector3(-.164,baseY+thickness+.005,-.068)]);
-    add(new T.TubeGeometry(route,36,.001,10,false),black,wire).name='Przewod_przez_krawedz_plyty';
+    cableTail=[new T.Vector3(-.158,baseY+.003,z),new T.Vector3(-.164,baseY+thickness+.004,z-.008),new T.Vector3(-.164,baseY+thickness+.005,-.068)];
     const grommet=add(new T.TorusGeometry(.0023,.0006,8,24),ivory,wire,-.159,baseY+.0003,z);grommet.rotation.x=Math.PI/2;grommet.name='Przelotka_pogladowa';
   }else{
     const cabinet=new T.Group();root.add(cabinet);cabinet.name='Fragment_korpusu';
@@ -89,15 +89,14 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     sensor=new T.Group();sensor.name='Krancowka_pogladowa';root.add(sensor);sensor.position.set(-.16,zone==='drawer'?.177:.225,.091);
     box(sensor,.021,.011,.012,ivory);plunger=add(new T.CylinderGeometry(.002,.002,.006,12),black,sensor,0,0,.008);plunger.rotation.x=Math.PI/2;
     const sensorWire=new T.CatmullRomCurve3([new T.Vector3(-.01,0,-.005),new T.Vector3(-.009,-.003,-.04),new T.Vector3(-.009,-.008,-.176)]);add(new T.TubeGeometry(sensorWire,18,.0007,8,false),black,sensor);
-    const cablePath=new T.CatmullRomCurve3([new T.Vector3(-.148,y-.002,z),new T.Vector3(-.16,y+(zone==='under'?.004:-.006),z),new T.Vector3(-.169,y+(zone==='under'?.022:-.012),z-.006),new T.Vector3(-.169,y+(zone==='under'?.027:-.014),-.055),new T.Vector3(-.169,.075,-.083),new T.Vector3(-.13,.044,-.083)]);
-    add(new T.TubeGeometry(cablePath,60,.0012,10,false),black,wire);
+    cableTail=[new T.Vector3(-.16,y+(zone==='under'?.004:-.006),z),new T.Vector3(-.169,y+(zone==='under'?.022:-.012),z-.006),new T.Vector3(-.169,y+(zone==='under'?.027:-.014),-.055),new T.Vector3(-.169,.075,-.083),new T.Vector3(-.13,.044,-.083)];
     // A modest cable channel along the static cabinet side.
     const conduit=box(wire,.006,.15,.005,ivory,-.167,.125,-.085);conduit.name='Maskownica_przewodu';
     for(const y of [.07,.15,.20])box(wire,.006,.002,.005,steel,-.167,y,-.081);
   }
   // Follow the actual lens face, including the 45-degree profiles. Shadowed
   // emitters let the cabinet and drawer stop the light at their real surfaces.
-  if(zone==='plinth'&&p.ledAngle)product.group.rotation.y=Math.PI;
+  if(zone==='plinth'&&p.ledAngle){product.group.rotation.y=Math.PI;cableTail.forEach(point=>point.x*=-1);}
   product.assemble(0);root.updateMatrixWorld(true);
   const lens=product.cover.children.find(o=>o.isMesh&&!o.name.startsWith('Poswiata_'));
   // Morph bounds include the raised ends; installed light starts at the
@@ -114,6 +113,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     root.add(light,light.target);return light;
   });
   root.userData.lighting={type:'shadowed-strip',normal:normal.toArray(),origin:focus.toArray(),emitters:lights.length};
+  const connection=cableTail.length?buildInstallationCable(product,p):null;
   let opening=state.zoneOpen?1:0,currentState=state,currentColor=new T.Color('#fff4df'),lastLight=null;
   function applyLight(){
     const output=previewLight({...currentState,view:'zone'},opening),on=output.on;
@@ -129,6 +129,11 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
     setOpening(s.zoneOpen?1:0);
     if(fixture)fixture.update({...s,view:'installation'},product);
     if(zone==='drywall'){product.group.rotation.x=Math.PI;product.group.position.y=-seat;}
+    if(connection){
+      root.updateWorldMatrix(true,true);
+      connection.update(s,cableTail.map(point=>product.group.worldToLocal(root.localToWorld(point.clone()))),s.showCable);
+      root.userData.connection=s.showCable?connection.root.userData:null;
+    }else root.userData.connection=fixture?.root.userData.connection??null;
   }
-  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){product.dispose();fixture?.dispose();for(const light of lights)light.shadow.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
+  return{root,product,focus,normal,update,setOpening,get opening(){return opening;},get motion(){return door?'door':drawer?'drawer':null;},dispose(){connection?.dispose();product.dispose();fixture?.dispose();for(const light of lights)light.shadow.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
 }

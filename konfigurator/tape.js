@@ -1,15 +1,15 @@
-import {stripOutputScale} from './light-state.js?v=797082b8b9d7';
-import {factorySilicone} from './strip-protection.js?v=797082b8b9d7';
+import {stripOutputScale} from './light-state.js?v=14af8cccb08e';
+import {factorySilicone} from './strip-protection.js?v=14af8cccb08e';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=797082b8b9d7';
-import {drawPcbBrand} from './brand-art.js?v=797082b8b9d7';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=797082b8b9d7';
-import {smdPackage} from './smd-package.js?v=797082b8b9d7';
-import {tapeTerminals} from './tape-wiring.js?v=797082b8b9d7';
-import {buildSilicone} from './silicone.js?v=797082b8b9d7';
-import {glowMaterial} from './glow.js?v=797082b8b9d7';
-import {phosphorMap} from './light-textures.js?v=797082b8b9d7';
-import {buildReleaseLiner} from './release-liner.js?v=797082b8b9d7';
+import {rgbwChannels,colorCct} from './light-color.js?v=14af8cccb08e';
+import {drawPcbBrand} from './brand-art.js?v=14af8cccb08e';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=14af8cccb08e';
+import {smdPackage} from './smd-package.js?v=14af8cccb08e';
+import {tapeTerminals} from './tape-wiring.js?v=14af8cccb08e';
+import {buildSilicone} from './silicone.js?v=14af8cccb08e';
+import {glowMaterial} from './glow.js?v=14af8cccb08e';
+import {phosphorMap} from './light-textures.js?v=14af8cccb08e';
+import {buildReleaseLiner} from './release-liner.js?v=14af8cccb08e';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -77,10 +77,10 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   const wireGroup=new T.Group();wireGroup.name='Przewody_podlaczenia';group.add(wireGroup);
   wireGroup.userData.terminals=terminals;
   const wireMeshes=[];
-  terminals.filter(p=>p.connected).forEach(({z,color,channel,label,polarity,index})=>{
+  terminals.filter(p=>p.connected).forEach(({z,color,channel,label,polarity,index,active})=>{
     const path=new T.CatmullRomCurve3([new T.Vector3(-.0012,.00055,z),new T.Vector3(-.004,.002,z),new T.Vector3(-.013,.004,z*1.6),new T.Vector3(-.023,.001,z*2)]);
     const g=new T.TubeGeometry(path,24,.00045,10,false);geometries.push(g);
-    const wire=new T.Mesh(g,mat(color,.52));wire.name=channel;wire.userData={terminal:label,polarity,padIndex:index,padZ:z};wire.castShadow=true;wireGroup.add(wire);wireMeshes.push(wire);
+    const wire=new T.Mesh(g,mat(color,.52));wire.name=channel;wire.userData={terminal:label,polarity,padIndex:index,padZ:z,active};wire.castShadow=true;wireGroup.add(wire);wireMeshes.push(wire);
     const tipPath=new T.LineCurve3(new T.Vector3(0,.00039,z),new T.Vector3(-.0012,.00055,z)),tipGeo=new T.TubeGeometry(tipPath,1,.00022,8,false);geometries.push(tipGeo);
     const tip=new T.Mesh(tipGeo,silver);tip.name='Koncowka_lutowana_'+channel;tip.userData={terminal:label,padIndex:index};wireGroup.add(tip);
   });
