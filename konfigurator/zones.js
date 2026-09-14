@@ -1,8 +1,9 @@
-import {previewLight} from './light-state.js?v=c30442ea5107';
+import {previewLight} from './light-state.js?v=797082b8b9d7';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=c30442ea5107';
-import {buildMount,seatingHeight} from './mounting.js?v=c30442ea5107';
+import {buildProduct} from './product.js?v=797082b8b9d7';
+import {buildMount,seatingHeight} from './mounting.js?v=797082b8b9d7';
+import {surfaceFinish} from './surface-finishes.js?v=797082b8b9d7';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -99,7 +100,9 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   if(zone==='plinth'&&p.ledAngle)product.group.rotation.y=Math.PI;
   product.assemble(0);root.updateMatrixWorld(true);
   const lens=product.cover.children.find(o=>o.isMesh&&!o.name.startsWith('Poswiata_'));
-  lens.geometry.computeBoundingBox();const lensBounds=lens.geometry.boundingBox;
+  // Morph bounds include the raised ends; installed light starts at the
+  // straight lens face, not at the envelope of its assembly animation.
+  const lensBounds=new T.Box3().setFromBufferAttribute(lens.geometry.attributes.position);
   normal.set(0,1,0).applyQuaternion(product.cover.getWorldQuaternion(new T.Quaternion())).normalize();
   const lightFace=new T.Vector3(0,lensBounds.max.y+.00035,(lensBounds.min.z+lensBounds.max.z)/2);
   focus.copy(product.cover.localToWorld(lightFace.clone()));
@@ -122,7 +125,7 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   function setOpening(value){opening=T.MathUtils.clamp(value,0,1);if(door)door.rotation.y=-(zone==='under'?.95:1.65)*opening;if(drawer)drawer.position.z=.137*opening;applyLight();root.updateMatrixWorld(true);}
   function update(s,color){
     currentState=s;currentColor=color;lastLight=null;product.update({...s,view:'zone',exploded:0},color);product.assemble(0);product.profile.visible=true;product.pcb.visible=true;product.cover.visible=true;
-    wire.visible=s.showCable;ivory.color.set({graphite:'#767b7e',sand:'#d6ccbb'}[s.material]||'#eae7df');
+    wire.visible=s.showCable;const finish=surfaceFinish(s.material);ivory.color.set(finish.grain?'#eae7df':finish.color);
     setOpening(s.zoneOpen?1:0);
     if(fixture)fixture.update({...s,view:'installation'},product);
     if(zone==='drywall'){product.group.rotation.x=Math.PI;product.group.position.y=-seat;}

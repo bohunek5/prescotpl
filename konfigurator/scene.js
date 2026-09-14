@@ -1,17 +1,18 @@
-import {hasAdhesiveBacking} from './strip-protection.js?v=c30442ea5107';
+import {hasAdhesiveBacking} from './strip-protection.js?v=797082b8b9d7';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=c30442ea5107';
-import {buildProduct} from './product.js?v=c30442ea5107';
-import {buildMount} from './mounting.js?v=c30442ea5107';
-import {buildZone} from './zones.js?v=c30442ea5107';
-import {sectionGeometry} from './section.js?v=c30442ea5107';
-import {lightColor} from './light-color.js?v=c30442ea5107';
-import {assemblyClip} from './assembly-export.js?v=c30442ea5107';
-import {createSoftShadow} from './soft-shadow.js?v=c30442ea5107';
+import {specification,displayLength} from './catalog.js?v=797082b8b9d7';
+import {buildProduct} from './product.js?v=797082b8b9d7';
+import {buildMount} from './mounting.js?v=797082b8b9d7';
+import {buildZone} from './zones.js?v=797082b8b9d7';
+import {sectionGeometry} from './section.js?v=797082b8b9d7';
+import {lightColor} from './light-color.js?v=797082b8b9d7';
+import {assemblyClip} from './assembly-export.js?v=797082b8b9d7';
+import {createSoftShadow} from './soft-shadow.js?v=797082b8b9d7';
+import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=797082b8b9d7';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -30,7 +31,7 @@ export async function createStudio(host,initial){
   const fill=new T.DirectionalLight(0xf4f5f6,.35);fill.position.set(.04,-.10,.12);scene.add(fill);
   const detailRoot=new T.Group(),mount=new T.Group(),cut=new T.Group();detailRoot.add(mount,cut);scene.add(detailRoot);
   const softShadow=createSoftShadow(renderer),ground=softShadow.plane;scene.add(ground);
-  const woodMap=makeWood(),wood=new T.MeshStandardMaterial({color:'#d0bda3',map:woodMap,roughness:.65});
+  const woodMaps=new Map(),wood=new T.MeshStandardMaterial({color:'#efeeeb',roughness:.65});
   const cutMat=new T.MeshStandardMaterial({color:'#c0c5c7',metalness:.5,roughness:.5,side:T.DoubleSide});
   const entryPlane=new T.Plane(new T.Vector3(-1,0,0),-.020);
   const endPlane=new T.Plane(new T.Vector3(1,0,0),-.020);
@@ -54,10 +55,10 @@ export async function createStudio(host,initial){
 
   function clear(group){for(const child of [...group.children]){group.remove(child);child.traverse(o=>o.geometry?.dispose());}}
   function ensureSample(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcaps,s.showCable,s.housing,displayLength(s)].join('|');if(next===sampleKey&&sample)return;
+    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcaps,s.showCable,s.housing,s.view==='mounting',['installation','section','mounting'].includes(s.view),displayLength(s)].join('|');if(next===sampleKey&&sample)return;
     if(sample){detailRoot.remove(sample.group);sample.dispose();}if(fixture){mount.remove(fixture.root);fixture.dispose();}clear(cut);
     const spec=specification(s),H=spec.profile.height/1000;
-    sample=buildProduct(geometry,sourceSize,spec,s,{length:displayLength(s),art,sourceCover});detailRoot.add(sample.group);
+    sample=buildProduct(geometry,sourceSize,spec,{...s,showCable:s.showCable||s.view==='mounting'},{length:displayLength(s),art,sourceCover});detailRoot.add(sample.group);
     if(spec.isSleeve){fixture=null;sampleKey=next;return;}
     fixture=buildMount(spec.profile,s,wood);mount.add(fixture.root);sampleKey=next;
     const cutGeo=sectionGeometry(s.profile==='micro'?geometry:sample.profile.children.map(o=>{const g=o.geometry.clone();g.translate(...o.position.toArray());return g;}),s.profile==='micro'?H/2:0);
@@ -75,19 +76,21 @@ export async function createStudio(host,initial){
     const clipping=s.view==='assembly'&&s.assemblyAngle==='entry'?[entryPlane]:s.view==='assembly'&&s.assemblyAngle==='end'?[endPlane]:s.view==='section'?[sectionPlane]:s.view==='macro'&&s.detail==='wiring'?[wiringPlane]:[];
     detailRoot.traverse(o=>{if(o.isMesh)for(const m of(Array.isArray(o.material)?o.material:[o.material]))m.clippingPlanes=clipping;});
     cutMat.color.set({silver:'#bcc2c4',black:'#303233',white:'#efeeeb',raw:'#b3b8ba'}[s.finish]);
-    wood.color.set({oak:'#d0bda3',walnut:'#99836f',white:'#efeeeb',graphite:'#4a4d50',sand:'#c6bba8'}[s.material]);
-    const map=['white','graphite','sand'].includes(s.material)?null:woodMap;if(wood.map!==map){wood.map=map;wood.needsUpdate=true;}
+    const finish=surfaceFinish(s.material);let map=null;
+    if(finish.grain){if(!woodMaps.has(finish.id)){const texture=new T.CanvasTexture(surfaceCanvas(finish));texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());woodMaps.set(finish.id,texture);}map=woodMaps.get(finish.id);}
+    wood.color.set(map?'#ffffff':finish.color);wood.roughness=map?.62:.48;
+    if(wood.map!==map){wood.map=map;wood.needsUpdate=true;}
     fill.intensity=z?1.1:installed?1.7:.35;fill.position.set(...(z?[.1,-.3,.4]:[.04,-.10,.12]));hemi.intensity=z?.8:.6;key.intensity=z?1.7:1.35;
     scene.environmentIntensity=s.lightStudy?.18:1;
     if(s.lightStudy){fill.intensity*=.25;hemi.intensity=.12;key.intensity=.30;}
     key.position.set(...(z?[-.35,.55,.55]:[.04,.24,.12]));key.target.position.set(0,z?.1:0,0);
     Object.assign(key.shadow.camera,z?{left:-.5,right:.5,top:.5,bottom:-.5,near:.01,far:3}:{left:-.14,right:.14,top:.14,bottom:-.14,near:.01,far:2});key.shadow.camera.updateProjectionMatrix();
     renderer.toneMappingExposure=1.08;scene.background=null;
-    if(sample&&!z){sample.update(s,color);assemble(s.exploded);}
+    if(sample&&!z){sample.update({...s,showCable:s.showCable||s.view==='mounting'},color);assemble(s.exploded);}
     renderer.shadowMap.needsUpdate=!interactive;shadowDirty=true;requestDraw();
   }
   function assemble(value){
-    s.exploded=value;if(sample){sample.group.visible=true;sample.pcb.visible=true;sample.assemble(s.view==='assembly'?value:0);sample.profile.visible=s.view!=='macro'&&!specification(s).isSleeve;sample.cover.visible=s.view!=='macro'&&!specification(s).isSleeve;centerPresentation();
+    s.exploded=value;if(sample){sample.group.visible=true;sample.pcb.visible=true;sample.accessories.visible=!specification(s).isSleeve;sample.assemble(s.view==='assembly'?value:0);sample.profile.visible=s.view!=='macro'&&!specification(s).isSleeve;sample.cover.visible=s.view!=='macro'&&!specification(s).isSleeve;centerPresentation();
       if(['installation','section','mounting'].includes(s.view))fixture.update(s,sample);
     }renderer.shadowMap.needsUpdate=!interactive;shadowDirty=true;requestDraw();
   }
@@ -205,11 +208,10 @@ export async function createStudio(host,initial){
     return points;
   }
   return{update,frame,getOpening:()=>zone?.opening,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
-    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,lightOutput:zone.root.userData.lightOutput,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
-    dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();woodMap.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
+    inspect(){return{surface:{id:s.material,mapped:!!wood.map,textureId:wood.map?.uuid},assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,lightOutput:zone.root.userData.lightOutput,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{stepParts:fixture.root.userData.step,wiring:fixture.root.userData.connection,depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
+    dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();for(const map of woodMaps.values())map.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }
-function makeWood(){const c=document.createElement('canvas');c.width=512;c.height=256;const x=c.getContext('2d');x.fillStyle='#d3c5ae';x.fillRect(0,0,512,256);let seed=912;const rand=()=>{seed=seed*16807%2147483647;return seed/2147483647;};for(let i=0;i<700;i++){const y=rand()*256;x.strokeStyle=`rgba(68,47,25,${rand()*.10})`;x.lineWidth=rand();x.beginPath();x.moveTo(0,y);x.bezierCurveTo(125,y+rand()*7,375,y-rand()*5,512,y+rand()*4);x.stroke();}const texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;return texture;}
 
 function makeStudioEnvironment(){
   const env=new T.Scene();env.background=new T.Color('#77797a');

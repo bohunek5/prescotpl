@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {accessoryKit} from './accessory-data.js?v=c30442ea5107';
-import {profileContour} from './profile-shapes.js?v=c30442ea5107';
+import {accessoryKit} from './accessory-data.js?v=797082b8b9d7';
+import {profileContour} from './profile-shapes.js?v=797082b8b9d7';
 // Exterior study of the matched parts; snap fits are not machining geometry.
 export function buildAccessories(p,state,L){
   const root=new T.Group(),caps=new T.Group(),fixings=new T.Group();root.name='Akcesoria_KLUS';root.add(caps,fixings);
@@ -25,7 +25,7 @@ export function buildAccessories(p,state,L){
   if(capInfo)for(const sign of [-1,1]){
     const end=new T.Group();end.userData.sign=sign;caps.add(end);
     const shape=capShape(),entryInfo=kit.find(a=>a.kind==='entrycap');
-    if(sign<0&&entryInfo){const hole=new T.Path();hole.ellipse(-(p.ledZ||0)/1000,p.ledBase/1000+.0018,Math.min(p.channel/1000*.36,.004),Math.min(H*.23,.0015),0,Math.PI*2,true);shape.holes.push(hole);}
+    if(sign<0&&state.showCable){const hole=new T.Path();hole.ellipse(-(p.ledZ||0)/1000,p.ledBase/1000+.0018,Math.min(p.channel/1000*.36,.004),Math.min(H*.23,.0015),0,Math.PI*2,true);shape.holes.push(hole);end.userData.cablePort={prepared:!entryInfo,center:[0,p.ledBase/1000+.0018,(p.ledZ||0)/1000]};}
     const geo=new T.ExtrudeGeometry(shape,{depth:.0014,bevelEnabled:true,bevelSize:.0001,bevelThickness:.0001,bevelSegments:2,steps:1});geo.rotateY(Math.PI/2);geo.translate(-.0007,0,0);add(geo,plastic,end,'Zaslepka_'+(sign<0&&entryInfo?entryInfo.ref:capInfo.ref));
     if(!p.ledAngle&&p.id!=='pikoo')for(const side of [-1,1]){const tang=add(new RoundedBoxGeometry(.0025,Math.min(H*.55,.006),.0006,2,.0001),plastic,end,'Jezyczek_pogladowy');tang.position.set(-sign*.0012,H/2,side*(p.channel/2000-.0005));}
   }

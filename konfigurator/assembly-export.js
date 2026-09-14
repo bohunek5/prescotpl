@@ -1,16 +1,20 @@
 import * as T from 'three';
 
-// Sample the same assembly as the viewport. Morphs carry the release-paper
-// curl into GLB; rigid PCB packages keep their full-detail, straight geometry.
+// Sample the same assembly as the viewport. Morphs carry the cover flex and
+// release-paper curl into GLB; PCB packages keep their straight geometry.
 export function assemblyClip(product,{linerAllowed=true,duration=6.2}={}){
   const moving=[product.pcb,product.cover,...product.accessories.children[0].children,product.accessories.children[1]];
   moving.forEach((o,i)=>{if(i>1)o.name='Montaz_akcesorium_'+i;});
+  const flexible=[];product.cover.traverse(o=>{if(o.userData.coverFlex)flexible.push(o);});
+  const flexWeights=flexible.map(()=>[]);
   const times=[],positions=moving.map(()=>[]),rotations=moving.map(()=>[]);
   for(let i=0;i<=100;i++){
     product.assemble(100-i);times.push(duration*i/100);
+    flexible.forEach((o,n)=>flexWeights[n].push(...o.morphTargetInfluences));
     moving.forEach((o,n)=>{positions[n].push(...o.position.toArray());rotations[n].push(...o.quaternion.toArray());});
   }
   const tracks=moving.flatMap((o,i)=>[new T.VectorKeyframeTrack(o.name+'.position',times,positions[i]),new T.QuaternionKeyframeTrack(o.name+'.quaternion',times,rotations[i])]);
+  flexible.forEach((o,i)=>tracks.push(new T.NumberKeyframeTrack(o.name+'.morphTargetInfluences',times,flexWeights[i])));
   const liner=product.liner,g=liner.geometry;
   if(linerAllowed){
     const morphs=[],normals=[],paperTimes=[];

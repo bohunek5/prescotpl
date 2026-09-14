@@ -1,15 +1,15 @@
-import {stripOutputScale} from './light-state.js?v=c30442ea5107';
-import {factorySilicone} from './strip-protection.js?v=c30442ea5107';
+import {stripOutputScale} from './light-state.js?v=797082b8b9d7';
+import {factorySilicone} from './strip-protection.js?v=797082b8b9d7';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=c30442ea5107';
-import {drawPcbBrand} from './brand-art.js?v=c30442ea5107';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=c30442ea5107';
-import {smdPackage} from './smd-package.js?v=c30442ea5107';
-import {tapeTerminals} from './tape-wiring.js?v=c30442ea5107';
-import {buildSilicone} from './silicone.js?v=c30442ea5107';
-import {glowMaterial} from './glow.js?v=c30442ea5107';
-import {phosphorMap} from './light-textures.js?v=c30442ea5107';
-import {buildReleaseLiner} from './release-liner.js?v=c30442ea5107';
+import {rgbwChannels,colorCct} from './light-color.js?v=797082b8b9d7';
+import {drawPcbBrand} from './brand-art.js?v=797082b8b9d7';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=797082b8b9d7';
+import {smdPackage} from './smd-package.js?v=797082b8b9d7';
+import {tapeTerminals} from './tape-wiring.js?v=797082b8b9d7';
+import {buildSilicone} from './silicone.js?v=797082b8b9d7';
+import {glowMaterial} from './glow.js?v=797082b8b9d7';
+import {phosphorMap} from './light-textures.js?v=797082b8b9d7';
+import {buildReleaseLiner} from './release-liner.js?v=797082b8b9d7';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -122,7 +122,9 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
     for(const tip of wireGroup.children.filter(o=>o.name.startsWith('Koncowka_lutowana_')))tip.visible=false;
   }
   bend(0);
-  return{group,bend,peel,liner:liner.mesh,update(s,color){
+  return{group,bend,peel,liner:liner.mesh,wiring:wireGroup,
+    connectionPads(){core.updateWorldMatrix(true,false);return terminals.filter(t=>t.connected).map(t=>({...t,point:core.localToWorld(lastPoint(layout.contacts[0],.0004,t.z))}));},
+    update(s,color){
     const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail));core.rotation.x=side?-Math.PI/2:0;core.position.set(0,side?spec.sleeve.height*.45/1000:whiteCOB?.00008:0,side?spec.sleeve.width/2000-.0011:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);if(spec.sleeve||whiteCOB)routeSleeveWires(s,lastPoint,lastCurvature);
     const level=s.light&&!s.compare?s.dimmer/100*stripOutputScale(t,s):0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;

@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=c30442ea5107';
-import {coatingSection} from './sleeve-shapes.js?v=c30442ea5107';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=797082b8b9d7';
+import {coatingSection} from './sleeve-shapes.js?v=797082b8b9d7';
 
 // White silicone cups and model-specific holders follow catalog photography.
 // Wall, screw and overlap dimensions are illustrative, not tooling dimensions.

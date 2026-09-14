@@ -1,20 +1,38 @@
-import {previewLight,hasDoorSwitch} from './light-state.js?v=c30442ea5107';
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=c30442ea5107';
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=c30442ea5107';
-import {accessoryKit} from './accessory-data.js?v=c30442ea5107';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=c30442ea5107';
-import {zones} from './zones.js?v=c30442ea5107';
-import {mountingSteps} from './mounting.js?v=c30442ea5107';
-import {coverIcon} from './cover-shapes.js?v=c30442ea5107';
-import {profileIcon} from './profile-shapes.js?v=c30442ea5107';
-import {sleeveIcon} from './sleeve-shapes.js?v=c30442ea5107';
-import {projectSheet} from './sheet.js?v=c30442ea5107';
-import {uiIcon,actionLabel} from './ui-icons.js?v=c30442ea5107';
+import {previewLight,hasDoorSwitch} from './light-state.js?v=797082b8b9d7';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=797082b8b9d7';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=797082b8b9d7';
+import {accessoryKit} from './accessory-data.js?v=797082b8b9d7';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=797082b8b9d7';
+import {zones} from './zones.js?v=797082b8b9d7';
+import {mountingSteps} from './mounting.js?v=797082b8b9d7';
+import {coverIcon} from './cover-shapes.js?v=797082b8b9d7';
+import {profileIcon} from './profile-shapes.js?v=797082b8b9d7';
+import {sleeveIcon} from './sleeve-shapes.js?v=797082b8b9d7';
+import {projectSheet} from './sheet.js?v=797082b8b9d7';
+import {uiIcon,actionLabel} from './ui-icons.js?v=797082b8b9d7';
+import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=797082b8b9d7';
+import {createZonePlayback} from './zone-playback.js?v=797082b8b9d7';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
 let studio,toastTimer,animation=0,stripFilter='all',profileFilter='all';
 const num=(v,d=0)=>v.toLocaleString('pl-PL',{maximumFractionDigits:d});
+let playbackZone=s.zone;
+const zonePlayer=createZonePlayback({
+  getOpening:()=>studio?.getOpening()??(s.zoneOpen?1:0),
+  onOpening:opening=>{studio?.setOpening(opening);syncLightControls(opening);},
+  onEndpoint:opening=>{s.zoneOpen=opening===1;update();},
+  onChange:syncZonePlay,
+  reducedMotion:()=>matchMedia('(prefers-reduced-motion: reduce)').matches
+});
+function syncZonePlay(){
+  const playing=zonePlayer.playing;actionLabel($('zone-play'),playing?'Pauza':'Odtwórz',playing?'pause':'play');
+  $('zone-play').setAttribute('aria-pressed',String(playing));$('zone-play').setAttribute('aria-label',playing?'Wstrzymaj ruch strefy':'Odtwórz ruch strefy');
+}
+const surfaceSwatches=new Map(surfaceFinishes.filter(f=>f.grain).map(f=>[f.id,surfaceCanvas(f).toDataURL()]));
+for(const id of ['materials','zone-materials']){
+  $(id).replaceChildren(...surfaceFinishes.map(f=>{const b=document.createElement('button');b.type='button';b.dataset.value=f.id;b.setAttribute('aria-label',f.name);b.title=f.name;const swatch=document.createElement('span');swatch.style.background=f.grain?`url("${surfaceSwatches.get(f.id)}") center / cover`:f.color;b.style.setProperty('--swatch',f.color);swatch.setAttribute('aria-hidden','true');b.append(swatch);return b;}));
+}
 function toast(text){$('toast').textContent=text;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),5000);}
 let lastDimmer=s.dimmer>0?s.dimmer:defaults.dimmer;
 function syncLightControls(opening){
@@ -87,6 +105,7 @@ function updateFit(spec){
 function update(){
   s=normalize(s);const spec=specification(s),p=spec.profile,t=spec.strip;
   if(spec.assemblyBlocked&&s.view!=='macro'){s.view='assembly';s.exploded=100;}
+  if(s.view!=='zone'||playbackZone!==s.zone){zonePlayer.reset();playbackZone=s.zone;}
   const z=s.view==='zone',installed=['installation','section','mounting'].includes(s.view),walk=s.view==='mounting',site=zones.find(z=>z.id===s.zone);
   filterProfiles();updateAccessories(p);updateSleeves(spec);updateFit(spec);
   for(const profile of profiles){
@@ -126,6 +145,9 @@ function update(){
   document.querySelectorAll('[data-mount-step]').forEach(b=>{b.setAttribute('aria-pressed',String(Number(b.dataset.mountStep)===s.mountStep));b.setAttribute('aria-label',`Etap ${Number(b.dataset.mountStep)+1}: ${mountingSteps(p,s.mounting==='recessed')[Number(b.dataset.mountStep)][0]}`);});
   document.querySelectorAll('[data-zone-detail]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.zoneDetail==='true')===s.zoneDetail)));
   $('zone-motion').hidden=['drywall','shelf','plinth'].includes(s.zone);actionLabel($('zone-motion'),s.zone==='drawer'?(s.zoneOpen?'Wsuń szufladę':'Wysuń szufladę'):(s.zoneOpen?'Zamknij front':'Otwórz front'),'external');$('zone-motion').setAttribute('aria-pressed',String(s.zoneOpen));
+  document.querySelector('.zone-demo').hidden=!z;$('zone-play').hidden=$('zone-motion').hidden;syncZonePlay();
+  $('zone-surface-name').textContent=surfaceFinish(s.material).name;
+  $('zone-materials').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===s.material)));
   $('zone-cable').hidden=s.zone==='drywall';$('zone-cable').setAttribute('aria-pressed',String(s.showCable));
   $('zone-compatibility').textContent=s.zone==='drywall'?`${p.name} · ${p.screwDrywall?'płyta '+num(p.boardThickness,1)+' mm, skrzydła pod płytą i wkręty':p.id==='kozus'?'płyta 16 mm, klej i wkładka TECH-22':'wpust i dedykowane sprężyny'}.`:['shelf','plinth'].includes(s.zone)?'Fragment płyty i trasa przewodu pokazują zasadę osadzenia. Wymiary frezu wymagają doboru.':'Front i prowadnice pokazują zasadę zabudowy. Odcinek światła pozostaje na korpusie.';
   const steps=mountingSteps(p,s.mounting==='recessed');$('mount-heading').textContent=steps[s.mountStep][0];$('mount-copy').textContent=steps[s.mountStep][1];$('mount-source').href=p.instruction;$('mount-prev').disabled=s.mountStep===0;$('mount-next').disabled=s.mountStep===4;
@@ -151,8 +173,9 @@ function update(){
   $('mobile-assembly-play').hidden=s.view!=='assembly';$('mobile-assembly-play').disabled=spec.assemblyBlocked;syncAssemblyButton();$('exploded').disabled=s.view!=='assembly'||spec.assemblyBlocked;$('animate').disabled=s.view!=='assembly'||spec.assemblyBlocked;document.querySelectorAll('[data-step]').forEach(b=>b.disabled=spec.assemblyBlocked&&b.dataset.step!=='100');filterStrips();
   try{localStorage.setItem('prescot-light-studio-v9',JSON.stringify(s));}catch{}
   applyHousingUI(spec);
-  syncLightControls();
   studio?.update(s);
+  if(z&&zonePlayer.opening!==null)studio?.setOpening(zonePlayer.opening);
+  syncLightControls(z?(zonePlayer.opening??studio?.getOpening()):undefined);
 }
 function showMobilePreview(){if(innerWidth<=780)document.querySelector('.stage-shell').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
 for(const k of ['length','exploded','cct','dimmer','repeat'])$(k).oninput=()=>{if($(k).value==='')return;stopAnimation();s[k]=Number($(k).value);update();};
@@ -176,17 +199,20 @@ for(const [attr,key]of [['angle','assemblyAngle'],['power','powerMode'],['detail
 document.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{stopAnimation();s.exploded=Number(b.dataset.step);update();});
 document.querySelectorAll('[data-mount-step]').forEach(b=>b.onclick=()=>{s.mountStep=Number(b.dataset.mountStep);update();});
 $('mount-prev').onclick=()=>{s.mountStep=Math.max(0,s.mountStep-1);update();};$('mount-next').onclick=()=>{s.mountStep=Math.min(4,s.mountStep+1);update();};
-for(const [id,k]of [['finishes','finish'],['materials','material']])$(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{s[k]=b.dataset.value;update();});
+for(const [id,k]of [['finishes','finish'],['materials','material'],['zone-materials','material']])$(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{s[k]=b.dataset.value;update();});
 document.querySelectorAll('button[data-view]').forEach(b=>b.onclick=()=>{stopAnimation();s.view=b.dataset.view;if(s.view==='zone'&&innerWidth<=780)s.zoneDetail=true;update();showMobilePreview();});
 document.querySelectorAll('button[data-light-study]').forEach(b=>b.onclick=()=>{s.lightStudy=!s.lightStudy;if(s.lightStudy){s.light=true;s.dimmer=100;}update();});
-$('inspect-tape').onclick=()=>{s.view='macro';update();showMobilePreview();};$('reset-camera').onclick=()=>studio?.frame();$('led-toggle').onclick=()=>switchLight(!previewLight(s).on);
+$('inspect-tape').onclick=()=>{s.view='macro';update();showMobilePreview();};$('reset-camera').onclick=()=>studio?.frame();$('led-toggle').onclick=()=>switchLight(!previewLight(s,s.view==='zone'?studio?.getOpening():undefined).on);
 $('zone-mount').onclick=()=>{s.view='mounting';s.mountStep=0;update();};$('zone-cable').onclick=()=>{s.showCable=!s.showCable;if(s.showCable)s.zoneDetail=true;update();};
 document.querySelectorAll('[data-zone-detail]').forEach(b=>b.onclick=()=>{s.zoneDetail=b.dataset.zoneDetail==='true';update();});
 $('zone-motion').onclick=()=>{
-  const from=studio?.getOpening()??(s.zoneOpen?1:0);stopAnimation();s.zoneOpen=!s.zoneOpen;const to=s.zoneOpen?1:0;update();
+  const from=studio?.getOpening()??(s.zoneOpen?1:0);stopAnimation();s.zoneOpen=from<=.5;const to=s.zoneOpen?1:0;update();
   if(!studio||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   studio.setOpening(from);syncLightControls(from);const start=performance.now();const tick=t=>{const f=Math.min(1,(t-start)/800),ease=f*f*(3-2*f);const opening=from+(to-from)*ease;studio.setOpening(opening);syncLightControls(opening);if(f<1)animation=requestAnimationFrame(tick);else animation=0;};animation=requestAnimationFrame(tick);
 };
+$('zone-play').onclick=()=>{if(zonePlayer.playing)zonePlayer.pause();else{cancelAnimationFrame(animation);animation=0;zonePlayer.play();}};
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(animation){stopAnimation();update();}else zonePlayer.pause();}});
+matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)zonePlayer.pause();});
 function syncAssemblyButton(){
   const target=assemblyTarget===null?(s.exploded>50?0:100):(assemblyTarget===0?100:0),label=target===0?'Złóż':'Rozłóż';
   $('mobile-assembly-play').querySelector('span').textContent=label;
@@ -194,7 +220,7 @@ function syncAssemblyButton(){
   $('mobile-assembly-play').title=assemblyTarget===null?label+' zestaw':'Odwróć animację · '+label.toLowerCase()+' zestaw';
   $('mobile-assembly-play').dataset.playing=String(assemblyTarget!==null);
 }
-function stopAnimation(){cancelAnimationFrame(animation);animation=0;assemblyTarget=null;$('animate').innerHTML=uiIcon('play');$('animate').setAttribute('aria-label','Odtwórz animację montażu');actionLabel($('play-mount'),'Odtwórz montaż','play');$('play-mount').setAttribute('aria-label','Odtwórz montaż');syncAssemblyButton();}
+function stopAnimation(){zonePlayer.reset();cancelAnimationFrame(animation);animation=0;assemblyTarget=null;$('animate').innerHTML=uiIcon('play');$('animate').setAttribute('aria-label','Odtwórz animację montażu');actionLabel($('play-mount'),'Odtwórz montaż','play');$('play-mount').setAttribute('aria-label','Odtwórz montaż');syncAssemblyButton();}
 function playAssembly(to){
   cancelAnimationFrame(animation);animation=0;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){s.exploded=to;assemblyTarget=null;update();return;}
@@ -236,7 +262,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=c30442ea5107');
+      const {createStudio}=await import('./scene.js?v=797082b8b9d7');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

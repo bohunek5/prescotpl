@@ -10,7 +10,7 @@ HS-12 i KA-13 mają szerokości 13,1 / 14,8 mm oraz osobne wartości przepuszcza
 
 Produkt jest centrowany niezależnie od kamery, a odklejany papier nie rozszerza kadru całej animacji. STOS ma gładkie skrzydła. Bufor obrazu odzyskuje rozdzielczość Retina po zakończeniu ruchu; scena nie renderuje w bezruchu.
 
-Weryfikacja: `npm run check` w źródle `prescot-led-studio` obejmuje 56 testów danych i geometrii. W repozytorium strony: `node scripts/check-configurator-studio.mjs`, `node scripts/check-configurator-housing.mjs`, `node scripts/check-configurator-optics.mjs`. Zrzuty i eksporty są zapisywane w ignorowanym katalogu `output/configurator`. Rejestr źródeł: `konfigurator/assets/sources/studio-v9-sources.json`.
+Weryfikacja: `npm run check` w źródle `prescot-led-studio` obejmuje 61 testów danych, geometrii i odtwarzania. W repozytorium strony: `node scripts/check-configurator-studio.mjs`, `node scripts/check-configurator-housing.mjs`, `node scripts/check-configurator-optics.mjs`. Zrzuty i eksporty są zapisywane w ignorowanym katalogu `output/configurator`. Rejestr źródeł: `konfigurator/assets/sources/studio-v9-sources.json`.
 
 ## Późniejszy moduł: „Wyślij zdjęcie — oświetlimy Twoją przestrzeń”
 
@@ -35,3 +35,21 @@ Kontrola: `node scripts/check-configurator-light-controls.mjs` — Chromium 1440
 ## Pomysł do rozmowy: zestaw komponentów i dokumentacja
 
 Inspiracja użytkownika: ekran Kanlux z listą elementów zestawu, instrukcjami, kartami produktów i pobraniem wszystkich dokumentów. Połączyć temat z przyszłymi projektami ze zdjęć/rzutów oraz realizacjami. Do przedyskutowania przed wdrożeniem; obecne poprawki nie uruchamiają tej usługi.
+
+## Oznaczenie dystrybutora i ruch przesłony
+
+Nagłówek pokazuje oryginalną grafikę „KLUŚ Official Distributor” z zasobów strony, następnie logo PRESCOT LED i powrót na www.prescot.pl. Tryb nocny zachowuje czerwony znak KLUŚ; napis dystrybutora jest biały. Na wąskim ekranie powrót ma postać ikony z dostępną nazwą, a oba znaki pozostają widoczne.
+
+Przesłony mają wspólne, łagodne wygięcie wzdłuż odcinka. Po osadzeniu taśmy wygięta przesłona opada do kanału, środek dochodzi pierwszy, następnie prostują się końce i zamykają zaślepki. Rozkładanie odwraca tę kolejność. Jeden morph na GPU zachowuje przekrój i nie przebudowuje siatki w każdej klatce. Wygięcie trafia także do animacji GLB obok odklejania podkładu. Promień wygięcia jest zabiegiem prezentacyjnym, nie parametrem materiałowym producenta.
+
+Testy geometrii obejmują wszystkie 38 przesłon. `node scripts/check-configurator-cover-flex.mjs` sprawdza rodziny MICRO, STOS, 45-ALU, LENSO i PIKO-O, pełne odtwarzanie, odwrócenie na telefonie, ograniczony ruch, stałość kamery, bezruch renderera, nagłówek dzień/noc oraz morph przesłony i papieru w pobranym GLB. Rozmiary: Chromium 1440/320 px i WebKit 390 px.
+
+## Strefy, przymiarka i zestawienie
+
+Ruchome strefy mają przycisk Odtwórz/Pauza: otwieranie i zamykanie w pętli z postojem na końcach oraz wspólnym sterowaniem krańcówką. Pauza zachowuje pozycję. Zmiana wykończenia nie resetuje kamery ani położenia frontu. Ukrycie karty zatrzymuje pętlę, a ograniczony ruch przełącza pozycję bez ciągłej animacji. Strefy statyczne zachowują wybór wykończenia bez przycisku ruchu.
+
+Osiem wykończeń: biały, czarny, szary, ecru, dąb naturalny, dąb bielony, orzech i jesion. Cztery osobne proceduralne tekstury drewna są używane także w próbkach wyboru. To warianty wizualne, bez przypisania do dekorów konkretnego producenta płyt.
+
+W standardowym montażu we frezie pierwszy krok pokazuje samo podłoże, drugi — przymiarkę samego profilu. Taśma pojawia się w trzecim, przewody w czwartym, przesłona w piątym. Procedury KOZUS, LARKO i profili do płyt g-k zachowują własną kolejność z dokumentacji. Przewody wychodzą z rzeczywistych pozycji pól w modelu wybranej taśmy: mono/3w1 mają dwa połączenia, CCT trzy, RGBW pięć. Wybrana zaślepka ma przepust; jeśli nie ma przypisanego wariantu z otworem, model pokazuje przygotowanie otworu bez nadawania nowego symbolu produktu. Geometria przepustu i trasy pozostaje poglądowa.
+
+Blok Zestawienie ma własne białe tło, łagodną obwódkę i parametry w dwóch kolumnach. W trybie nocnym zachowuje ciemną powierzchnię. `node scripts/check-configurator-zone-playback.mjs` obejmuje odtwarzanie, osiem wykończeń, przymiarkę i połączenia przewodów na komputerze oraz telefonie.

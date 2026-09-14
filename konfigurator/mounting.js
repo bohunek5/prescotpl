@@ -1,7 +1,8 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=c30442ea5107';
-import {accessoryKit} from './accessory-data.js?v=c30442ea5107';
+import {buildAccessories} from './accessories.js?v=797082b8b9d7';
+import {accessoryKit} from './accessory-data.js?v=797082b8b9d7';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+import {buildInstallationCable} from './installation-wiring.js?v=797082b8b9d7';
 
 export function seatingHeight(p,recessed){
   if(!recessed)return .0008;
@@ -93,20 +94,28 @@ export function buildMount(p,state,wood){
   const opening=p.screwDrywall?.0112:.022;
   const shield=box(root,.1,.001,opening-.0003,material({color:'#547d80',roughness:.45}),0,seat+H-.00025);shield.name=p.screwDrywall?'Wkladka_ochronna_TECH_11':'Wkladka_ochronna_TECH_22';
   if(dry)for(const sign of [-1,1])box(finish,.1,seat+H,(span-opening)/2,plaster,0,(seat+H)/2,sign*(opening/2+(span-opening)/4));
-  const route=new T.CatmullRomCurve3([new T.Vector3(-.048,seat+.0015,0),new T.Vector3(-.051,seat+.002,0),new T.Vector3(-.053,-.009,0),new T.Vector3(-.053,-.015,-span*.33),new T.Vector3(-.035,-.015,-span*.4)]);
-  add(new T.TubeGeometry(route,36,.0011,10,false),dark,cable);cable.name='Trasa_przewodu';
+  let connection=null;cable.name='Trasa_przewodu';
   function update(s,sample){
     const walk=s.view==='mounting',step=s.mountStep;
     fixings.traverse(o=>{if(o.name==='Wkret_mocownika')o.position.y=walk&&step===1?.009:0;});
     pilot.visible=walk&&step===0;fixings.visible=!walk||step>=1;shield.visible=dry&&walk&&step>=1&&step<4;finish.visible=dry&&(!walk||step>=3);cable.visible=walk&&step>=3||!walk&&s.showCable;
     if(dry)cable.visible=walk&&step>=1;
-    sample.group.position.y=seat;sample.profile.visible=true;sample.pcb.visible=true;sample.cover.visible=true;sample.group.visible=true;
+    sample.group.position.y=seat;sample.profile.visible=true;sample.pcb.visible=true;sample.cover.visible=true;sample.group.visible=true;sample.accessories.visible=true;
     if(walk){
       if(p.screwDrywall){sample.group.visible=step>0;sample.assemble(0);sample.group.position.y=seat;sample.cover.visible=step===4;sample.pcb.visible=step===4;shield.visible=step>=2&&step<4;shield.position.y=seat+H-.00025;}
       else if(dry){sample.assemble(step===0?100:0);sample.group.position.y=step<2?seat+.018:seat;sample.cover.visible=step===4;sample.pcb.visible=step>0;shield.position.y=sample.group.position.y+H-.00025;}
+      else if(recessed&&p.id!=='larko'){
+        sample.group.visible=step>0;sample.assemble(step===2?100:step===3?50:0);sample.group.position.y=seat+(step===1?.006:0);
+        sample.pcb.visible=step>=2;sample.cover.visible=step===4;sample.accessories.visible=step>=3;fixings.visible=false;
+      }
       else if(['piko','tami','tost','pac','stos','larko'].includes(p.id)){sample.group.visible=step>0;sample.assemble(step===1?100:0);sample.group.position.y=seat+(step>0&&step<4?.012:0);}
       else{sample.group.visible=step>=2;sample.assemble(step===2?100:step===3?50:0);sample.group.position.y=seat+(step>=2&&step<4?.011:0);}
     }
+    if(!connection)connection=buildInstallationCable(sample,p);
+    const connected=cable.visible&&sample.group.visible&&sample.pcb.visible;
+    const tail=[new T.Vector3(-.058,-.009-sample.group.position.y,0),new T.Vector3(-.058,-.015-sample.group.position.y,-span*.33),new T.Vector3(-.035,-.015-sample.group.position.y,-span*.4)];
+    connection.update(s,tail,connected);root.userData.connection=connected?connection.root.userData:null;
+    root.userData.step={profile:sample.group.visible&&sample.profile.visible,pcb:sample.group.visible&&sample.pcb.visible,cover:sample.group.visible&&sample.cover.visible,accessories:sample.group.visible&&sample.accessories.visible&&s.endcaps};
   }
-  return{root,seat,span,depth,update,dispose(){mountedAccessories?.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
+  return{root,seat,span,depth,update,dispose(){connection?.dispose();mountedAccessories?.dispose();for(const g of geos)g.dispose();for(const m of mats)m.dispose();}};
 }
