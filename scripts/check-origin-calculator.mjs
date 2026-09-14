@@ -12,6 +12,7 @@ for(const engine of [chromium,webkit]){
   const flag=page.locator('.pm-origin-flag');await flag.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await page.waitForTimeout(600);
   assert.ok(await flag.isVisible());
   const flagBox=await flag.boundingBox(),copyBox=await page.locator('.pm-origin-copy').boundingBox();
+  if(width<768){const section=await page.locator('.elementor-element-455940b2').boundingBox();assert.ok(flagBox.y-section.y>=width*2/3-2,'Flag and heading below the background photo');}
   assert.ok(Math.abs(flagBox.width/copyBox.width-.3)<.02,'Flag is 30% of caption block');
   assert.equal(await flag.evaluate(e=>getComputedStyle(e).animationName),'none');
   await page.emulateMedia({reducedMotion:'no-preference'});

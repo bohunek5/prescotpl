@@ -8,7 +8,7 @@ html body .pm-origin-copy h2 { margin:0; }
 @keyframes pm-flag-wave { 0%,100% { transform:perspective(500px) rotateY(-9deg) skewY(-1deg); } 50% { transform:perspective(500px) rotateY(10deg) skewY(1.5deg); } }
 @keyframes pm-flag-light { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
 @media(max-width:767px){
- html body .elementor-element-455940b2{background-size:100% auto!important;background-position:center top!important;background-repeat:no-repeat!important;min-height:0!important;padding:calc(100vw * 2 / 3) 22px 40px!important}
+ html body #content .elementor.elementor-14894 .elementor-element.elementor-element-455940b2{background-size:100% auto!important;background-position:center top!important;background-repeat:no-repeat!important;min-height:0!important;padding:calc(100vw * 2 / 3) 22px 40px!important}
  html body .elementor-element-455940b2>.e-con-inner{padding:0!important}
  html body .elementor-element-455940b2 .elementor-element-31f5b62{padding:0!important}
  html body .pm-origin-copy h2{font-size:clamp(25px,7vw,32px)!important;line-height:1.2!important}
