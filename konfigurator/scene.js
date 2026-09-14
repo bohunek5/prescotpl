@@ -1,17 +1,17 @@
-import {hasAdhesiveBacking} from './strip-protection.js?v=c5bc01a3b1d1';
+import {hasAdhesiveBacking} from './strip-protection.js?v=c30442ea5107';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=c5bc01a3b1d1';
-import {buildProduct} from './product.js?v=c5bc01a3b1d1';
-import {buildMount} from './mounting.js?v=c5bc01a3b1d1';
-import {buildZone} from './zones.js?v=c5bc01a3b1d1';
-import {sectionGeometry} from './section.js?v=c5bc01a3b1d1';
-import {lightColor} from './light-color.js?v=c5bc01a3b1d1';
-import {assemblyClip} from './assembly-export.js?v=c5bc01a3b1d1';
-import {createSoftShadow} from './soft-shadow.js?v=c5bc01a3b1d1';
+import {specification,displayLength} from './catalog.js?v=c30442ea5107';
+import {buildProduct} from './product.js?v=c30442ea5107';
+import {buildMount} from './mounting.js?v=c30442ea5107';
+import {buildZone} from './zones.js?v=c30442ea5107';
+import {sectionGeometry} from './section.js?v=c30442ea5107';
+import {lightColor} from './light-color.js?v=c30442ea5107';
+import {assemblyClip} from './assembly-export.js?v=c30442ea5107';
+import {createSoftShadow} from './soft-shadow.js?v=c30442ea5107';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -204,8 +204,8 @@ export async function createStudio(host,initial){
     }
     return points;
   }
-  return{update,frame,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
-    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
+  return{update,frame,getOpening:()=>zone?.opening,exportGLB,exportPNG:capture,setAssembly(value){beginInteraction();assemble(value);},setOpening(value){zone?.setOpening(value);beginInteraction();renderer.shadowMap.needsUpdate=true;requestDraw();},setArtwork(canvas){art=canvas;sampleKey='';zoneKey='';if(s.view==='zone')ensureZone();else ensureSample();appearance();frame();},
+    inspect(){return{assembly:sample?.group.userData.assembly,liner:sample?{...sample.liner.userData,visible:sample.liner.visible}:null,ledLight:sample?.pcb.children[0]?.userData.light,coverLight:sample?.cover.userData.light,coverVisible:sample?.cover.visible,coverProjection:sample?projectedCover():null,productProjection:sample?projectedCover(sample.group):null,presentationOffset:sample?.group.position.toArray(),cameraMoving:!!cameraTween,view:s.view,sourceSize,productVisible:sample?.group.visible&&detailRoot.visible,installedRotation:detailRoot.rotation.x,pcbBend:sample?.pcb.children[0]?.userData.bend,pcbShape:sample?.pcb.children[0]?.userData.shape,lateralBend:sample?.pcb.children[0]?.userData.lateralBend,sampleLengthMm:sample?.length,silicone:(()=>{let data=null;sample?.pcb.traverse(o=>{if(o.name==='Ochrona_silikonowa')data={...o.userData,visible:o.visible};});return data;})(),accessoryParts:sample?.accessories.children.filter(o=>o.visible).flatMap(g=>g.children.map(o=>o.name||o.type)),profileSize:sample?new T.Box3().setFromObject(sample.profile).getSize(new T.Vector3()):null,cameraType:camera.type,cameraZoom:camera.zoom,camera:camera.position.toArray(),cameraTarget:controls.target.toArray(),cameraLimits:{pan:controls.enablePan,rotate:controls.enableRotate,minAzimuth:controls.minAzimuthAngle,maxAzimuth:controls.maxAzimuthAngle,minPolar:controls.minPolarAngle,maxPolar:controls.maxPolarAngle,azimuth:controls.getAzimuthalAngle(),polar:controls.getPolarAngle()},renderer:{...renderer.info.render},memory:{...renderer.info.memory},renderCount,pixelRatio:renderer.getPixelRatio(),basePixelRatio,interactive,lastFrameMs,renderPending:!!framePending,zone:zone?{id:s.zone,visible:zone.root.visible,opening:zone.opening,lightOn:zone.root.userData.lightOn,lightOutput:zone.root.userData.lightOutput,position:s.zonePosition,motion:zone.motion,profileLengthMm:zone.product.length,focus:zone.focus.toArray(),light:zone.root.children.filter(o=>o.isSpotLight).reduce((sum,o)=>sum+o.intensity,0),lighting:zone.root.userData.lighting}:null,mount:fixture?{depthMm:fixture.depth*1000,seatMm:fixture.seat*1000,step:s.mountStep,visibleParts:fixture.root.children.filter(o=>o.visible).map(o=>o.name||o.type)}:null};},
     dispose(){disposed=true;cancelAnimationFrame(cameraTween);cancelAnimationFrame(framePending);clearTimeout(settleTimer);ro.disconnect();controls.dispose();document.removeEventListener('visibilitychange',visibility);sample?.dispose();fixture?.dispose();zone?.dispose();clear(cut);geometry.dispose();sourceCover.dispose();softShadow.dispose();environment.dispose();wood.dispose();woodMap.dispose();cutMat.dispose();renderer.dispose();renderer.domElement.remove();}
   };
 }

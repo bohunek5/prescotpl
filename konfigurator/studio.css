@@ -368,6 +368,20 @@ body:not([data-light-study=true]) #studio-stage #viewport{background:radial-grad
 .component-picker>summary{border-color:color-mix(in srgb,currentColor 14%,transparent)}
 .technical-component+.technical-component{border-left:1px solid var(--line);padding-left:24px}
 .stage-controls>.stage-light-controls{padding-top:16px;border-top:1px solid var(--line)}
+#studio-stage #power-modes{flex:0 0 100%;max-width:420px;padding-bottom:3px}
+#studio-stage #power-modes>.range-label{margin:0 0 7px;font-size:11px;color:var(--muted)}
+#studio-stage .power-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#studio-stage .power-picker button{min-height:48px;padding:9px 10px;font-size:11px;border:1px solid var(--line);border-radius:5px;color:inherit;background:transparent}
+#studio-stage .power-picker strong{font-size:12px;margin-top:4px;font-weight:500;white-space:nowrap}
+#studio-stage .power-picker button[aria-pressed=true]{border-color:#a89980;background:#a899801f}
+#studio-stage #light-trigger-note{flex-basis:100%;margin:0;font-size:11px;color:var(--muted)}
+#studio-stage #dimmer:disabled{cursor:default;opacity:.55}
+#studio-stage #led-toggle:disabled{opacity:.7}
+@media(max-width:780px){
+ #studio-stage .stage-light-controls:has(#power-modes:not([hidden])){grid-template-areas:'power power power' 'toggle dimmer dimmer' 'theme note reset'}
+ #studio-stage #power-modes{grid-area:power;max-width:none;padding-bottom:5px}
+ #studio-stage #light-trigger-note{grid-column:1/-1;font-size:10px}
+}
 .sleeve-view-label{font-size:12px;letter-spacing:.14em;opacity:.6;margin:0 0 22px}
 .project-length{padding:0 0 20px;margin:0 0 20px;border-bottom:1px solid var(--line)}
 #choose-sleeve .sleeve-picker{border:0;padding:0;margin:0}

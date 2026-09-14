@@ -1,14 +1,15 @@
-import {factorySilicone} from './strip-protection.js?v=c5bc01a3b1d1';
+import {stripOutputScale} from './light-state.js?v=c30442ea5107';
+import {factorySilicone} from './strip-protection.js?v=c30442ea5107';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=c5bc01a3b1d1';
-import {drawPcbBrand} from './brand-art.js?v=c5bc01a3b1d1';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=c5bc01a3b1d1';
-import {smdPackage} from './smd-package.js?v=c5bc01a3b1d1';
-import {tapeTerminals} from './tape-wiring.js?v=c5bc01a3b1d1';
-import {buildSilicone} from './silicone.js?v=c5bc01a3b1d1';
-import {glowMaterial} from './glow.js?v=c5bc01a3b1d1';
-import {phosphorMap} from './light-textures.js?v=c5bc01a3b1d1';
-import {buildReleaseLiner} from './release-liner.js?v=c5bc01a3b1d1';
+import {rgbwChannels,colorCct} from './light-color.js?v=c30442ea5107';
+import {drawPcbBrand} from './brand-art.js?v=c30442ea5107';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=c30442ea5107';
+import {smdPackage} from './smd-package.js?v=c30442ea5107';
+import {tapeTerminals} from './tape-wiring.js?v=c30442ea5107';
+import {buildSilicone} from './silicone.js?v=c30442ea5107';
+import {glowMaterial} from './glow.js?v=c30442ea5107';
+import {phosphorMap} from './light-textures.js?v=c30442ea5107';
+import {buildReleaseLiner} from './release-liner.js?v=c30442ea5107';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -124,9 +125,9 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   return{group,bend,peel,liner:liner.mesh,update(s,color){
     const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail));core.rotation.x=side?-Math.PI/2:0;core.position.set(0,side?spec.sleeve.height*.45/1000:whiteCOB?.00008:0,side?spec.sleeve.width/2000-.0011:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);if(spec.sleeve||whiteCOB)routeSleeveWires(s,lastPoint,lastCurvature);
-    const level=s.light&&!s.compare?s.dimmer/100:0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
+    const level=s.light&&!s.compare?s.dimmer/100*stripOutputScale(t,s):0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
     warm.emissive.copy(rgbw?colorCct(t.cct):cct&&!continuous?colorCct(t.cctMin):color);cool.emissive.copy(colorCct(t.cctMax||6500));
-    const strength=level*(s.lightStudy?13:7.5)*(spec.wattsPerMeter/t.watts);
+    const strength=level*(s.lightStudy?13:7.5);
     const channels=rgbw?rgbwChannels(s):null;
     warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=level*1.35*channels[key];cool.emissiveIntensity=strength*mix;
     for(const {mesh,style,channel}of halos){const fraction=rgbw?Math.max(...Object.values(channels)):cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&!spec.sleeve?.clear&&t.encapsulation!=='tube'&&['product','sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?color:cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(rgbw?(s.lightStudy?1.25:.75):(s.lightStudy?1.65:.8));}

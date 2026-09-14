@@ -10,7 +10,7 @@ HS-12 i KA-13 mają szerokości 13,1 / 14,8 mm oraz osobne wartości przepuszcza
 
 Produkt jest centrowany niezależnie od kamery, a odklejany papier nie rozszerza kadru całej animacji. STOS ma gładkie skrzydła. Bufor obrazu odzyskuje rozdzielczość Retina po zakończeniu ruchu; scena nie renderuje w bezruchu.
 
-Weryfikacja: `npm run check` w źródle `prescot-led-studio` obejmuje 52 testy danych i geometrii. W repozytorium strony: `node scripts/check-configurator-studio.mjs`, `node scripts/check-configurator-housing.mjs`, `node scripts/check-configurator-optics.mjs`. Zrzuty i eksporty są zapisywane w ignorowanym katalogu `output/configurator`. Rejestr źródeł: `konfigurator/assets/sources/studio-v9-sources.json`.
+Weryfikacja: `npm run check` w źródle `prescot-led-studio` obejmuje 56 testów danych i geometrii. W repozytorium strony: `node scripts/check-configurator-studio.mjs`, `node scripts/check-configurator-housing.mjs`, `node scripts/check-configurator-optics.mjs`. Zrzuty i eksporty są zapisywane w ignorowanym katalogu `output/configurator`. Rejestr źródeł: `konfigurator/assets/sources/studio-v9-sources.json`.
 
 ## Późniejszy moduł: „Wyślij zdjęcie — oświetlimy Twoją przestrzeń”
 
@@ -23,3 +23,15 @@ Dodano białą nasadkę silikonową z przewodami i pełną zaślepkę dopasowane
 Zdjęcie `reference-19377-1.jpg` potwierdza jasny podkład z czerwonym 3M, bez wskazania serii kleju. WCOB pokazuje go na spodzie, a przy montażu odkleja od środka w obu kierunkach przed osadzeniem taśmy. Reguła jest wspólna dla sceny i GLB. Zestaw zakończeń trafia do JSON i karty także w wariancie z profilem.
 
 Test `node scripts/check-configurator-wcob.mjs`: Chromium 1440 px i WebKit 390 px, WCOB mono/CCT, zakończenia, kolejność odklejania, zachowanie kamery, animowany GLB i brak renderowania w bezruchu.
+
+## 3w1 i krańcówka
+
+LOW / MEDIUM / HIGH są obok jasności w podglądzie, z mocą 3 / 6 / 11 W/m i wartością strumienia dla wybranego wariantu. Wspólna proporcja emisji 460 / 930 / 1750 lm/m obejmuje także przesłonę i koszulkę. Zmiana wariantu zachowuje jasność, barwę i kamerę.
+
+Model strefy oraz LED/suwak korzystają ze wspólnego stanu wyjściowego krańcówki. Zamknięcie szuflady lub szafki pokazuje 0% i wyłącza światło, bez kasowania ustawienia do przywrócenia. Synchronizacja działa podczas animacji i przy ograniczonym ruchu. Front szuflady dochodzi do górnej listwy z niewielką szczeliną zamiast pozostawiać otwarty pas nad frontem. Ręczne wyłączenie i ręczny tryb sterowania są zachowane.
+
+Kontrola: `node scripts/check-configurator-light-controls.mjs` — Chromium 1440/320 px i WebKit 390 px.
+
+## Pomysł do rozmowy: zestaw komponentów i dokumentacja
+
+Inspiracja użytkownika: ekran Kanlux z listą elementów zestawu, instrukcjami, kartami produktów i pobraniem wszystkich dokumentów. Połączyć temat z przyszłymi projektami ze zdjęć/rzutów oraz realizacjami. Do przedyskutowania przed wdrożeniem; obecne poprawki nie uruchamiają tej usługi.

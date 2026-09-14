@@ -1,14 +1,15 @@
-import {hasAdhesiveBacking} from './strip-protection.js?v=c5bc01a3b1d1';
+import {stripOutputScale} from './light-state.js?v=c30442ea5107';
+import {hasAdhesiveBacking} from './strip-protection.js?v=c30442ea5107';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=c5bc01a3b1d1';
-import {buildPCB} from './tape.js?v=c5bc01a3b1d1';
-import {sectionGeometry} from './section.js?v=c5bc01a3b1d1';
-import {profileContour} from './profile-shapes.js?v=c5bc01a3b1d1';
-import {coverSection} from './cover-shapes.js?v=c5bc01a3b1d1';
-import {glowMaterial} from './glow.js?v=c5bc01a3b1d1';
-import {diffuserMap} from './light-textures.js?v=c5bc01a3b1d1';
-import {assemblyPose} from './assembly-motion.js?v=c5bc01a3b1d1';
-import {createLightVolume} from './light-volume.js?v=c5bc01a3b1d1';
+import {buildAccessories} from './accessories.js?v=c30442ea5107';
+import {buildPCB} from './tape.js?v=c30442ea5107';
+import {sectionGeometry} from './section.js?v=c30442ea5107';
+import {profileContour} from './profile-shapes.js?v=c30442ea5107';
+import {coverSection} from './cover-shapes.js?v=c30442ea5107';
+import {glowMaterial} from './glow.js?v=c30442ea5107';
+import {diffuserMap} from './light-textures.js?v=c30442ea5107';
+import {assemblyPose} from './assembly-motion.js?v=c30442ea5107';
+import {createLightVolume} from './light-volume.js?v=c30442ea5107';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -82,7 +83,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   }
   let lightColor=new T.Color('#fff4df');
   function updateCoverLight(amount){
-    const level=state.light&&!state.compare?state.dimmer/100:0,pose=assemblyPose(amount),coupling=Math.exp(-pose.coverLift*coverTravel/.009)*Math.max(0,Math.cos(pose.coverTilt*.52));
+    const level=state.light&&!state.compare?state.dimmer/100*stripOutputScale(t,state):0,pose=assemblyPose(amount),coupling=Math.exp(-pose.coverLift*coverTravel/.009)*Math.max(0,Math.cos(pose.coverTilt*.52));
     const rgb=t.type==='RGBW'&&state.rgbMode!=='white';
     if(lens.toneMapped===rgb){lens.toneMapped=!rgb;lens.needsUpdate=true;}
     if(rgb)lens.color.copy(lightColor).multiplyScalar(.12);

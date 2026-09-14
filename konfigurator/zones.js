@@ -1,7 +1,8 @@
+import {previewLight} from './light-state.js?v=c30442ea5107';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=c5bc01a3b1d1';
-import {buildMount,seatingHeight} from './mounting.js?v=c5bc01a3b1d1';
+import {buildProduct} from './product.js?v=c30442ea5107';
+import {buildMount,seatingHeight} from './mounting.js?v=c30442ea5107';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -74,8 +75,9 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
       box(drawer,.332,.008,.176,wood,0,.036,.002);
       for(const sign of [-1,1])box(drawer,.010,.067,.176,ivory,sign*.164,.073,.002);
       box(drawer,.33,.067,.010,ivory,0,.073,-.082);
-      box(drawer,.375,.141,.018,wood,0,.078,.108,.0012);
-      box(drawer,.082,.003,.004,steel,0,.117,.120);
+      // Close against the upper rail with a 2.5 mm reveal, covering the switch.
+      box(drawer,.375,.189,.018,wood,0,.0975,.108,.0012);
+      box(drawer,.082,.003,.004,steel,0,.165,.120);
       for(const sign of [-1,1]){
         box(cabinet,.005,.022,.16,steel,sign*.174,.049,-.005);
         box(drawer,.004,.014,.16,steel,sign*.173,.049,.022);
@@ -111,11 +113,11 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   root.userData.lighting={type:'shadowed-strip',normal:normal.toArray(),origin:focus.toArray(),emitters:lights.length};
   let opening=state.zoneOpen?1:0,currentState=state,currentColor=new T.Color('#fff4df'),lastLight=null;
   function applyLight(){
-    const on=currentState.light&&(currentState.zoneTrigger!=='door'||opening>.07);
-    for(const light of lights){light.color.copy(currentColor);light.visible=on;light.intensity=on?currentState.dimmer/100*.30*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
-    if(lastLight!==on){product.update({...currentState,view:'zone',exploded:0,light:on},currentColor);lastLight=on;}
+    const output=previewLight({...currentState,view:'zone'},opening),on=output.on;
+    for(const light of lights){light.color.copy(currentColor);light.visible=on;light.intensity=on?output.brightness/100*.30*spec.cover.transmission*(spec.lumensPerMeter/1000):0;}
+    if(lastLight!==on){product.update({...currentState,view:'zone',exploded:0,light:on,dimmer:output.brightness},currentColor);lastLight=on;}
     if(sensor){sensor.visible=currentState.zoneTrigger==='door';plunger.position.z=.006+Math.min(1,opening*8)*.003;}
-    root.userData.lightOn=on;
+    root.userData.lightOn=on;root.userData.lightOutput=output;
   }
   function setOpening(value){opening=T.MathUtils.clamp(value,0,1);if(door)door.rotation.y=-(zone==='under'?.95:1.65)*opening;if(drawer)drawer.position.z=.137*opening;applyLight();root.updateMatrixWorld(true);}
   function update(s,color){
