@@ -1,9 +1,9 @@
 // Prescot LED — Global Navigation, Active Indicator, Dock, Hero Logo & Scroll-To-Top Controller
 const prescotNavigationSource = document.currentScript?.src || document.baseURI;
 document.addEventListener("DOMContentLoaded", () => {
-  import(new URL('site-experience.mjs?v=20260913-studio4', prescotNavigationSource).href)
+  import(new URL('site-experience.mjs?v=20260914-firstpaint1', prescotNavigationSource).href)
     .then(({initializeExperience}) => initializeExperience());
-  import(new URL('shop-assistant/panel.mjs?v=20260911-mobile1', prescotNavigationSource).href)
+  import(new URL('shop-assistant/panel.mjs?v=20260914-firstpaint1', prescotNavigationSource).href)
     .then(({initializeAssistant}) => initializeAssistant())
     .catch(() => { /* Existing shop links remain available if the assistant cannot load. */ });
   // 0. Ensure Unified Luxury Dock exists on every page

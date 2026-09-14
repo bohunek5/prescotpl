@@ -1,7 +1,7 @@
 import {initializeMobileMenu} from './mobile-navigation.mjs?v=20260913-studio4';
 import {initializeBrandFooter} from './brand-footer.mjs?v=20260913-studio4';
 import {initializeProductionMotion, initializeProductionHero} from './production-motion.mjs?v=20260911-motion7';
-import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260913-studio4';
+import {initializeMobileRefinement} from './mobile-refinement.mjs?v=20260914-firstpaint1';
 const asset = value => new URL(value.replace(/^\//, ''), import.meta.url).href;
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp = n => Math.max(0, Math.min(1, n));
@@ -12,19 +12,21 @@ const element = (tag, cls, text) => {
   return node;
 };
 
-function initializeCatalog() {
-  const slider = document.querySelector('.as-slider');
-  if (!slider || document.querySelector('.pm-catalog')) return;
+export function initializeCatalog(doc = document, {interactive = true} = {}) {
+  const slider = doc.querySelector('.as-slider');
+  if (!slider) return;
   // These two tiles previously reused a generic strip photograph.
   const categoryPhotos = {'Profile LED':'assets/offer/klus-profile.webp','Akcesoria LED':'wp-content/uploads/2026/03/nowe-zlaczki_27.webp'};
-  document.querySelectorAll('.as-side-slider img, .dm-card-slider img').forEach(image => {
+  doc.querySelectorAll('.as-side-slider img, .dm-card-slider img').forEach(image => {
     const replacement = categoryPhotos[image.alt];
     if (replacement) { image.src = asset(replacement); image.setAttribute('data-src',asset(replacement)); }
   });
+  const existing = doc.querySelector('.pm-catalog');
+  if (existing) { if (interactive) initializeCatalogControls(existing); return; }
   const titles = [...slider.querySelectorAll('.as-changing-widget h2')];
   const descriptions = [...slider.querySelectorAll('.as-changing-widget p')];
   const links = [...slider.querySelectorAll('.as-changing-widget a.elementor-button')];
-  const images = [...slider.querySelectorAll('.as-side-slider .swiper-slide:not(.swiper-slide-duplicate) img')];
+  const images = [...slider.querySelectorAll('.as-side-slider .swiper-slide:not(.swiper-slide-duplicate) img')].filter(image => !image.closest('noscript'));
   if (!titles.length || titles.length !== links.length || titles.length !== images.length) return;
   const models = titles.map((title, i) => ({
     title: title.innerHTML.replace(/<br\s*\/?>(\s*)/gi, ' ').replace(/<[^>]+>/g, '').trim(),
@@ -79,17 +81,29 @@ function initializeCatalog() {
   const root = slider.closest('[data-elementor-type="wp-page"]');
   if (!root) return;
   root.prepend(catalog);
-  document.body.classList.add('prescot-mobile-catalog');
+  doc.body.classList.add('prescot-mobile-catalog');
+  counter.textContent = `01 / ${String(models.length).padStart(2, '0')}`;
+  cards.forEach((card, i) => { card.inert = i !== 0; card.classList.toggle('pm-selected', i === 0); });
+  if (interactive) initializeCatalogControls(catalog);
+}
+
+function initializeCatalogControls(catalog) {
+  if (catalog.dataset.pmControlsReady) return;
+  catalog.dataset.pmControlsReady = 'true';
+  const hero = catalog.querySelector('.pm-catalog-hero'), track = catalog.querySelector('.pm-feature-track');
+  const cards = [...catalog.querySelectorAll('.pm-feature')];
+  const counter = catalog.querySelector('.pm-feature-counter');
+  const [previous, next] = catalog.querySelectorAll('.pm-feature-controls button');
   let active = 0, frame = 0;
   const update = () => {
     frame = 0;
     if (!track.clientWidth) return;
-    active = Math.max(0, Math.min(models.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
-    counter.textContent = `${String(active + 1).padStart(2, '0')} / ${String(models.length).padStart(2, '0')}`;
+    active = Math.max(0, Math.min(cards.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+    counter.textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
     cards.forEach((card, i) => { card.inert = i !== active; card.classList.toggle('pm-selected', i === active); });
   };
   const select = index => {
-    const i = (index + models.length) % models.length;
+    const i = (index + cards.length) % cards.length;
     track.scrollTo({left: i * track.clientWidth, behavior: reduced() ? 'instant' : 'smooth'});
   };
   previous.onclick = () => select(active - 1); next.onclick = () => select(active + 1);
@@ -146,10 +160,10 @@ function initializeStartVideo() {
   video.addEventListener('playing', () => hero.classList.add('pm-video-playing'));
 }
 
-function initializeHeroLayout() {
-  const hero = document.querySelector('.elementor-element-216d8696');
+export function initializeHeroLayout(root = document) {
+  const hero = root.querySelector('.elementor-element-216d8696');
   const capabilities = hero?.querySelector('.elementor-element-a848c53');
-  if (capabilities) {
+  if (capabilities && capabilities.dataset.pmPrerendered !== 'true') {
     const badges = [...capabilities.querySelectorAll('.elementor-widget-icon-box')];
     capabilities.classList.add('pm-capabilities');
     capabilities.replaceChildren(...badges);
@@ -189,8 +203,10 @@ function initializeHeroLayout() {
     });
     const caption = hero.querySelector('.elementor-element-ea903c0');
     if (caption) { caption.classList.add('pm-entrance-caption'); hero.append(caption); }
+    capabilities.dataset.pmPrerendered = 'true';
   }
-  document.querySelectorAll('.elementor-element-280b012, .elementor-element-629d57a0').forEach(hero => {
+  root.querySelectorAll('.elementor-element-280b012, .elementor-element-629d57a0').forEach(hero => {
+    if (hero.querySelector('.pm-production-caption')) return;
     hero.classList.add('pm-production-hero');
     const heading = hero.querySelector('h2');
     if (!heading) return;

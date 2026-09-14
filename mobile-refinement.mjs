@@ -151,11 +151,11 @@ function improveShowcases() {
   update();
 }
 
-function improveCatalogue() {
-  const cards = [...document.querySelectorAll('.pm-feature')];
+export function improveCatalogue(doc = document) {
+  const cards = [...doc.querySelectorAll('.pm-feature')];
   if (!cards.length) return;
-  document.body.classList.add('pm-catalogue-refined');
-  document.querySelector('.pm-collection')?.remove();
+  doc.body.classList.add('pm-catalogue-refined');
+  doc.querySelector('.pm-collection')?.remove();
   cards.forEach(card => {
     const title = card.querySelector('h2').textContent;
     const image = card.querySelector('img');

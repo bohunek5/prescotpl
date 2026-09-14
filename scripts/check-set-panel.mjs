@@ -30,11 +30,13 @@ try {
     await assistant.locator('.product-image img').first().waitFor();
     assert.equal(await assistant.locator('.product-card').count(), 3);
     assert.equal(await assistant.locator('.handoff').isDisabled(), true);
-    assert.match(await assistant.locator('.status').innerText(), /Ile metrów/);
+    assert.equal(await assistant.locator('.status').isVisible(), false);
+    assert.equal(await assistant.locator('.length-options').count(), 0);
     await page.screenshot({path: `${output}/panel-${width}.png`});
     const bounds = await assistant.locator('dialog').evaluate(el => ({width: el.clientWidth, scroll: el.scrollWidth}));
     assert.ok(bounds.scroll <= bounds.width + 1, `sheet overflow at ${width}`);
-    await assistant.locator('[data-prompt="4 m"]').click();
+    await assistant.locator('textarea').fill('4 m');
+    await assistant.locator('textarea').press('Enter');
     await page.waitForTimeout(150);
     assert.equal(await assistant.locator('.handoff').isEnabled(), true);
     assert.match(await assistant.locator('.status').innerText(), /80 W/);

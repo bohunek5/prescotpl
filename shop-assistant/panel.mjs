@@ -8,6 +8,7 @@ const icons = {
   chevron: '<path d="m6 14 6-6 6 6"/>',
 };
 const svg = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name]}</svg>`;
+const brandMark = `<span class="brand-pattern" style="--pattern:url('${new URL('../wp-content/uploads/2025/05/PRESCOT_pattern2-1.svg', import.meta.url)}')" aria-hidden="true"></span>`;
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char]));
 const read = key => {try {return JSON.parse(sessionStorage.getItem(key));} catch {return null;}};
 const save = (key, value) => {try {sessionStorage.setItem(key, JSON.stringify(value));} catch { /* Private mode still supports the current session in memory. */ }};
@@ -25,17 +26,17 @@ export function initializeAssistant(options = {}) {
   const host = document.createElement('div');
   host.id = 'prescot-set-assistant';
   const root = host.attachShadow({mode: 'open'});
-  root.innerHTML = `<link rel="stylesheet" href="${new URL('./panel.css?v=20260911-mobile1', import.meta.url)}">
+  root.innerHTML = `<link rel="stylesheet" href="${new URL('./panel.css?v=20260914-firstpaint1', import.meta.url)}">
     <aside class="teaser" hidden aria-label="Dobór zestawu LED">
-      <button class="teaser-main" type="button"><span class="mark">${svg('sparkle')}</span><span><strong>Światło zaczyna się od zestawu.</strong><small>Taśma, zasilacz i sterowanie. Dobierzmy je razem.</small></span><span class="teaser-action">Dobierz zestaw ${svg('chevron')}</span></button>
+      <button class="teaser-main" type="button"><span class="mark">${brandMark}</span><span><strong>Światło zaczyna się od zestawu.</strong><small>Dobierz wszystkie elementy w jednym miejscu.</small></span><span class="teaser-action">Dobierz zestaw ${svg('chevron')}</span></button>
       <button class="teaser-close icon-button" type="button" aria-label="Ukryj podpowiedź">${svg('close')}</button>
     </aside>
     <dialog aria-labelledby="set-title" aria-describedby="set-description">
       <div class="sheet">
-        <header class="sheet-header"><div class="identity"><span class="mark">${svg('sparkle')}</span><span>PRESCOT <b>LED</b><small>ASYSTENT DOBORU</small></span></div><div class="header-actions"><a href="${escape(storeBase)}shop.html" class="store-link">Cały sklep ${svg('arrow')}</a><button class="close icon-button" type="button" aria-label="Zamknij dobór zestawu">${svg('close')}</button></div></header>
+        <header class="sheet-header"><div class="identity" aria-label="Prescot — asystent doboru"><span class="mark">${brandMark}</span><span><small>ASYSTENT DOBORU</small></span></div><div class="header-actions"><a href="${escape(storeBase)}shop.html" class="store-link">Cały sklep ${svg('arrow')}</a><button class="close icon-button" type="button" aria-label="Zamknij dobór zestawu">${svg('close')}</button></div></header>
         <div class="sheet-body">
-          <section class="conversation"><span class="eyebrow">TWÓJ POMYSŁ. NASZE PRODUKTY.</span><h2 id="set-title">Powiedz, czego<br>potrzebujesz<span>.</span></h2><p id="set-description">Dobierz taśmę, zasilacz Scharfer i sterowanie PR Touch w jednym miejscu.</p>
-            <form><label for="set-request">Opisz zestaw lub doprecyzuj wybór</label><div class="input-box"><textarea id="set-request" maxlength="600" rows="3" placeholder="Np. 4 m COB RGB+CCT, Scharfer 100 W i PR Touch"></textarea><div class="input-actions"><button class="mic icon-button" type="button" aria-label="Podyktuj opis zestawu" title="Dyktowanie obsługuje przeglądarka; może przesyłać dźwięk do swojego dostawcy.">${svg('mic')}</button><button class="submit" type="submit">Dobierz zestaw ${svg('arrow')}</button></div></div></form>
+          <section class="conversation"><h2 id="set-title">Dobierz wszystkie elementy w jednym miejscu<span>.</span></h2><p id="set-description">Napisz, czego potrzebujesz. Dobór wyszuka pasujące produkty i sprawdzi parametry zestawu.</p>
+            <form><div class="input-box"><textarea id="set-request" aria-label="Wiadomość do asystenta doboru" maxlength="600" rows="3" placeholder="Np. 4 m COB RGB+CCT, Scharfer 100 W i PR Touch"></textarea><div class="input-actions"><button class="mic icon-button" type="button" aria-label="Podyktuj opis zestawu" title="Dyktowanie obsługuje przeglądarka; może przesyłać dźwięk do swojego dostawcy.">${svg('mic')}</button><button class="submit" type="submit">Dobierz zestaw ${svg('arrow')}</button></div></div></form>
             <p class="voice-note" aria-live="polite"></p>
             <div class="quick-prompts" aria-label="Przykładowe zestawy"><button type="button" data-prompt="${escape(SAMPLE_REQUEST)}" data-reset>RGB+CCT + PR Touch</button><button type="button" data-prompt="4 m COB 3000K 24 V, dobierz zasilacz i PR Touch" data-reset>Ciepłe światło · 4 m</button><button type="button" data-prompt="4 m COB CCT 24 V, dobierz zasilacz i PR Touch" data-reset>Regulowana biel · 4 m</button></div>
             <div class="status" role="status" aria-live="polite"><p>Ładuję katalog produktów…</p></div>
@@ -69,8 +70,8 @@ export function initializeAssistant(options = {}) {
     root.querySelectorAll('img').forEach(img => img.addEventListener('error', () => {img.hidden = true; img.parentElement.classList.add('image-unavailable'); img.parentElement.textContent = 'PRESCOT LED';}, {once: true}));
     if (!next.items.length) root.querySelector('.cards').innerHTML = '<div class="empty">Doprecyzuj parametry — tutaj pojawią się pasujące produkty.</div>';
     status.dataset.state = next.ready ? 'ready' : 'question';
-    status.innerHTML = next.ready ? `<strong>Zestaw pasuje do podanych parametrów.</strong><p>${next.load} W obciążenia · wymagane min. ${next.minimumPower} W z przyjętym zapasem 20%.</p>` : next.issues.map(issue => `<p>${escape(issue)}</p>`).join('');
-    if (!next.intent.length && next.items.length) status.innerHTML += '<div class="length-options"><button type="button" data-prompt="3 m">3 m</button><button type="button" data-prompt="4 m">4 m</button><button type="button" data-prompt="5 m">5 m</button></div>';
+    status.hidden = preview;
+    status.innerHTML = next.ready ? `<strong>Zestaw pasuje do podanych parametrów.</strong><p>${next.load} W obciążenia · wymagane min. ${next.minimumPower} W z przyjętym zapasem 20%.</p>` : next.issues.map(issue => `<p>${escape(issue.startsWith('Ile metrów') ? 'Do sprawdzenia mocy potrzebna jest długość taśmy podana w wiadomości.' : issue)}</p>`).join('');
     if (next.minimumPower && next.intent.power && next.intent.power < next.minimumPower) status.innerHTML += '<button class="resolve" type="button" data-prompt="Dobierz moc do metrażu">Dobierz moc do tego metrażu →</button>';
     root.querySelector('.details').innerHTML = next.notes.map(note => `<p>${escape(note)}</p>`).join('') + (next.items.find(x => x.product.specification) ? `<a href="${escape(next.items.find(x => x.product.specification).product.specification)}" target="_blank" rel="noopener">Karta techniczna taśmy ↗</a>` : '');
     handoff.disabled = !next.ready;
@@ -96,6 +97,7 @@ export function initializeAssistant(options = {}) {
       input.value = '';
       input.placeholder = 'Np. zmień na 5 m albo dobierz moc do metrażu';
     } catch {
+      status.hidden = false;
       status.dataset.state = 'question';
       status.innerHTML = '<p>Nie udało się pobrać katalogu. Spróbuj ponownie lub otwórz cały sklep.</p><button class="retry" type="button">Spróbuj ponownie</button>';
       result = null;
