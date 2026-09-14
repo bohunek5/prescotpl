@@ -1,10 +1,10 @@
-import {previewLight} from './light-state.js?v=14af8cccb08e';
+import {previewLight} from './light-state.js?v=c3acda4e66c0';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=14af8cccb08e';
-import {buildMount,seatingHeight} from './mounting.js?v=14af8cccb08e';
-import {surfaceFinish} from './surface-finishes.js?v=14af8cccb08e';
-import {buildInstallationCable} from './installation-wiring.js?v=14af8cccb08e';
+import {buildProduct} from './product.js?v=c3acda4e66c0';
+import {buildMount,seatingHeight} from './mounting.js?v=c3acda4e66c0';
+import {surfaceFinish} from './surface-finishes.js?v=c3acda4e66c0';
+import {buildInstallationCable} from './installation-wiring.js?v=c3acda4e66c0';
 
 export const zones=[
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},

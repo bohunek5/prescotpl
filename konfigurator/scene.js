@@ -1,18 +1,18 @@
-import {hasAdhesiveBacking} from './strip-protection.js?v=14af8cccb08e';
+import {hasAdhesiveBacking} from './strip-protection.js?v=c3acda4e66c0';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {TDSLoader} from 'three/addons/loaders/TDSLoader.js';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
 import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
-import {specification,displayLength} from './catalog.js?v=14af8cccb08e';
-import {buildProduct} from './product.js?v=14af8cccb08e';
-import {buildMount} from './mounting.js?v=14af8cccb08e';
-import {buildZone} from './zones.js?v=14af8cccb08e';
-import {sectionGeometry} from './section.js?v=14af8cccb08e';
-import {lightColor} from './light-color.js?v=14af8cccb08e';
-import {assemblyClip} from './assembly-export.js?v=14af8cccb08e';
-import {createSoftShadow} from './soft-shadow.js?v=14af8cccb08e';
-import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=14af8cccb08e';
+import {specification,displayLength} from './catalog.js?v=c3acda4e66c0';
+import {buildProduct} from './product.js?v=c3acda4e66c0';
+import {buildMount} from './mounting.js?v=c3acda4e66c0';
+import {buildZone} from './zones.js?v=c3acda4e66c0';
+import {sectionGeometry} from './section.js?v=c3acda4e66c0';
+import {lightColor} from './light-color.js?v=c3acda4e66c0';
+import {assemblyClip} from './assembly-export.js?v=c3acda4e66c0';
+import {createSoftShadow} from './soft-shadow.js?v=c3acda4e66c0';
+import {surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=c3acda4e66c0';
 
 export async function createStudio(host,initial){
   RectAreaLightUniformsLib.init();
@@ -55,17 +55,17 @@ export async function createStudio(host,initial){
 
   function clear(group){for(const child of [...group.children]){group.remove(child);child.traverse(o=>o.geometry?.dispose());}}
   function ensureSample(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcaps,s.showCable,s.housing,s.view==='mounting',['installation','section','mounting'].includes(s.view),displayLength(s)].join('|');if(next===sampleKey&&sample)return;
+    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.sleeve,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable,s.housing,s.view==='mounting',['installation','section','mounting'].includes(s.view),displayLength(s)].join('|');if(next===sampleKey&&sample)return;
     if(sample){detailRoot.remove(sample.group);sample.dispose();}if(fixture){mount.remove(fixture.root);fixture.dispose();}clear(cut);
     const spec=specification(s),H=spec.profile.height/1000;
     sample=buildProduct(geometry,sourceSize,spec,{...s,showCable:s.showCable||s.view==='mounting'},{length:displayLength(s),art,sourceCover});detailRoot.add(sample.group);
     if(spec.isSleeve){fixture=null;sampleKey=next;return;}
     fixture=buildMount(spec.profile,s,wood);mount.add(fixture.root);sampleKey=next;
-    const cutGeo=sectionGeometry(s.profile==='micro'?geometry:sample.profile.children.map(o=>{const g=o.geometry.clone();g.translate(...o.position.toArray());return g;}),s.profile==='micro'?H/2:0);
+    const cutGeo=sectionGeometry(s.profile==='micro'&&!spec.profile.section?geometry:sample.profile.children.map(o=>{const g=o.geometry.clone();g.translate(...o.position.toArray());return g;}),s.profile==='micro'&&!spec.profile.section?H/2:0);
     const face=new T.Mesh(cutGeo,cutMat);face.rotation.y=Math.PI/2;face.position.set(.05004,fixture.seat,0);cut.add(face);
   }
   function ensureZone(){
-    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.zone,s.sleeve,s.zonePosition,s.finish,s.endcaps,s.showCable].join('|');if(next===zoneKey&&zone)return;
+    const next=[s.profile,s.strip,s.cover,s.print,s.backing,s.powerMode,s.repeat,s.mounting,s.zone,s.sleeve,s.zonePosition,s.finish,s.endcapRef,s.bracketRef,s.endcaps,s.showCable].join('|');if(next===zoneKey&&zone)return;
     if(zone){scene.remove(zone.root);zone.dispose();}zone=buildZone(geometry,sourceSize,specification(s),s,{sourceCover,art,wood});scene.add(zone.root);zoneKey=next;
   }
   function appearance(){

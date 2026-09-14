@@ -1,17 +1,17 @@
-import {previewLight,hasDoorSwitch} from './light-state.js?v=14af8cccb08e';
-import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=14af8cccb08e';
-import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=14af8cccb08e';
-import {accessoryKit} from './accessory-data.js?v=14af8cccb08e';
-import {workbookRefs,universalRefs} from './catalog-provenance.js?v=14af8cccb08e';
-import {zones} from './zones.js?v=14af8cccb08e';
-import {mountingSteps} from './mounting.js?v=14af8cccb08e';
-import {coverIcon} from './cover-shapes.js?v=14af8cccb08e';
-import {profileIcon} from './profile-shapes.js?v=14af8cccb08e';
-import {sleeveIcon} from './sleeve-shapes.js?v=14af8cccb08e';
-import {projectSheet} from './sheet.js?v=14af8cccb08e';
-import {uiIcon,actionLabel} from './ui-icons.js?v=14af8cccb08e';
-import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=14af8cccb08e';
-import {createZonePlayback} from './zone-playback.js?v=14af8cccb08e';
+import {previewLight,hasDoorSwitch} from './light-state.js?v=c3acda4e66c0';
+import {sleeveAccessoryKit} from './sleeve-accessory-data.js?v=c3acda4e66c0';
+import {profiles,strips,covers,sleeves,finishesFor,finishFor,displayLength,defaults,normalize,specification} from './catalog.js?v=c3acda4e66c0';
+import {accessoryKit,accessoryOptions,accessoryCapOptions} from './accessory-data.js?v=c3acda4e66c0';
+import {workbookRefs,universalRefs} from './catalog-provenance.js?v=c3acda4e66c0';
+import {zones} from './zones.js?v=c3acda4e66c0';
+import {mountingSteps} from './mounting.js?v=c3acda4e66c0';
+import {coverIcon} from './cover-shapes.js?v=c3acda4e66c0';
+import {profileIcon} from './profile-shapes.js?v=c3acda4e66c0';
+import {sleeveIcon} from './sleeve-shapes.js?v=c3acda4e66c0';
+import {projectSheet} from './sheet.js?v=c3acda4e66c0';
+import {uiIcon,actionLabel} from './ui-icons.js?v=c3acda4e66c0';
+import {surfaceFinishes,surfaceFinish,surfaceCanvas} from './surface-finishes.js?v=c3acda4e66c0';
+import {createZonePlayback} from './zone-playback.js?v=c3acda4e66c0';
 const $=id=>document.getElementById(id);
 let s=normalize(defaults),assemblyTarget=null;
 try{const raw=location.hash.startsWith('#config=')?JSON.parse(decodeURIComponent(location.hash.slice(8))):JSON.parse(localStorage.getItem('prescot-light-studio-v9')||localStorage.getItem('prescot-light-studio-v8')||localStorage.getItem('prescot-light-studio-v7')||localStorage.getItem('prescot-light-studio-v6')||localStorage.getItem('prescot-light-studio-v5')||localStorage.getItem('prescot-light-studio-v4')||'{}');s=normalize(raw);}catch{}
@@ -48,7 +48,7 @@ function syncLightControls(opening){
   $('light-trigger-note').hidden=!light.automatic;$('light-trigger-note').textContent=$('trigger-status').textContent;
 }
 function switchLight(on){s.light=on;if(on&&s.dimmer===0)s.dimmer=lastDimmer;update();}
-function chooseProfile(p){s.profile=p.id;s.mounting=p.mount==='surface'?'surface':'recessed';const t=strips.find(t=>t.id===s.strip);if(t.width>p.channel){s.strip='slim';s.cct=3000;toast(`${p.name}: kanał ${p.channel} mm. Dobrano taśmę Delux Slim 4 mm.`);}if(p.mount==='drywall'||p.id==='larko')s.zone='drywall';else if(s.zone==='drywall')s.zone='under';s.mountStep=0;}
+function chooseProfile(p){s.catalogMigration=null;s.profile=p.id;s.mounting=p.mount==='surface'?'surface':'recessed';const t=strips.find(t=>t.id===s.strip);if(t.width>p.channel){s.strip='slim';s.cct=3000;toast(`${p.name}: kanał ${p.channel} mm. Dobrano taśmę Delux Slim 4 mm.`);}if(p.mount==='drywall'||p.id==='larko')s.zone='drywall';else if(s.zone==='drywall')s.zone='under';s.mountStep=0;}
 function cards(target,data,key,icon,description){
   $(target).replaceChildren(...data.map(item=>{const b=document.createElement('button');b.className='card';b.dataset.value=item.id;b.innerHTML=`${icon(item)}<span class="card-copy"><strong>${item.name}</strong><small>${description(item)}</small></span>`;b.onclick=()=>{stopAnimation();if(key==='profile')chooseProfile(item);else s[key]=item.id;if(key==='strip')s.cct=item.cct;update();};return b;}));
 }
@@ -79,9 +79,21 @@ function updateSleeves(spec){
 }
 function updateAccessories(p){
   const kit=accessoryKit(p,s);$('selected-accessories').textContent=p.name+' · lista akcesoriów';
-  $('accessories').replaceChildren(...kit.map(a=>{const el=document.createElement('div');el.className='accessory-row';const label=document.createElement('label');
-    if(['endcap','bracket'].includes(a.kind)){const input=document.createElement('input');input.type='checkbox';input.checked=a.selected;input.onchange=()=>{s[a.kind==='endcap'?'endcaps':'showFixings']=input.checked;update();};label.append(input);}
-    const span=document.createElement('span');span.innerHTML=`<strong>${a.name}</strong><small>${a.ref}</small>`;label.append(span);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';actionLabel(link,'Dane','external');link.setAttribute('aria-label','Dokumentacja: '+a.name);const note=document.createElement('p');note.textContent=a.note+(workbookRefs.has(a.ref)?' Pozycja w Twoim katalogu.':'');el.append(label,link,note);return el;}));
+  const expanded=$('accessories').querySelector('details')?.open,options=accessoryOptions(p);
+  const makeRow=a=>{const el=document.createElement('div');el.className='accessory-row';const label=document.createElement('label');
+    if(!['entrycap','endcap-pair'].includes(a.kind)){const input=document.createElement('input');input.type='checkbox';input.checked=a.selected;input.onchange=()=>{if(['endcap','bracket'].includes(a.kind))s[a.kind==='endcap'?'endcaps':'showFixings']=input.checked;else {s.accessoryRefs=input.checked?[...s.accessoryRefs,a.ref]:s.accessoryRefs.filter(ref=>ref!==a.ref);s.excludedAccessoryRefs=input.checked?s.excludedAccessoryRefs.filter(ref=>ref!==a.ref):[...s.excludedAccessoryRefs,a.ref];}update();};label.append(input);}
+    const span=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small');strong.textContent=a.name;small.textContent=a.ref;span.append(strong,small);label.append(span);const link=document.createElement('a');link.href=a.source;link.target='_blank';link.rel='noreferrer';actionLabel(link,'Dane','external');link.setAttribute('aria-label','Dokumentacja: '+a.name);const note=document.createElement('p');note.textContent=a.note;el.append(label,link,note);
+    if(['endcap','bracket'].includes(a.kind)){
+      const variants=a.kind==='endcap'?accessoryCapOptions(p).filter(a=>!p.capPair||a.ref.startsWith(p.capPair[0])):options.filter(x=>x.kind==='bracket');
+      if(variants.length>1){const select=document.createElement('select');select.className='accessory-variant';select.setAttribute('aria-label',a.kind==='endcap'?'Wariant zaślepki':'Wariant mocownika');for(const variant of variants){const option=document.createElement('option');option.value=variant.ref;option.textContent=variant.name+' · '+variant.ref;select.append(option);}select.value=a.ref;select.onchange=()=>{s[a.kind==='endcap'?'endcapRef':'bracketRef']=select.value;update();};el.append(select);}
+    }
+    return el;
+  };
+  const primary=kit.filter(a=>['endcap','endcap-pair','entrycap','bracket'].includes(a.kind)),extra=kit.filter(a=>!primary.includes(a));
+  $('accessories').replaceChildren(...primary.map(makeRow));
+  if(extra.length){const details=document.createElement('details'),summary=document.createElement('summary');details.className='additional-accessories';details.open=!!expanded;summary.textContent=`Pozostałe akcesoria · ${extra.length}`;details.append(summary,...extra.map(makeRow));$('accessories').append(details);}
+  if(!kit.length){const note=document.createElement('p');note.className='subtle';note.textContent='Mocowanie i zakończenia dobierz według instrukcji tego profilu.';$('accessories').append(note);}
+  $('inspect-endcap').disabled=!kit.some(a=>a.kind==='endcap'&&(!p.section||a.dimensions?.width&&a.dimensions?.height));
   $('bom-accessories').textContent=kit.filter(a=>a.selected).map(a=>a.name+' · '+a.ref+(a.quantity?' · '+a.quantity+' szt.':' · ilość do doboru')).join(' / ');
 }
 cards('profiles',profiles,'profile',p=>profileIcon(p,covers.find(c=>c.id===p.covers[0])),p=>`${num(p.width,1)} × ${num(p.height,1)} mm · ${p.application}`);
@@ -119,7 +131,7 @@ function update(){
   $('cover-source').href=spec.cover.source||p.source;
   document.querySelectorAll('[data-scale]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scale===s.productScale&&!['end','entry'].includes(s.assemblyAngle))));
   $('zone-position').value=s.zonePosition;$('zone-position').disabled=['drywall','plinth'].includes(s.zone);$('zone-position').querySelector('[value=shelf]').hidden=s.zone!=='cabinet';$('zone-trigger').value=s.zoneTrigger;$('zone-trigger').disabled=['drywall','under','shelf','plinth'].includes(s.zone);$('trigger-status').textContent=s.zoneTrigger==='door'?(s.zoneOpen?'Front otwarty · krańcówka załącza LED.':'Front zamknięty · LED wyłączone.'):'Światło sterowane przyciskiem w podglądzie.';
-  $('profile-source').href=p.source;$('strip-source').href=t.source;
+  $('profile-source').href=p.source;$('profile-instruction').href=p.instruction||p.source;$('strip-source').href=t.source;
   $('selected-profile').textContent=p.name;$('selected-strip').textContent=t.name;$('selected-cover').textContent=spec.cover.name;$('selected-settings').textContent=`${num(s.length/1000,2)} m · ${num(spec.power,1)} W`;
   $('detail-width').textContent=num(p.width,1)+' mm';$('detail-height').textContent=num(p.height,1)+' mm';$('detail-pcb').textContent=t.width+' mm';$('detail-color').textContent=t.type==='CCT'?t.cctMin+'–'+t.cctMax+' K':(t.type==='RGBW'?'RGB + ':'')+t.cct+' K';
   $('detail-color').dataset.wide=String(['CCT','RGBW'].includes(t.type));$('detail-channel').textContent=num(p.channel,1)+' mm';$('detail-finish').textContent={silver:'Srebrna anoda',raw:'Surowe',black:'Czarna anoda',white:'Biały lakier'}[s.finish];$('detail-cri').textContent='CRI '+t.cri+(t.type==='RGBW'?' · W':'');$('detail-power').textContent=num(spec.wattsPerMeter,1)+' W';$('technical-profile').textContent=spec.finish.ref;$('technical-tape').textContent=t.ref+(t.copperOz?' · PCB '+t.copperOz+' oz':'');
@@ -142,7 +154,7 @@ function update(){
   $('sample-length-note').textContent=`Projekt: ${num(s.length/1000,2)} m`;
   for(const [selector,key] of [['[data-angle]','assemblyAngle'],['[data-detail]','detail'],['[data-power]','powerMode'],['[data-mount]','mounting'],['[data-zone]','zone']])document.querySelectorAll(selector).forEach(b=>{const attr={assemblyAngle:'angle',detail:'detail',powerMode:'power',mounting:'mount',zone:'zone'}[key];b.setAttribute('aria-pressed',String(b.dataset[attr]===s[key]));});
   document.querySelectorAll('[data-step]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.step)===(s.exploded>75?100:s.exploded>25?50:0))));
-  document.querySelectorAll('[data-mount-step]').forEach(b=>{b.setAttribute('aria-pressed',String(Number(b.dataset.mountStep)===s.mountStep));b.setAttribute('aria-label',`Etap ${Number(b.dataset.mountStep)+1}: ${mountingSteps(p,s.mounting==='recessed')[Number(b.dataset.mountStep)][0]}`);});
+  document.querySelectorAll('[data-mount-step]').forEach(b=>{b.setAttribute('aria-pressed',String(Number(b.dataset.mountStep)===s.mountStep));b.setAttribute('aria-label',`Etap ${Number(b.dataset.mountStep)+1}: ${mountingSteps(p,s.mounting==='recessed')[Number(b.dataset.mountStep)]?.[0]||'Instrukcja KLUŚ'}`);});
   document.querySelectorAll('[data-zone-detail]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.zoneDetail==='true')===s.zoneDetail)));
   $('zone-motion').hidden=['drywall','shelf','plinth'].includes(s.zone);actionLabel($('zone-motion'),s.zone==='drawer'?(s.zoneOpen?'Wsuń szufladę':'Wysuń szufladę'):(s.zoneOpen?'Zamknij front':'Otwórz front'),'external');$('zone-motion').setAttribute('aria-pressed',String(s.zoneOpen));
   document.querySelector('.zone-demo').hidden=!z;$('zone-play').hidden=$('zone-motion').hidden;syncZonePlay();
@@ -152,6 +164,7 @@ function update(){
   $('zone-compatibility').textContent=s.zone==='drywall'?`${p.name} · ${p.screwDrywall?'płyta '+num(p.boardThickness,1)+' mm, skrzydła pod płytą i wkręty':p.id==='kozus'?'płyta 16 mm, klej i wkładka TECH-22':'wpust i dedykowane sprężyny'}.`:['shelf','plinth'].includes(s.zone)?'Fragment płyty i trasa przewodu pokazują zasadę osadzenia. Wymiary frezu wymagają doboru.':'Front i prowadnice pokazują zasadę zabudowy. Odcinek światła pozostaje na korpusie.';
   const steps=mountingSteps(p,s.mounting==='recessed');$('mount-heading').textContent=steps[s.mountStep][0];$('mount-copy').textContent=steps[s.mountStep][1];$('mount-source').href=p.instruction;$('mount-prev').disabled=s.mountStep===0;$('mount-next').disabled=s.mountStep===4;
   $('mounting').disabled=p.mount!=='surface';document.querySelectorAll('[data-mount=surface]').forEach(b=>b.disabled=p.mount!=='surface');
+  document.querySelectorAll('button[data-view]').forEach(b=>{if(['installation','mounting','zone'].includes(b.dataset.view))b.hidden=p.mount==='special';});
   $('seal-close').hidden=s.view!=='macro'||s.detail!=='seal';$('seal-close').textContent=s.sealClosed?'Rozsuń końcówki':'Zamknij końcówki';$('seal-close').setAttribute('aria-pressed',String(s.sealClosed));
   $('macro-spec').textContent=`${t.width} mm · ${t.technology|| (t.type==='COB'?'COB':'SMD '+(t.package|| (t.type==='CCT'?'5050':'2835')))} · ${spec.terminals.join(' / ')}${t.copperOz?' · PCB '+t.copperOz+' oz':''}`;
   $('power-modes').hidden=t.type!=='3IN1';$('power-details').hidden=t.type!=='3IN1';$('power-mode-value').textContent=t.type==='3IN1'?num(spec.lumensPerMeter)+' lm/m':'';$('power-wiring').textContent=`Cztery żyły: +24V / L / M / H. Aktywne: +24V i ${spec.selectedTerminal||'−'} · ${num(spec.current,2)} A dla ${num(spec.stripLength/1000,2)} m.`;
@@ -235,7 +248,7 @@ $('play-mount').onclick=()=>$('animate').click();$('animate').onclick=()=>{
 $('mobile-assembly-play').onclick=()=>playAssembly(assemblyTarget===null?(s.exploded>50?0:100):(assemblyTarget===0?100:0));
 for(const [button,dialog]of [['export-open','export-dialog'],['about','about-dialog']])$(button).onclick=()=>$(dialog).showModal();document.querySelectorAll('dialog .close').forEach(b=>b.onclick=()=>b.closest('dialog').close());
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);}
-function project(){const spec=specification(s);return{schema:'prescot-light-studio/v9',configuration:s,displaySampleMm:displayLength(s),components:{housing:s.housing,finish:spec.isSleeve?null:spec.finish,profile:spec.isSleeve?null:spec.profile,strip:spec.strip,cover:spec.isSleeve?null:spec.cover,sleeve:spec.sleeve,accessories:(spec.isSleeve?sleeveAccessoryKit(spec.sleeve,s,spec.strip):[...accessoryKit(spec.profile,s),...(spec.strip.technology==='WCOB'?sleeveAccessoryKit(null,s,spec.strip):[])]).filter(a=>a.selected)},calculation:{stripLengthMm:spec.stripLength,powerW:spec.power,currentA:spec.current,wattsPerMeter:spec.wattsPerMeter,selectedTerminal:spec.selectedTerminal,freeSpaceMm:spec.offcut,cutVerified:spec.cutVerified,envelopeFits:spec.envelopeFits,fitVerified:spec.fitVerified,fitStatus:spec.fitStatus,issues:spec.issues},mounting:spec.isSleeve?null:{zone:s.zone,source:spec.profile.instruction,steps:mountingSteps(spec.profile,s.mounting==='recessed')},notes:['Product and installation illustration; not fabrication or electrical documentation.','Manufacturer profile section for MICRO-PLUS; other sections reconstructed from drawings with simplified details.','PCB and print are illustrative. CE/RoHS option is a print concept, not certification evidence.','Drill, groove, fastener and cable dimensions require project-specific selection.','Accessory references follow KLUŚ cards; fixing quantities are unspecified. Sleeve and sealing geometry is illustrative and does not establish IP compliance.','GLB contains full project length. Custom artwork is embedded only in GLB.','Release paper marked 3M is illustrative; adhesive grade is not specified. RGB light preview does not simulate spectral colour rendering; CRI is catalog data.']};}
+function project(){const spec=specification(s);return{schema:'prescot-light-studio/v9',configuration:s,displaySampleMm:displayLength(s),components:{housing:s.housing,finish:spec.isSleeve?null:spec.finish,profile:spec.isSleeve?null:spec.profile,strip:spec.strip,cover:spec.isSleeve?null:spec.cover,sleeve:spec.sleeve,accessories:(spec.isSleeve?sleeveAccessoryKit(spec.sleeve,s,spec.strip):[...accessoryKit(spec.profile,s),...(spec.strip.technology==='WCOB'?sleeveAccessoryKit(null,s,spec.strip):[])]).filter(a=>a.selected)},calculation:{stripLengthMm:spec.stripLength,powerW:spec.power,currentA:spec.current,wattsPerMeter:spec.wattsPerMeter,selectedTerminal:spec.selectedTerminal,freeSpaceMm:spec.offcut,cutVerified:spec.cutVerified,envelopeFits:spec.envelopeFits,fitVerified:spec.fitVerified,fitStatus:spec.fitStatus,issues:spec.issues},mounting:spec.isSleeve?null:{zone:s.zone,source:spec.profile.instruction,steps:mountingSteps(spec.profile,s.mounting==='recessed')},notes:['Product and installation illustration; not fabrication or electrical documentation.','Profile sections reconstructed from KLUŚ product drawings; retaining details and accessory silhouettes are simplified.','PCB and print are illustrative. CE/RoHS option is a print concept, not certification evidence.','Drill, groove, fastener and cable dimensions require project-specific selection.','Accessory references follow KLUŚ cards; fixing quantities are unspecified. Sleeve and sealing geometry is illustrative and does not establish IP compliance.','GLB contains full project length. Custom artwork is embedded only in GLB.','Release paper marked 3M is illustrative; adhesive grade is not specified. RGB light preview does not simulate spectral colour rendering; CRI is catalog data.']};}
 async function busy(id,fn){const b=$(id);b.disabled=true;try{await fn();}catch(e){console.error(e);toast(`Eksport nie powiódł się: ${e.message}`);}finally{b.disabled=false;}}
 $('export-json').onclick=()=>download(new Blob([JSON.stringify(project(),null,2)],{type:'application/json'}),'prescot-projekt.json');
 $('export-glb').onclick=()=>busy('export-glb',async()=>{if(!studio)throw Error('Model jeszcze się wczytuje.');if(specification(s).fitStatus==='blocked'||specification(s).assemblyBlocked)throw Error('Najpierw rozwiąż wykluczenia w sekcji Dopasowanie.');toast('Przygotowuję model 3D…');download(new Blob([await studio.exportGLB()],{type:'model/gltf-binary'}),'prescot-zestaw.glb');toast(s.housing==='sleeve'?'Zapisano model taśmy z koszulką.':'Zapisano model GLB z animacją montażu.');});
@@ -262,7 +275,7 @@ async function startConfigurator(){
     $('start-configurator').disabled=true;
     await new Promise(resolve=>requestAnimationFrame(resolve));
     try{
-      const {createStudio}=await import('./scene.js?v=14af8cccb08e');
+      const {createStudio}=await import('./scene.js?v=c3acda4e66c0');
       const initial=s;studio=await createStudio($('viewport'),initial);
       if(s!==initial){studio.update(s);studio.frame();}
       $('loading').remove();document.body.dataset.ready='true';

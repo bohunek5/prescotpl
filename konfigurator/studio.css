@@ -432,3 +432,7 @@ body[data-light-study=true] .distributor-mark::after{opacity:1}
 .bom .bom-head{gap:14px}.bom h3{font-size:14px;line-height:1.5}.bom .bom-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px}.bom .bom-grid span{font-size:11px;line-height:1.4}.bom .bom-grid strong{font-size:17px;line-height:1.4;font-weight:400}.bom p{line-height:1.65}.bom .fit-report{margin-top:14px}
 body[data-light-study=true] .bom{background:#292e35;color:#f3efe7}
 @media(max-width:600px){.bom{margin-inline:0;padding:20px 18px}.bom h3{font-size:15px}}
+/* Variant selectors keep the exact accessory SKU visible on narrow screens. */
+.accessory-variant{grid-column:1/-1;width:100%;min-width:0;max-width:100%;padding:9px;border:1px solid var(--line,#d6d9dc);border-radius:9px;background:transparent;color:inherit;font:inherit;font-size:12px}
+.additional-accessories{margin-top:12px;max-height:420px;overflow:auto}
+.additional-accessories>summary{cursor:pointer;padding:12px 0;font-size:13px;font-weight:600}

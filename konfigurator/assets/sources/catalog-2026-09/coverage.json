@@ -1,0 +1,737 @@
+{
+  "edition": "2026-09-01",
+  "implemented": 72,
+  "scope": "Pojedynczy kanał LED. Ramy montażowe, profile techniczne i kanały wielostronne wymagają osobnej konfiguracji systemu.",
+  "families": [
+    {
+      "ref": "A08288",
+      "name": "PIKO",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01167",
+      "name": "PIKO-O",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00014",
+      "name": "KLUS_2c07419e4286_Product_datasheet_PIKO-45_EN",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A00022",
+      "name": "Profil PIKO-DUO anoda srebrny 1000mm",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18046",
+      "name": "TEPIKO",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01168",
+      "name": "PIKO-ZM",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01575",
+      "name": "Profil KOZEL-10 surowy 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01419",
+      "name": "MICRO-HG",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00020",
+      "name": "MICRO-30DEG-K",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A00021",
+      "name": "MICRO-30DEG-KOZ",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01418",
+      "name": "PDS-ZMG",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18068",
+      "name": "REGULOR",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A02725",
+      "name": "PDS-UST",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02057",
+      "name": "PDS-T",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18040",
+      "name": "KOZMA",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18044",
+      "name": "TPK-4",
+      "status": "system-component"
+    },
+    {
+      "ref": "A00370",
+      "name": "OPK-4",
+      "status": "implemented"
+    },
+    {
+      "ref": "A08505",
+      "name": "OLEK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A08547",
+      "name": "JAZ",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A00788",
+      "name": "JAZ-DUO",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18039",
+      "name": "3035",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A08441",
+      "name": "3035-O",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04023",
+      "name": "45-ALU",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01919",
+      "name": "TAPO",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05391",
+      "name": "TAN-C5",
+      "status": "implemented"
+    },
+    {
+      "ref": "A06367",
+      "name": "KOPRO",
+      "status": "implemented"
+    },
+    {
+      "ref": "A07890",
+      "name": "KOPRO-30",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00033",
+      "name": "KOPROMA",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18015",
+      "name": "LOC-30",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A06639",
+      "name": "TEST-36",
+      "status": "system-component"
+    },
+    {
+      "ref": "A04507",
+      "name": "TEST-74",
+      "status": "system-component"
+    },
+    {
+      "ref": "A04476",
+      "name": "TRIADA",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A04478",
+      "name": "TETRA-43",
+      "status": "system-component"
+    },
+    {
+      "ref": "A04508",
+      "name": "TETRA-78",
+      "status": "system-component"
+    },
+    {
+      "ref": "A07176",
+      "name": "POLI",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18026",
+      "name": "NISA-KRA",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18027",
+      "name": "Profil NISA-KON surowy 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18029",
+      "name": "NISA-NI",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18025",
+      "name": "WERKIN",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18033",
+      "name": "LIT-L",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18031",
+      "name": "KIDES",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18032",
+      "name": "KIDES-DUO",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A07454",
+      "name": "ATRA",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18030",
+      "name": "DES",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18036",
+      "name": "GLADES",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A07823",
+      "name": "KOZUS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00958",
+      "name": "KOZUS-50",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01829",
+      "name": "HR-MAX",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01827",
+      "name": "HR-MAX-T",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01828",
+      "name": "Profil HR-MAX-TW surowy 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01844",
+      "name": "HR-OPTI",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00015",
+      "name": "HR-SLIM",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00037",
+      "name": "HR-SLIM-KOZ",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18082",
+      "name": "HR-SLIM-KOZ-BD",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04323",
+      "name": "FASKO",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18042",
+      "name": "STEP",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18038",
+      "name": "STEPUS",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A06888",
+      "name": "STEKO-PLUS",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A06885",
+      "name": "ROGER",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A04826",
+      "name": "OBIT",
+      "status": "implemented"
+    },
+    {
+      "ref": "A06144",
+      "name": "POR",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18043",
+      "name": "EX-ALU",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18017",
+      "name": "Profil KRAV-56  anoda e6-k1 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18016",
+      "name": "Profil KRAV-810  anoda e6-k1 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18045",
+      "name": "KRAV-05IN",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A05552",
+      "name": "LARKO",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00756",
+      "name": "LARKO-50",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05553",
+      "name": "LOKOM",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05554",
+      "name": "LIPOD",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02609",
+      "name": "LIPOD-50",
+      "status": "implemented"
+    },
+    {
+      "ref": "A06454",
+      "name": "KOZEL",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00757",
+      "name": "KOZEL-50",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00399",
+      "name": "TEKNIK-ZM",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01554",
+      "name": "TEKNIK-ZM-TK",
+      "status": "system-component"
+    },
+    {
+      "ref": "A00600",
+      "name": "KOZUS-CR",
+      "status": "implemented"
+    },
+    {
+      "ref": "A06638",
+      "name": "TEKUS",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01293",
+      "name": "TEKUS-ZM",
+      "status": "system-component"
+    },
+    {
+      "ref": "A05556",
+      "name": "GIZA",
+      "status": "implemented"
+    },
+    {
+      "ref": "A06164",
+      "name": "OPAC-30",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00758",
+      "name": "GIZA-LL",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02479",
+      "name": "GIZA-LL-T",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04501",
+      "name": "GIZA-LL-ZMG",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02724",
+      "name": "GIZA-LL-UST",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02162",
+      "name": "GIZA-DUO-LL",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A02627",
+      "name": "GLAZA-LL",
+      "status": "implemented"
+    },
+    {
+      "ref": "A03059",
+      "name": "GLAZA-DUO",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18050",
+      "name": "4050",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01309",
+      "name": "4050-O",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18051",
+      "name": "4050-W",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18078",
+      "name": "INTER-PLUS",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18047",
+      "name": "MOD-50",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18049",
+      "name": "MOD-100",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18056",
+      "name": "RAM-3035-KOZE",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01780",
+      "name": "Profil 3035-KR-KOZE surowy 1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18053",
+      "name": "OMODO-50",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18055",
+      "name": "RAM-KOZE-50",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18060",
+      "name": "RAM-KOL-50",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18059",
+      "name": "RAM-TEK-50",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18058",
+      "name": "OMODO-100",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18057",
+      "name": "RAM-KOZE-100",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18062",
+      "name": "RAM-KOL-100",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18061",
+      "name": "RAM-TEK-100",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01772",
+      "name": "MOD-KR-KOZE",
+      "status": "system-component"
+    },
+    {
+      "ref": "A02053",
+      "name": "MOD-KR-KOL",
+      "status": "system-component"
+    },
+    {
+      "ref": "A02052",
+      "name": "MOD-KR-TEK",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18001",
+      "name": "BOX-M",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18009",
+      "name": "BOX",
+      "status": "system-component"
+    },
+    {
+      "ref": "A08332",
+      "name": "FOLED",
+      "status": "implemented"
+    },
+    {
+      "ref": "A08333",
+      "name": "FOLED-SUF",
+      "status": "implemented"
+    },
+    {
+      "ref": "A08334",
+      "name": "FOLED-BOK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A03632",
+      "name": "FOLED-50",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A03631",
+      "name": "FOLED-50-SUF",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A57945",
+      "name": "Profil FOLED-50-BOK surowy  1m",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A08338",
+      "name": "FOLHAK",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01179",
+      "name": "POKET",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01234",
+      "name": "POK-US",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01177",
+      "name": "DIPOKET",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01233",
+      "name": "DIPOK-US",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A18069",
+      "name": "PLAKIN-DUO",
+      "status": "multi-channel"
+    },
+    {
+      "ref": "A18003",
+      "name": "OLIS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04195",
+      "name": "OLIS-K",
+      "status": "requires-source-review"
+    },
+    {
+      "ref": "A01779",
+      "name": "3035-MOS",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01773",
+      "name": "MOD-MOS-50",
+      "status": "system-component"
+    },
+    {
+      "ref": "A01815",
+      "name": "MOD-MOS-100",
+      "status": "system-component"
+    },
+    {
+      "ref": "A18079",
+      "name": "KOZEL-10-BD",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18080",
+      "name": "KOZMA-BD",
+      "status": "implemented"
+    },
+    {
+      "ref": "A18081",
+      "name": "KOZUS-BD",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00016",
+      "name": "PDS-T-BOK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00017",
+      "name": "KOZUS-BOK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00018",
+      "name": "KOZMA-22-BOK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00019",
+      "name": "KOZMA-22",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02966",
+      "name": "MICRO-PLUS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00599",
+      "name": "Profil MICRO-H anoda e6-k1 1m",
+      "status": "implemented"
+    },
+    {
+      "ref": "A02056",
+      "name": "PDS-ZM-PLUS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A09204",
+      "name": "Profil PDS-H anoda e6-k1 1m",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01263",
+      "name": "PDS-4-PLUS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A09325",
+      "name": "SILER",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01587",
+      "name": "MICRO-NK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A01588",
+      "name": "PDS-NK",
+      "status": "implemented"
+    },
+    {
+      "ref": "A00005",
+      "name": "45-PLUS",
+      "status": "implemented"
+    },
+    {
+      "ref": "A08504",
+      "name": "45-16",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05390",
+      "name": "TAMI",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05392",
+      "name": "TAKO",
+      "status": "implemented"
+    },
+    {
+      "ref": "A05393",
+      "name": "TOST",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04370",
+      "name": "PAC-ALU",
+      "status": "implemented"
+    },
+    {
+      "ref": "A04369",
+      "name": "STOS-ALU",
+      "status": "implemented"
+    }
+  ]
+}

@@ -16,7 +16,8 @@
     "test:mobile-interactions": "node scripts/check-mobile-interactions.mjs",
     "test:set": "node --test scripts/check-set-engine.test.mjs",
     "test:set-ui": "node scripts/check-set-panel.mjs",
-    "test:configurator-optics": "node scripts/check-configurator-optics.mjs"
+    "test:configurator-optics": "node scripts/check-configurator-optics.mjs",
+    "test:configurator-catalog": "node --test scripts/check-configurator-catalog.test.mjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

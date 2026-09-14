@@ -1,15 +1,15 @@
-import {stripOutputScale} from './light-state.js?v=14af8cccb08e';
-import {factorySilicone} from './strip-protection.js?v=14af8cccb08e';
+import {stripOutputScale} from './light-state.js?v=c3acda4e66c0';
+import {factorySilicone} from './strip-protection.js?v=c3acda4e66c0';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=14af8cccb08e';
-import {drawPcbBrand} from './brand-art.js?v=14af8cccb08e';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=14af8cccb08e';
-import {smdPackage} from './smd-package.js?v=14af8cccb08e';
-import {tapeTerminals} from './tape-wiring.js?v=14af8cccb08e';
-import {buildSilicone} from './silicone.js?v=14af8cccb08e';
-import {glowMaterial} from './glow.js?v=14af8cccb08e';
-import {phosphorMap} from './light-textures.js?v=14af8cccb08e';
-import {buildReleaseLiner} from './release-liner.js?v=14af8cccb08e';
+import {rgbwChannels,colorCct} from './light-color.js?v=c3acda4e66c0';
+import {drawPcbBrand} from './brand-art.js?v=c3acda4e66c0';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=c3acda4e66c0';
+import {smdPackage} from './smd-package.js?v=c3acda4e66c0';
+import {tapeTerminals} from './tape-wiring.js?v=c3acda4e66c0';
+import {buildSilicone} from './silicone.js?v=c3acda4e66c0';
+import {glowMaterial} from './glow.js?v=c3acda4e66c0';
+import {phosphorMap} from './light-textures.js?v=c3acda4e66c0';
+import {buildReleaseLiner} from './release-liner.js?v=c3acda4e66c0';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow

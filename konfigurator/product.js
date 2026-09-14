@@ -1,16 +1,16 @@
-import {prepareCoverFlex} from './cover-flex.js?v=14af8cccb08e';
-import {stripOutputScale} from './light-state.js?v=14af8cccb08e';
-import {hasAdhesiveBacking} from './strip-protection.js?v=14af8cccb08e';
+import {prepareCoverFlex} from './cover-flex.js?v=c3acda4e66c0';
+import {stripOutputScale} from './light-state.js?v=c3acda4e66c0';
+import {hasAdhesiveBacking} from './strip-protection.js?v=c3acda4e66c0';
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=14af8cccb08e';
-import {buildPCB} from './tape.js?v=14af8cccb08e';
-import {sectionGeometry} from './section.js?v=14af8cccb08e';
-import {profileContour} from './profile-shapes.js?v=14af8cccb08e';
-import {coverSection} from './cover-shapes.js?v=14af8cccb08e';
-import {glowMaterial} from './glow.js?v=14af8cccb08e';
-import {diffuserMap} from './light-textures.js?v=14af8cccb08e';
-import {assemblyPose} from './assembly-motion.js?v=14af8cccb08e';
-import {createLightVolume} from './light-volume.js?v=14af8cccb08e';
+import {buildAccessories} from './accessories.js?v=c3acda4e66c0';
+import {buildPCB} from './tape.js?v=c3acda4e66c0';
+import {sectionGeometry} from './section.js?v=c3acda4e66c0';
+import {profileContour} from './profile-shapes.js?v=c3acda4e66c0';
+import {coverSection} from './cover-shapes.js?v=c3acda4e66c0';
+import {glowMaterial} from './glow.js?v=c3acda4e66c0';
+import {diffuserMap} from './light-textures.js?v=c3acda4e66c0';
+import {assemblyPose} from './assembly-motion.js?v=c3acda4e66c0';
+import {createLightVolume} from './light-volume.js?v=c3acda4e66c0';
 import {toCreasedNormals} from 'three/addons/utils/BufferGeometryUtils.js';
 
 // Display samples and full-length export share one physical model, in metres.
@@ -28,13 +28,17 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   const lens=mat({color:spec.cover.color,roughness:isClear?.14:.38,metalness:0,transparent:isClear,opacity:spec.cover.beamAngle?.48:isClear?.22:1,depthWrite:!isClear,side:T.DoubleSide,emissiveMap:emission});
   const add=(geo,m,parent,name)=>{const mesh=new T.Mesh(geo,m);mesh.name=name;mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;};
   if(!spec.isSleeve){
-  if(p.id==='micro'){
+  if(p.id==='micro'&&!p.section){
     const cut=sectionGeometry(source,H/2);
     const g=extrudeSection(cut,L,.00010);cut.dispose();
     add(g,metal,profile,p.name);
   }else{
-    const shape=new T.Shape();profileContour(p).forEach(([x,y],i)=>shape[i?'lineTo':'moveTo'](x/1000,y/1000));shape.closePath();
-    const g=new T.ExtrudeGeometry(shape,{depth:L-.00007,bevelEnabled:true,bevelSize:.000035,bevelThickness:.000035,bevelSegments:2,steps:1});g.rotateY(Math.PI/2);g.translate(-L/2+.000035,0,0);
+    const shapes=[];
+    for(const loop of p.section||[{points:profileContour(p),hole:false}]){
+      const shape=loop.hole?new T.Path():new T.Shape();loop.points.forEach(([x,y],i)=>shape[i?'lineTo':'moveTo'](x/1000,y/1000));shape.closePath();
+      if(loop.hole)shapes.at(-1).holes.push(shape);else shapes.push(shape);
+    }
+    const g=new T.ExtrudeGeometry(shapes,{depth:L-.00007,bevelEnabled:true,bevelSize:.000035,bevelThickness:.000035,bevelSegments:2,steps:1});g.rotateY(Math.PI/2);g.translate(-L/2+.000035,0,0);
     if(p.id==='stos'){g.scale(1000,1000,1000);toCreasedNormals(g,Math.PI/6);g.scale(.001,.001,.001);}
     add(g,metal,profile,p.name);
   }
@@ -42,7 +46,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
   const accessories=buildAccessories(p,state,L);accessories.root.visible=!spec.isSleeve;group.add(accessories.root);
   const details=buildPCB({...spec,segments,stripLength},state,{art,quality:quality==='auto'&&length>300?'overview':'detail'});pcb.add(details.group);
   if(!spec.isSleeve){
-  if(sourceCover&&p.id==='micro'&&['hs-opal','hs-clear'].includes(spec.cover.id)){
+  if(sourceCover&&p.id==='micro'&&!p.section&&['hs-opal','hs-clear'].includes(spec.cover.id)){
     const cut=sectionGeometry(sourceCover);
     const g=extrudeSection(cut,L,.000025,32);cut.dispose();g.translate(0,-H+.00045,0);
     add(g,lens,cover,'HS_geometria_z_modelu_KLUS');
@@ -75,7 +79,7 @@ export function buildProduct(source,sourceSize,spec,state,{length=100,art=null,s
     const pose=assemblyPose(amount),macro=state.view==='macro'||spec.isSleeve,angle=macro?0:(p.ledAngle||0)*Math.PI/180,normal=new T.Vector3(0,Math.cos(angle),Math.sin(angle));
     pcb.position.set(0,macro?0:p.ledBase/1000,macro?0:(p.ledZ||0)/1000);pcb.position.addScaledVector(normal,macro?0:sleeveLift+pose.pcbLift*pcbTravel);pcb.rotation.x=angle;
     cover.position.set(0,(p.coverY??p.height)/1000-.00045,(p.coverZ||0)/1000);cover.position.addScaledVector(normal,pose.coverLift*coverTravel);cover.rotation.x=angle-.52*pose.coverTilt;
-    coverFlex.forEach(bend=>bend(macro?0:pose.coverBend));
+    coverFlex.forEach(bend=>bend(macro||spec.cover.rigid?0:pose.coverBend));
     const protectedDetail=macro&&['sleeve','seal'].includes(state.detail);
     details.bend(state.exporting||spec.sleeve?.shape==='side'?0:spec.isSleeve?.12:protectedDetail?.12:macro&&state.detail!=='curve'?1:pose.pcbBend*.8*Math.min(1,.15/L),macro&&state.detail==='curve'?1:0);
     accessories.update(state,pose.capGap*100);

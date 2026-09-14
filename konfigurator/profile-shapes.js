@@ -1,7 +1,8 @@
-import {tracedContours} from './profile-contours.js?v=14af8cccb08e';
+import {tracedContours} from './profile-contours.js?v=c3acda4e66c0';
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
+  if(p.section)return p.section.find(loop=>!loop.hole).points;
   if(p.id==='stos'){
     // Smooth flanges from the STOS card, without raster stair-steps extruded into
     // bright longitudinal seams. Continuous floor and 13.1 mm LED channel.
@@ -58,7 +59,7 @@ export function profileIcon(p,cover=null){
       <stop offset="0" stop-color="white" stop-opacity="0"/><stop offset=".16" stop-color="white" stop-opacity=".65"/><stop offset=".32" stop-color="white"/><stop offset=".68" stop-color="white"/><stop offset=".84" stop-color="white" stop-opacity=".65"/><stop offset="1" stop-color="white" stop-opacity="0"/>
     </linearGradient><mask id="${mask}" maskUnits="userSpaceOnUse" x="${-spread}" y="${-reach}" width="${spread*2}" height="${reach}"><rect x="${-spread}" y="${-reach}" width="${spread*2}" height="${reach}" fill="url(#${edge})"/></mask></defs>
     <g transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})"><path class="profile-section-glow" fill="url(#${gradient})" mask="url(#${mask})" d="${beam.map(([x,y],i)=>(i?'L':'M')+x+','+y).join(' ')}Z"/></g>
-    <path class="profile-section-body" d="${points.map(([x,y],i)=>(i?'L':'M')+x+','+(H-y)).join(' ')}Z"/>
+    <path class="profile-section-body" fill-rule="evenodd" d="${(p.section||[{points}]).map(loop=>loop.points.map(([x,y],i)=>(i?'L':'M')+x+','+(H-y)).join(' ')+'Z').join(' ')}"/>
     <path class="profile-section-emitter" transform="translate(${x} ${y}) rotate(${-p.ledAngle||0})" d="M${-half},0 H${half}"/>
   </svg>`;
 }

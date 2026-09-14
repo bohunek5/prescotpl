@@ -1,14 +1,15 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=14af8cccb08e';
-import {accessoryKit} from './accessory-data.js?v=14af8cccb08e';
+import {buildAccessories} from './accessories.js?v=c3acda4e66c0';
+import {accessoryKit} from './accessory-data.js?v=c3acda4e66c0';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildInstallationCable} from './installation-wiring.js?v=14af8cccb08e';
+import {buildInstallationCable} from './installation-wiring.js?v=c3acda4e66c0';
 
 export function seatingHeight(p,recessed){
   if(!recessed)return .0008;
   return -(p.seatDepth??(p.id==='microk'?4.9:p.id==='larko'?22.8:p.id==='kozus'?15:p.height-1))/1000;
 }
 export function mountingSteps(p,recessed){
+  if(p.mount==='special')return [['Montaż według instrukcji KLUŚ','Sposób osadzenia, akcesoria i przygotowanie podłoża określa instrukcja wybranego profilu. Otwórz dokumentację obok modelu.']];
   if(p.screwDrywall)return[
     ['Profil między płytami',`Przygotuj krawędzie płyty ${String(p.boardThickness).replace('.',',')} mm i wyjście przewodu. Skrzydła profilu opierają się o tylną stronę płyty.`],
     ['Przykręcenie skrzydeł','Przewierć płytę i skrzydła, następnie osadź wkręty. Instrukcja KLUŚ podaje maksymalny rozstaw 400 mm.'],

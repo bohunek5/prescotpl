@@ -1,7 +1,7 @@
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {accessoryKit} from './accessory-data.js?v=14af8cccb08e';
-import {profileContour} from './profile-shapes.js?v=14af8cccb08e';
+import {accessoryKit} from './accessory-data.js?v=c3acda4e66c0';
+import {profileContour} from './profile-shapes.js?v=c3acda4e66c0';
 // Exterior study of the matched parts; snap fits are not machining geometry.
 export function buildAccessories(p,state,L){
   const root=new T.Group(),caps=new T.Group(),fixings=new T.Group();root.name='Akcesoria_KLUS';root.add(caps,fixings);
@@ -11,6 +11,22 @@ export function buildAccessories(p,state,L){
   const kit=accessoryKit(p,state),capInfo=kit.find(x=>x.kind==='endcap'),bracketInfo=kit.find(x=>x.kind==='bracket');
   function capShape(){
     const sh=new T.Shape();
+    if(p.section&&capInfo?.dimensions?.width&&capInfo?.dimensions?.height){
+      // Clip the section hull to the documented cap envelope. A plaster wing
+      // is not part of the end cap, even when it dominates the profile width.
+      const cw=capInfo.dimensions.width/1000,ch=capInfo.dimensions.height/1000;
+      const cx=p.ledAngle?0:-(p.ledZ||0)/1000,top=p.ledAngle?H:(p.coverY??p.height)/1000;
+      const left=cx-cw/2,right=cx+cw/2,bottom=top-ch;
+      let pts=profileContour(p).map(([x,y])=>[x/1000,y/1000]);
+      for(const [axis,bound,sign]of[[0,left,1],[0,right,-1],[1,bottom,1],[1,top,-1]]){
+        const next=[];for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length],insideA=(a[axis]-bound)*sign>=0,insideB=(b[axis]-bound)*sign>=0;if(insideA)next.push(a);if(insideA!==insideB){const t=(bound-a[axis])/(b[axis]-a[axis]);next.push([a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])]);}}pts=next;
+      }
+      pts.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+      const cross=(a,b,c)=>(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+      const half=list=>{const out=[];for(const v of list){while(out.length>1&&cross(out.at(-2),out.at(-1),v)<=0)out.pop();out.push(v);}return out;};
+      const lower=half(pts),upper=half([...pts].reverse());lower.pop();upper.pop();const hull=[...lower,...upper];
+      if(hull.length>2){hull.forEach(([x,y],i)=>sh[i?'lineTo':'moveTo'](x,y));sh.closePath();return sh;}
+    }
     if(p.universal){
       // The cap closes the open channel; retain the exterior silhouette of the extrusion.
       const points=profileContour(p).map(([x,y])=>[x/1000,y/1000]).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
@@ -22,14 +38,14 @@ export function buildAccessories(p,state,L){
     if(p.id==='alu45'){sh.moveTo(-.0095,0);sh.lineTo(.0085,0);sh.lineTo(.0095,.001);sh.lineTo(.0095,.019);sh.lineTo(.002,.019);sh.lineTo(-.0095,.0075);sh.closePath();return sh;}
     const w=(p.mount==='drywall'||p.id==='larko')?p.bodyWidth/1000:W,r=.0005;sh.moveTo(-w/2+r,0);sh.lineTo(w/2-r,0);sh.quadraticCurveTo(w/2,0,w/2,r);sh.lineTo(w/2,H-r);sh.quadraticCurveTo(w/2,H,w/2-r,H);sh.lineTo(-w/2+r,H);sh.quadraticCurveTo(-w/2,H,-w/2,H-r);sh.lineTo(-w/2,r);sh.quadraticCurveTo(-w/2,0,-w/2+r,0);return sh;
   }
-  if(capInfo)for(const sign of [-1,1]){
+  if(capInfo&&(!p.section||capInfo.dimensions?.width&&capInfo.dimensions?.height))for(const sign of [-1,1]){
     const end=new T.Group();end.userData.sign=sign;caps.add(end);
-    const shape=capShape(),entryInfo=kit.find(a=>a.kind==='entrycap');
+    const shape=capShape(),entryInfo=kit.find(a=>a.kind==='entrycap'),pairInfo=kit.find(a=>a.kind==='endcap-pair');
     if(sign<0&&state.showCable){const hole=new T.Path();hole.ellipse(-(p.ledZ||0)/1000,p.ledBase/1000+.0018,Math.min(p.channel/1000*.36,.004),Math.min(H*.23,.0015),0,Math.PI*2,true);shape.holes.push(hole);end.userData.cablePort={prepared:!entryInfo,center:[0,p.ledBase/1000+.0018,(p.ledZ||0)/1000]};}
-    const geo=new T.ExtrudeGeometry(shape,{depth:.0014,bevelEnabled:true,bevelSize:.0001,bevelThickness:.0001,bevelSegments:2,steps:1});geo.rotateY(Math.PI/2);geo.translate(-.0007,0,0);add(geo,plastic,end,'Zaslepka_'+(sign<0&&entryInfo?entryInfo.ref:capInfo.ref));
-    if(!p.ledAngle&&p.id!=='pikoo')for(const side of [-1,1]){const tang=add(new RoundedBoxGeometry(.0025,Math.min(H*.55,.006),.0006,2,.0001),plastic,end,'Jezyczek_pogladowy');tang.position.set(-sign*.0012,H/2,side*(p.channel/2000-.0005));}
+    const geo=new T.ExtrudeGeometry(shape,{depth:.0014,bevelEnabled:true,bevelSize:.0001,bevelThickness:.0001,bevelSegments:2,steps:1});geo.rotateY(Math.PI/2);geo.translate(-.0007,0,0);add(geo,/aluminum|steel/.test(capInfo.material||'')?metal:plastic,end,'Zaslepka_'+(sign<0&&entryInfo?entryInfo.ref:sign>0&&pairInfo?pairInfo.ref:capInfo.ref));
+    if(!p.section&&!p.ledAngle&&p.id!=='pikoo')for(const side of [-1,1]){const tang=add(new RoundedBoxGeometry(.0025,Math.min(H*.55,.006),.0006,2,.0001),plastic,end,'Jezyczek_pogladowy');tang.position.set(-sign*.0012,H/2,side*(p.channel/2000-.0005));}
   }
-  if(bracketInfo)for(const x of [-L*.32,L*.32]){
+  if(bracketInfo&&(!p.section||p.id==='micro'))for(const x of [-L*.32,L*.32]){
     const bracket=new T.Group();bracket.position.x=x;bracket.name=bracketInfo.name+'_'+bracketInfo.ref;fixings.add(bracket);const hiddenH=['microh','pdsh'].includes(p.id),m=hiddenH?plastic:['pikoo','pikozm'].includes(p.id)?clear:metal;
     const bw=p.bodyWidth/1000+(hiddenH?-.004:.0012),base=new T.Shape();base.moveTo(-.004,-bw/2);base.lineTo(.004,-bw/2);base.lineTo(.004,bw/2);base.lineTo(-.004,bw/2);base.closePath();const hole=new T.Path();hole.absarc(0,0,.0017,0,Math.PI*2,true);base.holes.push(hole);
     const g=new T.ExtrudeGeometry(base,{depth:.0006,bevelEnabled:false});g.rotateX(-Math.PI/2);add(g,m,bracket,'Stopa_z_otworem');

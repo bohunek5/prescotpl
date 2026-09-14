@@ -39,7 +39,7 @@ await copyModule(path.join(three,'build/three.module.min.js'));
 for(const text of code)for(const match of text.matchAll(/['"]three\/addons\/([^'"]+)['"]/g))await copyModule(path.join(three,'examples/jsm',match[1]));
 await write('vendor/three/LICENSE',await fs.readFile(path.join(three,'LICENSE')));
 
-const jsonSources=new Set(['strip-records.json','provenance.json','klus-universal-2026-09.json','klus-finish-variants-2026-09.json','studio-v9-sources.json']);
+const jsonSources=new Set(['strip-records.json','provenance.json','klus-universal-2026-09.json','klus-finish-variants-2026-09.json','studio-v9-sources.json','registry.json','coverage.json']);
 async function assets(dir){
   for(const item of await fs.readdir(dir,{withFileTypes:true})){
     if(item.name.startsWith('.'))continue;

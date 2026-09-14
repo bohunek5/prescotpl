@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {sleeveSections} from './sleeve-sections.js?v=14af8cccb08e';
+import {sleeveSections} from './sleeve-sections.js?v=c3acda4e66c0';
 
 export function sleeveDrawing(spec){return sleeveSections[spec?.id]||null;}
 export function sectionShapes(regions){
