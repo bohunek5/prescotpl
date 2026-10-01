@@ -1,4 +1,4 @@
-import {smooth} from './assembly-motion.js?v=1deadf165ec6';
+import {smooth} from './assembly-motion.js?v=130bc2896fcd';
 export const welcomeDuration=6;
 // Keep each assembly step readable, then softly light the finished set once.
 export function welcomePose(time){

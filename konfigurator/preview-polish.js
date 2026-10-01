@@ -1,6 +1,6 @@
-import {profileIcon} from './profile-shapes.js?v=1deadf165ec6';
-import {previewLight} from './light-state.js?v=1deadf165ec6';
-import {uiIcon} from './ui-icons.js?v=1deadf165ec6';
+import {profileIcon} from './profile-shapes.js?v=130bc2896fcd';
+import {previewLight} from './light-state.js?v=20260922-refine1';
+import {uiIcon} from './ui-icons.js?v=130bc2896fcd';
 
 export function createPreviewPolish(){
  const viewport=document.getElementById('viewport'),actions=document.createElement('div');actions.className='viewport-actions';
@@ -19,7 +19,7 @@ export function createPreviewPolish(){
    section.style.setProperty('--section-level',light.on?String(light.brightness/100*spec.cover.transmission):'0');
    section.dataset.finish=state.finish;
   }
-  sleevePlay.hidden=!(spec.sleeve&&state.view==='macro'&&state.detail==='sleeve');
+  sleevePlay.hidden=!(spec.stripSelected!==false&&spec.sleeve&&state.view==='macro'&&state.detail==='sleeve');
   actions.hidden=!show&&sleevePlay.hidden;
   for(const button of document.querySelectorAll('button[data-light-study]')){
    button.classList.add('theme-switch');button.setAttribute('aria-label',state.lightStudy?'Włącz tryb dzienny':'Włącz tryb nocny');

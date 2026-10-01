@@ -1,0 +1,50 @@
+/* Footer-only parity with current Kontakt/LAB. Geometry and studio UI are untouched. */
+@import url("./shared/assets/privacy/fonts/554567abe658.css");
+html body .pc-footer .pc-footer-socials a:hover{background:#ffffffdf;border-color:#fff;color:#1c3044;transform:none}
+@media (min-width:1025px){
+html body .pc-footer::after{left:50%;top:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(38vw,540px);height:340px;opacity:.027}
+html body .pc-footer .pc-footer-section.pc-footer-desktop:not(.pc-footer-section--contact){text-align:center;align-self:start;padding-top:8px}
+html body .pc-footer .pc-footer-section.pc-footer-desktop:not(.pc-footer-section--contact) .pc-footer-heading{justify-content:center}
+html body .pc-footer .pc-footer-section.pc-footer-desktop:not(.pc-footer-section--contact) .pc-footer-links{align-items:center}
+}
+@media (max-width:767px){
+html body .pc-footer::after{display:block!important;top:auto!important;bottom:4px!important;left:50%!important;right:auto!important;width:140px!important;height:95px!important;transform:translateX(-50%)!important;opacity:.09!important;z-index:0!important;pointer-events:none!important}
+html body .pc-footer-inner{position:relative;z-index:1}
+}
+@media (min-width:1151px){
+html body .pc-footer .pc-footer-grid{grid-template-columns:minmax(280px,1.25fr) minmax(150px,.78fr) minmax(170px,.85fr) minmax(280px,1.08fr);gap:32px;align-items:start}
+html body .pc-footer .pc-footer-section{padding-top:0!important}
+html body .pc-footer .pc-footer-brand{margin:0;padding:28px;min-height:270px;align-self:stretch}
+html body .pc-footer .pc-footer-heading{margin-bottom:24px;min-height:18px}
+html body .pc-footer::after{top:41%!important;width:360px!important;height:270px!important;opacity:.035!important}
+html body .pc-footer .pc-footer-bottom{margin-top:34px}
+}
+@media (max-width:767px){
+html body .pc-footer::after{bottom:24px!important}
+}
+@media (min-width:768px) and (max-width:1150px){
+html body .pc-footer .pc-footer-grid{grid-template-columns:minmax(240px,1.2fr) minmax(150px,1fr) minmax(160px,1fr);gap:28px 24px}
+html body .pc-footer .pc-footer-brand{grid-row:auto;padding:24px}
+html body .pc-footer .pc-footer-section{padding-top:0}
+html body .pc-footer .pc-footer-section--contact{grid-column:1/-1}
+html body .pc-footer::after{left:50%;right:auto;top:35%;bottom:auto;transform:translate(-50%,-50%);width:300px;height:220px;opacity:.025}
+}
+@media (max-width:767px){
+html body .pc-footer{padding-bottom:calc(155px + env(safe-area-inset-bottom))}
+}
+html body .pc-footer details.pc-footer-mobile>summary,html body .pc-footer details.pc-footer-mobile>summary *{cursor:pointer!important}
+@media (max-width:767px){
+html body .pc-footer::after{display:none!important}
+html body .pc-footer{padding-bottom:calc(32px + env(safe-area-inset-bottom))!important}
+html body .pc-footer .pc-footer-section summary{min-height:52px;padding-block:12px}
+html body .pc-footer .pc-footer-bottom{position:relative;gap:8px;margin-top:22px;padding-top:20px}
+html body .pc-footer .pc-footer-legal{flex-basis:100%;position:relative;padding-right:100px;min-height:108px}
+html body .pc-footer .pc-footer-legal::after{content:"";position:absolute;right:0;top:50%;transform:translateY(-50%);width:88px;height:76px;background:url("../wp-content/uploads/2025/05/PRESCOT_pattern2-1.svg") center/contain no-repeat;filter:grayscale(1) brightness(4);opacity:.20;pointer-events:none}
+}
+@media (max-width:767px){
+html body .pc-footer .pc-footer-section summary{min-height:52px!important;padding-block:12px!important;margin:0!important}
+html body .pc-footer .pc-footer-section{padding-block:0!important}
+}
+/* The main site applies these shared font families globally; scope them here. */
+html body .pc-footer h2{font-family:"Outfit",Arial,sans-serif!important}
+html body .pc-footer button{font-family:"Manrope",Arial,sans-serif!important}

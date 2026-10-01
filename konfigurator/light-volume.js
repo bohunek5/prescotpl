@@ -29,17 +29,23 @@ export function createLightVolume(length,width,{slope=1.15,reach=.065,name='wyjs
           sum+=crossFade*endFade*fade*step(0.0,y);
         }
         float alpha=clamp(sum/12.0*min(travel*2.8,2.2)*strength,0.0,0.55);
-        if(alpha<0.001)discard;gl_FragColor=vec4(lightColor,alpha);
+        gl_FragColor=vec4(lightColor,alpha);
         #include <colorspace_fragment>
       }`,clipping:true});
   const geometry=new T.BoxGeometry(1,1,1);geometry.translate(0,.5,0);
   const mesh=new T.Mesh(geometry,material);mesh.name='Poswiata_przestrzenna_'+name;mesh.visible=false;mesh.renderOrder=3;mesh.frustumCulled=false;
   const inverse=new T.Matrix4(),direction=new T.Vector3();
   mesh.onBeforeRender=(_renderer,_scene,camera)=>{inverse.copy(mesh.matrixWorld).invert();camera.getWorldDirection(direction);uniforms.ray.value.copy(direction).transformDirection(inverse);};
-  function update(color,level,{night=false,power=10,transmission=1,coupling=1,curvature=0}={}){
+  function update(color,level,{night=false,power=10,transmission=1,coupling=1,curvature=0,fluxCalibrated=false}={}){
     const amount=Math.max(0,level)*transmission*coupling;
-    const distance=reach*(.42+.58*Math.sqrt(Math.max(0,level))),span=width+2*distance*slope;
-    mesh.visible=amount>.002;uniforms.lightColor.value.copy(color);uniforms.strength.value=amount*(night?.85:.40)*Math.min(1.5,Math.sqrt(Math.max(1,power)/10));
+    // Dimming changes radiance, not the emitting length or the beam geometry.
+    // Shrinking this volume and discarding dim fragments made Low Brightness
+    // appear to light only a short patch instead of the complete strip.
+    const distance=reach,span=width+2*distance*slope;
+    // A white strip's level already includes its catalogued lm/m. Multiplying
+    // by watts again would penalize efficient LEDs and double-count 3in1 modes.
+    const powerGain=fluxCalibrated?1:Math.min(1.5,Math.sqrt(Math.max(1,power)/10));
+    mesh.visible=amount>0;uniforms.lightColor.value.copy(color);uniforms.strength.value=amount*(night?.85:.40)*powerGain;
     uniforms.reach.value=distance;uniforms.span.value=span;uniforms.curve.value=curvature;mesh.scale.set(length,distance,span);
     mesh.userData={outgoing:true,level:amount,reachMm:distance*1000,transmission,slope,presentationOnly:true};
   }

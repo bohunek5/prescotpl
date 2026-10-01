@@ -365,6 +365,13 @@ body:not([data-light-study=true]) #studio-stage #viewport{background:radial-grad
 .housing-switch button{display:flex;align-items:center;gap:12px;min-height:68px;padding:12px;border:1px solid var(--line);border-radius:10px;text-align:left;background:transparent;color:inherit}
 .housing-switch button[aria-pressed=true]{background:color-mix(in srgb,currentColor 6%,transparent);border-color:color-mix(in srgb,currentColor 32%,transparent)}
 .housing-switch svg{width:31px;height:26px;flex:none}.housing-switch span{font-size:14px;line-height:1.4}.housing-switch small{display:block;font-size:10px;letter-spacing:.06em;opacity:.62}.housing-switch button:disabled{opacity:.4;cursor:not-allowed}
+.housing-switch button{min-width:0;min-height:82px;gap:9px;padding:12px 10px}
+.housing-switch>button>svg{width:26px}
+.housing-switch .housing-label{display:block;min-width:0}
+.housing-switch .housing-brand{display:flex;align-items:center;height:24px;margin-top:5px}
+.housing-switch .housing-brand-logo{display:block;max-width:100%;object-fit:contain;object-position:left center}
+.housing-switch .housing-brand-logo--klus{width:54px;height:22px}
+.housing-switch .housing-brand-logo--prescot{width:78px;height:16px}
 .component-picker>summary{border-color:color-mix(in srgb,currentColor 14%,transparent)}
 .technical-component+.technical-component{border-left:1px solid var(--line);padding-left:24px}
 .stage-controls>.stage-light-controls{padding-top:16px;border-top:1px solid var(--line)}
@@ -528,3 +535,101 @@ body[data-light-study=true] .welcome-choice strong{color:#f0e8da}
 @media(max-width:360px){.welcome-product{gap:8px}.welcome-product>strong{font-size:22px}.welcome-warranty{padding-left:8px}#welcome-phase{width:168px}.welcome-film-meta{gap:7px;font-size:9px}#welcome-replay{min-width:91px;font-size:9px}}
 @media(max-height:760px) and (max-width:780px){#welcome-film{height:245px}.welcome-film-meta{margin-bottom:10px}.welcome h1{font-size:30px}.welcome{padding-top:16px;padding-bottom:44px}.welcome-signature{bottom:17px}}
 @media(prefers-reduced-motion:reduce){.welcome-choice{transition:none}}
+
+/* Catalogue photography complements the selected profile's live section. */
+#profiles.cards{grid-template-columns:minmax(0,1fr)}
+#profiles .card-copy{flex:1;min-width:0}
+.profile-photo-thumb{position:relative;display:block;flex:0 0 86px;width:86px;height:76px;border-radius:8px;background:#fff;overflow:hidden}
+.profile-photo-thumb>img{display:block;width:100%;height:100%;object-fit:contain}
+#profiles .profile-photo-thumb .profile-section-icon{position:absolute;bottom:2px;right:2px;width:34px;height:28px;padding:3px;background:#fff;border:1px solid #d9dde1;border-radius:5px;--profile-light:#e6af62}
+#profiles .profile-photo-thumb .profile-section-body{fill:#929b9f}
+#profiles .profile-photo-thumb.photo-unavailable .profile-section-icon{inset:8px;width:70px;height:60px;border:0}
+.profile-photos-open{display:block;width:100%;margin:0 0 18px;padding:13px 15px;min-height:44px;border:1px solid var(--line);border-radius:8px;text-align:left;font-size:12px;line-height:1.5;color:inherit;background:var(--paper)}
+.profile-photos-open:hover{border-color:#8d969b}
+html:has(:is(#profile-photo-dialog,#cover-photo-dialog)[open]){overflow:hidden}
+:is(#profile-photo-dialog,#cover-photo-dialog){max-width:920px;width:calc(100% - 32px);padding:28px;border-radius:16px;max-height:92svh}
+:is(#profile-photo-dialog,#cover-photo-dialog) .close{width:44px;height:44px;top:9px;right:9px;display:grid;place-items:center;color:inherit}
+:is(#profile-photo-dialog,#cover-photo-dialog) h2{margin:8px 48px 18px 0;overflow-wrap:anywhere;font-size:26px}
+.profile-photo-figure{display:flex;align-items:center;justify-content:center;margin:0;background:#fff;border:1px solid #e3e5e7;border-radius:10px;overflow:hidden;height:min(49svh,470px);min-height:160px}
+:is(#profile-photo-main,#cover-photo-main){display:block;min-width:0;min-height:0;max-width:100%;max-height:100%;width:100%;height:100%;object-fit:scale-down}
+:is(#profile-photo-dialog,#cover-photo-dialog) .profile-photo-status{color:#5b6268;padding:20px;text-align:center}
+.profile-photo-navigation{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0}
+.profile-photo-navigation button{flex-shrink:0;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;font-size:20px;color:inherit}
+:is(#profile-photo-caption,#cover-photo-caption){margin:0;text-align:center;color:inherit;font-size:12px;line-height:1.5}
+.profile-photo-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.profile-photo-list button{min-width:0;padding:5px;border:1px solid var(--line);border-radius:8px;color:inherit;text-align:center}
+.profile-photo-list button[aria-pressed=true]{border-color:#c36f43;box-shadow:inset 0 0 0 1px #c36f43}
+.profile-photo-list img{display:block;object-fit:contain;width:100%;height:60px;background:#fff;border-radius:4px}
+.profile-photo-list span{display:block;font-size:10px;line-height:1.4;margin:5px 0 1px;overflow-wrap:anywhere}
+:is(#profile-photo-dialog,#cover-photo-dialog) .profile-photo-note{margin:14px 0 0;font-size:11px;line-height:1.5;color:var(--muted)}
+@media(max-width:600px){
+ :is(#profile-photo-dialog,#cover-photo-dialog){padding:20px 14px;width:calc(100% - 20px)}
+ :is(#profile-photo-dialog,#cover-photo-dialog) h2{font-size:23px;margin-bottom:12px}
+ .profile-photo-figure{height:min(43svh,360px)}
+ .profile-photo-list{gap:5px}
+ .profile-photo-list button{padding:3px}
+ .profile-photo-list img{height:44px}
+ .profile-photo-list span{font-size:9px}
+}
+
+/* A saved collection of independently configured variants for the sales PDF. */
+.quote-actions{border-top:1px solid var(--line);margin-top:20px;padding-top:20px;display:grid;gap:9px}
+.quote-primary,.quote-secondary{min-height:46px;padding:12px 16px;border-radius:7px;font-size:12px;line-height:1.4;text-align:center}
+.quote-primary{background:#343b3c;color:#fff;border:1px solid #343b3c}
+.quote-secondary{border:1px solid var(--line);background:transparent;color:inherit}
+.quote-review{min-height:40px;font-size:11px;text-decoration:underline;text-underline-offset:4px}
+.bom .quote-actions p{font-size:10px;margin:2px 0 0;color:var(--muted)}
+html:has(#quote-dialog[open]){overflow:hidden}
+#quote-dialog{width:calc(100% - 24px);max-width:720px;padding:30px;border-radius:16px;max-height:92svh}
+#quote-dialog .close{width:44px;height:44px;display:grid;place-items:center;top:6px;right:6px;color:inherit}
+#quote-dialog h2{padding-right:24px;font-size:28px}
+#quote-dialog>p{font-size:12px;line-height:1.6}
+.quote-field{display:block;color:inherit;font-size:11px;line-height:1.5;margin-top:20px;min-width:0}
+.quote-field>span{color:var(--muted)}
+.quote-field input,.quote-field textarea{display:block;width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:6px;background:#fff;color:#353330;font:inherit;font-size:13px;line-height:1.5;margin-top:7px;min-height:44px}
+.quote-field textarea{resize:vertical;max-height:200px}
+.quote-field textarea:focus-visible{outline:2px solid #a85c38;outline-offset:3px}
+.quote-list{display:grid;gap:14px;margin-top:24px}
+.quote-item{padding:18px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.quote-item-top{display:flex;align-items:center;gap:14px}.quote-item-top>div{min-width:0;flex:1}
+.quote-item-top img{width:110px;height:70px;object-fit:contain;border-radius:6px;background:#f5f7f5}
+.quote-item-top strong{display:block;font-size:13px;font-weight:500;line-height:1.5;overflow-wrap:anywhere}
+#quote-dialog .quote-item-top p{font-size:10px;line-height:1.6;margin-top:4px;color:var(--muted)}
+.quote-item-fields{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:14px}
+.quote-item-fields .quote-field{margin-top:14px}
+.quote-item-fields input[type=number]{width:100%}
+.quote-item-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.quote-item-foot>span{font-size:10px;color:var(--muted)}
+.quote-item-foot>span[data-status=pending],.quote-item-foot>span[data-status=blocked]{color:#a44419}
+.quote-item-foot>div{display:flex;gap:18px}.quote-item-foot button{font-size:11px;min-height:36px;text-decoration:underline;text-underline-offset:3px}
+.quote-dialog-actions{display:flex;justify-content:space-between;gap:12px;margin-top:16px}
+.quote-dialog-actions button{flex:1}#quote-dialog .quote-status{min-height:20px;color:inherit;font-size:11px}
+body[data-light-study=true] :is(.quote-item,.quote-field input,.quote-field textarea){background:#2d3239;color:#ede8df;border-color:#50565f}
+body[data-light-study=true] .quote-primary{background:#e9e1d3;color:#202730;border-color:#e9e1d3}
+body[data-light-study=true] .quote-item-foot>span[data-status=pending],body[data-light-study=true] .quote-item-foot>span[data-status=blocked]{color:#ecb18d}
+@media(max-width:600px){
+ #quote-dialog{padding:22px 16px}#quote-dialog h2{font-size:24px}.quote-item{padding:12px}.quote-item-top{gap:10px}.quote-item-top img{width:72px;height:62px}
+ .quote-item-fields{grid-template-columns:minmax(0,1fr) 95px;gap:8px}.quote-item-fields label{font-size:10px}.quote-dialog-actions{flex-direction:column-reverse}
+}
+
+#covers .profile-photo-thumb{flex-basis:68px;width:68px;height:62px}
+#covers .profile-photo-thumb svg{position:absolute;bottom:2px;right:2px;width:30px;height:24px;padding:3px;background:white;border:1px solid #d9dde1;border-radius:5px}
+#covers .profile-photo-thumb.photo-unavailable svg{inset:6px;width:56px;height:50px;border:0}
+
+/* Technical selection drawings remain the primary product choice. */
+#profiles .profile-section-icon{width:70px;height:62px;flex:0 0 70px}
+#strips .card:disabled{opacity:.72;background:transparent}
+#strips .card:disabled small{color:var(--muted,#797870)}
+
+/* The substrate belongs to the selected mounting zone. */
+.zone-material-field{display:grid;gap:12px;padding:18px 0;margin:18px 0;border-block:1px solid #8a877e30}
+.zone-material-field>span{font-size:12px;color:var(--muted,#77766f)}
+.zone-material-field .swatches{justify-content:flex-start;flex-wrap:wrap;gap:10px}
+.zone-picker button:disabled{cursor:not-allowed;opacity:.4}
+#suspension-settings{padding:14px 0 20px}
+.strip-select-hint{padding-bottom:12px}
+body[data-strip-selected=false] .light-controls{opacity:.6}
+
+/* The swatch describes the selected white channel; actual scene uses the same CCT. */
+.strip-light-sample{display:flex;align-items:center;gap:8px;margin-top:7px;line-height:1.5;font-size:10px;font-weight:500;flex-wrap:wrap}
+.strip-light-sample i{display:block;flex:0 0 28px;height:5px;border-radius:4px;background:var(--strip-white);box-shadow:0 0 0 1px #26394a16}

@@ -1,16 +1,17 @@
-import {stripOutputScale} from './light-state.js?v=1deadf165ec6';
-import {sleeveInsertionPose} from './sleeve-motion.js?v=1deadf165ec6';
-import {factorySilicone} from './strip-protection.js?v=1deadf165ec6';
+import {stripPreviewScale} from './light-state.js?v=20260922-refine1';
+import {configureWhiteEmission} from './diffuser-lighting.js?v=130bc2896fcd';
+import {sleeveInsertionPose} from './sleeve-motion.js?v=130bc2896fcd';
+import {factorySilicone} from './strip-protection.js?v=130bc2896fcd';
 import * as T from 'three';
-import {rgbwChannels,colorCct} from './light-color.js?v=1deadf165ec6';
-import {drawPcbBrand} from './brand-art.js?v=1deadf165ec6';
-import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=1deadf165ec6';
-import {smdPackage} from './smd-package.js?v=1deadf165ec6';
-import {tapeTerminals} from './tape-wiring.js?v=1deadf165ec6';
-import {buildSilicone} from './silicone.js?v=1deadf165ec6';
-import {glowMaterial} from './glow.js?v=1deadf165ec6';
-import {phosphorMap} from './light-textures.js?v=1deadf165ec6';
-import {buildReleaseLiner} from './release-liner.js?v=1deadf165ec6';
+import {rgbwChannels,colorCct} from './light-color.js?v=130bc2896fcd';
+import {drawPcbBrand} from './brand-art.js?v=130bc2896fcd';
+import {tapeLayout,pcbBrandPlacement} from './tape-layout.js?v=130bc2896fcd';
+import {smdPackage} from './smd-package.js?v=130bc2896fcd';
+import {tapeTerminals} from './tape-wiring.js?v=130bc2896fcd';
+import {buildSilicone} from './silicone.js?v=20260922-refine1';
+import {glowMaterial} from './glow.js?v=130bc2896fcd';
+import {phosphorMap} from './light-textures.js?v=130bc2896fcd';
+import {buildReleaseLiner} from './release-liner.js?v=130bc2896fcd';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // The bend preserves arc length and LED pitch. Packages remain rigid and follow
@@ -25,6 +26,7 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   const body=mat('#fffefa',.35),gold=mat('#bd8851',.3,{metalness:.8}),silver=mat('#b4b8b6',.22,{metalness:.96}),black=mat('#242523',.44);
   const phosphor=phosphorMap();textures.push(phosphor);
   const warm=mat(whiteCOB?'#fafbf7':'#ecc44d',.38,{emissiveMap:phosphor,emissive:0xffbd65,emissiveIntensity:0}),cool=mat('#f1d67d',.38,{emissiveMap:phosphor,emissive:0xe4edff,emissiveIntensity:0});
+  configureWhiteEmission(warm);configureWhiteEmission(cool);
   function geometry(w,h,d,r=.00006){const g=new RoundedBoxGeometry(w,h,d,overview?1:2,Math.min(r,h*.44,w*.2,d*.2));geometries.push(g);return g;}
   function instances(g,m,points,name){
     if(!points.length)return;
@@ -126,16 +128,17 @@ export function buildPCB(spec,state,{art=null,quality='detail'}={}){
   return{group,bend,peel,liner:liner.mesh,wiring:wireGroup,
     connectionPads(){core.updateWorldMatrix(true,false);return terminals.filter(t=>t.connected).map(t=>({...t,point:core.localToWorld(lastPoint(layout.contacts[0],.0004,t.z))}));},
     update(s,color){
+    core.visible=s.stripEnabled!==false;
     const side=verticalPCB&&(s.view!=='macro'||['product','sleeve','seal'].includes(s.detail)),insertion=sleeveInsertionPose(s,L);core.rotation.x=side?-Math.PI/2:0;core.position.set(insertion.offset,side?spec.sleeve.height*.45/1000:whiteCOB?.00008:0,side?spec.sleeve.width/2000-.0011:0);core.scale.z=whiteCOB?.975:1;core.userData.orientation=side?'vertical':'horizontal';group.userData.insertion=insertion;
     currentState=s;currentColor=color;protection?.update(s,lastPoint,lastCurvature,color);if(spec.sleeve||whiteCOB)routeSleeveWires(s,lastPoint,lastCurvature);
-    const level=s.light&&!s.compare?s.dimmer/100*stripOutputScale(t,s):0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
+    const level=s.light&&!s.compare?s.dimmer/100*stripPreviewScale(t,s):0,mix=cct?T.MathUtils.clamp((s.cct-t.cctMin)/(t.cctMax-t.cctMin),0,1):0;
     warm.emissive.copy(rgbw?colorCct(t.cct):cct&&!continuous?colorCct(t.cctMin):color);cool.emissive.copy(colorCct(t.cctMax||6500));
     const strength=level*(s.lightStudy?13:7.5);
     const channels=rgbw?rgbwChannels(s):null;
     warm.emissiveIntensity=strength*(rgbw?channels.W:cct&&!continuous?1-mix:1);if(rgbw)for(const key of ['R','G','B'])rgbMaterials[key].emissiveIntensity=level*1.35*channels[key];cool.emissiveIntensity=strength*mix;
     for(const {mesh,style,channel}of halos){const fraction=rgbw?Math.max(...Object.values(channels)):cct&&!continuous?(channel==='CW'?mix:1-mix):1;mesh.visible=level>0&&!(protection&&!spec.sleeve?.clear&&t.encapsulation!=='tube'&&['product','sleeve','seal'].includes(s.detail));style.material.color.copy(rgbw?color:cct&&!continuous?(channel==='CW'?cool.emissive:warm.emissive):color);style.material.opacity=level*fraction*(rgbw?(s.lightStudy?1.25:.75):(s.lightStudy?1.65:.8));}
     group.userData.light={on:level>0,warm:warm.emissiveIntensity,cool:cool.emissiveIntensity,color:color.getHexString(),pointHalos:!continuous,ledCount:count,package:continuous?t.technology||t.type:t.package||(wide?'5050':'2835'),channels};
-    wireGroup.visible=!art&&(whiteCOB&&s.view==='macro'&&['product','segment','seal'].includes(s.detail)&&s.sleeveCaps!==false||s.view==='macro'&&['wiring','seal'].includes(s.detail)||s.showCable&&s.view!=='macro'&&s.view!=='zone');
+    wireGroup.visible=s.stripEnabled!==false&&!art&&(whiteCOB&&s.view==='macro'&&['product','segment','seal'].includes(s.detail)&&s.sleeveCaps!==false||s.view==='macro'&&['wiring','seal'].includes(s.detail)||s.showCable&&s.view!=='macro'&&s.view!=='zone');
   },dispose(){liner.dispose();protection?.dispose();for(const m of materials)m.dispose();for(const g of geometries)g.dispose();for(const x of textures)x.dispose();}};
 }
 

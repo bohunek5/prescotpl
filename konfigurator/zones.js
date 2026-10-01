@@ -1,14 +1,17 @@
-import {buildStairZone} from './stair-zone.js?v=1deadf165ec6';
-import {isStairZone} from './stair-layout.js?v=1deadf165ec6';
-import {previewLight} from './light-state.js?v=1deadf165ec6';
+import {suspensionFor} from './suspension-data.js?v=130bc2896fcd';
+import {buildStairZone} from './stair-zone.js?v=130bc2896fcd';
+import {isStairZone} from './stair-layout.js?v=130bc2896fcd';
+import {previewLight} from './light-state.js?v=20260922-refine1';
 import * as T from 'three';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildProduct} from './product.js?v=1deadf165ec6';
-import {buildMount,seatingHeight} from './mounting.js?v=1deadf165ec6';
-import {surfaceFinish} from './surface-finishes.js?v=1deadf165ec6';
-import {buildInstallationCable} from './installation-wiring.js?v=1deadf165ec6';
+import {buildProduct} from './product.js?v=20260922-refine1';
+import {buildMount,seatingHeight} from './mounting.js?v=130bc2896fcd';
+import {surfaceFinish} from './surface-finishes.js?v=130bc2896fcd';
+import {buildInstallationCable} from './installation-wiring.js?v=130bc2896fcd';
 
 export const zones=[
+  {id:'ceiling',name:'Na suficie',subtitle:'Profil przy powierzchni',icon:'M2 6h28v5H2z M8 11v5h16v-5 M10 21l-3 6 M16 21v7 M22 21l3 6',description:'Profil pod sufitem, z widocznym stykiem z podłożem. Zbliż model, aby obejrzeć mocowanie i wyjście przewodu.'},
+  {id:'suspended',name:'Na linkach',subtitle:'Oprawa podwieszona',icon:'M2 4h28 M8 4v16 M24 4v16 M5 20h22v5H5z M10 29h12',description:'Dwie stalowe linki i zawieszki przypisane do profilu. Zmień zwis, obróć oprawę i obejrzyj osobno przewód zasilający.'},
   {id:'stair-under',name:'Pod stopniem',subtitle:'Profil pod noskiem',icon:'M3 27h8V19h9V11h9V4 M12 22h6 M21 14h6',description:'Trzy stopnie z widocznym noskiem i frezem. Światło spod środkowego stopnia pada na podstopnicę i niższy stopień.'},
   {id:'stair-side',name:'Z boku schodów',subtitle:'Linia w bocznej zabudowie',icon:'M3 27h8V19h9V11h9V4 M4 5v16 M7 6v12',description:'Profil w bocznej zabudowie oświetla powierzchnie stopni. Zmień wysokość linii i porównaj cień przy podstopnicy.'},
   {id:'under',name:'Pod szafką',subtitle:'Światło pod dolnym wieńcem',icon:'M4 5h24v15H4z M4 12h24 M8 24h16',description:'Krótki odcinek pod szafką. Obejrzyj profil od spodu i przeprowadzenie przewodu do zabudowy.'},
@@ -30,7 +33,42 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   let door=null,drawer=null,fixture=null,sensor=null,plunger=null,cableTail=[];
   const p=spec.profile,zone=state.zone,H=p.height/1000,seat=seatingHeight(p,state.mounting==='recessed');
   let focus,normal,stair=null;
-  if(isStairZone(zone)){
+  if(['ceiling','suspended'].includes(zone)){
+    const ceilingY=.32, suspended=zone==='suspended',drop=suspended?state.suspensionDrop/1000:0;
+    const slab=new T.Group();slab.name='Fragment_sufitu';root.add(slab);
+    box(slab,.42,.018,.24,wood,0,ceilingY+.009,0,.0004).name='Wykonczenie_sufitu';
+    box(slab,.42,.005,.24,edge,0,ceilingY+.0205).name='Przekroj_podloza';
+    const fixtureY=ceilingY-drop-(suspended?0:seat);
+    product.group.rotation.x=Math.PI;product.group.position.set(0,fixtureY,0);
+    focus=new T.Vector3(0,fixtureY-H,0);normal=new T.Vector3(0,-1,0);
+    if(suspended){
+      const data=suspensionFor(p,state.finish);
+      if(!data)throw new Error('Brak udokumentowanej zawieszki dla '+p.name);
+      const hangerMat=material({color:state.finish==='black'?'#303438':state.finish==='white'?'#eeefed':'#bdc4ca',metalness:state.finish==='white'?.05:.8,roughness:.3});
+      for(const x of[-.11,.11]){
+        const h=data.height/1000,r=data.diameter/2000;
+        const base=add(new T.CylinderGeometry(data.baseDiameter/2000,data.baseDiameter/2000,.0012,32),hangerMat,root,x,fixtureY+.0006);base.name=data.name+'_podstawa';
+        const body=add(new T.CylinderGeometry(r,r,h-.0012,32),hangerMat,root,x,fixtureY+.0012+(h-.0012)/2);body.name=data.name;body.userData.ref=data.ref;
+        const screw=add(new T.CylinderGeometry(.0013,.0013,.0015,6),steel,root,x,fixtureY+h*.7,r+.0005);screw.rotation.x=Math.PI/2;screw.name='Docisk_linki';
+        const wireLength=drop-h-.009;
+        const line=add(new T.CylinderGeometry(.0005,.0005,wireLength,12),steel,root,x,fixtureY+h+wireLength/2);line.name='Linka_FI_1';line.userData.ref=data.wireRef;
+        const top=add(new T.CylinderGeometry(.0045,.0045,.009,28),hangerMat,root,x,ceilingY-.0045);top.name='Mocowanie_do_sufitu_do_doboru';
+      }
+      root.userData.suspension={ref:data.ref,source:data.source,dropMm:state.suspensionDrop,wireDiameterMm:1,ceilingFixing:'project-specific'};
+      // Route beside the left steel suspension, with a small service bend
+      // above the end cap and a consistent 3 mm clearance from the steel.
+      const cableX=-.113,cableZ=.0025;
+      cableTail=[new T.Vector3(-.158,fixtureY+.003,0),new T.Vector3(-.158,fixtureY+.016,cableZ),new T.Vector3(-.123,fixtureY+.019,cableZ),new T.Vector3(cableX,fixtureY+.028,cableZ),new T.Vector3(cableX,fixtureY+drop*.45,cableZ),new T.Vector3(cableX,ceilingY-.020,cableZ),new T.Vector3(cableX,ceilingY+.009,cableZ)];
+      root.userData.suspension.cableRoute='beside-left-suspension';
+      root.userData.suspension.cableClearanceMm=3;
+    }else{
+      fixture=buildMount(p,{...state,mounting:'surface'},wood);fixture.root.rotation.x=Math.PI;fixture.root.position.y=ceilingY;fixture.root.scale.x=3;root.add(fixture.root);
+      // The slab is the visible substrate; this helper contributes the matching clips.
+      fixture.root.children[0].visible=false;
+      cableTail=[new T.Vector3(-.158,fixtureY,0),new T.Vector3(-.163,ceilingY+.01,0),new T.Vector3(-.17,ceilingY+.018,-.045)];
+    }
+    box(root,.48,.01,.35,ivory,0,Math.min(-.075,fixtureY-H-.18),.025).name='Powierzchnia_pod_oprawa';
+  }else if(isStairZone(zone)){
     stair=buildStairZone({root,product,profile:p,state,box,wood,plaster:ivory,edge});cableTail=stair.cableTail;focus=new T.Vector3();normal=new T.Vector3();
   }else if(zone==='drywall'){
     fixture=buildMount(p,{...state,mounting:'recessed'},wood);fixture.root.scale.x=3.2;fixture.root.rotation.x=Math.PI;root.add(fixture.root);
@@ -150,14 +188,14 @@ export function buildZone(source,sourceSize,spec,state,{sourceCover,art,wood}){
   }
   function setOpening(value){opening=T.MathUtils.clamp(value,0,1);if(door)door.rotation.y=-(zone==='under'?.95:1.65)*opening;if(drawer)drawer.position.z=.137*opening;applyLight();root.updateMatrixWorld(true);}
   function update(s,color){
-    currentState=s;currentColor=color;lastLight=null;product.update({...s,view:'zone',exploded:0},color);product.assemble(0);product.profile.visible=true;product.pcb.visible=true;product.cover.visible=true;
+    currentState=s;currentColor=color;lastLight=null;product.update({...s,view:'zone',exploded:0},color);product.assemble(0);product.profile.visible=true;product.pcb.visible=s.stripEnabled!==false;product.cover.visible=true;
     wire.visible=s.showCable;const finish=surfaceFinish(s.material);ivory.color.set(finish.grain?'#eae7df':finish.color);
     setOpening(s.zoneOpen?1:0);
-    if(fixture)fixture.update({...s,view:'installation'},product);
+    if(fixture){fixture.update({...s,view:'installation',showCable:zone==='ceiling'?false:s.showCable},product);if(zone==='ceiling'){fixture.root.children[0].visible=false;product.group.rotation.x=Math.PI;product.group.position.set(0,.32-seat,0);}}
     if(zone==='drywall'){product.group.rotation.x=Math.PI;product.group.position.y=-seat;}
     if(connection){
       root.updateWorldMatrix(true,true);
-      connection.update(s,cableTail.map(point=>product.group.worldToLocal(root.localToWorld(point.clone()))),s.showCable);
+      connection.update(s,cableTail.map(point=>product.group.worldToLocal(root.localToWorld(point.clone()))),s.showCable&&s.stripEnabled!==false);
       root.userData.connection=s.showCable?connection.root.userData:null;
     }else root.userData.connection=fixture?.root.userData.connection??null;
   }

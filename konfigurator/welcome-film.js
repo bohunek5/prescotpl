@@ -1,12 +1,12 @@
 import * as T from 'three';
 import {RectAreaLightUniformsLib} from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import {normalize,specification} from './catalog.js?v=1deadf165ec6';
-import {buildProduct} from './product.js?v=1deadf165ec6';
-import {buildInstallationCable} from './installation-wiring.js?v=1deadf165ec6';
-import {makeStudioEnvironment} from './studio-environment.js?v=1deadf165ec6';
-import {lightColor} from './light-color.js?v=1deadf165ec6';
-import {welcomePose,welcomeDuration} from './welcome-motion.js?v=1deadf165ec6';
-import {welcomeProfile} from './welcome-profile.js?v=1deadf165ec6';
+import {normalize,specification} from './catalog.js?v=20260922-refine1';
+import {buildProduct} from './product.js?v=20260922-refine1';
+import {buildInstallationCable} from './installation-wiring.js?v=130bc2896fcd';
+import {makeStudioEnvironment} from './studio-environment.js?v=130bc2896fcd';
+import {lightColor} from './light-color.js?v=130bc2896fcd';
+import {welcomePose,welcomeDuration} from './welcome-motion.js?v=130bc2896fcd';
+import {welcomeProfile} from './welcome-profile.js?v=130bc2896fcd';
 
 export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{},onPhase=()=>{}}={}){
  RectAreaLightUniformsLib.init();
@@ -67,5 +67,5 @@ export async function createWelcomeFilm(host,{onComplete=()=>{},onPlaying=()=>{}
  product.wiring.visible=true;product.liner.visible=true;cable.root.visible=true;
  await renderer.compileAsync(scene,camera);resize();
  const observer=new ResizeObserver(resize);observer.observe(host);document.addEventListener('visibilitychange',hidden);reduced.addEventListener('change',motion);
- return{play,pause(){resumeAfterVisibility=false;stop();},seek(time){stop();render(time)},inspect:()=>{const p=welcomePose(elapsed);return{time:elapsed,duration:welcomeDuration,phase:host.dataset.phase,playing,renderCount,connections:cable.root.userData.connections,visibleWireCount:(cable.root.visible?cable.root:product.wiring).children.filter(o=>o.userData.terminal&&o.name.indexOf('Koncowka')!==0).length,throughCap:cable.root.userData.throughCap,sampleLength:product.length,pcbLiftMm:(product.pcb.position.y-product.ledBase)*1000,liner:{...product.liner.userData,visible:product.liner.visible},profileVisible:product.profile.visible,coverVisible:product.cover.visible,light:p.light,powerMode:state.powerMode,emission:{pcb:product.pcb.children[0].userData.light.warm,cover:product.cover.userData.light.intensity,beam:product.cover.userData.light.beam.level,bounce:product.pcb.children.find(o=>o.isRectAreaLight).intensity}};},dispose(){if(disposed)return;stop();disposed=true;observer.disconnect();document.removeEventListener('visibilitychange',hidden);reduced.removeEventListener('change',motion);cable.dispose();product.dispose();key.shadow.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();}};
+ return{play,pause(){resumeAfterVisibility=false;stop();},seek(time){stop();render(time)},inspect:()=>{const p=welcomePose(elapsed);return{time:elapsed,duration:welcomeDuration,phase:host.dataset.phase,playing,renderCount,connections:cable.root.userData.connections,visibleWireCount:(cable.root.visible?cable.root:product.wiring).children.filter(o=>o.userData.terminal&&o.name.indexOf('Koncowka')!==0).length,throughCap:cable.root.userData.throughCap,sampleLength:product.length,pcbLiftMm:(product.pcb.position.y-product.ledBase)*1000,liner:{...product.liner.userData,visible:product.liner.visible},profileVisible:product.profile.visible,coverVisible:product.cover.visible,light:p.light,powerMode:state.powerMode,emission:{pcb:product.pcb.children[0].userData.light.warm,cover:product.cover.userData.light.intensity,beam:product.cover.userData.light.beam.level,bounce:(product.pcb.children.find(o=>o.isRectAreaLight)?.intensity??0)}};},dispose(){if(disposed)return;stop();disposed=true;observer.disconnect();document.removeEventListener('visibilitychange',hidden);reduced.removeEventListener('change',motion);cable.dispose();product.dispose();key.shadow.dispose();environment.dispose();renderer.dispose();renderer.domElement.remove();}};
 }

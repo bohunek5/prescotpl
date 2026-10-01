@@ -1,4 +1,6 @@
-import {salesRegistry} from './profile-library.js?v=1deadf165ec6';
+import {suspensionFor} from './suspension-data.js?v=130bc2896fcd';
+import {salesRegistry} from './profile-library.js?v=130bc2896fcd';
+import {accessoryFinish} from './accessory-finish.js?v=130bc2896fcd';
 // Matching references from KLUŚ product cards and the supplied 2026 workbook.
 // Quantities of fixings depend on support spacing; never infer them from length.
 const ends={micro:['MICRO-PLUS','C24392C02','C24392C07','C24392C10'],pds:['PDS-4-PLUS','C24337C02','C24337C07','C24337C10'],microk:['MICRO-K','C20126C02'],piko:['PIKO','C24202C02','C24202C07'],larko:['LARKO','C24006C02',null,'C24006C10'],kozus:['KOZUS','C24148C02'],pdszm:['PDS-ZM-PLUS','C24364C02','C24364C07','C24364C10'],alu45:['45-ALU','C20124C02','C20124C07','C20124C10'],pikozm:['PIKO-ZM','C24307C02','C24307C07','C24307C10'],pikoo:['PIKO-O','C24321C02','C24321C07','C24321C10'],giza:['GIZA','C24539C02','C24539C07','C24539C10'],lipod:['LIPOD','C24004C02','C24004C07','C24004C10']};
@@ -15,22 +17,34 @@ function legacyAccessoryKit(p,state){
   if(['pdszm','pikozm','giza','lipod'].includes(p.id))result.push({id:'connector',name:'Łącznik ZM-MINI',ref:'C28083N00',kind:'connector',quantity:null,selected:false,source:p.source,note:'Do połączeń profili. Niepotrzebny przy jednym odcinku.'});
   if(p.id==='kozus')result.push({id:'protection',name:'Wkładka TECH-22',ref:'C24531C02',kind:'protection',quantity:null,selected:true,source:'assets/sources/tech-22.pdf',note:'Ochrona kanału podczas szpachlowania; usuwana po wykończeniu.'});
   if(p.screwDrywall)result.push({id:'protection',name:'Wkładka ochronna TECH-11',ref:'C24574C02',kind:'protection',quantity:null,selected:true,source:p.source,note:'Wkładka ochronna z aktualnej karty KLUŚ; chroni kanał na czas szpachlowania i malowania.'});
+  if(state.zone==='suspended'){
+    const hanger=suspensionFor(p,state.finish),row=result.find(a=>a.ref===hanger?.ref);
+    if(row){row.selected=true;row.note='Zawieszka pokazana w strefie na linkach. Ilość i rozstaw wymagają doboru do długości oraz obciążenia oprawy.';}
+  }
   return result;
 }
 
 export function accessoryOptions(p){return salesRegistry[p.ref]?.accessories||[];}
 export function accessoryCapOptions(p){return accessoryOptions(p).filter(a=>ordinaryCap(a)&&(!p.capFamilies||p.capFamilies.includes(a.ref.slice(0,6))));}
-const ordinaryCap=a=>a.kind==='endcap'&&!/NHQ|\bHQ\b|MW|ZAM|ALU|DUO-LIN|DUO-PRET/.test(a.name);
+const ordinaryCap=a=>a.kind==='endcap'&&!/NHQ|\bHQ\b|MW|ZAM|DUO-LIN|DUO-PRET/.test(a.name);
 function matchingFinish(a,finish){
-  if(finish==='black')return /(?:C|L)07(?:TW)?$/.test(a.ref);
-  if(finish==='white')return /(?:C|L)10(?:TW)?$/.test(a.ref);
-  return /(?:C02|L01)(?:TW)?$/.test(a.ref);
+  const id=accessoryFinish(a).id;
+  return finish==='black'||finish==='white'?id===finish:['gray','silver','metal'].includes(id);
 }
+// GIL and GIZAT cards show the raised round/square closures. A common profile
+// accessory list alone does not establish compatibility with every cover.
+const gizaCapCovers={C24029:['g22r'],C24030:['g22s'],C24539:['hs22','liger22']};
+export function accessoryCoverMatch(p,cap,cover){
+  const prefixes=p.id==='giza'?gizaCapCovers[cap?.ref?.slice(0,6)]:null;
+  return prefixes?prefixes.some(prefix=>cover?.startsWith(prefix+'-')):null;
+}
+export function hasMatchedCoverEndcap(p,state){return accessoryKit(p,state).some(a=>a.kind==='endcap'&&a.selected&&accessoryCoverMatch(p,a,state.cover)===true);}
 export function accessoryKit(p,state){
   const options=accessoryOptions(p);
   const legacy=legacyAccessoryKit(p,state);
   const caps=accessoryCapOptions(p).filter(a=>!p.capPair||a.ref.startsWith(p.capPair[0])).sort((a,b)=>a.name.length-b.name.length||a.ref.localeCompare(b.ref));
-  const cap=caps.find(a=>a.ref===state.endcapRef)||caps.find(a=>a.ref===legacy.find(x=>x.kind==='endcap')?.ref)||caps.find(a=>matchingFinish(a,state.finish))||caps[0];
+  const matchingCaps=caps.filter(a=>accessoryCoverMatch(p,a,state.cover)!==false),candidates=matchingCaps.length?matchingCaps:caps;
+  const cap=caps.find(a=>a.ref===state.endcapRef)||candidates.find(a=>a.ref===legacy.find(x=>x.kind==='endcap')?.ref)||candidates.find(a=>matchingFinish(a,state.finish))||candidates[0];
   const brackets=options.filter(a=>a.kind==='bracket');
   const bracket=brackets.find(a=>a.ref===state.bracketRef)||brackets.find(a=>a.ref===legacy.find(x=>x.kind==='bracket')?.ref)||brackets.find(a=>/PDS-H|GIP-STN$|PDS-STN$|Mocownik DS$/.test(a.name))||brackets[0];
   const result=[];
@@ -40,7 +54,7 @@ export function accessoryKit(p,state){
     // An OTW is used only when the exact row exists in both the matching card
     // and the price list. No synthetic SKU is ever added to the bill of materials.
     const entry=state.showCable?options.find(a=>a.kind==='entrycap'&&a.ref===cap.ref+'TW'):null;
-    result.push({...cap,id:'endcap',quantity:entry||opposite?1:2,selected:!!state.endcaps,note:cap.dimensions?.width?'Gabaryt zaślepki według karty KLUŚ. Kształt i zatrzaski w podglądzie są uproszczone.':'Zakończenia prostego odcinka. Geometria zaślepki wymaga potwierdzenia w karcie.'});used.add(cap.ref);
+    result.push({...cap,id:'endcap',quantity:entry||opposite?1:2,selected:!!state.endcaps,note:(p.id==='micro'&&/^C24392(?:C02|C07|C10|L01)$/.test(cap.ref)||p.id==='lipod50'&&cap.ref.startsWith('C28028'))?'Model prezentacyjny KLUŚ z częścią wsuwaną. Wymiary i montaż według karty; podgląd nie opisuje tolerancji wykonawczych.':cap.dimensions?.width?'Gabaryt zaślepki według karty KLUŚ. Kształt i zatrzaski w podglądzie są uproszczone.':'Zakończenia prostego odcinka. Geometria zaślepki wymaga potwierdzenia w karcie.'});used.add(cap.ref);
     if(opposite){result.push({...opposite,id:'endcap-pair',kind:'endcap-pair',quantity:1,selected:!!state.endcaps,note:'Druga strona odcinka: dedykowana para lewa / prawa.'});used.add(opposite.ref);}
     if(entry&&state.endcaps){result.push({...entry,id:'entrycap',quantity:1,selected:true,note:'Wariant z otworem zastępuje jedną pełną zaślepkę.'});used.add(entry.ref);}
   }
@@ -58,11 +72,17 @@ export function accessoryKit(p,state){
       const row=result.find(x=>x.ref===sale.ref);if(row&&!state.excludedAccessoryRefs?.includes(row.ref)){row.selected=true;row.note=a.note;}
     }
   }
+  if(state.zone==='suspended'){
+    const hanger=suspensionFor(p,state.finish),row=result.find(a=>a.ref===hanger?.ref);
+    if(row){row.selected=true;row.note='Zawieszka pokazana w strefie na linkach. Ilość i rozstaw wymagają doboru do długości oraz obciążenia oprawy.';}
+  }
   return result;
 }
 
 export function accessoryFitIssues(p,state){
   const kit=accessoryKit(p,state),issues=[];
+  const cap=kit.find(a=>a.kind==='endcap'&&a.selected);
+  if(cap&&accessoryCoverMatch(p,cap,state.cover)===false)issues.push({code:'endcap-cover',severity:'blocked',message:`${cap.name} nie pasuje do kształtu wybranej osłony. Wybierz GIL do G-22R, GIZAT do G-22S lub GIZA do płaskiej osłony. W zestawieniu zachowano wybrany wariant.`});
   if(state.endcaps&&!kit.some(a=>a.kind==='endcap'))issues.push({code:'endcap-unavailable',severity:'pending',message:'Brak potwierdzonej zaślepki tego profilu w bieżącym cenniku. Zakończenie wymaga doboru.'});
   if(state.endcaps&&state.showCable&&!kit.some(a=>a.kind==='entrycap'))issues.push({code:'cable-entry',severity:'pending',message:'Wyprowadzenie przewodu wymaga przygotowania przepustu według instrukcji. W zestawieniu pozostaje pełna zaślepka.'});
   if(state.showFixings&&!kit.some(a=>a.kind==='bracket'))issues.push({code:'fixing-unavailable',severity:'pending',message:'Dobierz sposób zamocowania według instrukcji tego profilu.'});

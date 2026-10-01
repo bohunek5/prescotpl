@@ -1,10 +1,13 @@
-import {isStairZone,stairLayout} from './stair-layout.js?v=1deadf165ec6';
-import {surfaceFinishes} from './surface-finishes.js?v=1deadf165ec6';
-import {additionalProfiles,additionalCovers,salesRegistry} from './profile-library.js?v=1deadf165ec6';
-import {accessoryFitIssues} from './accessory-data.js?v=1deadf165ec6';
-import {hasDoorSwitch} from './light-state.js?v=1deadf165ec6';
-import {finishVariants} from './finish-data.js?v=1deadf165ec6';
-import {tapeTerminals} from './tape-wiring.js?v=1deadf165ec6';
+import {suspensionFor} from './suspension-data.js?v=130bc2896fcd';
+import {isStairZone,stairLayout} from './stair-layout.js?v=130bc2896fcd';
+import {surfaceFinishes} from './surface-finishes.js?v=130bc2896fcd';
+import {additionalProfiles,additionalCovers,salesRegistry} from './profile-library.js?v=130bc2896fcd';
+import {reviewedProfileSections} from './profile-reviewed-sections.js?v=130bc2896fcd';
+import {accessoryFitIssues,hasMatchedCoverEndcap} from './accessory-data.js?v=130bc2896fcd';
+import {hasDoorSwitch} from './light-state.js?v=20260922-refine1';
+import {finishVariants} from './finish-data.js?v=130bc2896fcd';
+import {tapeTerminals} from './tape-wiring.js?v=130bc2896fcd';
+import {stripPlacement} from './strip-placement.js?v=130bc2896fcd';
 export const profiles = [
   { bodyWidth:16, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Niski profil pod szafkę', instruction:'assets/sources/micro-installation.pdf', id: 'micro', name: 'MICRO-PLUS', brand: 'KLUŚ', ref: 'A02966', width: 16, height: 6, channel: 11.2, model: 'assets/sources/micro-plus.3ds', geometry: 'Model producenta 3DS', source: 'assets/sources/micro-plus.pdf', covers: ['hs-opal', 'hs-clear', 'liger-black', "liger-opal", "kapro-opal", "kapro-clear"] },
   { bodyWidth:16.2, ledBase:1.1, mount:'surface', family:'Meblowe', application:'Głębszy kanał światła', instruction:'assets/sources/pds-installation.pdf', id: 'pds', name: 'PDS-4-PLUS', brand: 'KLUŚ', ref: 'A01263', width: 16.2, height: 12, channel: 14, geometry: 'Model uproszczony · wymiary z arkusza KLUŚ', source: 'assets/sources/pds-4-plus.pdf', covers: ['hs11-opal', 'hs11-clear', 'liger11-black', "liger11-satin", "kat11-opal", "kat11-clear", "lenso11"] },  {"id": "microk", "name": "MICRO-K", "brand": "KLUŚ", "ref": "MICRO-K-ALU-2M", "width": 22, "height": 6, "bodyWidth": 15.2, "channel": 11.2, "ledBase": 1.1, "mount": "recessed", "family": "Wpust", "application": "Półka z frezem · model archiwalny", "geometry": "Przekrój odtworzony z rysunku KLUŚ", "source": "assets/sources/micro-k-section.jpg", "instruction": "assets/sources/micro-k-section.jpg", "covers": ["hs-opal", "hs-clear", "liger-black"]},
@@ -38,17 +41,24 @@ export const profiles = [
 // reopen the current recessed MICRO-NK below instead of offering an archive SKU.
 profiles.splice(profiles.findIndex(p=>p.id==='microk'),1);
 for(const p of additionalProfiles){const index=profiles.findIndex(old=>old.id===p.id);if(index<0)profiles.push(p);else profiles[index]=p;}
+for(let i=0;i<profiles.length;i++)if(reviewedProfileSections[profiles[i].id])profiles[i]={...profiles[i],...reviewedProfileSections[profiles[i].id]};
 export const strips = [
+  {"id": "bread", "name": "Premium Bread 70 · 2500 K", "ref": "24B070-9-2590-81", "ean": "5905475366383", "type": "SMD", "width": 8.0, "watts": 9.2, "lumens": 860.0, "voltage": 24.0, "cct": 2500.0, "cri": 93.0, "density": 70.0, "cut": 50.0, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/65f7046d869fed3d.pdf", "image": "shared/assets/tasmy-2026/zdjecia/ac763328380d48ba.webp", "package": "2835", "family": "Bread", "colorNote": "Ciepła barwa 2500 K do ekspozycji pieczywa. Podgląd barwy jest orientacyjny; nie odtwarza pełnego widma produktu."},
+  {"id": "bread-160", "name": "Premium Bread 160 · 2500 K", "ref": "24B160-16-2590-81", "ean": "5905475366895", "type": "SMD", "width": 8.0, "watts": 16.0, "lumens": 1650.0, "voltage": 24.0, "cct": 2500.0, "cri": 92.0, "density": 160.0, "cut": 50.0, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/5120cdf9fa34b4ff.pdf", "image": "shared/assets/tasmy-2026/zdjecia/57363d5866792cf6.webp", "package": "2835", "family": "Bread", "colorNote": "Ciepła barwa 2500 K do ekspozycji pieczywa. Podgląd barwy jest orientacyjny; nie odtwarza pełnego widma produktu."},
+  {"id": "delux-pro-low", "name": "Delux PRO · 1,6 W/m · 3000 K", "ref": "24DP126-2-3080-1010", "ean": "5905475366864", "type": "SMD", "width": 10.0, "watts": 1.6, "lumens": 280.0, "voltage": 24.0, "cct": 3000.0, "cri": 80.0, "density": 126.0, "cut": 71.4, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/d4a3ea0b85cd9608.pdf", "image": "shared/assets/tasmy-2026/zdjecia/c9de38e8ff7bdbbf.webp", "copperOz": 4, "family": "DELUX PRO"},
+  {"id": "delux-pro", "name": "Delux PRO · 7,2 W/m · 3000 K", "ref": "24DP126-7-3080-1010", "ean": "5905475366840", "type": "SMD", "width": 10.0, "watts": 7.2, "lumens": 1200.0, "voltage": 24.0, "cct": 3000.0, "cri": 80.0, "density": 126.0, "cut": 71.4, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/7e95e61b7d90c14f.pdf", "image": "shared/assets/tasmy-2026/zdjecia/c9de38e8ff7bdbbf.webp", "copperOz": 4, "family": "DELUX PRO"},
+  {"id": "delux-pro-nw", "name": "Delux PRO · 7,8 W/m · 4000 K", "ref": "24DP126-7-4080-1010", "ean": "5905475366857", "type": "SMD", "width": 10.0, "watts": 7.8, "lumens": 1500.0, "voltage": 24.0, "cct": 4000.0, "cri": 80.0, "density": 126.0, "cut": 71.4, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/7e95e61b7d90c14f.pdf", "image": "shared/assets/tasmy-2026/zdjecia/d4b18d5b1487946b.webp", "copperOz": 4, "family": "DELUX PRO"},
+  {"id": "onecut", "name": "Premium One Cut · 4000 K", "ref": "12D018-010-10-NWH", "ean": "5901885265544", "type": "SMD", "width": 10.0, "watts": 18.0, "lumens": 1900.0, "voltage": 12.0, "cct": 4000.0, "cri": 80.0, "density": 100.0, "cut": 10.0, "ip": "IP20", "source": "shared/assets/tasmy-2026/karty/521573c55d5980d3.pdf", "image": "shared/assets/tasmy-2026/zdjecia/0e2613715b8fb48e.webp", "family": "One Cut"},
   {"id": "premium-rgbw", "name": "Premium RGBW + 3000 K", "ref": "24E033-100-RGBWW50", "type": "RGBW", "package": "5050", "width": 10, "watts": 19.6, "lumens": 1400, "voltage": 24, "cct": 3000, "cri": 80, "density": 60, "cut": 100, "copperOz": 3, "source": "assets/sources/premium-rgbw.pdf", "markings": ["W", "R", "G", "B", "+24V"], "whiteWatts": 4.6, "whiteLumens": 500, "powerNote": "19,6 W/m według karty PDF; strona podaje 19,7 W/m. CRI dotyczy bieli."},
   { id: 'threeinone', name: 'Delux 3in1', ref: '24D160-11-3080-1010', type: '3IN1', width: 10, watts: 11, lumens: 1750, voltage: 24, cct: 3000, cri: 80, density: 160, cut: 50, source: 'assets/sources/delux-3in1.pdf', markings: ['+24V','−L','−M','−H'], modes: {low: {watts:3,lumens:460,terminal:'−L'},medium: {watts:6,lumens:930,terminal:'−M'},high: {watts:11,lumens:1750,terminal:'−H'}} },
   { id: 'cct', name: 'Premium CCT 2w1', ref: '24E024-100-10-CCT', type: 'CCT', width: 10, watts: 14.4, lumens: 1000, voltage: 24, cct: 3000, cctMin: 3000, cctMax: 6500, cri: 80, density: 60, cut: 100, source: 'https://www.prescot.pl/wp-content/uploads/2021/12/PRESCOT-LED-STRIP-LIGHTS-CATALOG-PREMIUM.pdf', markings: ['+24V','CW','WW'] },
   { id: 'delux', copperOz: 4, name: 'Delux CRI97', ref: '24D160-10-3097-810', type: 'SMD', width: 8, watts: 10, lumens: 1000, voltage: 24, cct: 3000, cri: 97, density: 160, cut: 50, source: 'https://www.prescot.com.pl/pl/p/Tasma-LED-Delux-24V-160ledm-SMD2835-10Wm-3000K-IP20-1000lmm-8mm-CRI97-PL7Y-10m/13516' },
-  { id: 'cob', copperOz: 3, name: 'Premium COB LB', ref: '24EC384-042-8-WWL', type: 'COB', width: 8, watts: 4, lumens: 350, voltage: 24, cct: 3000, cri: 90, density: 384, cut: 50, source: 'https://www.prescot.com.pl/pl/c/Tasmy-LED-COB/579/2' },
+  { id: 'cob', copperOz: 3, name: 'Premium COB LB', ref: '24EC384-042-8-WWL', type: 'COB', width: 8, watts: 4, lumens: 350, voltage: 24, cct: 3000, cri: 90, density: 384, cut: 42, source: "shared/assets/tasmy-2026/karty/22a2d5c4864472e1.pdf" },
   {id:'delux-lb4014',name:'Delux Low Brightness 4014',ref:'24D001-050-10-WW',type:'SMD',package:'4014',width:10,watts:2.2,lumens:320,voltage:24,cct:3000,cri:90,density:160,cut:50,copperOz:4,source:'https://prescot.com.pl/pl/p/Tasma-LED-PL-Delux-Low-Brightness-Ciepla-biala-3000K-24V-160-LEDm-320lmm-SMD4014-Rolka-10m-7-lat-gwarancji/9717'},
-  { id: 'slim', copperOz: 4, name: 'Delux Slim 4 mm', ref: '24DS004-050-4-WW', type: 'SMD', width: 4, watts: 6.8, lumens: 1100, voltage: 24, cct: 3000, cri: 80, density: 160, cut: 50, source: 'assets/sources/strip-records.json' },  {"id": "sshape", "name": "Premium S-shape 3000 K", "ref": "EF018-050-6-WW", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 920, "voltage": 12, "cct": 3000, "cri": 80, "density": 60, "cut": 50, "source": "assets/sources/premium-catalog.pdf#page=16", "markings": ["+12V", "−"], "family": "S-shape"},
-  {"id": "sshape-nw", "name": "Premium S-shape 4000 K", "ref": "EF018-050-6-NW", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 1000, "voltage": 12, "cct": 4000, "cri": 80, "density": 60, "cut": 50, "source": "assets/sources/premium-catalog.pdf#page=16", "markings": ["+12V", "−"], "family": "S-shape"},
-  {"id": "sshape-cw", "name": "Premium S-shape 6500 K", "ref": "EF018-050-6-W", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 1030, "voltage": 12, "cct": 6500, "cri": 80, "density": 60, "cut": 50, "source": "assets/sources/premium-catalog.pdf#page=16", "markings": ["+12V", "−"], "family": "S-shape"},
-  {"id": "slim5", "copperOz": 3, "name": "Premium Slim 5 mm", "ref": "24ES004-031-5-NW", "type": "SMD", "package": "2216", "width": 5, "watts": 9, "lumens": 720, "voltage": 24, "cct": 4000, "cri": 80, "density": 224, "cut": 31, "source": "assets/sources/premium-catalog.pdf#page=15", "family": "Slim"},
+  { id: 'slim', copperOz: 4, name: 'Delux Slim 4 mm', ref: '24DS004-050-4-WW', type: 'SMD', width: 4, watts: 6.8, lumens: 1100, voltage: 24, cct: 3000, cri: 80, density: 160, cut: 50, source: 'assets/sources/strip-records.json' },  {"id": "sshape", "name": "Premium S-shape 3000 K", "ref": "EF018-050-6-WW", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 900, "voltage": 12, "cct": 3000, "cri": 80, "density": 60, "cut": 50, "source": "shared/assets/tasmy-2026/karty/35a9a1d23c66ee72.pdf", "markings": ["+12V", "−"], "family": "S-shape"},
+  {"id": "sshape-nw", "name": "Premium S-shape 4000 K", "ref": "EF018-050-6-NW", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 950, "voltage": 12, "cct": 4000, "cri": 80, "density": 60, "cut": 50, "source": "shared/assets/tasmy-2026/karty/35a9a1d23c66ee72.pdf", "markings": ["+12V", "−"], "family": "S-shape"},
+  {"id": "sshape-cw", "name": "Premium S-shape 6500 K", "ref": "EF018-050-6-W", "type": "SMD", "shape": "s", "package": "2835", "width": 6, "watts": 10.8, "lumens": 1000, "voltage": 12, "cct": 6500, "cri": 80, "density": 60, "cut": 50, "source": "shared/assets/tasmy-2026/karty/35a9a1d23c66ee72.pdf", "markings": ["+12V", "−"], "family": "S-shape"},
+  {"id": "slim5", "copperOz": 3, "name": "Premium Slim 5 mm", "ref": "24ES004-031-5-NW", "type": "SMD", "package": "2216", "width": 5, "watts": 9, "lumens": 700, "voltage": 24, "cct": 4000, "cri": 90, "density": 224, "cut": 31, "source": "shared/assets/tasmy-2026/karty/eeb5623d772cfda1.pdf", "family": "Slim"},
   {"id": "premium-slim4", "copperOz": 3, "name": "Premium Slim 4 mm", "ref": "24ES004-050-4-NW", "type": "SMD", "package": "2216", "width": 4, "watts": 5.6, "lumens": 430, "voltage": 24, "cct": 4000, "cri": 80, "density": 140, "cut": 50, "source": "assets/sources/premium-catalog.pdf#page=15", "family": "Slim"},
 
   {"id": "wcob", "name": "Premium WCOB 3000 K", "ref": "24WCOB320WW5IP62", "type": "COB", "technology": "WCOB", "width": 8, "watts": 10, "lumens": 1400, "voltage": 24, "cct": 3000, "cri": 90, "density": 320, "cut": 25, "source": "assets/sources/wcob-mono.pdf", "ip": "IP62", "encapsulation": "coating", "envelopeVerified": true, "image": "assets/sources/reference-19377-0.png", "envelopeWidth": 8, "envelopeHeight": 5, "cutVerified": true},
@@ -122,18 +132,27 @@ export const sleeves = [
 ];
 export function finishesFor(p){return Object.keys(salesRegistry[p.ref]?.finishes||finishVariants[p.ref]||{});}
 export function finishFor(p,value){return salesRegistry[p.ref]?.finishes[value]||finishVariants[p.ref]?.[value]||{name:'Wykończenie do potwierdzenia',ref:null,source:p.source};}
-export function displayLength(s){return s.view==='zone'?300:s.productScale==='length'&&(s.view==='assembly'&&!['end','entry'].includes(s.assemblyAngle)||s.housing==='sleeve'&&s.detail==='product')?Math.min(s.length,1000):100;}
-export const defaults = {sleeveInsertion:0,stairThickness:32,stairInset:25,stairSideHeight:65,stairRiser:true,profile:'micro',strip:'delux',cover:'hs11-opal',length:1000,finish:'silver',material:'white',mounting:'surface',view:'assembly',exploded:100,dimmer:65,cct:3000,light:true,repeat:50,print:'brand',powerMode:'high',detail:'segment',assemblyAngle:'perspective',zone:'under',zoneDetail:false,zoneOpen:true,showCable:false,mountStep:0,sleeve:'none',endcaps:false,showFixings:false,sealClosed:false,sleeveCaps:true,sleeveFixings:false,zonePosition:'front',zoneTrigger:'manual',lightStudy:false,productScale:'detail',backing:'200mp',rgbMode:'white',rgbColor:'#ff6424'};
+export function detailLength(s){
+  if(s.housing==='sleeve'||s.view==='macro')return 100;
+  const p=profiles.find(p=>p.id===s.profile),t=strips.find(t=>t.id===s.strip);
+  const placement=stripPlacement(p,t,s),reserve=placement.startReserve+placement.endReserve;
+  // A detail is a complete cutting module, with the selected end-cap space.
+  // Quantising a second time inside a fixed 100 mm sample halved a 50 mm strip.
+  const segments=Math.max(1,Math.ceil((100-reserve-1e-6)/t.cut));
+  return Math.min(s.length,segments*t.cut+reserve);
+}
+export function displayLength(s){return s.view==='zone'?300:s.productScale==='length'&&(s.view==='assembly'&&!['end','entry'].includes(s.assemblyAngle)||s.housing==='sleeve'&&s.detail==='product')?Math.min(s.length,1000):detailLength(s);}
+export const defaults = {stripEnabled:true,suspensionDrop:220,sleeveInsertion:0,stairThickness:32,stairInset:25,stairSideHeight:65,stairRiser:true,profile:'micro',strip:'delux',cover:'hs11-opal',length:1000,finish:'silver',material:'white',mounting:'surface',view:'assembly',exploded:100,dimmer:65,cct:3000,light:true,repeat:50,print:'brand',powerMode:'high',detail:'segment',assemblyAngle:'perspective',zone:'under',zoneDetail:false,zoneOpen:true,showCable:false,mountStep:0,sleeve:'none',endcaps:false,showFixings:false,sealClosed:false,sleeveCaps:true,sleeveFixings:false,zonePosition:'front',zoneTrigger:'manual',lightStudy:false,productScale:'detail',backing:'200mp',rgbMode:'white',rgbColor:'#ff6424'};
 export function normalize(raw = {}) {
   if(raw.profile==='microk')raw={...raw,profile:'micronk',catalogMigration:'microk'};
   if(coverAliases[raw.cover])raw={...raw,cover:coverAliases[raw.cover]};
   const s={...defaults,catalogMigration:raw.catalogMigration==='microk'?'microk':null};
-  const choices={backing:['factory','200mp','300lse','wcob-3m'],rgbMode:['white','rgb','mixed'],profile:profiles.map(p=>p.id),strip:strips.map(t=>t.id),cover:covers.map(c=>c.id),finish:['silver','black','white','raw'],material:surfaceFinishes.map(f=>f.id),mounting:['surface','recessed'],view:['assembly','installation','section','mounting','macro','zone'],assemblyAngle:['perspective','side','end','entry'],zonePosition:['front','back','shelf'],zoneTrigger:['manual','door'],detail:['segment','wiring','curve','sleeve','seal'],sleeve:['none',...sleeves.map(x=>x.id)],print:['brand','concept'],powerMode:['low','medium','high'],zone:['under','cabinet','drawer','drywall','shelf','plinth','stair-under','stair-side'],productScale:['detail','length']};
+  const choices={backing:['factory','200mp','300lse','wcob-3m'],rgbMode:['white','rgb','mixed'],profile:profiles.map(p=>p.id),strip:strips.map(t=>t.id),cover:covers.map(c=>c.id),finish:['silver','black','white','raw'],material:surfaceFinishes.map(f=>f.id),mounting:['surface','recessed'],view:['assembly','installation','section','mounting','macro','zone'],assemblyAngle:['perspective','side','end','entry'],zonePosition:['front','back','shelf'],zoneTrigger:['manual','door'],detail:['segment','wiring','curve','sleeve','seal'],sleeve:['none',...sleeves.map(x=>x.id)],print:['brand','concept'],powerMode:['low','medium','high'],zone:['under','cabinet','drawer','drywall','shelf','plinth','stair-under','stair-side','ceiling','suspended'],productScale:['detail','length']};
   for(const [key,values] of Object.entries(choices))if(values.includes(raw[key]))s[key]=raw[key];
-  for(const [key,min,max] of [['sleeveInsertion',0,1],['stairThickness',24,50],['stairInset',8,90],['stairSideHeight',35,110],['length',100,3000],['exploded',0,100],['dimmer',0,100],['cct',2600,6500],['repeat',5,1000],['mountStep',0,4]])if(typeof raw[key]==='number'&&Number.isFinite(raw[key]))s[key]=Math.max(min,Math.min(max,raw[key]));
+  for(const [key,min,max] of [['suspensionDrop',80,400],['sleeveInsertion',0,1],['stairThickness',24,50],['stairInset',8,90],['stairSideHeight',35,110],['length',100,3000],['exploded',0,100],['dimmer',0,100],['cct',2600,6500],['repeat',5,1000],['mountStep',0,4]])if(typeof raw[key]==='number'&&Number.isFinite(raw[key]))s[key]=Math.max(min,Math.min(max,raw[key]));
   if(typeof raw.rgbColor==='string'&&/^#[0-9a-f]{6}$/i.test(raw.rgbColor))s.rgbColor=raw.rgbColor;
   s.mountStep=Math.round(s.mountStep);
-  for(const key of ['stairRiser','light','lightStudy','zoneDetail','zoneOpen','showCable','endcaps','showFixings','sealClosed','sleeveCaps','sleeveFixings'])if(typeof raw[key]==='boolean')s[key]=raw[key];
+  for(const key of ['stripEnabled','stairRiser','light','lightStudy','zoneDetail','zoneOpen','showCable','endcaps','showFixings','sealClosed','sleeveCaps','sleeveFixings'])if(typeof raw[key]==='boolean')s[key]=raw[key];
   const p=profiles.find(p=>p.id===s.profile),t=strips.find(t=>t.id===s.strip);
   const accessories=salesRegistry[p.ref]?.accessories||[];
   for(const [key,kind] of [['endcapRef','endcap'],['bracketRef','bracket']])s[key]=accessories.some(a=>a.kind===kind&&a.ref===raw[key])?raw[key]:null;
@@ -143,6 +162,9 @@ export function normalize(raw = {}) {
   if(!finishesFor(p).includes(s.finish))s.finish=finishesFor(p)[0];
   if(p.mount!=='surface')s.mounting='recessed';
   if((p.mount==='drywall'||p.id==='larko'))s.zone='drywall';else if(s.zone==='drywall')s.zone='under';
+  if(['ceiling','suspended'].includes(s.zone)&&p.mount!=='surface')s.zone='under';
+  if(s.zone==='suspended'&&!suspensionFor(p,s.finish))s.zone='under';
+  if(['ceiling','suspended'].includes(s.zone))s.mounting='surface';
   if(p.mount==='special'&&['installation','mounting','zone'].includes(s.view))s.view='assembly';
   if(p.mount==='special')s.mountStep=0;
   if(isStairZone(s.zone)&&p.mount!=='special'){const q=stairLayout(p,s);s.stairInset=Math.max(Math.ceil(q.minInset*1000),Math.min(Math.floor(q.maxInset*1000),Math.round(q.inset*1000)));s.stairThickness=Math.max(s.stairThickness,Math.ceil(q.recess*1000+6));}
@@ -163,13 +185,15 @@ export function normalize(raw = {}) {
   }
   if(['sleeve','seal'].includes(s.detail)&&s.sleeve==='none'&&!t.encapsulation)s.detail='segment';
   if(t.technology==='WCOB')s.backing='wcob-3m';else if(s.backing==='wcob-3m')s.backing='200mp';
+  if(!s.stripEnabled){if(s.housing==='sleeve')s.detail='product';else if(s.view==='macro')s.view='assembly';}
   // Legacy room links and saved configurations reopen as a product study.
   return s;
 }
 export function specification(s) {
   const profile=profiles.find(x=>x.id===s.profile), strip=strips.find(x=>x.id===s.strip), cover=covers.find(x=>x.id===s.cover);
-  const segments=Math.floor((s.length+1e-7)/strip.cut), stripLength=segments*strip.cut;
-  const mode=strip.modes?.[s.powerMode||'high'],wattsPerMeter=mode?.watts??strip.watts,lumensPerMeter=mode?.lumens??strip.lumens,power=wattsPerMeter*stripLength/1000;
+  const stripSelected=s.stripEnabled!==false;
+  const placement=stripPlacement(profile,strip,s),segments=stripSelected?placement.segments:0,stripLength=stripSelected?placement.stripLength:0;
+  const mode=strip.modes?.[s.powerMode||'high'],wattsPerMeter=stripSelected?(mode?.watts??strip.watts):0,lumensPerMeter=stripSelected?(mode?.lumens??strip.lumens):0,power=wattsPerMeter*stripLength/1000;
   const sleeve=sleeves.find(x=>x.id===s.sleeve)||null,envelope=sleeve|| (strip.encapsulation==='tube'?{width:strip.width+2,height:4}:strip.encapsulation==='coating'?{width:strip.envelopeWidth??strip.width,height:strip.envelopeHeight??5}:null);
   const isSleeve=s.housing==='sleeve';
   const coverClearance=cover.plateThickness?Math.max(1,.45+cover.plateThickness-(cover.rise??.8)):1;
@@ -181,18 +205,31 @@ export function specification(s) {
   if(!isSleeve&&strip.width>profile.channel)issue('pcb-width',`PCB ${strip.width} mm przekracza kanał ${profile.channel} mm w ${profile.name}.`);
   if(sleeve&&(strip.width>sleeve.pcbMax||strip.shape==='s'||strip.encapsulation))issue('sleeve-pcb','Taśma nie jest zgodna z wybraną koszulką.');
   if(!isSleeve){
+    if(profile.ledSupportRequired){
+      const gap=profile.supportGapWidthMM;
+      if(!envelope&&strip.width<=gap)issue('led-support',`PCB ${strip.width} mm nie obejmuje szczeliny ${gap.toFixed(1).replace('.',',')} mm między półkami ${profile.name}. Potrzebne jest potwierdzone podparcie taśmy.`);
+      else issue('led-support',`${profile.name}: rysunek pokazuje taśmę w osobnej obudowie. Podparcie wybranej taśmy wymaga potwierdzenia; elementy pozostają rozłożone.`,'pending');
+    }
+    if(!placement.fit)issue('endcap-length',`Na pełny segment taśmy i wybrane zaślepki potrzeba co najmniej ${placement.minimumLengthMm} mm profilu.`);
+    if(placement.note)issue('endcap-reserve','Długość taśmy uwzględnia miejsce na języczki zaślepek MICRO-PLUS. Zapas w modelu: '+placement.startReserve+' mm / '+placement.endReserve+' mm. Końcowe spasowanie wymaga potwierdzenia.','pending');
     if(envelope&&envelope.width>profile.channel)issue('envelope-width',`Obrys ${envelope.width} mm jest szerszy niż kanał ${profile.channel} mm.`,fitVerified?'blocked':'pending');
     if(envelope&&envelope.height>availableHeight)issue('envelope-height',`Obrys ma ${envelope.height} mm wysokości; pod przesłoną pozostaje ok. ${availableHeight} mm.`,fitVerified?'blocked':'pending');
-    if(envelope&&cover.clearanceVerified===false)issue('cover-clearance','Przed doborem taśmy z powłoką potwierdź prześwit pod tą osłoną. Detale zatrzasku w podglądzie są uproszczone.','pending');
+    if(cover.clearanceVerified===false)issue('cover-clearance','Rodzina osłony jest przypisana w karcie KLUŚ. Prześwit i szczegóły jej zatrzasku wymagają potwierdzenia.','pending');
     if(!profile.covers.includes(cover.id))issue('cover-family',`${cover.name} nie jest przypisana do profilu ${profile.name}.`);
     if(cover.maxWatts&&wattsPerMeter>cover.maxWatts)issue('cover-power',`${cover.name}: maks. ${cover.maxWatts} W/m według KLUŚ. Taśma w tym wariancie ma ${wattsPerMeter} W/m; ściemniacz nie zmienia doboru.`);
     if(profile.maxWatts&&wattsPerMeter>profile.maxWatts)issue('profile-power',`${profile.name}: maks. ${profile.maxWatts} W/m według karty. Wybrana taśma ma ${wattsPerMeter} W/m.`);
     if(!finishesFor(profile).includes(s.finish))issue('finish','Brak tego wykończenia dla wybranego profilu w katalogu.');
   }else if(!envelope)issue('sleeve-required','Wybierz koszulkę zgodną z szerokością PCB.');
   if(!fitVerified)issue('unverified-envelope','Gabaryt ochrony lub jej wnętrza wymaga potwierdzenia. Dopasowanie nie jest zatwierdzone.','pending');
-  if(!isSleeve&&s.endcaps&&cover.capNote)issue('cover-endcap',cover.capNote,'pending');
+  if(!isSleeve&&s.endcaps&&cover.capNote&&!hasMatchedCoverEndcap(profile,s))issue('cover-endcap',cover.capNote,'pending');
   if(!isSleeve)issues.push(...accessoryFitIssues(profile,s));
+  if(!stripSelected){
+    const stripIssues=new Set(['pcb-width','sleeve-pcb','led-support','endcap-length','endcap-reserve','envelope-width','envelope-height','unverified-envelope','cover-power','profile-power']);
+    for(let i=issues.length-1;i>=0;i--)if(stripIssues.has(issues[i].code))issues.splice(i,1);
+    issue('no-strip','Taśma nie została wybrana. Zestawienie obejmuje obudowę i wybrane akcesoria.','pending');
+  }
+  if(s.zone==='suspended')issue('suspension-fixing','Zawieszki przy profilu według karty KLUŚ; mocowanie do sufitu, długość linek i ich rozstaw dobierz do instalacji.','pending');
   const fitStatus=issues.some(x=>x.severity==='blocked')?'blocked':issues.length?'pending':'compatible';
-  const assemblyBlocked=issues.some(x=>['pcb-width','envelope-width','envelope-height','cover-family','sleeve-pcb','sleeve-required'].includes(x.code));
-  return {isSleeve,profile,strip,cover,sleeve,envelope,envelopeFits,fitVerified,availableHeight,issues,fitStatus,assemblyBlocked,finish:finishFor(profile,s.finish),cutVerified:strip.cutVerified!==false,stripLength,segments,offcut:s.length-stripLength,power,wattsPerMeter,lumensPerMeter,current:power/strip.voltage,terminals:tapeTerminals(strip,s).map(p=>p.label),connections:tapeTerminals(strip,s).filter(p=>p.connected),selectedTerminal:mode?.terminal, fits:isSleeve?envelopeFits:strip.width<=profile.channel, coverFits:!isSleeve&&profile.covers.includes(cover.id),previewCct:strip.type==='CCT'?(s.cct<strip.cctMin||s.cct>strip.cctMax):s.cct!==strip.cct};
+  const assemblyBlocked=issues.some(x=>['pcb-width','envelope-width','envelope-height','cover-family','endcap-cover','endcap-length','led-support','sleeve-pcb','sleeve-required'].includes(x.code));
+  return {stripSelected,isSleeve,placement,profile,strip,cover,sleeve,envelope,envelopeFits,fitVerified,availableHeight,issues,fitStatus,assemblyBlocked,finish:finishFor(profile,s.finish),cutVerified:strip.cutVerified!==false,stripLength,segments,offcut:s.length-stripLength,power,wattsPerMeter,lumensPerMeter,current:power/strip.voltage,terminals:tapeTerminals(strip,s).map(p=>p.label),connections:tapeTerminals(strip,s).filter(p=>p.connected),selectedTerminal:mode?.terminal, fits:isSleeve?envelopeFits:strip.width<=profile.channel, coverFits:!isSleeve&&profile.covers.includes(cover.id),previewCct:strip.type==='CCT'?(s.cct<strip.cctMin||s.cct>strip.cctMax):s.cct!==strip.cct};
 }

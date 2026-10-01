@@ -1,8 +1,8 @@
 import * as T from 'three';
-import {buildAccessories} from './accessories.js?v=1deadf165ec6';
-import {accessoryKit} from './accessory-data.js?v=1deadf165ec6';
+import {buildAccessories} from './accessories.js?v=130bc2896fcd';
+import {accessoryKit} from './accessory-data.js?v=130bc2896fcd';
 import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
-import {buildInstallationCable} from './installation-wiring.js?v=1deadf165ec6';
+import {buildInstallationCable} from './installation-wiring.js?v=130bc2896fcd';
 
 export function seatingHeight(p,recessed){
   if(!recessed)return .0008;
@@ -99,8 +99,8 @@ export function buildMount(p,state,wood){
   function update(s,sample){
     const walk=s.view==='mounting',step=s.mountStep;
     fixings.traverse(o=>{if(o.name==='Wkret_mocownika')o.position.y=walk&&step===1?.009:0;});
-    pilot.visible=walk&&step===0;fixings.visible=!walk||step>=1;shield.visible=dry&&walk&&step>=1&&step<4;finish.visible=dry&&(!walk||step>=3);cable.visible=walk&&step>=3||!walk&&s.showCable;
-    if(dry)cable.visible=walk&&step>=1;
+    pilot.visible=walk&&step===0;fixings.visible=!walk||step>=1;shield.visible=dry&&walk&&step>=1&&step<4;finish.visible=dry&&(!walk||step>=3);cable.visible=s.showCable&&(!walk||step>=3);
+    if(dry)cable.visible=s.showCable&&walk&&step>=1;
     sample.group.position.y=seat;sample.profile.visible=true;sample.pcb.visible=true;sample.cover.visible=true;sample.group.visible=true;sample.accessories.visible=true;
     if(walk){
       if(p.screwDrywall){sample.group.visible=step>0;sample.assemble(0);sample.group.position.y=seat;sample.cover.visible=step===4;sample.pcb.visible=step===4;shield.visible=step>=2&&step<4;shield.position.y=seat+H-.00025;}
@@ -113,6 +113,7 @@ export function buildMount(p,state,wood){
       else{sample.group.visible=step>=2;sample.assemble(step===2?100:step===3?50:0);sample.group.position.y=seat+(step>=2&&step<4?.011:0);}
     }
     if(!connection)connection=buildInstallationCable(sample,p);
+    sample.pcb.visible=sample.pcb.visible&&s.stripEnabled!==false;
     const connected=cable.visible&&sample.group.visible&&sample.pcb.visible;
     const tail=[new T.Vector3(-.058,-.009-sample.group.position.y,0),new T.Vector3(-.058,-.015-sample.group.position.y,-span*.33),new T.Vector3(-.035,-.015-sample.group.position.y,-span*.4)];
     connection.update(s,tail,connected);root.userData.connection=connected?connection.root.userData:null;

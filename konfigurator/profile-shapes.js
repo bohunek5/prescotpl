@@ -1,7 +1,113 @@
-import {tracedContours} from './profile-contours.js?v=1deadf165ec6';
+import {tracedContours} from './profile-contours.js?v=130bc2896fcd';
+// A raster trace can retrace an edge or describe an open channel as a hole
+// sharing an edge with the exterior. Both have zero section area, but Three's
+// extrusion gives each edge its own longitudinal face: a false aluminium roof.
+// Reconstruct only coincident boundaries; never infer new product dimensions.
+const geometryProfiles=new WeakMap(),sectionEpsilon=1e-8;
+const signedArea=points=>points.reduce((area,b,i)=>{const a=points[(i+points.length-1)%points.length];return area+a[0]*b[1]-b[0]*a[1];},0)/2;
+const pointKey=point=>point.map(x=>(Math.abs(x)<sectionEpsilon?0:x).toFixed(8)).join(',');
+const sectionArea=loops=>loops.reduce((area,loop)=>area+(loop.hole?-1:1)*Math.abs(signedArea(loop.points)),0);
+const sectionBounds=loops=>{const points=loops.flatMap(loop=>loop.points);return [Math.min(...points.map(p=>p[0])),Math.max(...points.map(p=>p[0])),Math.min(...points.map(p=>p[1])),Math.max(...points.map(p=>p[1]))];};
+const aboveSupport=(profile,[x,y])=>{const angle=(profile.ledAngle||0)*Math.PI/180;return (y-(profile.ledBase??0))*Math.cos(angle)+(-x-(profile.ledZ||0))*Math.sin(angle)>.05;};
+function cleanLoop(points,profile=null){
+  const out=points.map(point=>[...point]);
+  // Remove one point at a time so A-B-A spikes cannot also remove a neighbouring
+  // corner. A following pass removes the resulting repeated A-A point.
+  let changed=true;
+  while(changed&&out.length>3){
+    changed=false;
+    for(let i=0;i<out.length;i++){
+      const a=out[(i+out.length-1)%out.length],b=out[i],c=out[(i+1)%out.length];
+      if(Math.abs((b[0]-a[0])*(c[1]-b[1])-(b[1]-a[1])*(c[0]-b[0]))>sectionEpsilon)continue;
+      const reverses=(b[0]-a[0])*(c[0]-b[0])+(b[1]-a[1])*(c[1]-b[1])<0;
+      if(profile&&reverses&&!aboveSupport(profile,b))continue;
+      out.splice(i,1);changed=true;break;
+    }
+  }
+  return out;
+}
+function joinTouchingLoops(loops,profile){
+  const oriented=loops.map(loop=>{const points=loop.points.map(p=>[...p]);if((signedArea(points)>0)===!!loop.hole)points.reverse();return points;});
+  const vertices=[...new Map(oriented.flat().map(p=>[pointKey(p),p])).values()],edges=[],byKey=new Map();
+  for(const points of oriented){
+    const ring=[];
+    for(let i=0;i<points.length;i++){
+      const a=points[i],b=points[(i+1)%points.length],dx=b[0]-a[0],dy=b[1]-a[1],length2=dx*dx+dy*dy;
+      if(length2<sectionEpsilon*sectionEpsilon)continue;
+      const cuts=[{t:0,p:a},{t:1,p:b}];
+      for(const p of vertices){const t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/length2;if(t>sectionEpsilon&&t<1-sectionEpsilon&&Math.abs(dx*(p[1]-a[1])-dy*(p[0]-a[0]))<sectionEpsilon)cuts.push({t,p});}
+      cuts.sort((a,b)=>a.t-b.t);
+      for(let j=1;j<cuts.length;j++){
+        const from=cuts[j-1].p,to=cuts[j].p,f=pointKey(from),t=pointKey(to);if(f===t)continue;
+        const key=f+'|'+t;if(byKey.has(key))return loops;
+        const edge={from,to,f,t};byKey.set(key,edge);ring.push(edge);edges.push(edge);
+      }
+    }
+    ring.forEach((edge,i)=>{edge.prev=ring[(i+ring.length-1)%ring.length];edge.next=ring[(i+1)%ring.length];});
+  }
+  let joined=false;
+  for(const edge of edges){
+    const reverse=byKey.get(edge.t+'|'+edge.f);
+    // Preserve the original support plane and all geometry below the PCB.
+    // Only coincident boundaries above it can become a false optical roof.
+    if(edge.removed||!reverse||reverse.removed||!aboveSupport(profile,edge.from)||!aboveSupport(profile,edge.to))continue;
+    if(edge.next===reverse){edge.prev.next=reverse.next;reverse.next.prev=edge.prev;}
+    else if(reverse.next===edge){reverse.prev.next=edge.next;edge.next.prev=reverse.prev;}
+    else{edge.prev.next=reverse.next;reverse.next.prev=edge.prev;reverse.prev.next=edge.next;edge.next.prev=reverse.prev;}
+    edge.removed=true;reverse.removed=true;joined=true;
+  }
+  if(!joined)return loops;
+  const result=[];
+  for(const start of edges){
+    if(start.removed||start.visited)continue;
+    const points=[];let edge=start;
+    do{if(edge.removed||edge.visited)return loops;points.push(edge.from);edge.visited=true;edge=edge.next;}while(edge!==start);
+    const cleaned=cleanLoop(points,profile);if(cleaned.length<3||Math.abs(signedArea(cleaned))<sectionEpsilon)continue;
+    result.push({hole:signedArea(cleaned)<0,points:cleaned});
+  }
+  const outers=result.filter(loop=>!loop.hole).sort((a,b)=>Math.abs(signedArea(b.points))-Math.abs(signedArea(a.points)));
+  const holes=result.filter(loop=>loop.hole),ordered=[];
+  const contains=(points,[x,y])=>{let inside=false;for(let i=0,j=points.length-1;i<points.length;j=i++){const [a,b]=points[i],[c,d]=points[j];if((b>y)!=(d>y)&&x<(c-a)*(y-b)/(d-b)+a)inside=!inside;}return inside;};
+  const enclosedBy=(outer,hole)=>hole.points.some((a,i)=>{const b=hole.points[(i+1)%hole.points.length],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);if(!length)return false;const sample=[(a[0]+b[0])/2+dy/length*1e-5,(a[1]+b[1])/2-dx/length*1e-5];return contains(hole.points,sample)&&contains(outer.points,sample);});
+  for(const outer of outers){ordered.push(outer);for(let i=holes.length-1;i>=0;i--)if(enclosedBy(outer,holes[i]))ordered.push(...holes.splice(i,1));}
+  return holes.length?loops:ordered;
+}
+function removeKozus50Cover(loops){
+  // The KOZUS-50 card shows this pale horizontal part as the separate cover,
+  // but its raster trace included it in the aluminium. Retain the right wing
+  // beyond the existing inner corner (21.881 mm), not the cover crossing the
+  // channel. Source: assets/sources/catalog-2026-09/kozus50.pdf.
+  return loops.map(loop=>{
+    if(loop.hole||!loop.points.some(([x,y])=>x===-21.881&&y===17.518)||!loop.points.some(([x,y])=>x===21.881&&y===17.518))return loop;
+    const points=[],limit=21.881;
+    for(let i=0;i<loop.points.length;i++){
+      const a=loop.points[i],b=loop.points[(i+1)%loop.points.length],insideA=a[0]>=limit,insideB=b[0]>=limit;
+      if(insideA)points.push([...a]);
+      if(insideA!==insideB){const t=(limit-a[0])/(b[0]-a[0]);points.push([limit,a[1]+t*(b[1]-a[1])]);}
+    }
+    return {...loop,points:cleanLoop(points)};
+  });
+}
+export function profileForGeometry(profile){
+  if(!profile.section)return profile;
+  if(geometryProfiles.has(profile))return geometryProfiles.get(profile);
+  const clean=profile.section.map(loop=>({...loop,points:cleanLoop(loop.points,profile)})),joined=joinTouchingLoops(clean,profile);
+  const section=profile.id==='kozus50'?removeKozus50Cover(joined):joined;
+  const bounds=sectionBounds(profile.section),newBounds=sectionBounds(section);
+  // These two traces put a zero-area dimension edge a fraction of a raster
+  // pixel above the material. Bound the correction explicitly; keep catalog
+  // heights of 14.5 / 15 mm and every other envelope coordinate unchanged.
+  const dimensionTip={gizallt:.074,kozma22bok:.072}[profile.id];
+  const areaPreserved=Math.abs(sectionArea(joined)-sectionArea(profile.section))<1e-6;
+  const unchanged=areaPreserved&&bounds.every((v,i)=>Math.abs(v-newBounds[i])<1e-6||(dimensionTip&&i===3&&Math.abs(v-newBounds[i]-dimensionTip)<1e-6));
+  // Keep uncertain traces intact; they require review against the source card.
+  const result=unchanged?{...profile,section}:profile;
+  geometryProfiles.set(profile,result);geometryProfiles.set(result,result);return result;
+}
 // Millimetres in the section plane. These authored contours follow the source
 // cards; small retaining details are illustrative. MICRO-PLUS uses source 3DS.
 export function profileContour(p){
+  p=profileForGeometry(p);
   if(p.section)return p.section.find(loop=>!loop.hole).points;
   if(p.id==='stos'){
     // Smooth flanges from the STOS card, without raster stair-steps extruded into
@@ -35,6 +141,7 @@ export function profileContour(p){
   return[[-a,0],[a,0],[a,H],[b-.5,H],[b-.5,H-1],[b,H-1],[b,base],[-b,base],[-b,H-1],[-b+.5,H-1],[-b+.5,H],[-a,H]];
 }
 export function profileIcon(p,cover=null,instance=''){
+  p=profileForGeometry(p);
   const points=profileContour(p),W=p.width,H=p.height;
   // Match the model's cover plane: section X = -world Z, screen Y = H - world Y.
   const angle=(p.ledAngle||0)*Math.PI/180,c=Math.cos(angle),s=Math.sin(angle);
@@ -48,7 +155,8 @@ export function profileIcon(p,cover=null,instance=''){
   const beam=[[-half,0],[-spread,-reach],[spread,-reach],[half,0]];
   // Reserve the widest preview so changing a compatible cover keeps the framing.
   const envelope=[[-half,0],[-half-reach*1.55,-reach],[half+reach*1.55,-reach],[half,0]];
-  const bounds=[...points.map(([x,y])=>[x,H-y]),...envelope.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
+  const sectionPoints=p.section?p.section.flatMap(loop=>loop.points):points;
+  const bounds=[...sectionPoints.map(([x,y])=>[x,H-y]),...envelope.map(([u,v])=>[x+u*c+v*s,y-u*s+v*c])];
   const minX=Math.min(...bounds.map(p=>p[0]))-1.5,minY=Math.min(...bounds.map(p=>p[1]))-1.5;
   const width=Math.max(...bounds.map(p=>p[0]))-minX+1.5,height=Math.max(...bounds.map(p=>p[1]))-minY+1.5;
   const gradient=`profile-light-${p.id}${instance?'-'+instance:''}`,edge=`${gradient}-edge`,mask=`${gradient}-mask`;

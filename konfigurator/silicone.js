@@ -1,12 +1,13 @@
-import {stripOutputScale} from './light-state.js?v=1deadf165ec6';
-import {sleeveInsertionPose} from './sleeve-motion.js?v=1deadf165ec6';
-import {factorySilicone} from './strip-protection.js?v=1deadf165ec6';
+import {stripPreviewScale} from './light-state.js?v=20260922-refine1';
+import {configureDiffuserEmission} from './diffuser-lighting.js?v=130bc2896fcd';
+import {sleeveInsertionPose} from './sleeve-motion.js?v=130bc2896fcd';
+import {factorySilicone} from './strip-protection.js?v=130bc2896fcd';
 import * as T from 'three';
 import {toCreasedNormals,mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
-import {diffuserMap} from './light-textures.js?v=1deadf165ec6';
-import {sleeveDrawing,sectionShapes,coatingSection} from './sleeve-shapes.js?v=1deadf165ec6';
-import {createLightVolume} from './light-volume.js?v=1deadf165ec6';
-import {buildSleeveAccessories} from './sleeve-accessories.js?v=1deadf165ec6';
+import {diffuserMap} from './light-textures.js?v=130bc2896fcd';
+import {sleeveDrawing,sectionShapes,coatingSection} from './sleeve-shapes.js?v=130bc2896fcd';
+import {createLightVolume} from './light-volume.js?v=130bc2896fcd';
+import {buildSleeveAccessories} from './sleeve-accessories.js?v=130bc2896fcd';
 // Outer PRO dimensions follow the supplied manufacturer drawings. Wall and
 // sealing details are illustrative; adding a sleeve does not assign an IP rating.
 export function buildSilicone(t,sleeve,L){
@@ -18,9 +19,15 @@ export function buildSilicone(t,sleeve,L){
 
   const emission=diffuserMap({strip:t,profile:{height:spec.height,ledBase:offset*1000,channelDepth:spec.height-offset*1000},cover:{id:'silicone'}},L*1000);silicone.emissiveMap=emission;
   const inserted={value:1};
-  silicone.onBeforeCompile=shader=>{shader.uniforms.sleeveInserted=inserted;shader.fragmentShader='uniform float sleeveInserted;\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n totalEmissiveRadiance *= sleeveInserted > 0.9999 ? 1.0 : sleeveInserted < 0.0001 ? 0.0 : 1.0 - smoothstep(sleeveInserted - 0.006, sleeveInserted + 0.006, vEmissiveMapUv.x);');};
-  silicone.customProgramCacheKey=()=> 'sleeve-insertion-v1';
-  const cutMaterial=material({color:'#e3e5df',roughness:.42});
+  function maskInsertion(material){
+    material.onBeforeCompile=shader=>{shader.uniforms.sleeveInserted=inserted;shader.fragmentShader='uniform float sleeveInserted;\n'+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n totalEmissiveRadiance *= sleeveInserted > 0.9999 ? 1.0 : sleeveInserted < 0.0001 ? 0.0 : 1.0 - smoothstep(sleeveInserted - 0.006, sleeveInserted + 0.006, vEmissiveMapUv.x);');};
+    material.customProgramCacheKey=()=> 'sleeve-insertion-v1';
+  }
+  maskInsertion(silicone);
+  // Keep soft studio reflections on the milk so a lit tube still has volume.
+  const setRgbEmission=configureDiffuserEmission(silicone,{surfaceReflection:.18});
+  const cutMaterial=material({color:'#e3e5df',roughness:.42,emissiveMap:emission});
+  maskInsertion(cutMaterial);
   const baseMaterial=material({color:'#f1f2ec',roughness:.43,side:T.DoubleSide});
   const outer=coating?coatingSection(W,H):new T.Shape();
   if(!coating&&spec.shape==='oval'){outer.moveTo(-W*.27,0);outer.lineTo(W*.27,0);outer.bezierCurveTo(W*.60,H*.18,W*.64,H*.71,W*.29,H*.91);outer.bezierCurveTo(W*.12,H*1.03,-W*.12,H*1.03,-W*.29,H*.91);outer.bezierCurveTo(-W*.64,H*.71,-W*.60,H*.18,-W*.27,0);outer.closePath();}
@@ -95,13 +102,16 @@ export function buildSilicone(t,sleeve,L){
       p.needsUpdate=true;n.needsUpdate=true;geo.computeBoundingSphere();
     }
     const rgb=t.type==='RGBW'&&state.rgbMode!=='white';
-    if(silicone.toneMapped===rgb){silicone.toneMapped=!rgb;silicone.needsUpdate=true;}
-    silicone.color.set(spec.clear?'#c8d3d3':'#f7f8f3');if(rgb&&!spec.clear)silicone.color.copy(color).multiplyScalar(.12);
-    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear&&state.light?state.dimmer/100*stripOutputScale(t,state)*(rgb?1.65:coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
+    // Keep the unlit and unfilled part of the sleeve neutral, even with RGB.
+    silicone.color.set(spec.clear?'#c8d3d3':'#f7f8f3');
+    setRgbEmission(rgb&&!spec.clear);
+    const level=state.light&&!state.compare?state.dimmer/100*stripPreviewScale(t,state):0;
+    // RGB needs enough radiance to read as illuminated milk, also when dimmed.
+    // This changes the emitted light only; the unfilled polymer stays white.
+    silicone.emissive.copy(color);silicone.emissiveIntensity=!spec.clear?level*(rgb?(state.lightStudy?7:4.8):coating?(state.lightStudy?10:5):(state.lightStudy?7:3.8)):0;
     accessories.update(state,point,curvature,L,color,silicone.emissiveIntensity);
-    cutMaterial.emissive.copy(color);cutMaterial.emissiveIntensity=silicone.emissiveIntensity*.09*inserted.value;
-    const level=state.light&&!state.compare?state.dimmer/100*stripOutputScale(t,state):0;
-    for(const {v,y,z,gain}of volumes){v.mesh.position.set(insertion.active?-L*(1-inserted.value)/2:inspect&&!coating?Math.min(.042,L*.42):0,y,z);v.update(color,level,{night:state.lightStudy,power:t.modes?.[state.powerMode]?.watts??t.watts,coupling:gain*inserted.value,curvature});if(insertion.active)v.mesh.scale.x*=Math.max(.001,inserted.value);if(!['product','sleeve','seal'].includes(state.detail)||state.housing!=='sleeve')v.mesh.visible=false;}
+    cutMaterial.emissive.copy(color);cutMaterial.emissiveIntensity=silicone.emissiveIntensity*.09;
+    for(const {v,y,z,gain}of volumes){v.mesh.position.set(insertion.active?-L*(1-inserted.value)/2:inspect&&!coating?Math.min(.042,L*.42):0,y,z);v.update(color,level,{night:state.lightStudy,power:t.modes?.[state.powerMode]?.watts??t.watts,fluxCalibrated:!rgb,coupling:gain*inserted.value,curvature});if(insertion.active)v.mesh.scale.x*=Math.max(.001,inserted.value);if(!['product','sleeve','seal'].includes(state.detail)||state.housing!=='sleeve')v.mesh.visible=false;}
     root.userData={insertion,insertedFraction:inserted.value,kind:coating?'coating':native?'factory-ip67':'pro-sleeve',shape:spec.shape,pcbOrientation:side?'vertical':'horizontal',outerWidthMm:spec.width,outerHeightMm:spec.height,milky:!spec.clear,shapeVerified:!!drawing||coating&&!!t.envelopeVerified,sectionSource:drawing?.source,accessories:[...accessories.caps.children,...accessories.holders.children].filter(o=>o.parent.visible).map(o=>({...o.userData})),opticalRegions:drawing?.optical.length,opaqueRegions:drawing?.opaque.length,emissionDirection:side?'top':spec.shape==='oval'?'circumference':spec.shape==='top'?'dome':'top-and-optical-sides',closed:state.view!=='macro'||state.detail!=='seal'||state.sealClosed,capLight:accessories.caps.userData,dimensionsVerified:coating?!!t.envelopeVerified:!!sleeve?.verified,beams:volumes.map(({v})=>({...v.mesh.userData,position:v.mesh.position.toArray(),direction:new T.Vector3(0,1,0).applyQuaternion(v.mesh.quaternion).toArray(),visible:v.mesh.visible}))};
   }
   return{root,update,dispose(){accessories.dispose();volumes.forEach(({v})=>v.dispose());geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());emission.dispose();}};

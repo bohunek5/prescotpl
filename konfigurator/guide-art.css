@@ -1,0 +1,9 @@
+.guide-art{position:relative;isolation:isolate;width:100%;overflow:hidden;border:1px solid var(--guide-line,#d9dcda);border-radius:14px;background:#e9ebed;color:#212a35}
+.guide-model{position:relative;width:100%;height:160px;pointer-events:none}
+.guide-model canvas{display:block;max-width:100%;width:100%;height:100%}
+.guide-art-legend{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:9px 12px;border-top:1px solid #212a3512;font:400 9px/1.4 var(--prescot-font-body,Arial,sans-serif);color:#53616c}
+.guide-art-legend span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.guide-art-legend span:last-child{flex:none}
+.guide-welcome-art .guide-model{height:250px}
+@media(max-width:780px){.guide-model{height:115px}.guide-welcome-art .guide-model{height:185px}.guide-art-legend{font-size:8px;padding:6px 10px}}
+@media(max-height:650px){#guide-step-art{display:none}}
